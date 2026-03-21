@@ -30,7 +30,7 @@ const DataMigrationPage = memo(() => {
 
   // Handle scroll for sticky nav visibility and active section tracking
   const handleScroll = useCallback(() => {
-    const scrollPosition = window.scrollY;
+    const scrollPosition = globalThis.scrollY;
     setIsNavVisible(scrollPosition > 400);
 
     const sections = ["overview", "strategy", "types", "best-practices", "security", "faq"];
@@ -46,7 +46,7 @@ const DataMigrationPage = memo(() => {
     }
 
     // Sync with MainLayout header visibility
-    const isDesktop = window.innerWidth >= 768;
+    const isDesktop = globalThis.innerWidth >= 768;
     if (isDesktop) {
       globalThis.dispatchEvent(
         new CustomEvent("stickyNavVisible", {
@@ -57,10 +57,10 @@ const DataMigrationPage = memo(() => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      const isDesktop = window.innerWidth >= 768;
+      globalThis.removeEventListener("scroll", handleScroll);
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
         globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } })
@@ -73,8 +73,8 @@ const DataMigrationPage = memo(() => {
     const element = document.getElementById(id);
     if (element) {
       const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+      const elementPosition = element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: id === "overview" ? 0 : elementPosition - offset,
         behavior: "smooth",
       });
@@ -187,9 +187,10 @@ const DataMigrationPage = memo(() => {
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <button
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-bold px-8 py-4 rounded-xl opacity-60 cursor-not-allowed shadow-md transition-all duration-300 pointer-events-none"
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
                     >
-                      Buy Now
+                      Upcoming
                       <ArrowRightIcon className="w-5 h-5" />
                     </button>
                     <button
@@ -494,18 +495,18 @@ const DataMigrationPage = memo(() => {
                     Discuss your project with our migration architects and get a custom strategy tailored to your organization.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
-                    <Link
-                      to="/contact"
-                      className="w-full sm:w-auto bg-white text-emerald-900 font-black px-12 py-6 rounded-[2rem] hover:bg-emerald-50 hover:scale-105 transition-all shadow-2xl"
+                    <button
+                      disabled
+                      className="w-full sm:w-auto bg-slate-400 text-white font-black px-12 py-6 rounded-[2rem] cursor-not-allowed opacity-70 shadow-2xl"
                     >
-                      REQUEST STRATEGY SESSION
-                    </Link>
-                    <Link 
-                      to="/pricing-and-plan"
-                      className="w-full sm:w-auto border-2 border-white/20 text-white font-bold px-12 py-6 rounded-[2rem] hover:bg-white/10 transition-all font-mono tracking-widest text-sm uppercase text-center"
+                      UPCOMING
+                    </button>
+                    <button
+                      disabled
+                      className="w-full sm:w-auto border-2 border-slate-400 text-slate-400 font-bold px-12 py-6 rounded-[2rem] cursor-not-allowed opacity-70 font-mono tracking-widest text-sm uppercase text-center"
                     >
-                      View Pricing
-                    </Link>
+                      UPCOMING
+                    </button>
                   </div>
                 </div>
               </div>

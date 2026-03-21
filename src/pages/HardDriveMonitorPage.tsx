@@ -6,7 +6,6 @@ import SEOHead from "@/components/SEOHead";
 import {
   ShieldIcon,
   CheckIcon,
-  ArrowRightIcon,
   ClipboardIcon,
 } from "@/components/FlatIcons";
 import {
@@ -47,13 +46,13 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
   // Logic to handle sticky navigation visibility and active section tracking on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           }),
@@ -73,12 +72,12 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      const isDesktop = window.innerWidth >= 768;
+      globalThis.removeEventListener("scroll", handleScroll);
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
         );
       }
@@ -89,8 +88,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
     const element = document.getElementById(sectionId);
     if (element) {
       const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+      const elementPosition = element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -217,13 +216,13 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       <Download className="w-5 h-5" />
                       Upcoming
                     </button>
-                    <Link 
-                      to="/pricing-and-plan?product=smart-diagnostic"
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                    <button
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
                     >
                       <ShoppingCart className="w-5 h-5" />
-                      Purchase License
-                    </Link>
+                      Upcoming
+                    </button>
 
                   </div>
                 </div>
@@ -608,8 +607,11 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                   >
                     Get Business Quote
                   </Link>
-                  <button className="inline-flex items-center justify-center border-2 border-white/30 text-white px-12 py-5 rounded-2xl font-bold transition-all duration-300 hover:bg-white/10">
-                    Contact Recovery Experts
+                  <button 
+                    disabled
+                    className="inline-flex items-center justify-center border-2 border-white/30 text-white/50 px-12 py-5 rounded-2xl font-bold cursor-not-allowed opacity-60"
+                  >
+                    Upcoming
                   </button>
                 </div>
               </div>

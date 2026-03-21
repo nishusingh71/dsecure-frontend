@@ -88,12 +88,7 @@ const SmartphoneDiagnosticPage = memo(() => {
     { id: "faq", label: "FAQ" },
   ];
 
-  const diagItems = [
-    { name: "Display Touch", status: "OK", color: "text-emerald-600" },
-    { name: "Battery Health", status: "94%", color: "text-emerald-600" },
-    { name: "MDM Status", status: "OFF", color: "text-emerald-600" },
-    { name: "Face ID", status: "FAIL", color: "text-red-500" },
-  ];
+
 
   const featItems = [
     { title: "Parallel Diagnostics", desc: "Batch process up to 40 devices simultaneously on a single workstation.", icon: <Zap className="w-8 h-8" /> },
@@ -183,13 +178,14 @@ const SmartphoneDiagnosticPage = memo(() => {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center justify-center gap-2 bg-teal-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-teal-700 transition-all hover:scale-105"
-                    >
-                      Analyze My Inventory
-                    </Link>
                     <button
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                    >
+                      Upcoming
+                    </button>
+                    <button
+                      onClick={() => scrollToSection("tests")}
                       className="inline-flex items-center justify-center gap-2 border-2 border-teal-200 bg-white text-teal-800 font-bold px-8 py-4 rounded-xl hover:bg-teal-50 transition-all"
                     >
                       See 50+ Tests
@@ -470,8 +466,11 @@ const SmartphoneDiagnosticPage = memo(() => {
                     >
                       Get Started For Free
                     </Link>
-                    <button className="w-full sm:w-auto border border-teal-400 text-white font-bold px-10 py-5 rounded-2xl hover:bg-teal-900 transition-all">
-                      Watch Demo
+                    <button
+                      disabled
+                      className="w-full sm:w-auto border border-slate-400 bg-slate-400/10 text-slate-400 font-bold px-10 py-5 rounded-2xl cursor-not-allowed opacity-70"
+                    >
+                      Upcoming
                     </button>
                   </div>
                 </div>

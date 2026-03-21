@@ -1,9 +1,7 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
-  LayoutGrid,
-  Search,
   Zap,
   Smartphone,
   Activity,
@@ -13,12 +11,10 @@ import {
   X,
 } from "lucide-react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
-import OptimizedImage from "@/components/OptimizedImage";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
-import ScrollToTop from "@/components/ScrollToTop";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ScrollToTopComponent from "@/components/ScrollToTop";
 import { useTranslation } from "react-i18next";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
 
@@ -28,41 +24,33 @@ export default function MainLayout() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [authKey, setAuthKey] = useState(0); // Force re-render on auth state change
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [productsDropdownTab, setProductsDropdownTab] = useState<
     "eraser" | "migration" | "diagnostics"
   >("eraser");
   const [hideHeader, setHideHeader] = useState(false); // Hide header when sticky section nav is visible
-  const [driveEraserHovered, setDriveEraserHovered] = useState(false);
 
   const toggleMobileMenu = useCallback(() => {
     setOpen((v) => !v);
   }, []);
 
-  const closeMobileMenu = useCallback(() => {
-    setOpen(false);
-  }, []);
-
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(globalThis.scrollY > 10);
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  
+    globalThis.addEventListener("scroll", handleScroll);
+    return () => globalThis.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Listen for auth state changes to force header re-render
   useEffect(() => {
     const handleAuthStateChange = () => {
-      setAuthKey((prev) => prev + 1);
-      // console.log('🔄 Header updated - Auth state changed');
     };
 
-    window.addEventListener("authStateChanged", handleAuthStateChange);
+    globalThis.addEventListener("authStateChanged", handleAuthStateChange);
     return () =>
-      window.removeEventListener("authStateChanged", handleAuthStateChange);
+      globalThis.removeEventListener("authStateChanged", handleAuthStateChange);
   }, []);
 
   // Close products dropdown when clicking outside
@@ -84,7 +72,6 @@ export default function MainLayout() {
     15 * 60 * 1000,
     () => {
       if (user) {
-        // console.log('? User idle for 15 minutes - auto logging out');
         logout();
       }
     },
@@ -111,12 +98,12 @@ export default function MainLayout() {
       setHideHeader(event.detail.visible);
     };
 
-    window.addEventListener(
+    globalThis.addEventListener(
       "stickyNavVisible",
       handleStickyNavVisible as EventListener,
     );
     return () =>
-      window.removeEventListener(
+      globalThis.removeEventListener(
         "stickyNavVisible",
         handleStickyNavVisible as EventListener,
       );
@@ -189,15 +176,29 @@ export default function MainLayout() {
                       <div className="w-52 flex-shrink-0 border-r border-slate-200 bg-slate-50/80 py-4">
                         <button
                           className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
-                            !productsDropdownTab || productsDropdownTab === "eraser"
+                            !productsDropdownTab ||
+                            productsDropdownTab === "eraser"
                               ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
                               : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
                           }`}
                           onClick={() => setProductsDropdownTab("eraser")}
                         >
                           Eraser
-                          {(!productsDropdownTab || productsDropdownTab === "eraser") && (
-                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                          {(!productsDropdownTab ||
+                            productsDropdownTab === "eraser") && (
+                            <svg
+                              className="w-3.5 h-3.5 ml-auto text-emerald-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2.5}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
                           )}
                         </button>
                         <button
@@ -210,7 +211,19 @@ export default function MainLayout() {
                         >
                           Migration
                           {productsDropdownTab === "migration" && (
-                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                            <svg
+                              className="w-3.5 h-3.5 ml-auto text-emerald-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2.5}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
                           )}
                         </button>
                         <button
@@ -223,7 +236,19 @@ export default function MainLayout() {
                         >
                           Diagnostics
                           {productsDropdownTab === "diagnostics" && (
-                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                            <svg
+                              className="w-3.5 h-3.5 ml-auto text-emerald-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2.5}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
                           )}
                         </button>
 
@@ -235,7 +260,19 @@ export default function MainLayout() {
                             onClick={() => setProductsDropdownOpen(false)}
                           >
                             Explore All Products
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                            <svg
+                              className="w-3 h-3"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2.5}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
                           </Link>
                         </div>
                       </div>
@@ -244,45 +281,75 @@ export default function MainLayout() {
                       <div className="flex-1 p-6">
                         {/* Category heading */}
                         <h3 className="text-lg font-bold text-slate-800 mb-5">
-                          {(!productsDropdownTab || productsDropdownTab === "eraser") && "Eraser"}
+                          {(!productsDropdownTab ||
+                            productsDropdownTab === "eraser") &&
+                            "Eraser"}
                           {productsDropdownTab === "migration" && "Migration"}
-                          {productsDropdownTab === "diagnostics" && "Diagnostics"}
+                          {productsDropdownTab === "diagnostics" &&
+                            "Diagnostics"}
                         </h3>
 
                         <div className="grid grid-cols-3 gap-4">
                           {/* ═══ ERASER TAB ═══ */}
-                          {(!productsDropdownTab || productsDropdownTab === "eraser") && (
+                          {(!productsDropdownTab ||
+                            productsDropdownTab === "eraser") && (
                             <>
                               {/* Drive Eraser — with 2 variants */}
-                              <div className="border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all">
+                              <div
+                                className="border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group"
+                                onClick={() => {
+                                  navigate("/products/drive-eraser");
+                                  setProductsDropdownOpen(false);
+                                }}
+                              >
                                 <div className="flex items-center gap-3 mb-3">
-                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                                    <svg
+                                      className="w-5 h-5 text-emerald-600 group-hover:text-white"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                                      />
                                     </svg>
                                   </div>
-                                  <h4 className="font-bold text-slate-900">Drive Eraser</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                                    Drive Eraser
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Erase HDD, SSD, PC, Mac & Server data permanently.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Erase HDD, SSD, PC, Mac & Server data
+                                  permanently.
+                                </p>
                                 <div className="flex flex-wrap gap-2">
                                   <Link
                                     to="/products/drive-eraser"
                                     className="px-3 py-1.5 rounded-full border bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700 text-[11px] font-bold transition-all"
-                                    onClick={() => setProductsDropdownOpen(false)}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductsDropdownOpen(false);
+                                    }}
                                   >
                                     Drive Eraser
                                   </Link>
                                   <Link
                                     to="/products/drive-eraser-diagnostic"
                                     className="px-3 py-1.5 rounded-full border bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 text-[11px] font-bold transition-all flex items-center gap-1.5"
-                                    onClick={() => setProductsDropdownOpen(false)}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductsDropdownOpen(false);
+                                    }}
                                   >
                                     <span>Diagnostic & Health</span>
                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
                                   </Link>
                                 </div>
                               </div>
-
 
                               {/* File Eraser */}
                               <Link
@@ -292,15 +359,42 @@ export default function MainLayout() {
                               >
                                 <div className="flex items-center gap-3 mb-3">
                                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    <svg
+                                      className="w-5 h-5 text-blue-600"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                      />
                                     </svg>
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">File Eraser</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                                    File Eraser
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Wipe files, folders, traces & browser history.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Wipe files, folders, traces & browser history.
+                                </p>
                                 <span className="text-xs font-semibold text-blue-600 group-hover:text-blue-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
 
@@ -314,11 +408,28 @@ export default function MainLayout() {
                                   <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Smartphone className="w-5 h-5 text-emerald-600" />
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Smartphone Eraser</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                                    Smartphone Eraser
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Bulk iOS & Android wiping with audit reports.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Bulk iOS & Android wiping with audit reports.
+                                </p>
                                 <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
                             </>
@@ -337,11 +448,28 @@ export default function MainLayout() {
                                   <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Zap className="w-5 h-5 text-emerald-600" />
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Data Migration</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                                    Data Migration
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Secure transfer across Cloud & Infrastructure.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Secure transfer across Cloud & Infrastructure.
+                                </p>
                                 <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
 
@@ -355,11 +483,29 @@ export default function MainLayout() {
                                   <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Database className="w-5 h-5 text-cyan-600" />
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">Forensic Imaging</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">
+                                    Forensic Imaging
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Bit-for-bit acquisition & cryptographic hashing.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Bit-for-bit acquisition & cryptographic
+                                  hashing.
+                                </p>
                                 <span className="text-xs font-semibold text-cyan-600 group-hover:text-cyan-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
 
@@ -373,11 +519,28 @@ export default function MainLayout() {
                                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <RefreshCcw className="w-5 h-5 text-blue-600" />
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">FreezeState</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                                    FreezeState
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Reboot-to-restore system protection.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Reboot-to-restore system protection.
+                                </p>
                                 <span className="text-xs font-semibold text-blue-600 group-hover:text-blue-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
                             </>
@@ -394,15 +557,42 @@ export default function MainLayout() {
                               >
                                 <div className="flex items-center gap-3 mb-3">
                                   <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    <svg
+                                      className="w-5 h-5 text-emerald-600"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                      />
                                     </svg>
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Hardware Diagnostics</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                                    Hardware Diagnostics
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Enterprise-grade diagnostic tools.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Enterprise-grade diagnostic tools.
+                                </p>
                                 <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
 
@@ -416,11 +606,28 @@ export default function MainLayout() {
                                   <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Activity className="w-5 h-5 text-teal-600" />
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-teal-700 transition-colors">Smartphone Diagnostics</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
+                                    Smartphone Diagnostics
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">50+ automated tests for mobile health.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  50+ automated tests for mobile health.
+                                </p>
                                 <span className="text-xs font-semibold text-teal-600 group-hover:text-teal-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
 
@@ -432,15 +639,42 @@ export default function MainLayout() {
                               >
                                 <div className="flex items-center gap-3 mb-3">
                                   <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    <svg
+                                      className="w-5 h-5 text-rose-500"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                      />
                                     </svg>
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-rose-600 transition-colors">SMART Diagnostics</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-rose-600 transition-colors">
+                                    SMART Diagnostics
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Health monitoring & disk cloning.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Health monitoring & disk cloning.
+                                </p>
                                 <span className="text-xs font-semibold text-rose-500 group-hover:text-rose-600 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
 
@@ -454,11 +688,28 @@ export default function MainLayout() {
                                   <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Shield className="w-5 h-5 text-emerald-600" />
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Autopilot Detection</h4>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                                    Autopilot Detection
+                                  </h4>
                                 </div>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Windows Autopilot identification.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Windows Autopilot identification.
+                                </p>
                                 <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
                                 </span>
                               </Link>
                             </>
@@ -580,32 +831,30 @@ export default function MainLayout() {
                     </button>
                   </>
                 ) : (
-                  <>
-                    <NavLink
-                      to="/login"
-                      className={({ isActive }) =>
-                        (isActive
-                          ? "text-brand font-medium"
-                          : "text-slate-600 hover:text-slate-900") +
-                        " inline-flex items-center gap-2 py-2"
-                      }
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      (isActive
+                        ? "text-brand font-medium"
+                        : "text-slate-600 hover:text-slate-900") +
+                      " inline-flex items-center gap-2 py-2"
+                    }
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                        />
-                      </svg>
-                      {t("common.login")}
-                    </NavLink>
-                  </>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                      />
+                    </svg>
+                    {t("common.login")}
+                  </NavLink>
                 )}
               </nav>
 
@@ -686,15 +935,27 @@ export default function MainLayout() {
                   <div className="ml-8 space-y-4 border-l-2 border-emerald-200 pl-4 py-2">
                     {/* Eraser Category */}
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">Eraser</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">
+                        Eraser
+                      </p>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/drive-eraser"
                         className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                       >
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                            />
                           </svg>
                         </div>
                         <span className="font-medium">Drive Eraser</span>
@@ -714,7 +975,9 @@ export default function MainLayout() {
                           className="flex items-center gap-2 py-1 text-xs text-slate-500 hover:text-emerald-800"
                         >
                           • with Diagnostic & Health
-                          <span className="text-[8px] font-bold text-blue-600">NEW</span>
+                          <span className="text-[8px] font-bold text-blue-600">
+                            NEW
+                          </span>
                         </Link>
                       </div>
                       <Link
@@ -723,8 +986,18 @@ export default function MainLayout() {
                         className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                       >
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
                           </svg>
                         </div>
                         <span className="font-medium">File Eraser</span>
@@ -743,7 +1016,9 @@ export default function MainLayout() {
 
                     {/* Migration Category */}
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">Migration</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">
+                        Migration
+                      </p>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/data-migration"
@@ -778,37 +1053,64 @@ export default function MainLayout() {
 
                     {/* Diagnostics Category */}
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">Diagnostics</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">
+                        Diagnostics
+                      </p>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/hardware-diagnostics"
                         className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                       >
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                            />
                           </svg>
                         </div>
-                        <span className="font-medium">Hardware Diagnostics</span>
+                        <span className="font-medium">
+                          Hardware Diagnostics
+                        </span>
                       </Link>
-                      <Link
-                        onClick={() => setOpen(false)}
-                        to="/products/smartphone-diagnostic"
-                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
-                      >
-                        <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-md flex items-center justify-center flex-shrink-0 text-white">
-                          <Activity className="w-4 h-4 text-white" />
+                      <div className="flex items-center gap-3 px-3 py-2 text-sm text-slate-400 cursor-not-allowed rounded-lg transition-colors opacity-70">
+                        <div className="w-8 h-8 bg-slate-200 rounded-md flex items-center justify-center flex-shrink-0 text-slate-500">
+                          <Activity className="w-4 h-4" />
                         </div>
-                        <span className="font-medium">Smartphone Diagnostics</span>
-                      </Link>
+                        <div className="flex flex-col">
+                          <span className="font-medium">
+                            Smartphone Diagnostics
+                          </span>
+                          <span className="text-[9px] font-bold text-teal-600">
+                            COMING SOON
+                          </span>
+                        </div>
+                      </div>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/hard-drive-monitor"
                         className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                       >
                         <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                            />
                           </svg>
                         </div>
                         <span className="font-medium">SMART Diagnostics</span>
@@ -819,8 +1121,18 @@ export default function MainLayout() {
                         className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                       >
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                            />
                           </svg>
                         </div>
                         <span className="font-medium">Autopilot Detection</span>
@@ -861,7 +1173,9 @@ export default function MainLayout() {
                       </div>
                       <div>
                         <span className="font-medium">Healthcare</span>
-                        <p className="text-xs text-slate-400">HIPAA & GDPR Compliance</p>
+                        <p className="text-xs text-slate-400">
+                          HIPAA & GDPR Compliance
+                        </p>
                       </div>
                     </Link>
                   </div>
@@ -1278,7 +1592,7 @@ export default function MainLayout() {
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                           onClick={(e) => {
                             e.preventDefault();
-                            window.location.href = "/#industries";
+                            globalThis.location.href = "/#industries";
                           }}
                         >
                           {t("footer.allSolutions")}
@@ -1481,7 +1795,7 @@ export default function MainLayout() {
             </div>
           </div>
         </footer>
-        <ScrollToTop />
+        <ScrollToTopComponent />
       </div>
     </>
   );

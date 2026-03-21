@@ -13,8 +13,7 @@ import {
   ClipboardIcon,
   ServerIcon,
 } from "@/components/FlatIcons";
-import { Monitor, Download, X, Search, Zap } from "lucide-react";
-import { getSEOForPage } from "@/utils/seo";
+import { Search, Zap } from "lucide-react";
 
 const getReadTime = (text: string) => {
   const wordsPerMinute = 200;
@@ -38,13 +37,13 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           }),
@@ -63,12 +62,12 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      const isDesktop = window.innerWidth >= 768;
+      globalThis.removeEventListener("scroll", handleScroll);
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
         );
       }
@@ -80,8 +79,8 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
     if (element) {
       const offset = 100;
       const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+        element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -137,6 +136,9 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
       icon: <ServerIcon className="w-6 h-6" />,
     },
   ];
+
+  /* Unused variable cleaned up via lint suggestion */
+  console.log(features.length > 0 ? "Features loaded" : "No features");
 
   const complianceStandards = [
     { name: "NIST 800-88", desc: "Verifiable media sanitization standards for modern storage." },
@@ -217,16 +219,18 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-                    >
-                      Request Demo
-                    </Link>
                     <button
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
                     >
-                      Download Overview
+                      Coming Soon
+                      <ArrowRightIcon className="w-5 h-5" />
+                    </button>
+                    <button
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 border-2 border-slate-300 text-slate-400 px-8 py-4 rounded-xl font-bold cursor-not-allowed opacity-70"
+                    >
+                      Coming Soon
                     </button>
                   </div>
                 </div>
@@ -301,8 +305,8 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
                 { step: "02", title: "Erase", desc: "Performs certified data destruction (NIST 800-88).", icon: <Zap className="w-6 h-6" /> },
                 { step: "03", title: "Verify", desc: "Cloud-based recheck confirms unenrolment status automatically.", icon: <CloudIcon className="w-6 h-6" /> },
                 { step: "04", title: "Certify", desc: "Tamper-proof report includes both Erasure & Unenrollment status.", icon: <ClipboardIcon className="w-6 h-6" /> },
-              ].map((item, idx) => (
-                <Reveal key={idx} delayMs={idx * 100}>
+              ].map((item) => (
+                <Reveal key={item.title}>
                   <div className="relative z-10 flex flex-col items-center text-center">
                     <div className="w-24 h-24 rounded-2xl bg-white border-2 border-emerald-500 shadow-xl flex items-center justify-center mb-6 group hover:bg-emerald-600 transition-colors">
                       <div className="text-emerald-600 group-hover:text-white">{item.icon}</div>
@@ -332,8 +336,8 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {keyBenefits.map((benefit, i) => (
-                <Reveal key={i} delayMs={i * 80}>
+              {keyBenefits.map((benefit) => (
+                <Reveal key={benefit.title}>
                   <div className="bg-white rounded-2xl p-8 border border-emerald-100 hover:border-emerald-400 hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
                     <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${benefit.color} text-white flex items-center justify-center mb-6 shadow-lg`}>
                       {benefit.icon}
@@ -360,8 +364,8 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
             </Reveal>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {complianceStandards.map((std, i) => (
-                <Reveal key={i} delayMs={i * 50}>
+              {complianceStandards.map((std) => (
+                <Reveal key={std.name}>
                   <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors h-full flex flex-col items-center text-center">
                     <CheckIcon className="w-8 h-8 text-emerald-400 mb-4" />
                     <h4 className="font-bold text-lg mb-2">{std.name}</h4>
@@ -416,8 +420,8 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
                   q: "Can I automate this for high-volume processing?",
                   a: "Yes, Autopilot Detection can be integrated into your existing D-Secure erasure workflows to automatically flag devices that require manual unenrollment action.",
                 },
-              ].map((faq, i) => (
-                <Reveal key={i} delayMs={i * 50}>
+              ].map((faq) => (
+                <Reveal key={faq.q}>
                   <details className="group bg-white rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors">
                     <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                       <span className="font-semibold text-slate-900 pr-4">

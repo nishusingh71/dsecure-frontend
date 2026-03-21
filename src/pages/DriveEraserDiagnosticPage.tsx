@@ -205,8 +205,8 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
       if (e.key === "ArrowRight") handleNextImage();
       if (e.key === "Escape") setSelectedImageIndex(null);
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleKeyDown);
   }, [selectedImageIndex]);
 
   const sectionNavItems = [
@@ -223,7 +223,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
 
       // Show nav after scrolling past hero section (approx 400px)
       const shouldShow = scrollPosition > 400;
@@ -231,9 +231,9 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
 
       // Only dispatch event to hide/show main navbar on desktop (md+) screens
       // since sticky nav is hidden on mobile
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           }),
@@ -253,13 +253,13 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      globalThis.removeEventListener("scroll", handleScroll);
       // Reset main navbar visibility on unmount (only on desktop)
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
         );
       }
@@ -271,8 +271,8 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
     if (element) {
       const offset = 100; // Account for sticky nav height
       const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+        element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -729,17 +729,17 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Link
-                      to="/pricing-and-plan?product=drive-eraser&variant=diagnostics"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                    <button
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
                     >
                       <HoverIcon>
                         {(filled) => (
                           <LightningIcon className="w-5 h-5" filled={filled} />
                         )}
                       </HoverIcon>
-                      Buy Now
-                    </Link>
+                      Upcoming
+                    </button>
                     <button
                       disabled={true}
                       className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-300"

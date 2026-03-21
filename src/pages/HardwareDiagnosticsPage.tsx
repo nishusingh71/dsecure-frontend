@@ -216,8 +216,8 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
       if (e.key === "ArrowRight") handleNextImage();
       if (e.key === "Escape") setSelectedImageIndex(null);
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleKeyDown);
   }, [selectedImageIndex]);
 
   const sectionNavItems = [
@@ -234,7 +234,7 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
 
       // Show nav after scrolling past hero section (approx 400px)
       const shouldShow = scrollPosition > 400;
@@ -242,9 +242,9 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
 
       // Only dispatch event to hide/show main navbar on desktop (md+) screens
       // since sticky nav is hidden on mobile
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           }),
@@ -264,13 +264,13 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      globalThis.removeEventListener("scroll", handleScroll);
       // Reset main navbar visibility on unmount (only on desktop)
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
         );
       }
@@ -282,8 +282,8 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
     if (element) {
       const offset = 100; // Account for sticky nav height
       const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+        element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -715,12 +715,12 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 relative z-20">
-                    <Link
-                      to="/pricing-and-plan?product=hardware-diagnostics"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] transition-all duration-200 group"
+                    <button
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
                     >
                       <svg
-                        className="w-5 h-5 group-hover:rotate-12 transition-transform"
+                        className="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
@@ -728,8 +728,8 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      Buy Now
-                    </Link>
+                      Upcoming
+                    </button>
                     <button
                       disabled
                       className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-200"

@@ -255,7 +255,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
@@ -298,8 +298,8 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
     if (element) {
       const offset = 100;
       const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+        element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -565,16 +565,11 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                       Join Program
                     </button>
                     <button
-                      onClick={() =>
-                        downloadPDF(
-                          "partner-catalog.pdf",
-                          "D-Secure_Partner_Catalog.pdf",
-                        )
-                      }
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
                     >
-                      <ChevronDown className="w-5 h-5 text-emerald-500" />
-                      Download Catalog
+                      <ChevronDown className="w-5 h-5" />
+                      Upcoming
                     </button>
                   </div>
                 </div>

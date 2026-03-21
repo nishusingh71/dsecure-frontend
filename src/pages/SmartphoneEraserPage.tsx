@@ -30,7 +30,7 @@ const SmartphoneEraserPage = memo(() => {
 
   // Handle scroll for sticky nav visibility and active section tracking
   const handleScroll = useCallback(() => {
-    const scrollPosition = window.scrollY;
+    const scrollPosition = globalThis.scrollY;
     setIsNavVisible(scrollPosition > 400);
 
     const sections = ["overview", "how-it-works", "benefits", "standards", "faq", "contact"];
@@ -47,8 +47,8 @@ const SmartphoneEraserPage = memo(() => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
+    return () => globalThis.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
   // Sync with MainLayout header visibility
@@ -63,7 +63,7 @@ const SmartphoneEraserPage = memo(() => {
       globalThis.dispatchEvent(
         new CustomEvent("stickyNavVisible", {
           detail: { visible: false },
-        })
+        }),
       );
     };
   }, [isNavVisible]);
@@ -71,7 +71,7 @@ const SmartphoneEraserPage = memo(() => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      window.scrollTo({
+      globalThis.scrollTo({
         top: id === "overview" ? 0 : element.offsetTop - 80,
         behavior: "smooth",
       });
@@ -206,13 +206,14 @@ const SmartphoneEraserPage = memo(() => {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center justify-center gap-2 bg-emerald-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition-all hover:scale-105"
-                    >
-                      Start Free Trial
-                    </Link>
                     <button
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                    >
+                      Upcoming
+                    </button>
+                    <button
+                      onClick={() => scrollToSection("standards")}
                       className="inline-flex items-center justify-center gap-2 border-2 border-emerald-200 bg-white text-emerald-800 font-bold px-8 py-4 rounded-xl hover:bg-emerald-50 transition-all"
                     >
                       View Mobile Standards
@@ -507,14 +508,17 @@ const SmartphoneEraserPage = memo(() => {
                     Join leading ITADs and mobile retailers using D-Secure to process thousands of devices with 100% data security guarantee.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <Link
-                      to="/contact"
-                      className="w-full sm:w-auto bg-white text-emerald-700 font-bold px-10 py-5 rounded-2xl hover:bg-emerald-50 transition-all shadow-xl"
+                    <button
+                      disabled
+                      className="w-full sm:w-auto bg-slate-400 text-white font-bold px-10 py-5 rounded-2xl cursor-not-allowed opacity-80 shadow-xl"
                     >
-                      Request a Trial Account
-                    </Link>
-                    <button className="w-full sm:w-auto border border-emerald-400 text-white font-bold px-10 py-5 rounded-2xl hover:bg-emerald-700 transition-all">
-                      Talk To Sales
+                      Upcoming
+                    </button>
+                    <button
+                      disabled
+                      className="w-full sm:w-auto border border-white/30 text-white/50 font-bold px-10 py-5 rounded-2xl cursor-not-allowed opacity-50"
+                    >
+                      Upcoming
                     </button>
                   </div>
                 </div>
