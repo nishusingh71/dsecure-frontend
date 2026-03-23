@@ -45,6 +45,12 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     description: "Monitor hard drive health, temperature, and performance in real-time with D-Secure Hard Drive Monitor. S.M.A.R.T. tracking and disk cloning support.",
     canonicalUrl: getCanonicalUrl("/products/hard-drive-monitor"),
   },
+  driveVerifier: {
+    title: "Drive Verifier - Accurately Verify Erased Drives | D-Secure Tech",
+    description: "Verify drives for complete data erasure and confirm if any data traces exist. Compliant with R2, e-Stewards, and NAID AAA standards.",
+    canonicalUrl: getCanonicalUrl("/products/drive-verifier"),
+    keywords: "drive verifier, data erasure verification, R2v3 compliance, NAID AAA verification, e-Stewards audit, PXE boot verification",
+  },
 };
 
 // Merge default SEO with page-specific SEO
@@ -292,15 +298,15 @@ export const BASE_KEYWORDS = [
   "secure erasure",
 
   // Certification & Compliance
-  "certified data erasure software",
-  "certified data erasure services",
-  "certified data erasure platforms windows macos integration",
-  "certified data erasure solutions diagnostic features",
-  "adisa-certified data erasure solutions providers",
+  "regulatory data erasure software",
+  "regulatory data erasure services",
+  "regulatory data erasure platforms windows macos integration",
+  "regulatory data erasure solutions diagnostic features",
+  "adisa-regulatory data erasure solutions providers",
   "adisa compliant data erasure providers mobile device certification",
-  "certified data erasure providers android ios",
+  "regulatory data erasure providers android ios",
   "phone diagnostic software secure data erasure certification",
-  "vendors certified data erasure diagnostic software repair technicians",
+  "vendors regulatory data erasure diagnostic software repair technicians",
 
   // Automation & Scheduling
   "automate data erasure",
@@ -353,7 +359,7 @@ export const BASE_KEYWORDS = [
   "accounting firm secure data wiping services",
 
   // API & Integration
-  "are there certified data erasure services that provide api integration for custom workflows?",
+  "are there regulatory data erasure services that provide api integration for custom workflows?",
 
   // Product Names & Competitors
   "tpr tec eraser enterprise",
@@ -387,7 +393,7 @@ export const BASE_KEYWORDS = [
   "Hardware Diagnostics",
   "Data Sanitization",
   "Erasure Verification",
-  "Certified Data Erasure",
+  "Regulatory Data Erasure",
 
   // Diagram & Visualization Tools
   "Eraser.io",
@@ -568,7 +574,7 @@ export const BASE_KEYWORDS = [
   "Blancco Data Erasure",
   "Blancco Data Sanitization",
   "Blancco Secure Erasure",
-  "Blancco Certified Data Erasure",
+  "Blancco Regulatory Data Erasure",
   "Blancco Drive Eraser",
   "Blancco File Eraser",
   "Blancco Mobile Eraser",
@@ -785,12 +791,12 @@ export const BASE_KEYWORDS = [
   "D-Secure Data Eraser",
   "D-Secure Data Erasure Software",
   "Secure Data Eraser",
-  "Certified Data Erasure Tool",
+  "Regulatory Data Erasure Tool",
   "DIY Data Eraser Software",
   "Permanent Data Wipe Software",
   "Wipe Data Permanently",
   "Erase Data Beyond Recovery",
-  "Certified Data Wiping Software",
+  "Regulatory Data Wiping Software",
   "Tamper Proof Erasure Reports",
   "Audit Trail Reports",
   "Drive Eraser Software",

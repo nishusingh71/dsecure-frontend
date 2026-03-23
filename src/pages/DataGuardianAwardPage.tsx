@@ -39,7 +39,7 @@ const certifiedMarkerIcon = L.divIcon({
 });
 
 // Type for certified company
-interface CertifiedCompany {
+interface VerifiedCompany {
   id: number;
   name: string;
   location: string;
@@ -49,8 +49,8 @@ interface CertifiedCompany {
   certDate: string;
 }
 
-// Certified companies data
-const certifiedCompanies: CertifiedCompany[] = [
+// Verified companies data
+const verifiedCompanies: VerifiedCompany[] = [
   {
     id: 1,
     name: "InfoTree Computers",
@@ -76,7 +76,7 @@ const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/support@dsecuretech.com";
 
 const DataGuardianAwardPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<typeof certifiedCompanies>(
+  const [searchResults, setSearchResults] = useState<typeof verifiedCompanies>(
     [],
   );
   const [hasSearched, setHasSearched] = useState(false);
@@ -177,8 +177,8 @@ const DataGuardianAwardPage: React.FC = () => {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      const results = certifiedCompanies.filter(
-        (company) =>
+      const results = verifiedCompanies.filter(
+        (company: VerifiedCompany) =>
           company.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           company.location.toLowerCase().includes(searchQuery.toLowerCase()),
       );
@@ -355,7 +355,7 @@ const DataGuardianAwardPage: React.FC = () => {
       <SEOHead
         seo={{
           title:
-            "D-Secure Data Hygiene Assurance | Certified Data Protection Excellence",
+            "D-Secure Data Guardian Award: Recognition for excellence in Regulatory data erasure and sustainable ITAD practices.",
           description:
             "D-Secure Assurance Badge recognizes organizations with complete data hygiene setup and processes. Verify certified companies and get your assurance badge today.",
           canonicalUrl: "https://dsecuretech.com/data-guardian-award",
@@ -527,7 +527,7 @@ const DataGuardianAwardPage: React.FC = () => {
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <span>Get Certified</span>
+                        <span>Get Verified</span>
                       </a>
                       <a
                         href="#faq-section"
@@ -668,7 +668,7 @@ const DataGuardianAwardPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Search for Certified Company - Green Banner */}
+        {/* Search for Verified Company - Green Banner */}
 
         {/* What is Assurance Badge Section */}
         <section id="what-is-it" className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
@@ -1046,10 +1046,10 @@ const DataGuardianAwardPage: React.FC = () => {
                   >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
-                  <span>Verify Certified Organizations</span>
+                  <span>Verify Awarded Organizations</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-                  Search for Certified Company
+                  Search for Verified Company
                 </h2>
                 <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8">
                   Check if an organization has achieved D-Secure Data Hygiene
@@ -1097,7 +1097,7 @@ const DataGuardianAwardPage: React.FC = () => {
                             Found {searchResults.length} certified
                             organization(s):
                           </p>
-                          {searchResults.map((company) => (
+                          {searchResults.map((company: VerifiedCompany) => (
                             <div
                               key={company.id}
                               className="flex items-center gap-3 p-3 bg-white/5 rounded-lg mb-2 last:mb-0"
@@ -1875,7 +1875,7 @@ const DataGuardianAwardPage: React.FC = () => {
                   >
                     <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                   </svg>
-                  <span>Get Certified Today</span>
+                  <span>Get Verified Today</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                   Ready to Get Your{" "}

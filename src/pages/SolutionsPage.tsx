@@ -48,13 +48,13 @@ function SolutionsPageContent() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           }),
@@ -75,10 +75,10 @@ function SolutionsPageContent() {
 
     window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      const isDesktop = window.innerWidth >= 768;
+      globalThis.removeEventListener("scroll", handleScroll);
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
         );
       }
@@ -90,8 +90,8 @@ function SolutionsPageContent() {
     if (element) {
       const offset = 100;
       const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+        element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -522,7 +522,7 @@ function SolutionsPageContent() {
               </Reveal>
               <Reveal delayMs={30}>
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
-                  <a href="/contact" className="btn-primary group">
+                  <Link to="/contact" className="btn-primary group">
                     <HoverIcon>
                       {(filled) => (
                         <ChatIcon
@@ -532,8 +532,8 @@ function SolutionsPageContent() {
                       )}
                     </HoverIcon>
                     {t('solutions.discussNeeds')}
-                  </a>
-                  <a href="#solutions" className="btn-secondary group">
+                  </Link>
+                  <button onClick={() => scrollToSection("solutions")} className="btn-secondary group">
                     <HoverIcon>
                       {(filled) => (
                         <ArrowDownIcon
@@ -543,7 +543,7 @@ function SolutionsPageContent() {
                       )}
                     </HoverIcon>
                     {t('solutions.exploreSolutions')}
-                  </a>
+                  </button>
                 </div>
               </Reveal>
               <Reveal delayMs={40}>
@@ -850,20 +850,17 @@ function SolutionsPageContent() {
               <button
                 key={key}
                 onClick={() => setActiveIndustry(key as IndustryKey)}
-                className={`flex items-center justify-center gap-3 px-4 md:px-6 py-3 md:py-4 rounded-xl text-sm md:text-base font-medium transition-all duration-300 whitespace-nowrap min-h-[3rem] ${
+                className={`flex items-center justify-center gap-2 md:gap-3 px-3 md:px-6 py-3 md:py-4 rounded-xl text-sm md:text-base font-medium transition-all duration-300 min-h-[3.5rem] flex-1 min-w-[140px] md:flex-initial ${
                   activeIndustry === key
-                    ? "bg-gradient-to-r from-brand to-brand-600 text-white shadow-lg shadow-brand/25 scale-105"
+                    ? "bg-gradient-to-r from-brand to-brand-600 text-white shadow-lg shadow-brand/25 scale-105 z-10"
                     : "bg-white text-slate-700 hover:bg-slate-50 border-2 border-slate-200 hover:border-slate-300 hover:shadow-md"
                 }`}
               >
                 <span className="text-xl md:text-2xl flex-shrink-0 leading-none flex items-center justify-center w-6 h-6 md:w-8 md:h-8">
                   {solution.icon}
                 </span>
-                <span className="hidden sm:inline leading-tight">
+                <span className="leading-tight text-center">
                   {solution.title}
-                </span>
-                <span className="sm:hidden text-xs leading-tight">
-                  {solution.title.split(" ")[0]}
                 </span>
               </button>
             ))}
@@ -902,16 +899,16 @@ function SolutionsPageContent() {
                       </h4>
                       <div className="space-y-3">
                         {solutions[activeIndustry].benefits.map(
-                          (benefit, index) => (
+                          (benefit) => (
                             <div
-                              key={index}
-                              className="flex items-center gap-3"
+                              key={benefit}
+                              className="flex items-center gap-3 group/benefit"
                             >
                               <div className="w-5 h-5 flex-shrink-0 flex items-center justify-center">
                                 <HoverIcon>
                                   {(filled) => (
                                     <CheckIcon
-                                      className="w-5 h-5 text-emerald-500"
+                                      className="w-5 h-5 text-emerald-500 group-hover/benefit:scale-110 transition-transform"
                                       filled={filled}
                                     />
                                   )}
@@ -931,10 +928,10 @@ function SolutionsPageContent() {
                       </h4>
                       <div className="space-y-3">
                         {solutions[activeIndustry].useCases.map(
-                          (useCase, index) => (
+                          (useCase) => (
                             <div
-                              key={index}
-                              className="border border-slate-200 rounded-lg p-3"
+                              key={useCase.title}
+                              className="border border-slate-200 rounded-lg p-3 hover:border-emerald-200 hover:bg-emerald-50/30 transition-colors"
                             >
                               <div className="font-medium text-slate-900 text-sm">
                                 {useCase.title}
@@ -975,7 +972,7 @@ function SolutionsPageContent() {
                     Why Choose D-Secure?
                   </h4>
                   <div className="space-y-6">
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-4 h-4 text-blue-600"
@@ -995,12 +992,12 @@ function SolutionsPageContent() {
                         <div className="font-medium text-slate-900 text-sm">
                           Proven Track Record
                         </div>
-                        <div className="text-slate-600 text-xs mt-1">
+                        <div className="text-slate-600 text-xs mt-0.5">
                           under decade serving enterprises worldwide
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-4 h-4 text-green-800"
@@ -1020,12 +1017,12 @@ function SolutionsPageContent() {
                         <div className="font-medium text-slate-900 text-sm">
                           Lightning Fast
                         </div>
-                        <div className="text-slate-600 text-xs mt-1">
+                        <div className="text-slate-600 text-xs mt-0.5">
                           Process thousands of devices daily
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-4 h-4 text-purple-600"
@@ -1045,12 +1042,12 @@ function SolutionsPageContent() {
                         <div className="font-medium text-slate-900 text-sm">
                           24/7 Support
                         </div>
-                        <div className="text-slate-600 text-xs mt-1">
+                        <div className="text-slate-600 text-xs mt-0.5">
                           Expert technical support around the clock
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-4 h-4 text-orange-600"
@@ -1070,7 +1067,7 @@ function SolutionsPageContent() {
                         <div className="font-medium text-slate-900 text-sm">
                           100% Compliant
                         </div>
-                        <div className="text-slate-600 text-xs mt-1">
+                        <div className="text-slate-600 text-xs mt-0.5">
                           Meet all regulatory requirements
                         </div>
                       </div>
@@ -1152,37 +1149,42 @@ function SolutionsPageContent() {
               data erasure processes with D-Secure.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {caseStudies.map((study, i) => (
-              <Reveal key={i} delayMs={i * 100}>
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
-                  <div className="mb-4 flex justify-center">{study.logo}</div>
-                  <h3 className="font-bold text-slate-900 mb-2">
-                    {study.company}
-                  </h3>
-                  <div className="text-sm text-brand font-medium mb-4">
-                    {study.industry}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {caseStudies.map((study) => (
+              <Reveal key={study.company} delayMs={100} className="h-full">
+                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300 h-full flex flex-col group/card">
+                  <div className="mb-6 flex justify-center transform group-hover/card:scale-110 transition-transform duration-300">
+                    {study.logo}
                   </div>
-                  <div className="space-y-4 text-sm">
-                    <div>
-                      <div className="font-medium text-slate-900 mb-1">
-                        {t('solutions.challenge')}:
-                      </div>
-                      <div className="text-slate-600">{study.challenge}</div>
+                  <div className="flex-grow flex flex-col">
+                    <h3 className="font-bold text-slate-900 text-lg mb-2 text-center">
+                      {study.company}
+                    </h3>
+                    <div className="text-sm text-brand font-semibold mb-6 text-center uppercase tracking-wider">
+                      {study.industry}
                     </div>
-                    <div>
-                      <div className="font-medium text-slate-900 mb-1">
-                        {t('solutions.solution')}:
+                    <div className="space-y-5 text-sm">
+                      <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                        <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                          {t('solutions.challenge')}:
+                        </div>
+                        <div className="text-slate-600 leading-relaxed italic">"{study.challenge}"</div>
                       </div>
-                      <div className="text-slate-600">{study.solution}</div>
+                      <div>
+                        <div className="font-bold text-slate-900 mb-1">
+                          {t('solutions.solution')}:
+                        </div>
+                        <div className="text-slate-600 leading-relaxed">{study.solution}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-medium text-slate-900 mb-1">
-                        {t('solutions.results')}:
-                      </div>
-                      <div className="text-emerald-800 font-medium">
-                        {study.results}
-                      </div>
+                  </div>
+                  <div className="mt-8 pt-6 border-t border-slate-100">
+                    <div className="font-bold text-slate-900 mb-1 uppercase text-xs tracking-widest opacity-50">
+                      {t('solutions.results')}:
+                    </div>
+                    <div className="text-emerald-700 font-bold text-base bg-emerald-50 px-3 py-2 rounded-lg inline-block w-full text-center">
+                      {study.results}
                     </div>
                   </div>
                 </div>
@@ -1205,18 +1207,18 @@ function SolutionsPageContent() {
                 that fits your industry and compliance needs.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a
-                  href="/contact"
-                  className="bg-white text-emerald-800 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+                <Link
+                  to="/contact"
+                  className="bg-white text-emerald-800 px-8 py-3 rounded-xl font-bold hover:bg-slate-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                   Schedule Consultation
-                </a>
-                <a
-                  href="/resources"
-                  className="border border-white/30 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
+                </Link>
+                <Link
+                  to="/resources"
+                  className="border-2 border-white/40 text-white px-8 py-3 rounded-xl font-bold hover:bg-white/10 transition-all"
                 >
                   Download Resources
-                </a>
+                </Link>
               </div>
             </div>
           </Reveal>

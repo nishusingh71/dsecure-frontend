@@ -279,7 +279,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   const eraseTypes = [
     {
       name: "PC & Laptops",
-      desc: "Certified data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
+      desc: "Regulatory data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -597,7 +597,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
         seo={{
           title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
           description:
-            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Certified data destruction compliant with NIST 800-88, DoD, and GDPR.",
+            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Regulatory data destruction compliant with NIST 800-88, DoD, and GDPR.",
           keywords:
             "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
           canonicalUrl: "https://dsecuretech.com/products/drive-eraser",

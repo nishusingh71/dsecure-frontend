@@ -83,7 +83,7 @@ const MobileDevicesPage: React.FC = memo(() => {
  },
  {
  id: 3,
- title: "D-Secure Enterprise Mobile Management",
+ title: "D-Secure Multiple device Management",
  description: "Large-scale mobile device erasure and management",
  icon: "🏢",
  subsections: [
@@ -96,7 +96,7 @@ const MobileDevicesPage: React.FC = memo(() => {
  {
  id: 32,
  title: "Bulk Device Operations",
- description: "Mass erasure and device lifecycle management",
+ description: "Mass erasure and Multiple device Management",
  pageCount: 2,
  },
  {
@@ -124,7 +124,7 @@ const MobileDevicesPage: React.FC = memo(() => {
       {/* <Helmet>
         <title>D-Secure Mobile Devices | iOS & Android Erasure Guide</title>
         <meta name="description" content="Complete guide to secure data erasure on mobile devices with D-Secure. Procedures for iOS, Android, and enterprise mobile management." />
-        <meta name="keywords" content="D-Secure mobile erasure, iOS data wipe, Android secure delete, mobile device management, enterprise mobile security" />
+        <meta name="keywords" content="  D-Secure Multiple device Management – Securing Your Data Lifecycle, Android secure delete, mobile device management, enterprise mobile security" />
       </Helmet> */}
 
  <div className="min-h-screen bg-slate-50">

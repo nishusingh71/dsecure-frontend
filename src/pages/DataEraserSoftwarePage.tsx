@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
+import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
@@ -16,112 +17,241 @@ import {
   LightningIcon,
   StarIcon,
   HoverIcon,
-  CheckIcon,
 } from "@/components/FlatIcons";
-import { Activity, Cpu, HardDrive, Zap, RefreshCcw, Smartphone, Database, Server, Layers, Monitor } from "lucide-react";
+import { Activity, Cpu, HardDrive, Zap, RefreshCcw, Smartphone, Database, Server, Layers, CheckCircle2 } from "lucide-react";
 
 /* ───────────── data ───────────── */
 
-const solutions = [
+const eraserSolutions = [
   {
     title: "D-Secure Drive Eraser",
-    desc: "Permanently erase data from HDD, SSD, NVMe drives on PC, Mac, Servers, RAID arrays & Chromebooks. Supports on-site, off-site & remote erasure via USB boot, PXE network boot, or MSI deployment. Generates tamper-proof erasure certificates for audit compliance.",
+    desc: "Permanently erase data from HDD, SSD, NVMe drives on PC, Mac, Servers, RAID arrays & Chromebooks.",
+    features: [
+      "26+ Global Erasure Standards",
+      "Cloud Console Integration",
+      "USB, PXE & MSI Deployment",
+      "Tamper-proof Certificates",
+    ],
     icon: DatabaseIcon,
     color: "emerald",
     link: "/products/drive-eraser",
-  },
-  {
-    title: "Drive Eraser Diagnostic",
-    desc: "Combines secure data wiping with comprehensive hardware health diagnostics. Assesses drive health, SMART data, and surface scans to ensure device reusability along with secure erasure and compliance reporting.",
-    icon: Activity,
-    color: "cyan",
-    link: "/products/drive-eraser-diagnostic",
+    isUpcoming: false,
   },
   {
     title: "D-Secure File Eraser",
-    desc: "Selectively erase files, folders, free space, system traces, browser history & cloud storage data on Windows, macOS & Linux. Schedule automated erasure tasks, generate detailed PDF reports.",
+    desc: "Selectively erase files, folders, free space, and system traces on Windows, macOS & Linux.",
+    features: [
+      "30+ International Algorithms",
+      "Scheduled Erasure Tasks",
+      "Detailed PDF/XML Reports",
+      "Cloud Storage Support",
+    ],
     icon: ClipboardIcon,
     color: "teal",
     link: "/products/file-eraser",
-  },
-  {
-    title: "Removable Media Eraser",
-    desc: "Securely erase data from USB sticks, SD cards, and other removable flash storage. Supports 20+ global standards and generates tamper-proof certificates.",
-    icon: Database,
-    color: "emerald",
-    link: "/products/removable-media-eraser",
-  },
-  {
-    title: "LUN Eraser",
-    desc: "Securely erase logical unit numbers (LUNs) in complex storage environments. Supports hot-swapping and multiple simultaneous erasures without downtime.",
-    icon: Server,
-    color: "cyan",
-    link: "/products/lun-eraser",
-  },
-  {
-    title: "Virtual Machine Eraser",
-    desc: "Securely wipe virtual machines across leading platforms like VMware and Hyper-V. Centralized reporting and audit trails for compliance.",
-    icon: Layers,
-    color: "teal",
-    link: "/products/virtual-machine-eraser",
-  },
-  {
-    title: "Asset Reimaging",
-    desc: "High-speed automated system deployment and reimaging for IT assets. Standardize OS and software configurations across your entire fleet.",
-    icon: RefreshCcw,
-    color: "blue",
-    link: "/products/asset-reimaging",
+    isUpcoming: false,
   },
   {
     title: "Smartphone Eraser",
-    desc: "Securely erase all data from iOS and Android smartphones and tablets. Supports factory reset, secure overwrite, and generates tamper-proof certificates for resale or recycling.",
+    desc: "Securely erase all data from iOS and Android smartphones and tablets for resale or recycling.",
+    features: [
+      "iOS & Android Support",
+      "Factory Reset & Overwrite",
+      "Batch Processing Support",
+      "Erasure Certificates",
+    ],
     icon: Smartphone,
     color: "emerald",
     link: "/products/smartphone-eraser",
+    isUpcoming: true,
   },
   {
-    title: "Smartphone Diagnostics",
-    desc: "Comprehensive diagnostic tests for mobile devices. Verify hardware functionality, battery health, screen integrity, and more to determine device value and reliability.",
-    icon: Activity,
-    color: "teal",
-    link: "/products/smartphone-diagnostic",
+    title: "Removable Media Eraser",
+    desc: "Securely erase data from USB sticks, SD cards, and other removable flash storage devices.",
+    features: [
+      "USB & SD Card Support",
+      "20+ Global Standards",
+      "Simple Plug-and-Wipe",
+      "Compliance Reporting",
+    ],
+    icon: Database,
+    color: "emerald",
+    link: "/products/removable-media-eraser",
+    isUpcoming: true,
   },
+  {
+    title: "LUN Eraser",
+    desc: "Securely erase logical unit numbers (LUNs) in complex enterprise storage environments.",
+    features: [
+      "Enterprise Storage Support",
+      "Hot-swap Capability",
+      "Zero Downtime Erasure",
+      "Centralized Reporting",
+    ],
+    icon: Server,
+    color: "cyan",
+    link: "/products/lun-eraser",
+    isUpcoming: true,
+  },
+  {
+    title: "Virtual Machine Eraser",
+    desc: "Securely wipe virtual machines across leading platforms like VMware and Hyper-V.",
+    features: [
+      "VMware & Hyper-V Support",
+      "Automatic VM Discovery",
+      "Audit Trail Generation",
+      "Scalable Deployment",
+    ],
+    icon: Layers,
+    color: "teal",
+    link: "/products/virtual-machine-eraser",
+    isUpcoming: true,
+  },
+];
+
+const diagnosticSolutions = [
   {
     title: "Data Migration",
-    desc: "Fast and secure data migration between devices. Transfer OS, applications, and user data seamlessly with minimal downtime and 100% data integrity.",
+    desc: "Fast and secure data migration between devices with minimal downtime and 100% integrity.",
+    features: [
+      "High-speed Data Transfer",
+      "OS & App Migration",
+      "User Profile Sync",
+      "Minimal System Downtime",
+    ],
     icon: Zap,
     color: "emerald",
     link: "/products/data-migration",
+    isUpcoming: true,
   },
   {
-    title: "Forensic Imaging",
-    desc: "Create bit-for-bit forensic copies of storage media. Preserve digital evidence for investigation while maintaining chain of custody with cryptographic hashing.",
-    icon: Database,
-    color: "cyan",
-    link: "/products/forensic-imaging",
-  },
-  {
-    title: "FreezeState",
-    desc: "Protect system configurations by freezing the state of your drive. Every reboot restores the system to its original pristine condition, ideal for public kiosks and labs.",
+    title: "Asset Reimaging",
+    desc: "High-speed automated system deployment and reimaging for large-scale IT asset management.",
+    features: [
+      "Zero-Touch Deployment",
+      "Custom Image Support",
+      "Automated Provisioning",
+      "Centralized Fleet Control",
+    ],
     icon: RefreshCcw,
     color: "blue",
-    link: "/products/freeze-state",
+    link: "/products/asset-reimaging",
+    isUpcoming: true,
+  },
+  {
+    title: "Drive Verifier",
+    desc: "Verify drives locally or via PXE to confirm complete data erasure and audit compliance.",
+    features: [
+      "Confirm Zero Data Remanence",
+      "R2v3 & NAID AAA Compliant",
+      "Tamper-proof Digital Reports",
+      "Scalable PXE Verification",
+    ],
+    icon: CheckCircle2,
+    color: "emerald",
+    link: "/products/drive-verifier",
+    isUpcoming: true,
+  },
+  {
+    title: "Drive Eraser Diagnostic",
+    desc: "Combines secure data wiping with comprehensive hardware health and SMART diagnostics.",
+    features: [
+      "Integrated Health Check",
+      "SMART Data Analysis",
+      "Surface Scan Testing",
+      "Health-Aware Erasure",
+    ],
+    icon: Activity,
+    color: "cyan",
+    link: "/products/drive-eraser-diagnostic",
+    isUpcoming: true,
+  },
+  {
+    title: "Smartphone Diagnostics",
+    desc: "Comprehensive diagnostic tests for mobile devices to verify hardware and battery health.",
+    features: [
+      "Automated Hardware Tests",
+      "Battery Health Analysis",
+      "Screen & Touch Testing",
+      "Value Appraisal Tools",
+    ],
+    icon: Activity,
+    color: "teal",
+    link: "/products/smartphone-diagnostic",
+    isUpcoming: true,
   },
   {
     title: "Hardware Diagnostics",
-    desc: "Comprehensive diagnostic tools for hardware health and integrity checking. Test components precisely to identify failing hardware ensuring system reliability.",
+    desc: "Professional-grade diagnostic tools for broad hardware health and integrity checking.",
+    features: [
+      "Multi-Component Testing",
+      "Stress Testing Tools",
+      "Detailed Error Logs",
+      "System Stability Verification",
+    ],
     icon: Cpu,
     color: "blue",
     link: "/products/hardware-diagnostics",
+    isUpcoming: true,
   },
   {
     title: "SMART Diagnostics",
-    desc: "Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your drives. Set personalized alerts for temperature thresholds and critical disk health events.",
+    desc: "Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your storage drives.",
+    features: [
+      "Real-time Monitoring",
+      "Predictive Failure Alerts",
+      "Disk Cloning Utility",
+      "Temperature Tracking",
+    ],
     icon: HardDrive,
     color: "indigo",
     link: "/products/hard-drive-monitor",
+    isUpcoming: true,
+  },
+  {
+    title: "Forensic Imaging",
+    desc: "Professional data acquisition tool producing bit-for-bit replicas of media for forensic analysis.",
+    features: [
+      "Bit-Perfect Duplication",
+      "MD5/SHA-1 Hashing",
+      "E01/Ex01 Evidence Format",
+      "Comprehensive Metadata",
+    ],
+    icon: ShieldIcon,
+    color: "cyan",
+    link: "/products/forensic-imaging",
+    isUpcoming: true,
+  },
+  {
+    title: "FreezeState",
+    desc: "Protect system configurations by freezing the state of your drive for public kiosks and labs.",
+    features: [
+      "Instant Restore on Reboot",
+      "Config Tamper Protection",
+      "Ideal for Public Access",
+      "Zero Maintenance Overhead",
+    ],
+    icon: RefreshCcw,
+    color: "blue",
+    link: "/products/freeze-state",
+    isUpcoming: true,
+  },
+  {
+    title: "Autopilot Detection",
+    desc: "Automated hardware detection and tracking for seamless Microsoft Autopilot deployment.",
+    features: [
+      "Microsoft Intune Sync",
+      "Hardware ID Harvesting",
+      "Deployment Readiness Check",
+      "Automated Enrollment",
+    ],
+    icon: Activity,
+    color: "teal",
+    link: "/products/autopilot-detection",
+    isUpcoming: true,
   },
 ];
+
 
 const capabilities = [
   {
@@ -269,7 +399,6 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
     { id: "products", label: "Products" },
     { id: "use-cases", label: "Use Cases" },
     { id: "capabilities", label: "Capabilities" },
-    { id: "solutions", label: "Solutions" },
     { id: "why-dsecure", label: "Why D-Secure" },
     { id: "faq", label: "FAQ" },
     { id: "cta", label: "Get Started" },
@@ -277,13 +406,13 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const scrollPosition = globalThis.scrollY;
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           }),
@@ -302,12 +431,12 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      const isDesktop = window.innerWidth >= 768;
+      globalThis.removeEventListener("scroll", handleScroll);
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
         );
       }
@@ -319,8 +448,8 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
     if (element) {
       const offset = 100;
       const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
+        element.getBoundingClientRect().top + globalThis.scrollY;
+      globalThis.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
       });
@@ -717,9 +846,9 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
           </div>
         </section>
 
-        {/* ═══════════ OUR PRODUCTS (2 cards) ═══════════ */}
+        {/* ═══════════ OUR PRODUCTS ═══════════ */}
         <section id="products" className="py-16 md:py-24 bg-white">
-          <div className="container mx-auto px-4 max-w-5xl">
+          <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
@@ -735,37 +864,138 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 relative z-10">
-              {solutions.map((s, i) => {
-                const c = colorMap[s.color] || colorMap.emerald;
-                const Icon = s.icon;
-                return (
-                  <Reveal key={s.title} delayMs={i * 80}>
-                    <Link
-                      to={s.link}
-                      className={`group relative bg-gradient-to-br ${c.bg} rounded-2xl p-7 border ${c.border} transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1 block h-full`}
-                    >
-                      <div
-                        className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${c.iconBg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}
+            {/* ERASERS SECTION */}
+            <div className="mb-20">
+              <Reveal>
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="h-px flex-grow bg-emerald-100"></div>
+                  <h3 className="text-sm font-bold text-emerald-600 uppercase tracking-widest px-4 py-1.5 bg-emerald-50 rounded-full border border-emerald-100">
+                    Erasers
+                  </h3>
+                  <div className="h-px flex-grow bg-emerald-100"></div>
+                </div>
+              </Reveal>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8 relative z-10">
+                {eraserSolutions.map((s, i) => {
+                  const c = colorMap[s.color] || colorMap.emerald;
+                  const Icon = s.icon;
+                  return (
+                    <Reveal key={s.title} delayMs={i * 80}>
+                      <Link
+                        to={s.link}
+                        className={`group relative bg-gradient-to-br ${c.bg} rounded-2xl p-7 border ${c.border} transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1 block h-full flex flex-col`}
                       >
-                        <Icon className="w-7 h-7 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold text-slate-900 mb-2">
-                        {s.title}
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                        {s.desc}
-                      </p>
-                      <span
-                        className={`inline-flex items-center text-sm font-semibold ${c.text} group-hover:gap-2 transition-all`}
+                        <div className="flex items-start justify-between mb-5">
+                          <div
+                            className={`w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${c.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md`}
+                          >
+                            <Icon className="w-7 h-7 text-white" />
+                          </div>
+                          {s.isUpcoming && (
+                            <span className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 rounded-full border border-amber-200 shadow-sm">
+                              Upcoming
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-900 mb-3">
+                          {s.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                          {s.desc}
+                        </p>
+                        
+                        {/* Feature Points for Height Consistency */}
+                        <div className="space-y-3 mb-8 flex-grow">
+                          {s.features.map((feature, fIdx) => (
+                            <div key={fIdx} className="flex items-center gap-2.5">
+                              <div className={`w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-${s.color}-100`}>
+                                <svg className={`w-3 h-3 text-${s.color}-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              </div>
+                              <span className="text-xs text-slate-700 font-medium leading-tight">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <span
+                          className={`inline-flex items-center text-sm font-bold ${c.text} mt-auto pt-4 border-t border-slate-200/50 group-hover:gap-2 transition-all`}
+                        >
+                          Learn More
+                          <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      </Link>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* MIGRATION & DIAGNOSTICS SECTION */}
+            <div>
+              <Reveal>
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="h-px flex-grow bg-blue-100"></div>
+                  <h3 className="text-sm font-bold text-blue-600 uppercase tracking-widest px-4 py-1.5 bg-blue-50 rounded-full border border-blue-100">
+                    Migration & Diagnostics
+                  </h3>
+                  <div className="h-px flex-grow bg-blue-100"></div>
+                </div>
+              </Reveal>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8 relative z-10">
+                {diagnosticSolutions.map((s, i) => {
+                  const c = colorMap[s.color] || colorMap.emerald;
+                  const Icon = s.icon;
+                  return (
+                    <Reveal key={s.title} delayMs={i * 80}>
+                      <Link
+                        to={s.link}
+                        className={`group relative bg-gradient-to-br ${c.bg} rounded-2xl p-7 border ${c.border} transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1 block h-full flex flex-col`}
                       >
-                        Learn More
-                        <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </Link>
-                  </Reveal>
-                );
-              })}
+                        <div className="flex items-start justify-between mb-5">
+                          <div
+                            className={`w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${c.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md`}
+                          >
+                            <Icon className="w-7 h-7 text-white" />
+                          </div>
+                          {s.isUpcoming && (
+                            <span className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 rounded-full border border-amber-200 shadow-sm">
+                              Upcoming
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-900 mb-3">
+                          {s.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                          {s.desc}
+                        </p>
+
+                        {/* Feature Points for Height Consistency */}
+                        <div className="space-y-3 mb-8 flex-grow">
+                          {s.features.map((feature, fIdx) => (
+                            <div key={fIdx} className="flex items-center gap-2.5">
+                              <div className={`w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-${s.color}-100`}>
+                                <svg className={`w-3 h-3 text-${s.color}-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              </div>
+                              <span className="text-xs text-slate-700 font-medium leading-tight">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <span
+                          className={`inline-flex items-center text-sm font-bold ${c.text} mt-auto pt-4 border-t border-slate-200/50 group-hover:gap-2 transition-all`}
+                        >
+                          Learn More
+                          <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      </Link>
+                    </Reveal>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
@@ -923,59 +1153,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
           </div>
         </section>
 
-        {/* ═══════════ DATA WIPING SOLUTIONS ═══════════ */}
-        <section id="solutions" className="py-16 md:py-24 bg-white">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <Reveal>
-              <div className="text-center mb-6">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  D-Secure{" "}
-                  <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Data Wiping Solutions
-                  </span>{" "}
-                  To Meet Your Needs
-                </h2>
-                <p className="text-emerald-800 font-semibold mb-4">
-                  100% Data Erasure Beyond Data Recovery
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delayMs={100}>
-              <p className="text-slate-600 text-center max-w-4xl mx-auto mb-14 leading-relaxed">
-                Our compliance-ready data erasure software ensures the permanent
-                wiping of sensitive data from Drives, Laptops, Mac, Chromebooks,
-                Servers & Mobile devices. This data wiping software generates
-                tamper-proof erasure certificates, helping organizations
-                mitigate risks & attain compliance with laws and standards like
-                EU-GDPR, CPRA, GLBA, HIPAA, PCI-DSS, & ISO-27001.
-              </p>
-            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {solutions.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <Reveal key={`sol2-${s.title}`} delayMs={i * 80}>
-                    <Link
-                      to={s.link}
-                      className="group bg-gradient-to-br from-slate-50 to-white rounded-xl border border-slate-200/60 p-6 hover:shadow-xl hover:border-emerald-300 transition-all duration-300 hover:-translate-y-1 block h-full"
-                    >
-                      <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                        <Icon className="w-6 h-6 text-emerald-800" />
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-2">
-                        {s.title}
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        {s.desc}
-                      </p>
-                    </Link>
-                  </Reveal>
-                );
-              })}
-            </div>
-          </div>
-        </section>
 
         {/* ═══════════ WHY D-SECURE ═══════════ */}
         <section
@@ -1033,8 +1211,8 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
               ].map((item, i) => (
                 <Reveal key={item.title} delayMs={i * 80}>
                   <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/10 hover:bg-white/15 transition-all duration-300 h-full">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-5 h-5 text-yellow-300"
                           fill="none"
@@ -1050,7 +1228,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-bold text-white mb-1">
+                        <h3 className="font-bold text-white mb-1 leading-tight">
                           {item.title}
                         </h3>
                         <p className="text-xs text-white/65 leading-relaxed">
@@ -1094,7 +1272,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
 
             <div className="space-y-3">
               {faqs.map((faq, i) => (
-                <Reveal key={i} delayMs={i * 60}>
+                <Reveal key={`faq-${faq.q.substring(0, 20)}`} delayMs={i * 60}>
                   <div className="bg-white rounded-xl border border-slate-200/60 shadow-sm overflow-hidden">
                     <button
                       onClick={() => setOpenFaq(openFaq === i ? null : i)}

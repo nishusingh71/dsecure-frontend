@@ -434,7 +434,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
     return countryMatch && typeMatch;
   });
 
-  // PDF download function
+  /*
   const downloadPDF = (filename: string, displayName: string) => {
     const link = document.createElement("a");
     link.href = `/downloads/${filename}`;
@@ -444,6 +444,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
     link.click();
     link.remove();
   };
+  */
   const handlePartnerSubmit = async (formData: PartnershipFormData) => {
     // This is now just for backward compatibility
     // The actual submission is handled by the form component itself
@@ -811,7 +812,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
-                  title: "Compliance Erasure",
+                  title: "Regulatory Compliance",
                   desc: "Solutions that meet 20+ international standards including NIST & DoD.",
                   icon: <ShieldIcon className="w-10 h-10 text-emerald-400" />,
                 },

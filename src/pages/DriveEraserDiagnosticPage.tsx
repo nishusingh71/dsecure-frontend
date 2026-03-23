@@ -1,35 +1,35 @@
 import React, { memo, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
+import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import {
-  ShieldIcon,
-  CheckIcon,
-  ArrowRightIcon,
-  GlobeIcon,
-  CloudIcon,
-  GearIcon,
-  ClipboardIcon,
-  LightningIcon,
-  ServerIcon,
-  HoverIcon,
-} from "@/components/FlatIcons";
-import {
-  CpuIcon,
-  FileTextIcon,
-  LockIcon,
-  RefreshCwIcon,
-  SettingsIcon,
-  User,
-  X,
   Activity,
   Heart,
   BarChart,
   ClipboardCheck,
+  ArrowRightIcon,
+  DownloadIcon,
+  GlobeIcon,
+  ServerIcon,
+  FileTextIcon,
+  RefreshCwIcon,
+  CpuIcon,
+  LockIcon,
+  User,
+  X,
+  Shield,
+  ChevronRight,
+  ChevronLeft,
+  Settings,
+  ClipboardList,
+  CheckIcon,
+  Cloud,
+  Monitor
 } from "lucide-react";
-import { title } from "process";
+import { ShieldIcon as FlatShieldIcon, GlobeIcon as FlatGlobeIcon, ServerIcon as FlatServerIcon } from "@/components/FlatIcons";
 import { useToast } from "@/components/Toast";
 import { blogPosts } from "@/data/blogPosts";
 import { ENV } from "@/config/env";
@@ -85,6 +85,24 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
     return () =>
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const downloadCatalog = () => {
+    const link = document.createElement("a");
+    link.href =
+      "https://assets.dsecuretech.com/pdf/DSec-Drive-Diagnostic-Health-Datasheet.pdf";
+    link.download = "DSec-Drive-Diagnostic-Health-Datasheet.pdf";
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // गैलरी इमेजेज - नए Cloudinary URLs के साथ optimized (f_auto, q_auto)
   const galleryImages = [
@@ -174,7 +192,6 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
     },
   ];
 
-  // Number of additional images beyond the 4th card (for "More" badge)
   const additionalImagesCount = galleryImages.length - 4;
 
   const handlePrevImage = () => {
@@ -205,32 +222,17 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
       if (e.key === "ArrowRight") handleNextImage();
       if (e.key === "Escape") setSelectedImageIndex(null);
     };
-    globalThis.addEventListener("keydown", handleKeyDown);
-    return () => globalThis.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImageIndex]);
-
-  const sectionNavItems = [
-    { id: "erase-types", label: "Erase Types" },
-    { id: "demo", label: "Demo" },
-    { id: "compliance", label: "Compliance" },
-    { id: "platforms", label: "Platforms" },
-    { id: "features", label: "Features" },
-    { id: "use-cases", label: "Use Cases" },
-    { id: "faq", label: "FAQ" },
-    { id: "blogs", label: "Blogs" },
-    { id: "contact", label: "Contact" },
-  ];
-
+  // Handle scroll for sticky nav visibility and active section tracking
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = globalThis.scrollY;
-
-      // Show nav after scrolling past hero section (approx 400px)
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
       // Only dispatch event to hide/show main navbar on desktop (md+) screens
-      // since sticky nav is hidden on mobile
       const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
         globalThis.dispatchEvent(
@@ -256,7 +258,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
     globalThis.addEventListener("scroll", handleScroll);
     return () => {
       globalThis.removeEventListener("scroll", handleScroll);
-      // Reset main navbar visibility on unmount (only on desktop)
+      // Reset main navbar visibility on unmount
       const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
         globalThis.dispatchEvent(
@@ -265,6 +267,19 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
       }
     };
   }, []);
+
+
+  const sectionNavItems = [
+    { id: "erase-types", label: "Erase Types" },
+    { id: "demo", label: "Demo" },
+    { id: "compliance", label: "Compliance" },
+    { id: "platforms", label: "Platforms" },
+    { id: "features", label: "Features" },
+    { id: "use-cases", label: "Use Cases" },
+    { id: "faq", label: "FAQ" },
+    { id: "blogs", label: "Blogs" },
+    { id: "contact", label: "Contact" },
+  ];
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -309,7 +324,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
   const eraseTypes = [
     {
       name: "PC & Laptops",
-      desc: "Certified data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
+      desc: "Regulatory data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -441,12 +456,12 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
     {
       title: "Secure Drive Erasure",
       desc: "NIST-tested software delivers erasure with  data destruction guarantee for all storage types.",
-      icon: <ShieldIcon className="w-6 h-6" />,
+      icon: <Shield className="w-6 h-6" />,
     },
     {
       title: "Cloud Console",
       desc: "Centralized management platform for monitoring, reporting, and managing erasure tasks across all locations.",
-      icon: <CloudIcon className="w-6 h-6" />,
+      icon: <Cloud className="w-6 h-6" />,
     },
     {
       title: "Supports Global Wiping Standards",
@@ -536,12 +551,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
     { name: "PCI-DSS", desc: "Payment Card Industry" },
   ];
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
+  // Insight/Resources
   const relatedBlogs = blogPosts
     .filter((post) =>
       [
@@ -552,16 +562,6 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
       ].includes(post.id),
     )
     .slice(0, 4);
-
-  const downloadCatalog = () => {
-    const link = document.createElement("a");
-    link.href = "https://assets.dsecuretech.com/pdf/DataSheetDriveEraser.pdf";
-    link.download = "DataSheetDriveEraser.pdf";
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
   // Insights/Resources
   const insights = [
     {
@@ -627,7 +627,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
         seo={{
           title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
           description:
-            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Certified data destruction compliant with NIST 800-88, DoD, and GDPR.",
+            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Regulatory data destruction compliant with NIST 800-88, DoD, and GDPR.",
           keywords:
             "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
           canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
@@ -689,11 +689,11 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
                       <Activity className="w-4 h-4" />
                       NEW: Diagnostic & Health Variant
                     </div>
-                    <Link 
+                    <Link
                       to="/products/drive-eraser"
                       className="inline-flex items-center gap-2 bg-slate-100/80 backdrop-blur-sm text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-sm font-semibold border border-slate-200 transition-all group"
                     >
-                      <ShieldIcon className="w-4 h-4" />
+                      <FlatShieldIcon className="w-4 h-4" />
                       <span>Back to Standard Drive Eraser</span>
                       <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
@@ -709,7 +709,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
                     The industry's first "Monitor + Erase" suite. Track drive
                     health, predict failures, and securely erase data with
-                    integrated hardware diagnostics.
+                    Multiple device Management and Regulatory hardware diagnostics across major mobile ecosystems.
                   </p>
 
                   {/* Compliance Badges */}
@@ -730,19 +730,14 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                      onClick={() => scrollToSection("contact")}
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                     >
-                      <HoverIcon>
-                        {(filled) => (
-                          <LightningIcon className="w-5 h-5" filled={filled} />
-                        )}
-                      </HoverIcon>
-                      Upcoming
+                      Request Early Access
                     </button>
                     <button
-                      disabled={true}
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-300"
+                      onClick={downloadCatalog}
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold bg-white/50 backdrop-blur-sm hover:bg-emerald-50 hover:shadow-lg transition-all duration-300"
                     >
                       <svg
                         className="w-5 h-5"
@@ -757,7 +752,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Coming Soon
+                      Download Datasheet
                     </button>
                   </div>
                 </div>
@@ -1473,9 +1468,8 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
                       <div className="absolute top-3 left-3 w-7 h-7 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                         2
                       </div>
-                      {/* Icon */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100">
-                        <CloudIcon className="w-8 h-8 text-emerald-800" />
+                        <Cloud className="w-8 h-8 text-emerald-800" />
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">Deploy</h3>
@@ -1523,8 +1517,8 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
                       {/* Icon with overlapping shields */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100 relative">
                         <div className="flex -space-x-2">
-                          <ShieldIcon className="w-6 h-6 text-emerald-800 relative z-10" />
-                          <ShieldIcon className="w-6 h-6 text-emerald-400 relative z-0" />
+                          <Shield className="w-6 h-6 text-emerald-800 relative z-10" />
+                          <Shield className="w-6 h-6 text-emerald-400 relative z-0" />
                         </div>
                       </div>
                       {/* Title */}

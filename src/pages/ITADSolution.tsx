@@ -911,19 +911,124 @@
 
 
 
+import React, { useState, useEffect } from 'react';
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ThemeAwareLogo from "../components/ThemeAwareLogo";
 const ITADSolution: React.FC = () => {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("overview");
+  const [isNavVisible, setIsNavVisible] = useState(false);
+
+  const sectionNavItems = [
+    { id: "overview", label: "Overview" },
+    { id: "features", label: "Features" },
+    { id: "devices", label: "Devices" },
+    { id: "industries", label: "Industries" },
+    { id: "faq", label: "FAQ" },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const shouldShow = scrollPosition > 400;
+      setIsNavVisible(shouldShow);
+
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", {
+            detail: { visible: shouldShow },
+          }),
+        );
+      }
+
+      const sections = sectionNavItems.map((item) =>
+        document.getElementById(item.id),
+      );
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop - 150 <= scrollPosition) {
+          setActiveSection(sectionNavItems[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+        );
+      }
+    };
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased" style={{ backgroundColor: '#ffffff', color: '#1f2937' }}>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("itadsolution")} />
 
+      {/* ================= STICKY SECTION NAV ================= */}
+      <div
+        className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isNavVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-b border-emerald-100 shadow-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-14">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
+                <ThemeAwareLogo
+                  className="h-7 sm:h-8 w-auto"
+                  responsive={true}
+                />
+              </Link>
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      activeSection === item.id
+                        ? "bg-emerald-500 text-white shadow-md"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden" style={{ backgroundColor: '#e8f5e9' }}>
+      <section id="overview" className="relative py-24 overflow-hidden" style={{ backgroundColor: '#e8f5e9' }}>
         {/* Background Decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
@@ -1025,7 +1130,7 @@ const ITADSolution: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20" style={{ backgroundColor: '#ffffff' }}>
+      <section id="features" className="py-20" style={{ backgroundColor: '#ffffff' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4" style={{ backgroundColor: '#e8f5e9', color: '#059669' }}>
@@ -1057,7 +1162,7 @@ const ITADSolution: React.FC = () => {
       </section>
 
       {/* Device Support Section */}
-      <section className="py-20 bg-gradient-to-b" style={{ background: 'linear-gradient(to bottom, #f9fafb, #ffffff)' }}>
+      <section id="devices" className="py-20 bg-gradient-to-b" style={{ background: 'linear-gradient(to bottom, #f9fafb, #ffffff)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4" style={{ backgroundColor: '#e8f5e9', color: '#059669' }}>
@@ -1089,7 +1194,7 @@ const ITADSolution: React.FC = () => {
       </section>
 
       {/* Industry Solutions Section */}
-      <section className="py-20" style={{ backgroundColor: '#ffffff' }}>
+      <section id="industries" className="py-20" style={{ backgroundColor: '#ffffff' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4" style={{ backgroundColor: '#e8f5e9', color: '#059669' }}>
@@ -1146,7 +1251,7 @@ const ITADSolution: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gradient-to-b" style={{ background: 'linear-gradient(to bottom, #f9fafb, #ffffff)' }}>
+      <section id="faq" className="py-20 bg-gradient-to-b" style={{ background: 'linear-gradient(to bottom, #f9fafb, #ffffff)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4" style={{ backgroundColor: '#e8f5e9', color: '#059669' }}>

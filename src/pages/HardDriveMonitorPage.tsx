@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
+import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
 import {
@@ -14,15 +15,12 @@ import {
   Copy,
   Search,
   CheckCircle,
-  Download,
-  ShoppingCart,
   FileText,
   Bell,
   Cpu,
   BarChart3,
   RefreshCw,
 } from "lucide-react";
-import { useToast } from "@/components/Toast";
 
 /**
  * HardDriveMonitorPage component
@@ -30,7 +28,6 @@ import { useToast } from "@/components/Toast";
  * The theme is exactly matched with the File Eraser page (Emerald/Teal gradients).
  */
 const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
-  const { showToast } = useToast();
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -181,7 +178,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* ================= HERO SECTION ================= */}
-        <section id="hero" className="py-8 lg:py-12 xl:py-16 relative overflow-hidden">
+        <section id="hero" className="pt-6 pb-12 lg:pt-10 lg:pb-16 relative overflow-hidden">
           {/* Background Decorative Elements */}
           <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] bg-emerald-100/40 rounded-full blur-3xl opacity-50 -z-10"></div>
           <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[400px] h-[400px] bg-teal-100/40 rounded-full blur-3xl opacity-50 -z-10"></div>
@@ -190,6 +187,10 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
               <Reveal>
                 <div className="space-y-8">
+                  <Reveal>
+                    <UpcomingBadge className="mb-4" />
+                  </Reveal>
+
                   <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
                     <ShieldIcon className="w-4 h-4" />
                     Advanced Smart Diagnostic Utility
@@ -208,23 +209,18 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                   </p>
 
                   {/* CTA Buttons - Matching File Eraser Style */}
-                  <div className="flex flex-col sm:flex-row gap-4">
                     <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-300"
+                      onClick={() => scrollToSection("contact")}
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                     >
-                      <Download className="w-5 h-5" />
-                      Upcoming
+                      Request Early Access
                     </button>
                     <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                      onClick={() => scrollToSection("features")}
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 font-bold px-8 py-4 rounded-xl hover:bg-emerald-50 transition-all duration-300"
                     >
-                      <ShoppingCart className="w-5 h-5" />
-                      Upcoming
+                      Explore Features
                     </button>
-
-                  </div>
                 </div>
               </Reveal>
 
@@ -425,8 +421,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       { icon: <BarChart3 className="w-5 h-5" />, title: "SMART Reporting", txt: "Export status reports for future reference." },
                       { icon: <RefreshCw className="w-5 h-5" />, title: "Live Background Sync", txt: "Continuous background health monitoring." },
                       { icon: <ClipboardIcon className="w-5 h-5" />, title: "Custom Thresholds", txt: "Personalized temp alerts for disk safety." }
-                    ].map((item, i) => (
-                      <div key={i} className="flex gap-4">
+                    ].map((item) => (
+                      <div key={item.title} className="flex gap-4">
                         <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 text-emerald-800">
                           {item.icon}
                         </div>
@@ -454,8 +450,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {mainFeatures.map((feature, idx) => (
-                <Reveal key={idx} delayMs={idx * 100}>
+              {mainFeatures.map((feature) => (
+                <Reveal key={feature.title} delayMs={100}>
                   <div className="bg-white p-8 rounded-2xl border border-emerald-50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
                     <div className={`w-14 h-14 ${feature.bg} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                       {feature.icon}
@@ -487,8 +483,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       "Ideal for upgrading to high-capacity SSDs/HDDs",
                       "Auto backup and sync with external USB/NAS storage",
                       "Syncs local files seamlessly across storage platforms"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-slate-700 font-medium text-sm">
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-3 text-slate-700 font-medium text-sm">
                         <div className="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
                           <CheckIcon className="w-4 h-4 text-emerald-800" />
                         </div>
@@ -530,8 +526,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                 { step: "01", title: "Select Utility", desc: "Choose between Health, SMART, Scan or Clone from the intuitive side pane." },
                 { step: "02", title: "View Results", desc: "Identify drive metrics and check temperature or SMART attributes immediately." },
                 { step: "03", title: "Save Report", desc: "Export and save health reports to track performance or share with support." }
-              ].map((item, idx) => (
-                <div key={idx} className="space-y-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all group">
+              ].map((item) => (
+                <div key={item.step} className="space-y-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all group">
                   <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto font-bold text-lg group-hover:scale-110 transition-transform">{item.step}</div>
                   <h4 className="text-xl font-bold pt-2">{item.title}</h4>
                   <p className="text-slate-400 leading-relaxed font-medium">{item.desc}</p>
@@ -556,8 +552,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                     ["Memory", "4 GB Minimum (8 GB recommended for cloning)"],
                     ["Hard Disk", "250 MB free space for smooth installation"],
                     ["Interface Support", "SATA, SSD, Mechanical Drives, External USB Disk"]
-                  ].map(([label, val], i) => (
-                    <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-emerald-50/10"}>
+                  ].map(([label, val]) => (
+                    <tr key={label} className="even:bg-emerald-50/10">
                       <td className="px-8 py-5 font-bold text-slate-700 border-b border-emerald-50 whitespace-nowrap">{label}</td>
                       <td className="px-8 py-5 text-slate-600 border-b border-emerald-50">{val}</td>
                     </tr>
@@ -577,8 +573,8 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                 { q: "What parameters are monitored by the SMART utility?", a: "It monitors critical attributes like Read Error Rate, Reallocated Sector Count, and Seek Error Rate to detect potential mechanical or firmware failures." },
                 { q: "Can I monitor disk health of my Windows 11 system?", a: "Yes, D-Secure Smart Diagnostic is fully optimized for Windows 11, 10, and older versions, operating smoothly as a native Windows utility." },
                 { q: "How does the 'Scan Disk' feature help identify Bad Sectors?", a: "The feature performs a surface test on the drive, marking bad sectors to prevent the OS from writing data to physically damaged blocks." }
-              ].map((item, i) => (
-                <div key={i} className="bg-white p-8 rounded-2xl border border-emerald-100 shadow-sm transition-shadow hover:shadow-md group">
+              ].map((item) => (
+                <div key={item.q} className="bg-white p-8 rounded-2xl border border-emerald-100 shadow-sm transition-shadow hover:shadow-md group">
                   <h4 className="font-bold text-slate-900 flex items-center gap-3 group-hover:text-emerald-800 transition-colors">
                     <CheckCircle className="w-5 h-5 text-emerald-500" />
                     {item.q}

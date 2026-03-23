@@ -127,61 +127,61 @@ ${650 + contentStream.length}
 
 // Drive Eraser catalog data
 const driveEraserData = {
-    title: "D-SECURE DRIVE ERASER",
-    subtitle: "Professional Drive Wiping & Data Sanitization Software",
-    sections: [
-        {
-            heading: "PRODUCT OVERVIEW",
-            content: [
-                "D-Secure Drive Eraser is a comprehensive data sanitization solution",
-                "designed to permanently erase data from hard drives, SSDs, servers,",
-                "and other storage devices with military-grade security standards."
-            ]
-        },
-        {
-            heading: "KEY FEATURES",
-            content: [
-                "• 26 International Erasure Standards (DoD 5220.22-M, NIST SP 800-88)",
-                "• Multi-Platform Support - Windows 7/8/10/11, Linux, macOS 10.12+",
-                "• Deployment Options - USB Boot, PXE Network, Standalone EXE",
-                "• Cloud Console Integration - Centralized management and reporting",
-                "• Digitally Signed Certificates - Tamper-proof documentation",
-                "• Compliance Ready - GDPR, HIPAA, SOX compliant"
-            ]
-        },
-        {
-            heading: "TECHNICAL SPECIFICATIONS",
-            content: [
-                "Storage Types: HDD, SSD, NVMe, SATA, IDE, SCSI, USB drives",
-                "File Systems: NTFS, FAT32, exFAT, HFS+, ext3/ext4, XFS",
-                "Languages: English, Spanish, French, German, Italian, Portuguese",
-                "Licensing: Pay-per-use model, lifetime validity, no subscriptions"
-            ]
-        },
-        {
-            heading: "PRIMARY USE CASES",
-            content: [
-                "• IT Asset Disposition - Secure disposal of corporate hardware",
-                "• Data Center Decommissioning - Bulk server and storage erasure",
-                "• Compliance Audits - Meet regulatory data destruction requirements",
-                "• Resale Preparation - Maximum resale value with verified erasure",
-                "• Privacy Protection - Personal data security for individuals"
-            ]
-        },
-        {
-            heading: "PRICING & CONTACT",
-            content: [
-                "Starting at $20 per device license",
-                "Pay-per-use model with lifetime validity",
-                "Volume discounts available for bulk purchases",
-                "",
-                "Contact Information:",
-                "Website: dsecuretech.com",
-                "Sales: sales@dsecuretech.com",
-                "Support: support@dsecuretech.com"
-            ]
-        }
-    ]
+  title: "D-SECURE DRIVE ERASER",
+  subtitle: "Professional Drive Wiping & Data Sanitization Software",
+  sections: [
+    {
+      heading: "PRODUCT OVERVIEW",
+      content: [
+        "D-Secure Drive Eraser is a comprehensive data sanitization solution",
+        "designed to permanently erase data from hard drives, SSDs, servers,",
+        "and other storage devices with military-grade security standards.",
+      ],
+    },
+    {
+      heading: "KEY FEATURES",
+      content: [
+        "• 26 International Erasure Standards (DoD 5220.22-M, NIST SP 800-88)",
+        "• Multi-Platform Support - Windows 7/8/10/11, Linux, macOS 10.12+",
+        "• Deployment Options - USB Boot, PXE Network, Standalone EXE",
+        "• Cloud Console Integration - Centralized management and reporting",
+        "• Digitally Signed Certificates - Tamper-proof documentation",
+        "• Compliance Ready - GDPR, HIPAA, SOX compliant",
+      ],
+    },
+    {
+      heading: "TECHNICAL SPECIFICATIONS",
+      content: [
+        "Storage Types: HDD, SSD, NVMe, SATA, IDE, SCSI, USB drives",
+        "File Systems: NTFS, FAT32, exFAT, HFS+, ext3/ext4, XFS",
+        "Languages: English, Spanish, French, German, Italian, Portuguese",
+        "Licensing: Pay-per-use model, lifetime validity, no subscriptions",
+      ],
+    },
+    {
+      heading: "PRIMARY USE CASES",
+      content: [
+        "• IT Asset Disposition - Secure disposal of corporate hardware",
+        "• Data Center Decommissioning - Bulk server and storage erasure",
+        "• Compliance Audits - Meet regulatory data destruction requirements",
+        "• Resale Preparation - Maximum resale value with verified erasure",
+        "• Privacy Protection - Personal data security for individuals",
+      ],
+    },
+    {
+      heading: "PRICING & CONTACT",
+      content: [
+        "Starting at $25 per device license",
+        "Pay-per-use model with lifetime validity",
+        "Volume discounts available for bulk purchases",
+        "",
+        "Contact Information:",
+        "Website: dsecuretech.com",
+        "Sales: sales@dsecuretech.com",
+        "Support: support@dsecuretech.com",
+      ],
+    },
+  ],
 };
 
 // File Eraser catalog data

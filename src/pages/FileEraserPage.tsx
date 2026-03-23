@@ -294,7 +294,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
   const eraseTypes = [
     {
       name: "Files & Folders",
-      desc: "Securely remove selected files, folders, and documents from local storage with multi-pass overwrite algorithms.",
+      desc: "Regulatory data wiping for individual files, folders, and partitions without affecting the entire drive, with multi-pass overwrite algorithms.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -665,7 +665,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           title:
             "D-Secure File Eraser | Secure File & Folder Deletion Software",
           description:
-            "Permanently erase files, folders, system traces, and cloud data with D-Secure File Eraser. NIST 800-88 compliant data destruction for privacy and security.",
+            "Permanently erase files, folders, and traces from your computer with D-Secure File Eraser. Regulatory data destruction compliant with NIST 800-88 and GDPR, for privacy and security.",
           keywords:
             "file eraser, secure delete, data destruction, file shredder, privacy software, NIST 800-88, GDPR compliance",
           canonicalUrl: "https://dsecuretech.com/products/file-eraser",
@@ -734,9 +734,9 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    Permanently erase files, folders, system traces, and cloud
-                    data using internationally recognized erasure standards.
-                    Designed for privacy, security, and audit readiness.
+                    The industry's first "Monitor + Erase" suite. Track drive
+                    health, predict failures, and securely erase data with
+                    Regulatory hardware diagnostics across major mobile ecosystems.
                   </p>
 
                   {/* Compliance Badges */}
@@ -873,7 +873,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                               <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1.06 13.54L7.4 12l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41-5.64 5.66z" />
                             </svg>
                             <span className="text-white/90 text-[9px] lg:text-[11px] font-semibold">
-                              Certified Erasure
+                              Regulatory Erasure
                             </span>
                           </div>
                         </div>

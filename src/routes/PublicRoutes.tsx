@@ -73,6 +73,7 @@ const AssetReimagingPage = lazy(() => import("../pages/AssetReimagingPage"));
 const VirtualMachineEraserPage = lazy(() => import("../pages/VirtualMachineEraserPage"));
 const RemovableMediaEraserPage = lazy(() => import("../pages/RemovableMediaEraserPage"));
 const LUNEraserPage = lazy(() => import("../pages/LUNEraserPage"));
+const DriveVerifierPage = lazy(() => import("../pages/DriveVerifierPage"));
 
 
 export const PublicRoutes = () => (
@@ -86,41 +87,93 @@ export const PublicRoutes = () => (
     <Route path="solutions/itad" element={<ITADSolution />} />
     <Route path="solutions/education" element={<EducationPage />} />
     <Route path="solutions/financial" element={<FinancialSolutionsPage />} />
-    <Route path="solutions/financial-services" element={<FinancialServices />} />
+    <Route
+      path="solutions/financial-services"
+      element={<FinancialServices />}
+    />
     <Route path="solutions/government" element={<GovernmentPage />} />
     <Route path="solutions/healthcare" element={<HealthcareSolutionsPage />} />
-    <Route path="solutions/service-providers" element={<ServiceProvidersSolutionsPage />} />
-    <Route path="solutions/industry/:slug" element={<ProgrammaticSolutionPage />} />
+    <Route
+      path="solutions/service-providers"
+      element={<ServiceProvidersSolutionsPage />}
+    />
+    <Route
+      path="solutions/industry/:slug"
+      element={<ProgrammaticSolutionPage />}
+    />
     <Route path="search-demo" element={<SearchDemoPage />} />
     <Route path="resources" element={<ResourcesPage />} />
-    <Route path="resources/documentation" element={<DocumentationResourcesPage />} />
-    <Route path="technical-documentation" element={<TechnicalDocumentation />} />
-    <Route path="resources/case-studies" element={<CaseStudiesResourcesPage />} />
+    <Route
+      path="resources/documentation"
+      element={<DocumentationResourcesPage />}
+    />
+    <Route
+      path="technical-documentation"
+      element={<TechnicalDocumentation />}
+    />
+    <Route
+      path="resources/case-studies"
+      element={<CaseStudiesResourcesPage />}
+    />
     <Route path="resources/compliance" element={<ComplianceResourcesPage />} />
-    <Route path="resources/whitepapers" element={<WhitepapersResourcesPage />} />
+    <Route
+      path="resources/whitepapers"
+      element={<WhitepapersResourcesPage />}
+    />
     <Route path="community" element={<ForumPage />} />
     <Route path="compliance" element={<CompliancePage />} />
-    <Route path="data-eraser-software" element={<DataEraserSoftwarePage />} />
+    <Route path="all-products" element={<DataEraserSoftwarePage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="about" element={<About />} />
-    <Route path="pricing" element={<Navigate to="/pricing-and-plan" replace />} />
+    <Route
+      path="pricing"
+      element={<Navigate to="/pricing-and-plan" replace />}
+    />
     <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
     <Route path="download" element={<DownloadPage />} />
     <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
-    <Route path="/products/drive-eraser-diagnostic" element={<DriveEraserDiagnosticPage />} />
+    <Route
+      path="/products/drive-eraser-diagnostic"
+      element={<DriveEraserDiagnosticPage />}
+    />
     <Route path="/products/file-eraser" element={<FileEraserPage />} />
-    <Route path="/products/hardware-diagnostics" element={<HardwareDiagnosticsPage />} />
-    <Route path="/products/hard-drive-monitor" element={<HardDriveMonitorPage />} />
-    <Route path="/products/autopilot-detection" element={<AutopilotDetectionPage />} />
-    <Route path="/products/smartphone-eraser" element={<SmartphoneEraserPage />} />
-    <Route path="/products/smartphone-diagnostic" element={<SmartphoneDiagnosticPage />} />
-    <Route path="/products/forensic-imaging" element={<ForensicImagingPage />} />
+    <Route
+      path="/products/hardware-diagnostics"
+      element={<HardwareDiagnosticsPage />}
+    />
+    <Route
+      path="/products/hard-drive-monitor"
+      element={<HardDriveMonitorPage />}
+    />
+    <Route
+      path="/products/autopilot-detection"
+      element={<AutopilotDetectionPage />}
+    />
+    <Route
+      path="/products/smartphone-eraser"
+      element={<SmartphoneEraserPage />}
+    />
+    <Route
+      path="/products/smartphone-diagnostic"
+      element={<SmartphoneDiagnosticPage />}
+    />
+    <Route
+      path="/products/forensic-imaging"
+      element={<ForensicImagingPage />}
+    />
     <Route path="/products/freeze-state" element={<FreezeStatePage />} />
     <Route path="/products/data-migration" element={<DataMigrationPage />} />
     <Route path="/products/asset-reimaging" element={<AssetReimagingPage />} />
-    <Route path="/products/virtual-machine-eraser" element={<VirtualMachineEraserPage />} />
-    <Route path="/products/removable-media-eraser" element={<RemovableMediaEraserPage />} />
+    <Route
+      path="/products/virtual-machine-eraser"
+      element={<VirtualMachineEraserPage />}
+    />
+    <Route
+      path="/products/removable-media-eraser"
+      element={<RemovableMediaEraserPage />}
+    />
     <Route path="/products/lun-eraser" element={<LUNEraserPage />} />
+    <Route path="/products/drive-verifier" element={<DriveVerifierPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="order-success" element={<OrderSuccessPage />} />
     <Route path="order-failure" element={<FailurePage />} />
@@ -140,7 +193,10 @@ export const PublicRoutes = () => (
     <Route path="founder" element={<FounderPage />} />
     <Route path="trust-center" element={<TrustCenterPage />} />
     <Route path="status" element={<StatusPage />} />
-    <Route path="data-hygiene-framework" element={<DataHygieneFrameworkPage />} />
+    <Route
+      path="data-hygiene-framework"
+      element={<DataHygieneFrameworkPage />}
+    />
     <Route path="glossary" element={<GlossaryPage />} />
     <Route path="partners" element={<PartnersPage />} />
     <Route path="support" element={<SupportPage />} />
@@ -150,6 +206,5 @@ export const PublicRoutes = () => (
     <Route path="api-test" element={<ApiTestPage />} />
     <Route path="blog" element={<BlogPage />} />
     <Route path="resources/clone-guide" element={<CloneGuidePage />} />
-
   </Route>
 );

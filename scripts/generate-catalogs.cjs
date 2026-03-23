@@ -116,7 +116,7 @@ const driveEraserContent = `(D-SECURE DRIVE ERASER) Tj
 0 -15 Td
 (• Resale Preparation - Maximum resale value with verified erasure) Tj
 0 -30 Td
-(PRICING: Starting at $20 per license) Tj
+(PRICING: Starting at $25 per license) Tj
 0 -20 Td
 (Contact: sales@dsecuretech.com | dsecuretech.com) Tj`;
 

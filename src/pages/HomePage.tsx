@@ -2,6 +2,7 @@ import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import DSecureIconOnly from "@/assets/dsecure-icon-only.svg"; // Assuming vite-plugin-svgr or similar, but wait, typical vite import provides url by default.
 import OptimizedImage from "@/components/OptimizedImage";
+import UpcomingBadge from "@/components/ui/UpcomingBadge";
 import {
   LightningIcon,
   ArrowRightIcon,
@@ -16,8 +17,16 @@ import {
   CloudIcon,
   ServerIcon,
   DatabaseIcon,
+  MobileIcon,
+  CheckIcon,
+  MonitorIcon,
+  ActivityIcon,
+  CpuIcon,
+  ArrowLeftIcon,
+  LockIcon,
 } from "@/components/FlatIcons";
-import { useEffect, memo, useMemo, useCallback } from "react";
+import { Search, Monitor, Terminal, Database, FileCheck, CheckCircle2 } from "lucide-react";
+import { useEffect, memo, useMemo, useCallback, useState } from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { usePerformanceMonitor } from "@/utils/performanceUtils";
@@ -26,6 +35,200 @@ import { useTranslation } from "react-i18next";
 const HomePage = memo(function HomePage() {
   usePerformanceMonitor("HomePage");
   const { t } = useTranslation();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(2);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(window.innerWidth >= 768 ? 2 : 1);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const products = useMemo(() => [
+    {
+      id: "drive-eraser",
+      title: t("home.driveEraserTitle"),
+      desc: t("home.driveEraserDesc"),
+      price: t("home.driveEraserPrice"),
+      note: t("home.driveEraserPriceNote"),
+      link: "/products/drive-eraser",
+      icon: DatabaseIcon,
+      color: "emerald",
+      isUpcoming: false,
+      features: [t("home.driveEraserFeature1"), t("home.driveEraserFeature2"), t("home.driveEraserFeature3"), t("home.driveEraserFeature4")]
+    },
+    {
+      id: "file-eraser",
+      title: t("home.fileEraserTitle"),
+      desc: t("home.fileEraserDesc"),
+      price: t("home.fileEraserPrice"),
+      note: t("home.fileEraserPriceNote"),
+      link: "/products/file-eraser",
+      icon: ServerIcon,
+      color: "blue",
+      isUpcoming: false,
+      features: [t("home.fileEraserFeature1"), t("home.fileEraserFeature2"), t("home.fileEraserFeature3"), t("home.fileEraserFeature4")]
+    },
+    {
+      id: "smartphone-eraser",
+      title: t("home.smartphoneEraserTitle"),
+      desc: "Bulk iOS & Android wiping with audit reports.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/smartphone-eraser",
+      icon: MobileIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["Bulk processing", "Tamper-proof reports", "Support iOS & Android", "Full Factory Reset"]
+    },
+    {
+      id: "smartphone-diagnostic",
+      title: t("home.smartphoneDiagnosticTitle"),
+      desc: "50+ automated tests for mobile health.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/smartphone-diagnostic",
+      icon: ActivityIcon,
+      color: "teal",
+      isUpcoming: true,
+      features: ["50+ Automated Tests", "Quick Diagnosis", "Battery Health check", "Hardware verification"]
+    },
+    {
+      id: "hardware-diagnostics",
+      title: t("home.hardwareDiagnosticTitle"),
+      desc: "Enterprise-grade diagnostic tools.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/hardware-diagnostics",
+      icon: CpuIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["System-wide testing", "Hardware health checks", "Component stress test", "Burn-in testing"]
+    },
+    {
+      id: "drive-eraser-diagnostic",
+      title: t("home.driveEraserDiagnosticTitle"),
+      desc: "Disk health monitoring and diagnostic.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/drive-eraser-diagnostic",
+      icon: ActivityIcon,
+      color: "blue",
+      isUpcoming: true,
+      features: ["Health monitoring", "S.M.A.R.T analytics", "Performance testing", "Bad sector check"]
+    },
+    {
+      id: "drive-verifier",
+      title: "Drive Verifier",
+      desc: "Verify erased drives for data traces & audit compliance.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/drive-verifier",
+      icon: CheckCircle2,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["Erasure Verification", "Compliance Auditing", "Digitally Signed Reports", "USB & PXE Support"]
+    },
+    {
+      id: "virtual-machine-eraser",
+      title: t("home.virtualMachineEraserTitle"),
+      desc: "Securely wipe VMs on ESXi & Hyper-V hosts.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/virtual-machine-eraser",
+      icon: MonitorIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["ESXi & Hyper-V support", "Secure VM removal", "Centralized management", "Automated workflows"]
+    },
+    {
+      id: "removable-media-eraser",
+      title: t("home.removableMediaEraserTitle"),
+      desc: "Securely erase USB & flash storage devices.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/removable-media-eraser",
+      icon: DatabaseIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["USB & SSD erasure", "Quick Wipe tools", "SD & Flash support", "Compact form factor"]
+    },
+    {
+      id: "lun-eraser",
+      title: t("home.lunEraserTitle"),
+      desc: "Sanitize Logical Unit Numbers in active storage.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/lun-eraser",
+      icon: ServerIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["Storage Array support", "LUN level sanitation", "Fiber Channel support", "Remote erasure"]
+    },
+    {
+      id: "forensic-imaging",
+      title: t("home.forensicImagingTitle"),
+      desc: "Evidence-grade disk imaging and collection.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/forensic-imaging",
+      icon: ShieldIcon,
+      color: "blue",
+      isUpcoming: true, // Already true, confirmed
+      features: ["Bit-for-bit imaging", "Chain of custody proof", "E01 & Raw formats", "Hashing verification"]
+    },
+    {
+      id: "freeze-state",
+      title: t("home.freezeStateTitle"),
+      desc: "System preservation and rollback solutions.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/freeze-state",
+      icon: LockIcon,
+      color: "teal",
+      isUpcoming: true,
+      features: ["State preservation", "One-click rollback", "Anti-tamper protection", "Policy management"]
+    },
+    {
+      id: "data-migration",
+      title: t("home.dataMigrationTitle"),
+      desc: "Seamless data transfer between platforms.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/data-migration",
+      icon: ActivityIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["Cross-platform transfer", "Verified migration", "Zero downtime", "File-level granularity"]
+    },
+    {
+      id: "asset-reimaging",
+      title: t("home.assetReimagingTitle"),
+      desc: "Automated OS deployment and reimaging.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/asset-reimaging",
+      icon: MonitorIcon,
+      color: "blue",
+      isUpcoming: true,
+      features: ["Zero-touch deployment", "Custom image support", "Pre-configured templates", "Network booting"]
+    },
+    {
+      id: "autopilot-detection",
+      title: t("home.autopilotDetectionTitle"),
+      desc: "Automated hardware detection and tracking.",
+      price: "TBA",
+      note: "Standard model",
+      link: "/products/autopilot-detection",
+      icon: ActivityIcon,
+      color: "teal",
+      isUpcoming: true,
+      features: ["Auto-detection", "Asset tracking", "Intune integration", "Compliance check"]
+    }
+  ], [t, DatabaseIcon, ServerIcon, MobileIcon, ActivityIcon, CpuIcon, MonitorIcon, ShieldIcon, LockIcon, CheckCircle2]);
 
   const scrollToHash = useCallback(() => {
     const hash = window.location.hash;
@@ -69,7 +272,7 @@ const HomePage = memo(function HomePage() {
               <Reveal delayMs={20}>
                 <div className="flex flex-col xs:flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row xxl:flex-row items-start xs:items-start sm:items-center md:items-center lg:items-center xl:items-center xxl:items-center gap-3 xs:gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-5 xxl:gap-6">
                   <Link
-                    to="/data-eraser-software"
+                    to="/all-products"
                     className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center"
                     aria-label="Explore D-Secure Software"
                   >
@@ -1318,14 +1521,14 @@ const HomePage = memo(function HomePage() {
       </section>
 
       {/* Services Overview Section */}
-      <section id="services" className="py-16 md:py-24 bg-white">
+      <section id="services" className="py-16 md:py-24 bg-white relative overflow-hidden">
         <div className="container-app">
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                {t("home.servicesTitle").split(" ").slice(0, 1).join(" ")}{" "}
+                {t("home.servicesTitle").split(" ").slice(0, 2).join(" ")}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                  {t("home.servicesTitle").split(" ").slice(1).join(" ")}
+                  {t("home.servicesTitle").split(" ").slice(2).join(" ")}
                 </span>
               </h2>
             </Reveal>
@@ -1335,281 +1538,75 @@ const HomePage = memo(function HomePage() {
               </p>
             </Reveal>
           </div>
-          <div
-            id="products"
-            className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto"
-          >
-            {/* D-Secure Drive Eraser */}
-            <Reveal delayMs={200}>
-              <div className="group relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-8 border border-emerald-200/60 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-                <div className="absolute top-6 right-6">
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                </div>
-                <div className="mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <HoverIcon>
-                      {(filled) => (
-                        <DatabaseIcon
-                          className="w-8 h-8 text-white"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    {t("home.driveEraserTitle")}
-                  </h3>
-                  <p className="text-slate-600 mb-6">
-                    {t("home.driveEraserDesc")}
-                  </p>
-                </div>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-emerald-800"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.driveEraserFeature1")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-emerald-800"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.driveEraserFeature2")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-emerald-800"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.driveEraserFeature3")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-emerald-800"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.driveEraserFeature4")}
-                    </span>
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <div className="text-xl font-bold text-slate-900 mb-2">
-                    {t("home.driveEraserPrice")}
-                  </div>
-                  <div className="text-slate-600 text-sm">
-                    {t("home.driveEraserPriceNote")}
-                  </div>
-                </div>
-                <Link
-                  to="/products/drive-eraser"
-                  className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium group"
-                >
-                  <span>{t("home.viewProductDetails")}</span>
-                  <svg
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </Reveal>
 
-            {/* D-Secure File Eraser */}
-            <Reveal delayMs={250}>
-              <div className="group relative bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-8 border border-blue-200/60 hover:border-blue-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-                <div className="absolute top-6 right-6">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                </div>
-                <div className="mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <HoverIcon>
-                      {(filled) => (
-                        <ServerIcon
-                          className="w-8 h-8 text-white"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    {t("home.fileEraserTitle")}
-                  </h3>
-                  <p className="text-slate-600 mb-6">
-                    {t("home.fileEraserDesc")}
-                  </p>
-                </div>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.fileEraserFeature1")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.fileEraserFeature2")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.fileEraserFeature3")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      {t("home.fileEraserFeature4")}
-                    </span>
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <div className="text-xl font-bold text-slate-900 mb-2">
-                    {t("home.fileEraserPrice")}
-                  </div>
-                  <div className="text-slate-600 text-sm">
-                    {t("home.fileEraserPriceNote")}
-                  </div>
-                </div>
-                <Link
-                  to="/products/file-eraser"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group"
-                >
-                  <span>{t("home.viewProductDetails")}</span>
-                  <svg
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-          {/* <Reveal delayMs={300}>
-            <div className="text-center mt-12">
-              <Link
-                to="/#products"
-                className="btn-primary inline-flex items-center justify-center"
+          <div className="relative max-w-6xl mx-auto">
+            {/* Navigation Arrows */}
+            <div className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 z-30">
+              <button 
+                onClick={() => setCurrentSlide((prev: number) => Math.max(0, prev - 1))}
+                disabled={currentSlide === 0}
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center transition-all duration-300 ${
+                  currentSlide === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-slate-50 hover:scale-110 active:scale-95 text-blue-600'
+                }`}
+                aria-label="Previous product"
               >
-                <span>{t("home.viewAllProducts")}</span>
-                <HoverIcon>
-                  {(filled) => (
-                    <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
-                  )}
-                </HoverIcon>
-              </Link>
+                <ArrowLeftIcon className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
             </div>
-          </Reveal> */}
+            
+            <div className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 z-30">
+              <button 
+                onClick={() => setCurrentSlide((prev: number) => Math.min(products.length - visibleCount, prev + 1))}
+                disabled={currentSlide >= products.length - visibleCount}
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg border border-slate-100 flex items-center justify-center transition-all duration-300 ${
+                  currentSlide >= products.length - visibleCount 
+                    ? 'opacity-30 cursor-not-allowed' : 'hover:bg-slate-50 hover:scale-110 active:scale-95 text-blue-600'
+                }`}
+                aria-label="Next product"
+              >
+                <ArrowRightIcon className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+            </div>
+
+            <div className="overflow-hidden px-2">
+              <div 
+                className="flex transition-transform duration-500 ease-out"
+                style={{ 
+                  transform: `translateX(-${currentSlide * (100 / visibleCount)}%)` 
+                }}
+              >
+                {products.map((product, idx) => (
+                  <div key={product.id} className="w-full md:w-1/2 flex-shrink-0 px-3 py-4">
+                    <Reveal delayMs={idx * 50}>
+                      <div className="h-full">
+                        <Link 
+                          to={product.link}
+                          className={`group relative h-full bg-white rounded-2xl p-6 md:p-8 border border-slate-200/60 hover:border-${product.color}-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1 overflow-hidden block`}
+                        >
+                          <div className={`absolute inset-0 bg-gradient-to-br from-${product.color}-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                          <CardContent product={product} t={t} isLink={true} />
+                        </Link>
+                      </div>
+                    </Reveal>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Pagination Dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              {Array.from({ length: products.length - (visibleCount - 1) }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentSlide(i)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentSlide === i ? 'bg-blue-600 w-6' : 'bg-slate-200 hover:bg-slate-300'
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1806,5 +1803,65 @@ const HomePage = memo(function HomePage() {
     </>
   );
 });
+
+// Helper component for card content to share logic
+function CardContent({ product, t, isLink = false }: { product: any, t: any, isLink?: boolean }) {
+  return (
+    <div className="relative z-10 h-full flex flex-col">
+      <div className="mb-6 text-center md:text-left">
+        <div className="flex items-start justify-between mb-4">
+          <div className={`w-14 h-14 flex-shrink-0 bg-gradient-to-br from-${product.color}-500 to-${product.color}-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md shadow-${product.color}-200`}>
+            <product.icon className="w-7 h-7 text-white" />
+          </div>
+          {product.isUpcoming && (
+            <span className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 rounded-full border border-amber-200 shadow-sm">
+              Upcoming
+            </span>
+          )}
+        </div>
+        <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-slate-800 transition-colors">
+          {String(product.title)}
+        </h3>
+        <p className="text-sm text-slate-600 line-clamp-2 h-10 mb-6">
+          {product.desc}
+        </p>
+      </div>
+
+      <div className="space-y-3 mb-6 flex-grow">
+        {product.features.map((feature: string, fIdx: number) => (
+          <div key={fIdx} className="flex items-start gap-3">
+            <div className={`w-5 h-5 rounded-full bg-${product.color}-50 flex items-center justify-center flex-shrink-0 mt-0.5 rotate-0 group-hover:rotate-12 transition-transform`}>
+              <svg className={`w-3.5 h-3.5 text-${product.color}-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span className="text-xs text-slate-700 font-medium leading-tight">
+              {feature}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+        <div className="flex-grow">
+          <div className="text-lg font-bold text-slate-900">
+            {product.price}
+          </div>
+          <div className="text-[10px] text-slate-500 font-medium uppercase tracking-wide">
+            {product.note}
+          </div>
+        </div>
+        {isLink && (
+          <div className={`flex items-center gap-2 text-sm font-bold text-${product.color}-600 group-hover:translate-x-1 transition-transform`}>
+            {t("home.viewDetails", { defaultValue: "Learn More" })}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default HomePage;

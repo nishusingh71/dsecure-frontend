@@ -74,14 +74,14 @@
     display: none;
   }
   .btn-primary {
-    @apply px-6 py-3 rounded-lg bg-gradient-to-r from-brand to-brand-600 text-white font-medium 
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-gradient-to-r from-brand to-brand-600 text-white font-medium 
            shadow-lg shadow-brand/30 hover:shadow-xl hover:shadow-brand/40 
            transform transition-transform duration-150 ease-out
            hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-secondary {
-    @apply px-6 py-3 rounded-lg bg-white text-slate-700 font-medium border border-slate-200
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-white text-slate-700 font-medium border border-slate-200
            shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-150 ease-out
            hover:-translate-y-0.5 active:translate-y-0;
   }

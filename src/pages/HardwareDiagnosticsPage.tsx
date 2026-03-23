@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
+import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
@@ -28,6 +29,7 @@ import {
   Battery,
   Wifi,
   AlertTriangle,
+  Download,
   Database,
   Volume2,
   Bluetooth,
@@ -672,6 +674,9 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
               {/* Left: Content */}
               <Reveal>
                 <div className="space-y-8">
+                  <Reveal>
+                    <UpcomingBadge className="mb-4" />
+                  </Reveal>
                   <div className="flex flex-col sm:flex-row items-center gap-3">
                     <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
                       <ShieldIcon className="w-4 h-4" />
@@ -716,38 +721,17 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 relative z-20">
                     <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                      onClick={() => scrollToSection("contact")}
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Upcoming
+                      Request Early Access
                     </button>
                     <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-200"
+                      onClick={() => downloadCatalog()}
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                      Coming Soon
+                      <Download className="w-5 h-5 text-emerald-600" />
+                      Download Overview
                     </button>
                   </div>
                 </div>
