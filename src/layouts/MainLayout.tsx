@@ -8,7 +8,10 @@ import {
   Database,
   RefreshCcw,
   Shield,
+  Monitor,
+  Server,
   X,
+  CheckCircle2,
 } from "lucide-react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import SEOHead from "@/components/SEOHead";
@@ -26,7 +29,7 @@ export default function MainLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [productsDropdownTab, setProductsDropdownTab] = useState<
-    "eraser" | "migration" | "diagnostics"
+    "eraser" | "migration" | "diagnostics" | "verification"
   >("eraser");
   const [hideHeader, setHideHeader] = useState(false); // Hide header when sticky section nav is visible
 
@@ -161,7 +164,7 @@ export default function MainLayout() {
 
                 {/* Dropdown Panel — Zoho-style mega menu */}
                 {productsDropdownOpen && (
-                  <div className="absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-slate-200 z-50 overflow-hidden">
+                  <div className="absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-slate-200 z-50 overflow-hidden max-h-[37.5vh] flex flex-col">
                     {/* Close Button — top right */}
                     <button
                       onClick={() => setProductsDropdownOpen(false)}
@@ -171,9 +174,9 @@ export default function MainLayout() {
                       <X className="w-5 h-5" />
                     </button>
 
-                    <div className="flex min-h-[340px]">
+                    <div className="flex flex-1 min-h-0 overflow-hidden">
                       {/* ── LEFT SIDEBAR — vertical category tabs ── */}
-                      <div className="w-52 flex-shrink-0 border-r border-slate-200 bg-slate-50/80 py-4">
+                      <div className="w-52 flex-shrink-0 border-r border-slate-200 bg-slate-50/80 py-4 overflow-y-auto custom-scrollbar">
                         <button
                           className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
                             !productsDropdownTab ||
@@ -251,11 +254,36 @@ export default function MainLayout() {
                             </svg>
                           )}
                         </button>
+                        <button
+                          className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                            productsDropdownTab === "verification"
+                              ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                          }`}
+                          onClick={() => setProductsDropdownTab("verification")}
+                        >
+                          Verification
+                          {productsDropdownTab === "verification" && (
+                            <svg
+                              className="w-3.5 h-3.5 ml-auto text-emerald-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2.5}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          )}
+                        </button>
 
                         {/* "Explore all" link at bottom */}
                         <div className="mt-6 px-5">
                           <Link
-                            to="/data-eraser-software"
+                            to="/all-products"
                             className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1"
                             onClick={() => setProductsDropdownOpen(false)}
                           >
@@ -276,51 +304,38 @@ export default function MainLayout() {
                           </Link>
                         </div>
                       </div>
+                      {/* ── RIGHT CONTENT — 3-colum                      {/* ── RIGHT CONTENT — 3-column product grid ── */}
+                      <div className="flex-1 overflow-y-auto custom-scrollbar bg-white px-6 pb-6">
+                        {/* Category heading - Sticky at top of the scrollable area */}
+                        <div className="sticky top-0 bg-white z-20 pt-6 pb-4 -mx-6 px-6 border-b border-slate-100/50">
+                          <h3 className="text-lg font-bold text-slate-800">
+                            {(!productsDropdownTab || productsDropdownTab === "eraser") && "Eraser"}
+                            {productsDropdownTab === "migration" && "Migration"}
+                            {productsDropdownTab === "diagnostics" && "Diagnostics"}
+                            {productsDropdownTab === "verification" && "Verification"}
+                          </h3>
+                        </div>
 
-                      {/* ── RIGHT CONTENT — 3-column product grid ── */}
-                      <div className="flex-1 p-6">
-                        {/* Category heading */}
-                        <h3 className="text-lg font-bold text-slate-800 mb-5">
-                          {(!productsDropdownTab ||
-                            productsDropdownTab === "eraser") &&
-                            "Eraser"}
-                          {productsDropdownTab === "migration" && "Migration"}
-                          {productsDropdownTab === "diagnostics" &&
-                            "Diagnostics"}
-                        </h3>
-
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-3 gap-4 pt-6">
                           {/* ═══ ERASER TAB ═══ */}
                           {(!productsDropdownTab ||
                             productsDropdownTab === "eraser") && (
                             <>
                               {/* Drive Eraser — with 2 variants */}
-                              <div
-                                className="border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group"
+                              <div 
+                                className="border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group/card"
                                 onClick={() => {
-                                  navigate("/products/drive-eraser");
+                                  navigate('/products/drive-eraser');
                                   setProductsDropdownOpen(false);
                                 }}
                               >
                                 <div className="flex items-center gap-3 mb-3">
-                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-all">
-                                    <svg
-                                      className="w-5 h-5 text-emerald-600 group-hover:text-white"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
-                                      />
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover/card:bg-emerald-200 transition-colors">
+                                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
                                     </svg>
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                                    Drive Eraser
-                                  </h4>
+                                  <h4 className="font-bold text-slate-900 group-hover/card:text-emerald-700 transition-colors">Drive Eraser</h4>
                                 </div>
                                 <p className="text-sm text-slate-500 leading-relaxed mb-3">
                                   Erase HDD, SSD, PC, Mac & Server data
@@ -432,6 +447,60 @@ export default function MainLayout() {
                                   </svg>
                                 </span>
                               </Link>
+
+                              {/* Virtual Machine Eraser */}
+                              <Link
+                                to="/products/virtual-machine-eraser"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Monitor className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Virtual Machine Eraser</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Securely wipe VMs on ESXi & Hyper-V hosts.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Removable Media Eraser */}
+                              <Link
+                                to="/products/removable-media-eraser"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Database className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Removable Media Eraser</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Securely erase USB & flash storage devices.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* LUN Eraser */}
+                              <Link
+                                to="/products/lun-eraser"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Server className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">LUN Eraser</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Sanitize Logical Unit Numbers in active storage.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
                             </>
                           )}
 
@@ -541,6 +610,24 @@ export default function MainLayout() {
                                       d="M9 5l7 7-7 7"
                                     />
                                   </svg>
+                                </span>
+                              </Link>
+
+                              {/* Asset Reimaging */}
+                              <Link
+                                to="/products/asset-reimaging"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <RefreshCcw className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Asset Reimaging</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Automated OS deployment & imaging solution.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                                 </span>
                               </Link>
                             </>
@@ -694,6 +781,49 @@ export default function MainLayout() {
                                 </div>
                                 <p className="text-sm text-slate-500 leading-relaxed mb-3">
                                   Windows Autopilot identification.
+                                </p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More{" "}
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2.5}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
+                                </span>
+                              </Link>
+                            </>
+                          )}
+
+                          {/* ═══ VERIFICATION TAB ═══ */}
+                          {productsDropdownTab === "verification" && (
+                            <>
+                              {/* Drive Verifier */}
+                              <Link
+                                to="/products/drive-verifier"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                                      Erasure Verification
+                                    </h4>
+                                    <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[9px] font-bold uppercase tracking-wider">New</span>
+                                  </div>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">
+                                  Forensic verification & post-erasure audit tools.
                                 </p>
                                 <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
                                   Learn More{" "}
@@ -1012,6 +1142,26 @@ export default function MainLayout() {
                         </div>
                         <span className="font-medium">Smartphone Eraser</span>
                       </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/removable-media-eraser"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <Database className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">Removable Media Eraser</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/lun-eraser"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <Server className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">LUN Eraser</span>
+                      </Link>
                     </div>
 
                     {/* Migration Category */}
@@ -1048,6 +1198,16 @@ export default function MainLayout() {
                           <RefreshCcw className="w-4 h-4" />
                         </div>
                         <span className="font-medium">FreezeState</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/asset-reimaging"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <RefreshCcw className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">Asset Reimaging</span>
                       </Link>
                     </div>
 
@@ -1392,7 +1552,7 @@ export default function MainLayout() {
             <div className="py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 xl:py-18 xxl:py-20 px-6 sm:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 xl:gap-14 xxl:gap-16">
                 {/* Company Info */}
-                <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
+                <div className="lg:col-span-3 flex flex-col items-center lg:items-start text-center lg:text-left">
                   <Link
                     to="/"
                     className="flex items-center gap-2 xs:gap-3 font-bold text-white hover:opacity-80 transition-opacity mb-6"
@@ -1405,7 +1565,7 @@ export default function MainLayout() {
                     />
                   </Link>
                   <p className="text-slate-300 leading-relaxed mb-6 text-sm xs:text-base lg:text-base xl:text-lg">
-                    {t("footer.description")}
+                    Leading provider of Compliant data erasure solutions for enterprises worldwide. Secure your data lifecycle with our enterprise-grade security solutions.
                   </p>
 
                   {/* Trust Indicators */}
@@ -1489,19 +1649,19 @@ export default function MainLayout() {
                 </div>
 
                 {/* Navigation Links */}
-                <div className="lg:col-span-8 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
-                  {/* Services */}
+                <div className="lg:col-span-9 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+                  {/* Products */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t("footer.products")}
+                      Products
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
                         <Link
-                          to="/#products"
+                          to="/all-products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.allProducts")}
+                          All Products
                         </Link>
                       </li>
                       <li>
@@ -1509,7 +1669,15 @@ export default function MainLayout() {
                           to="/products/drive-eraser"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.driveErasure")}
+                          Drive Eraser
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/products/drive-eraser-diagnostic"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Drive Eraser Diagnostic
                         </Link>
                       </li>
                       <li>
@@ -1517,72 +1685,16 @@ export default function MainLayout() {
                           to="/products/file-eraser"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.fileErasure")}
+                          File Eraser
                         </Link>
                       </li>
-                      <li>
-                        <Link
-                          to="/products/smartphone-eraser"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Smartphone Eraser
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/products/data-migration"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Data Migration
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/products/forensic-imaging"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Forensic Imaging
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/products/freeze-state"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          FreezeState
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/products/smartphone-diagnostic"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Smartphone Diagnostics
-                        </Link>
-                      </li>
-                      {/* <li>
-                        <Link
-                          to="/services/cloud-erasure"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Cloud Erasure
-                        </Link>
-                      </li> */}
-                      {/* <li>
-                        <Link
-                          to="/products/mobile-erasure"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Mobile Erasure
-                        </Link>
-                      </li> */}
                     </ul>
                   </div>
 
-                  {/* Solutions */}
+                  {/* Industries */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t("footer.solutions")}
+                      Industries
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -1594,7 +1706,7 @@ export default function MainLayout() {
                             globalThis.location.href = "/#industries";
                           }}
                         >
-                          {t("footer.allSolutions")}
+                          All Industries
                         </Link>
                       </li>
                       <li>
@@ -1602,7 +1714,7 @@ export default function MainLayout() {
                           to="/solutions/healthcare"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.healthcare")}
+                          Healthcare
                         </Link>
                       </li>
                       <li>
@@ -1610,7 +1722,7 @@ export default function MainLayout() {
                           to="/solutions/financial-services"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.financialServices")}
+                          Financial Services
                         </Link>
                       </li>
                       <li>
@@ -1618,7 +1730,7 @@ export default function MainLayout() {
                           to="/solutions/government"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.government")}
+                          Government
                         </Link>
                       </li>
                       <li>
@@ -1626,7 +1738,7 @@ export default function MainLayout() {
                           to="/solutions/education"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.education")}
+                          Education
                         </Link>
                       </li>
                     </ul>
@@ -1635,7 +1747,7 @@ export default function MainLayout() {
                   {/* Resources */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t("footer.resources")}
+                      Resources
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -1643,7 +1755,7 @@ export default function MainLayout() {
                           to="resources/documentation?type=documentation"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.documentation")}
+                          Documentation
                         </Link>
                       </li>
                       <li>
@@ -1651,7 +1763,7 @@ export default function MainLayout() {
                           to="/resources/compliance?type=compliance"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.compliance")}
+                          Compliance
                         </Link>
                       </li>
                       <li>
@@ -1659,7 +1771,7 @@ export default function MainLayout() {
                           to="/blog"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.blog")}
+                          Blog
                         </Link>
                       </li>
                       <li>
@@ -1667,7 +1779,7 @@ export default function MainLayout() {
                           to="/solutions?type=case-studies"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.caseStudies")}
+                          Case Studies
                         </Link>
                       </li>
                       {/* <li>
@@ -1684,7 +1796,7 @@ export default function MainLayout() {
                   {/* Company */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t("footer.company")}
+                      Company
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -1692,7 +1804,7 @@ export default function MainLayout() {
                           to="/about"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.aboutUs")}
+                          About Us
                         </Link>
                       </li>
                       <li>
@@ -1700,7 +1812,7 @@ export default function MainLayout() {
                           to="/contact"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.contact")}
+                          Contact
                         </Link>
                       </li>
                       {/* <li>
@@ -1716,7 +1828,7 @@ export default function MainLayout() {
                           to="/partners"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t("footer.partners")}
+                          Partners
                         </Link>
                       </li>
                       {/* <li>
@@ -1738,11 +1850,11 @@ export default function MainLayout() {
               <div className="flex flex-col lg:flex-row gap-8 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center text-slate-400 text-sm text-center sm:text-left">
                   <p>
-                    © {new Date().getFullYear()} {t("footer.copyright")}
+                    © {new Date().getFullYear()} D-Secure Inc. All rights reserved.
                   </p>
                   <div className="flex items-center gap-2 text-green-400">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-xs">{t("footer.systemStatus")}</span>
+                    <span className="text-xs">All systems operational</span>
                   </div>
                 </div>
 
@@ -1752,35 +1864,35 @@ export default function MainLayout() {
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Privacy Policy"
                   >
-                    {t("footer.privacyPolicy")}
+                    Privacy Policy
                   </Link>
                   <Link
                     to="/legal-policy"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Legal Policy"
                   >
-                    {t("footer.legalPolicy")}
+                    Legal Policy
                   </Link>
                   <Link
                     to="/terms-of-service"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Terms of Service"
                   >
-                    {t("footer.termsOfService")}
+                    Terms of Service
                   </Link>
                   <Link
                     to="/cookie-policy"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Cookie Policy"
                   >
-                    {t("footer.cookiePolicy")}
+                    Cookie Policy
                   </Link>
                   <Link
                     to="/security"
                     className="hover:text-brand transition-colors"
                     aria-label="View our security practices and certifications"
                   >
-                    {t("footer.security")}
+                    Security
                   </Link>
                   <Link
                     to="/status"

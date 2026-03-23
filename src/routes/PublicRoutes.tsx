@@ -69,6 +69,10 @@ const SmartphoneEraserPage = lazy(() => import("../pages/SmartphoneEraserPage"))
 const SmartphoneDiagnosticPage = lazy(() => import("../pages/SmartphoneDiagnosticPage"));
 const ForensicImagingPage = lazy(() => import("../pages/ForensicImagingPage"));
 const FreezeStatePage = lazy(() => import("../pages/FreezeStatePage"));
+const AssetReimagingPage = lazy(() => import("../pages/AssetReimagingPage"));
+const VirtualMachineEraserPage = lazy(() => import("../pages/VirtualMachineEraserPage"));
+const RemovableMediaEraserPage = lazy(() => import("../pages/RemovableMediaEraserPage"));
+const LUNEraserPage = lazy(() => import("../pages/LUNEraserPage"));
 
 
 export const PublicRoutes = () => (
@@ -113,6 +117,10 @@ export const PublicRoutes = () => (
     <Route path="/products/forensic-imaging" element={<ForensicImagingPage />} />
     <Route path="/products/freeze-state" element={<FreezeStatePage />} />
     <Route path="/products/data-migration" element={<DataMigrationPage />} />
+    <Route path="/products/asset-reimaging" element={<AssetReimagingPage />} />
+    <Route path="/products/virtual-machine-eraser" element={<VirtualMachineEraserPage />} />
+    <Route path="/products/removable-media-eraser" element={<RemovableMediaEraserPage />} />
+    <Route path="/products/lun-eraser" element={<LUNEraserPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="order-success" element={<OrderSuccessPage />} />
     <Route path="order-failure" element={<FailurePage />} />

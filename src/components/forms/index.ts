@@ -16,3 +16,5 @@ export {
   type PartnershipFormData,
   type PartnershipFormProps
 } from './PartnershipForm';
+
+export * from './ProductContactForm';

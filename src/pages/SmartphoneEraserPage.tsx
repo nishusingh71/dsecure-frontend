@@ -1,21 +1,43 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import {
-  ShieldCheck,
-  Zap,
-  CheckCircle,
+  TagIcon,
+  GlobeIcon,
+  ServerIcon,
+  ClipboardIcon,
+} from "@/components/FlatIcons";
+import {
+  Shield,
+  Eraser,
+  Activity,
+  Monitor,
   Smartphone,
-  Layers,
-  FileText,
+  CheckCircle,
+  Zap,
   Settings,
   ArrowRight,
   ChevronDown,
   Cloud,
   RefreshCcw,
+  Globe,
+  Wifi,
+  Battery,
+  Cpu,
+  Camera,
+  Layers,
+  Database,
+  Lock,
+  MessageSquare,
+  FileCheck,
+  ShieldCheck,
+  Workflow,
+  Layout
 } from "lucide-react";
+import { ProductContactForm } from "@/components/forms";
 import Reveal from "../components/Reveal";
 import SEOHead from "../components/SEOHead";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
+import UpcomingBadge from "../components/ui/UpcomingBadge";
 
 // Reusing Icons from the theme
 const CheckIcon = ({ className }: { className?: string }) => (
@@ -33,7 +55,7 @@ const SmartphoneEraserPage = memo(() => {
     const scrollPosition = globalThis.scrollY;
     setIsNavVisible(scrollPosition > 400);
 
-    const sections = ["overview", "how-it-works", "benefits", "standards", "faq", "contact"];
+    const sections = ["overview", "erase-types", "compliance", "platforms", "features", "use-cases", "faq", "contact"];
     for (const section of sections) {
       const element = document.getElementById(section);
       if (element) {
@@ -78,12 +100,113 @@ const SmartphoneEraserPage = memo(() => {
     }
   };
 
+  const downloadCatalog = () => {
+    const link = document.createElement("a");
+    link.href = "https://assets.dsecuretech.com/pdf/DSec-Mobile-Eraser-Datasheet.pdf";
+    link.download = "DSec-Mobile-Eraser-Datasheet.pdf";
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const sectionNavItems = [
     { id: "overview", label: "Overview" },
-    { id: "how-it-works", label: "How It Works" },
-    { id: "benefits", label: "Benefits" },
-    { id: "standards", label: "Standards" },
+    { id: "erase-types", label: "Erase Types" },
+    { id: "compliance", label: "Compliance" },
+    { id: "platforms", label: "Platforms" },
+    { id: "features", label: "Features" },
+    { id: "use-cases", label: "Use Cases" },
     { id: "faq", label: "FAQ" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  const eraseTypes = [
+    {
+      title: "eSIM Erasure",
+      desc: "Securely remove eSIM profiles and associated sensitive carrier data without affecting physical hardware.",
+      icon: <Cpu className="w-8 h-8" />,
+      color: "from-emerald-500 to-emerald-600",
+    },
+    {
+      title: "App Data & Cache",
+      desc: "Wipe sensitive application data, chat histories, and cached credentials that standard factory resets often miss.",
+      icon: <Layers className="w-8 h-8" />,
+      color: "from-teal-500 to-teal-600",
+    },
+    {
+      title: "Call Logs & Messages",
+      desc: "Permanent destruction of private communication logs, SMS, and multimedia messages.",
+      icon: <MessageSquare className="w-8 h-8" />,
+      color: "from-cyan-500 to-cyan-600",
+    },
+    {
+      title: "Internet History",
+      desc: "Clean browser history, cookies, and saved login data to prevent identity theft.",
+      icon: <Globe className="w-8 h-8" />,
+      color: "from-blue-500 to-blue-600",
+    },
+    {
+      title: "Media & Cloud Traces",
+      desc: "Erase locally stored media and clear traces of connected cloud storage services.",
+      icon: <Cloud className="w-8 h-8" />,
+      color: "from-indigo-500 to-indigo-600",
+    },
+    {
+      title: "Locked Device Reset",
+      desc: "Bypass and reset locked iOS/Android devices for secure data disposal (available on Linux edition).",
+      icon: <Lock className="w-8 h-8" />,
+      color: "from-slate-700 to-slate-900",
+    },
+  ];
+
+  const useCases = [
+    {
+      title: "Mobile Trade-in & Buyback",
+      desc: "Guarantee 100% data sanitization for used devices before they are resold or refurbished in secondary markets.",
+      icon: <RefreshCcw className="w-6 h-6" />,
+    },
+    {
+      title: "Corporate Device Exit",
+      desc: "Securely wipe employee devices when they leave the organization or when hardware is being reallocated.",
+      icon: <ServerIcon className="w-6 h-6" />,
+    },
+    {
+      title: "ITAD & Recycling",
+      desc: "Compliant erasure for large volumes of retired mobile assets in bulk-processing environments.",
+      icon: <Database className="w-6 h-6" />,
+    },
+    {
+      title: "Individual Privacy",
+      desc: "Personal users can safeguard their identity and banking data before selling heart-to-heart devices.",
+      icon: <ShieldCheck className="w-6 h-6" />,
+    },
+  ];
+
+  const platforms = [
+    {
+      name: "iOS",
+      versions: "iOS v7 & above (Eraser)",
+      icon: (
+        <svg className="w-12 h-12 text-slate-900" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+        </svg>
+      ),
+    },
+    {
+      name: "Android",
+      versions: "Android OS v5 & above",
+      icon: (
+        <svg className="w-12 h-12 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.523 15.3414C17.0673 15.3414 16.6961 14.9702 16.6961 14.5145C16.6961 14.0588 17.0673 13.6876 17.523 13.6876C17.9787 13.6876 18.3499 14.0588 18.3499 14.5145C18.3499 14.9702 17.9787 15.3414 17.523 15.3414ZM6.47702 15.3414C6.02131 15.3414 5.65011 14.9702 5.65011 14.5145C5.65011 14.0588 6.02131 13.6876 6.47702 13.6876C6.93272 13.6876 7.30392 14.0588 7.30392 14.5145C7.30392 14.9702 6.93272 15.3414 6.47702 15.3414ZM17.9366 10.6622L19.7401 7.53835C19.8643 7.32332 19.7909 7.04944 19.5759 6.92523C19.3609 6.80102 19.087 6.87441 18.9628 7.08944L17.135 10.2559C15.6888 9.59604 13.8837 9.17244 12 9.17244C10.1163 9.17244 8.3112 9.59604 6.86503 10.2559L5.03723 7.08944C4.91302 6.87441 4.63914 6.80102 4.42411 6.92523C4.20908 7.04944 4.13569 7.32332 4.25990 7.53835L6.06341 10.6622C3.12461 12.234 1.13745 15.2115 1.05479 18.7301H22.9452C22.8625 15.2115 20.8753 12.234 17.9366 10.6622Z" />
+        </svg>
+      ),
+    },
+    {
+      name: "Deployment",
+      versions: "Windows Edition & Barebone (Linux)",
+      icon: <ServerIcon className="w-12 h-12 text-blue-600" />,
+    },
   ];
 
   const keyBenefits = [
@@ -108,45 +231,70 @@ const SmartphoneEraserPage = memo(() => {
     {
       title: "Tamper-Proof Reports",
       desc: "Generates verifiable erasure reports & certificates in PDF, CSV & XML formats. Customize with your company logo & watermark for audit trails.",
-      icon: <FileText className="w-8 h-8" />,
+      icon: <FileCheck className="w-8 h-8" />,
       color: "from-slate-700 to-slate-900",
     },
   ];
 
-  const features = [
+  const moreFeatures = [
     {
-      title: "Unified iOS & Android App",
-      desc: "Single unified application to erase iPhones, iPads & Android devices. Supports iOS v7+ for erasure and Android v5+.",
-      icon: <Smartphone className="w-6 h-6" />,
+      title: "Unified iOS & Android",
+      desc: "Single application to securely erase data from both iOS and Android devices, including tablets and eSIM profiles.",
+      icon: <Layout className="w-6 h-6" />,
+      color: "from-blue-500 to-indigo-600"
     },
     {
-      title: "Cloud Console",
-      desc: "Dashboard to create users, manage license distribution & maintain a central repository of reports & certificates accessible anytime.",
+      title: "Cloud Console Control",
+      desc: "Centralized dashboard for user management, license distribution, and audit-ready report storage.",
       icon: <Cloud className="w-6 h-6" />,
+      color: "from-emerald-500 to-teal-600"
     },
     {
-      title: "Configuration & Automation",
-      desc: "Automate erasure workflows, print labels with device details for tracking, and customize USB port names for easy identification.",
-      icon: <Settings className="w-6 h-6" />,
+      title: "ERP/API Connectivity",
+      desc: "Integrated with industry-leading ERPs (Macro/Razor) and a cloud API for seamless data flow into your ITAM system.",
+      icon: <Workflow className="w-6 h-6" />,
+      color: "from-amber-500 to-orange-600"
     },
     {
-      title: "ERP & API Integration",
-      desc: "Cloud-based API for report transfer into IT Asset Management software. Connects with Razor & MakorERP for seamless data flow.",
-      icon: <RefreshCcw className="w-6 h-6" />,
+      title: "Automatic Verification",
+      desc: "Every erasure is automatically verified and generates a tamper-proof certificate beyond the scope of recovery.",
+      icon: <ShieldCheck className="w-6 h-6" />,
+      color: "from-purple-500 to-pink-600"
     },
+    {
+      title: "Batch Processing",
+      desc: "Process up to 40 mobile devices simultaneously on a single workstation to maximize productivity.",
+      icon: <Zap className="w-5 h-5" />,
+    },
+    {
+      title: "IMEI 1 & 2 Retrieval",
+      desc: "Automatically fetch core hardware identifiers including IMEI 1, IMEI 2, ESN, and Serial Numbers.",
+      icon: <TagIcon className="w-5 h-5" />,
+    },
+    {
+      title: "Label Printing",
+      desc: "Automated label generation with device details for effortless tracking in large-scale warehouses.",
+      icon: <FileCheck className="w-5 h-5" />,
+    },
+    {
+      title: "Customizable Reports",
+      desc: "Add your company logo and watermark to tamper-proof PDF, CSV, and XML reports.",
+      icon: <ClipboardIcon className="w-5 h-5" />,
+    }
   ];
+
 
   return (
     <>
       <SEOHead
         seo={{
           title: "Smartphone Eraser | Secure iOS & Android Data Destruction | D-Secure",
-          description: "Certified data erasure software for ITADs and mobile retailers. Permanently wipe iPhones, iPads, and Android devices with 50+ tests and audit-ready reports.",
+          description: "Regulatory data erasure software for ITADs and mobile retailers. Permanently wipe iPhones, iPads, and Android devices with 50+ tests and audit-ready reports.",
           keywords: "mobile eraser, smartphone data destruction, iPhone wiping software, android secure erase, ITAD mobile processing, NIST 800-88 mobile",
           canonicalUrl: "https://dsecuretech.com/products/smartphone-eraser",
         }}
       />
-      
+
       {/* ================= STICKY SECTION NAV ================= */}
       <div
         className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -183,15 +331,12 @@ const SmartphoneEraserPage = memo(() => {
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-slate-50">
         {/* ================= HERO SECTION ================= */}
-        <section id="overview" className="pt-12 pb-20 lg:pt-20 lg:pb-32 overflow-hidden">
+        <section id="overview" className="pt-6 pb-12 lg:pt-10 lg:pb-16 overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
               <Reveal>
                 <div className="space-y-8">
-                  <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold">
-                    <CheckCircle className="w-4 h-4" />
-                    Certified Mobile Data Erasure
-                  </div>
+                  <UpcomingBadge className="mb-4" />
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight">
                     Smartphone{" "}
@@ -201,109 +346,155 @@ const SmartphoneEraserPage = memo(() => {
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    The enterprise standard for high-volume mobile device sanitization. 
+                    The enterprise standard for high-volume mobile device sanitization.
                     Permanently wipe iOS & Android devices beyond forensic recovery.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                      onClick={() => scrollToSection("contact")}
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                     >
-                      Upcoming
+                      Request Early Access
                     </button>
                     <button
-                      onClick={() => scrollToSection("standards")}
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-200 bg-white text-emerald-800 font-bold px-8 py-4 rounded-xl hover:bg-emerald-50 transition-all"
+                      onClick={downloadCatalog}
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
-                      View Mobile Standards
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      Download Datasheet
                     </button>
                   </div>
                 </div>
               </Reveal>
 
-              {/* Right: Laptop + USB connected devices visual */}
+              {/* Right: Monitor + Hub + 5 Phones Visual */}
               <Reveal delayMs={100}>
-                <div className="relative group">
-                  <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-400 to-teal-400 rounded-[3rem] blur-3xl opacity-20 group-hover:opacity-30 transition-opacity animate-pulse"></div>
-                  <div className="relative max-w-[520px] mx-auto lg:mx-0">
-                    {/* ── LAPTOP ── */}
-                    <div className="relative bg-slate-800 rounded-t-2xl p-1 border-4 border-slate-700 shadow-2xl">
-                      {/* Laptop screen */}
-                      <div className="bg-slate-950 rounded-t-xl p-5 min-h-[220px]">
-                        {/* D-Secure software UI on screen */}
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                          <span className="ml-2 text-[10px] text-slate-500 font-mono">D-Secure Smartphone Eraser v4.2</span>
+                <div className="relative group perspective-1000">
+                  <div className="absolute -inset-10 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                  <div className="relative flex flex-col items-center scale-[0.8] lg:scale-90 origin-top">
+
+                    {/* ── MONITOR ── */}
+                    <div className="w-[340px] h-[220px] bg-slate-800 rounded-2xl p-2.5 border-4 border-slate-700 shadow-2xl relative z-20">
+                      <div className="w-full h-full bg-white rounded-lg overflow-hidden relative flex flex-col items-center justify-center border border-slate-200">
+                        {/* Binary Background Pattern */}
+                        <div className="absolute inset-0 opacity-[0.03] select-none pointer-events-none font-mono text-[8px] leading-[10px] break-all overflow-hidden p-1">
+                          {Array(10).fill("101010101010101010101010101010101010101010101010101010").join("\n")}
                         </div>
-                        {/* Device slots grid */}
-                        <div className="grid grid-cols-3 gap-2">
-                          {/* Device 1 — wiping */}
-                          <div className="bg-emerald-900/40 border border-emerald-500/30 rounded-lg p-2.5 text-center">
-                            <Smartphone className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-                            <p className="text-[9px] text-white/70 font-medium">iPhone 15</p>
-                            <p className="text-emerald-400 text-xs font-bold mt-1">87%</p>
-                            <div className="h-1 bg-slate-700 rounded-full mt-1"><div className="h-1 bg-emerald-400 rounded-full w-[87%] animate-pulse"></div></div>
+
+                        {/* Heartbeat Line (Animates across) */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-20 overflow-hidden">
+                          <svg className="w-full h-24 text-emerald-600" viewBox="0 0 400 100" preserveAspectRatio="none">
+                            <path
+                              d="M0 50 L150 50 L160 20 L175 80 L190 20 L200 80 L210 50 L400 50"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              className="animate-pulse"
+                              strokeDasharray="400"
+                              strokeDashoffset="400"
+                              style={{ animation: 'dash 3s linear infinite' }}
+                            />
+                          </svg>
+                        </div>
+
+                        {/* Central Shield + Eraser */}
+                        <div className="relative z-10 flex flex-col items-center">
+                          <div className="relative w-20 h-24 flex items-center justify-center">
+                            <Shield className="w-full h-full text-emerald-600 fill-emerald-50/10" strokeWidth={1.5} />
+                            <div className="absolute inset-0 flex items-center justify-center pt-2">
+                              <Eraser className="w-10 h-10 text-emerald-600" />
+                            </div>
                           </div>
-                          {/* Device 2 — wiping */}
-                          <div className="bg-emerald-900/40 border border-emerald-500/30 rounded-lg p-2.5 text-center">
-                            <Smartphone className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-                            <p className="text-[9px] text-white/70 font-medium">Galaxy S24</p>
-                            <p className="text-emerald-400 text-xs font-bold mt-1">42%</p>
-                            <div className="h-1 bg-slate-700 rounded-full mt-1"><div className="h-1 bg-emerald-400 rounded-full w-[42%] animate-pulse"></div></div>
-                          </div>
-                          {/* Device 3 — complete */}
-                          <div className="bg-teal-900/30 border border-teal-500/20 rounded-lg p-2.5 text-center">
-                            <Smartphone className="w-5 h-5 text-teal-400 mx-auto mb-1" />
-                            <p className="text-[9px] text-white/70 font-medium">Pixel 8</p>
-                            <CheckCircle className="w-4 h-4 text-emerald-400 mx-auto mt-1" />
-                            <p className="text-[8px] text-emerald-400 font-bold mt-0.5">DONE</p>
+                          <div className="mt-4 font-black text-[14px] text-slate-800 tracking-wider">
+                            Smartphone Eraser
                           </div>
                         </div>
-                        {/* Status bar */}
-                        <div className="mt-3 flex items-center justify-between">
-                          <span className="text-[9px] text-slate-400 font-mono">3 devices connected • NIST 800-88</span>
-                          <span className="text-[9px] text-emerald-400 font-bold">● ACTIVE</span>
-                        </div>
+                      </div>
+
+                      {/* Monitor Stand */}
+                      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                        <div className="w-8 h-12 bg-slate-700"></div>
+                        <div className="w-32 h-3 bg-slate-800 rounded-full border-t border-slate-600"></div>
                       </div>
                     </div>
-                    {/* Laptop base/hinge */}
-                    <div className="bg-gradient-to-b from-slate-600 to-slate-500 h-3 rounded-b-lg mx-4 shadow-lg"></div>
-                    <div className="bg-slate-400/60 h-1.5 rounded-b-xl mx-8"></div>
 
-                    {/* ── USB CABLES + PHONES ── */}
-                    <div className="flex justify-around mt-6 px-2">
-                      {/* Phone 1 with USB line */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-0.5 h-8 bg-gradient-to-b from-slate-400 to-emerald-400 animate-pulse"></div>
-                        <div className="bg-slate-900 rounded-xl p-2 border-2 border-slate-700 w-14 h-24 flex flex-col items-center justify-center shadow-lg">
-                          <Smartphone className="w-5 h-5 text-emerald-400 mb-1" />
-                          <div className="text-[8px] text-emerald-400 font-bold">87%</div>
-                          <div className="h-0.5 bg-slate-600 rounded-full w-8 mt-1"><div className="h-0.5 bg-emerald-400 rounded-full w-[87%]"></div></div>
+                    {/* ── CABLE FROM MONITOR TO HUB ── */}
+                    <div className="w-0.5 h-10 bg-slate-400 mt-12 relative z-10 box-border border-r-2 border-slate-300"></div>
+
+                    {/* ── HUB ── */}
+                    <div className="w-32 h-10 bg-white border-2 border-slate-300 rounded-lg shadow-md flex items-center justify-around px-2 relative z-20">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <div key={i} className="w-3 h-1.5 bg-slate-200 rounded-sm border border-slate-300"></div>
+                      ))}
+                    </div>
+
+                    {/* ── CABLES FROM HUB TO PHONES (SVG) ── */}
+                    <div className="relative w-full h-12 -mt-2">
+                      <svg className="w-full h-full stroke-slate-400 fill-none" preserveAspectRatio="none">
+                        <path d="M260 0 C 260 20, 60 20, 60 40" />
+                        <path d="M260 0 C 260 20, 160 20, 160 40" />
+                        <path d="M260 0 C 260 20, 260 20, 260 40" />
+                        <path d="M260 0 C 260 20, 360 20, 360 40" />
+                        <path d="M260 0 C 260 20, 460 20, 460 40" />
+                      </svg>
+                    </div>
+
+                    {/* ── FIVE PHONES ── */}
+                    <div className="flex justify-between w-[520px] px-2 -mt-4">
+                      {[
+                        { type: 'erase', fill: 85 },
+                        { type: 'diag', fill: 40 },
+                        { type: 'erase', fill: 100 },
+                        { type: 'diag', fill: 65 },
+                        { type: 'erase', fill: 20 }
+                      ].map((phone, i) => (
+                        <div key={i} className="flex flex-col items-center">
+                          <div className="w-20 h-32 bg-white rounded-xl border-2 border-slate-300 p-1.5 shadow-lg relative overflow-hidden group/phone hover:border-emerald-400 transition-colors">
+                            {/* Filling animation */}
+                            <div
+                              className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-500/40 to-emerald-400/10 rounded-b-lg transition-all duration-1000`}
+                              style={{ height: `${phone.fill}%` }}
+                            ></div>
+
+                            <div className="relative h-full flex flex-col items-center justify-center">
+                              {phone.type === 'erase' ? (
+                                <div className="relative w-10 h-12 flex items-center justify-center">
+                                  <Shield className="w-full h-full text-emerald-600 opacity-80" strokeWidth={1} />
+                                  <div className="absolute inset-0 flex items-center justify-center pt-1">
+                                    <Eraser className="w-4 h-4 text-emerald-600" />
+                                  </div>
+                                </div>
+                              ) : (
+                                <Activity className="w-8 h-8 text-emerald-600 opacity-80 animate-pulse" />
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      {/* Phone 2 with USB line */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-0.5 h-8 bg-gradient-to-b from-slate-400 to-emerald-400 animate-pulse" style={{animationDelay: '0.3s'}}></div>
-                        <div className="bg-slate-900 rounded-xl p-2 border-2 border-slate-700 w-14 h-24 flex flex-col items-center justify-center shadow-lg">
-                          <Smartphone className="w-5 h-5 text-emerald-400 mb-1" />
-                          <div className="text-[8px] text-emerald-400 font-bold">42%</div>
-                          <div className="h-0.5 bg-slate-600 rounded-full w-8 mt-1"><div className="h-0.5 bg-emerald-400 rounded-full w-[42%]"></div></div>
-                        </div>
-                      </div>
-                      {/* Phone 3 with USB line */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-0.5 h-8 bg-gradient-to-b from-slate-400 to-teal-400"></div>
-                        <div className="bg-slate-900 rounded-xl p-2 border-2 border-teal-600/50 w-14 h-24 flex flex-col items-center justify-center shadow-lg">
-                          <Smartphone className="w-5 h-5 text-teal-400 mb-1" />
-                          <CheckCircle className="w-4 h-4 text-emerald-400" />
-                          <div className="text-[7px] text-emerald-400 font-bold mt-0.5">DONE</div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
+
+                  {/* CSS for dash animation */}
+                  <style>{`
+                    @keyframes dash {
+                      from { stroke-dashoffset: 400; }
+                      to { stroke-dashoffset: 0; }
+                    }
+                  `}</style>
                 </div>
               </Reveal>
             </div>
@@ -326,7 +517,7 @@ const SmartphoneEraserPage = memo(() => {
               {[
                 { step: "01", title: "Connect", desc: "Plug in up to 40 devices per workstation using standard USB hubs.", icon: <Smartphone className="w-6 h-6" /> },
                 { step: "02", title: "Config", desc: "Software auto-detects model, OS, and IMEI metadata instantly.", icon: <Settings className="w-6 h-6" /> },
-                { step: "03", title: "Erase", desc: "Run certified erasure in parallel across all connected devices.", icon: <Zap className="w-6 h-6" /> },
+                { step: "03", title: "Erase", desc: "Run regulatory erasure in parallel across all connected devices.", icon: <Zap className="w-6 h-6" /> },
                 { step: "04", title: "Verify", desc: "Generate tamper-proof reports and print identification labels.", icon: <CheckCircle className="w-6 h-6" /> },
               ].map((item) => (
                 <Reveal key={item.title} delayMs={Number.parseInt(item.step) * 100}>
@@ -346,27 +537,28 @@ const SmartphoneEraserPage = memo(() => {
           </div>
         </section>
 
-        {/* ================= KEY BENEFITS ================= */}
-        <section id="benefits" className="py-20 lg:py-32 bg-slate-900">
+        {/* ================= ERASE TYPES ================= */}
+        <section id="erase-types" className="py-20 lg:py-32 bg-white">
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-16 lg:mb-24">
-                <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">Designed for Performance</h2>
-                <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                  Handle the complexities of mobile asset disposition with a solution that prioritizes security and speed.
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6">Complete Sanitization</h2>
+                <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                  Go beyond standard factory resets. Our solution wipes every trace of sensitive data to ensure absolute privacy.
                 </p>
               </div>
             </Reveal>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {keyBenefits.map((benefit) => (
-                <Reveal key={benefit.title} delayMs={keyBenefits.indexOf(benefit) * 100}>
-                  <div className="relative p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/[0.08] transition-all h-full">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${benefit.color} text-white flex items-center justify-center mb-6 shadow-lg`}>
-                      {benefit.icon}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {eraseTypes.map((type, i) => (
+                <Reveal key={type.title} delayMs={i * 100}>
+                  <div className="group relative p-8 rounded-3xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-emerald-200 hover:shadow-2xl transition-all h-full overflow-hidden">
+                    <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${type.color} opacity-[0.03] -mr-16 -mt-16 rounded-full transition-all group-hover:scale-110`}></div>
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${type.color} text-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+                      {type.icon}
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-4">{benefit.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">{benefit.desc}</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">{type.title}</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">{type.desc}</p>
                   </div>
                 </Reveal>
               ))}
@@ -374,82 +566,178 @@ const SmartphoneEraserPage = memo(() => {
           </div>
         </section>
 
-        {/* ================= STANDARDS ================= */}
-        <section id="standards" className="py-20 lg:py-32 bg-white">
-          <div className="container mx-auto px-4 max-w-7xl">
+        {/* ================= COMPLIANCE (was STANDARDS) ================= */}
+        <section id="compliance" className="py-20 lg:py-32 bg-slate-900 overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500 rounded-full blur-[120px]"></div>
+          </div>
+          <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <Reveal>
                 <div className="space-y-8">
-                  <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 leading-tight">
-                    Compliant with 14+ <br />
-                    <span className="text-emerald-700">Global Standards</span>
+                  <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold border border-emerald-500/20">
+                    Audit-Ready Implementation
+                  </div>
+                  <h2 className="text-3xl lg:text-5xl font-bold text-white leading-tight">
+                    Global Certification <br />
+                    <span className="text-emerald-500">& Compliance</span>
                   </h2>
-                  <p className="text-lg text-slate-600 leading-relaxed">
-                    Choose from a wide array of internationally recognized data erasure algorithms to meet your specific regional or industry compliance requirements.
+                  <p className="text-lg text-slate-400 leading-relaxed">
+                    Our methods are regulatory and tested by global bodies to meet the most stringent data sanitization requirements across all industries.
                   </p>
+
                   <div className="grid grid-cols-2 gap-4">
                     {[
                       "NIST 800-88 Clear",
                       "NIST 800-88 Purge",
                       "IEEE 2883:2022 Clear",
                       "IEEE 2883:2022 Purge",
-                      "DoD 5220.22-M (3 Pass)",
-                      "DoD 5220.22-M ECE (7 Pass)",
+                      "US DoD 5220.22-M (3 Pass)",
+                      "US DoD 5220.22-M ECE (7 Pass)",
                       "Peter Gutmann (35 Pass)",
-                      "B. Schneier's Algorithm",
+                      "B. Schneier's Algorithm (7 Pass)",
                       "British HMG IS5 (3 Pass)",
                       "US Army AR 380-19",
                       "US Air Force AFSSI-5020",
-                      "Native OS Erasure",
+                      "Common Criteria (EAL 2)",
+                      "ISO 27001 Compliant",
                     ].map((std) => (
-                      <div key={std} className="flex items-center gap-3 text-slate-700 font-medium text-sm">
+                      <div key={std} className="flex items-center gap-3 text-slate-300 font-medium text-sm">
                         <CheckIcon className="w-5 h-5 text-emerald-500 flex-shrink-0" />
                         {std}
                       </div>
                     ))}
                   </div>
-                  <button className="text-emerald-700 font-bold flex items-center gap-2 hover:gap-3 transition-all pt-4">
-                    View Technical Specifications <ArrowRight className="w-5 h-5" />
-                  </button>
                 </div>
               </Reveal>
+
               <Reveal delayMs={200}>
-                <div className="grid grid-cols-2 gap-6 p-10 bg-emerald-50 rounded-[3rem] border border-emerald-100">
-                   {features.map((feat) => (
-                     <div key={feat.title} className="space-y-4">
-                        <div className="w-10 h-10 rounded-xl bg-white text-emerald-700 flex items-center justify-center shadow-sm">
-                          {feat.icon}
-                        </div>
-                        <h4 className="font-bold text-slate-900">{feat.title}</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">{feat.desc}</p>
-                     </div>
-                   ))}
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-8 lg:p-12 backdrop-blur-sm shadow-2xl">
+                  <div className="flex flex-col items-center text-center space-y-6">
+                    <div className="w-20 h-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mb-4">
+                      <ShieldCheck className="w-10 h-10" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white">Tamper-Proof Certificates</h3>
+                    <p className="text-slate-400 max-w-sm">
+                      Each erasure generates a verifiable JSON or PDF certificate signed with a cryptographical hash for complete audit readiness.
+                    </p>
+                    <div className="pt-6 border-t border-white/5 w-full grid grid-cols-2 gap-8 text-left">
+                       <div>
+                          <p className="text-xs text-slate-500 font-bold mb-2 tracking-widest">OUTPUT FORMATS</p>
+                          <p className="text-sm text-slate-300">PDF, CSV, XML, JSON</p>
+                       </div>
+                       <div>
+                          <p className="text-xs text-slate-500 font-bold mb-2 tracking-widest">VALIDITY</p>
+                          <p className="text-sm text-emerald-500">Global Legal Compliance</p>
+                       </div>
+                    </div>
+                  </div>
                 </div>
               </Reveal>
             </div>
           </div>
         </section>
 
+        {/* ================= PLATFORMS ================= */}
+        <section id="platforms" className="py-20 lg:py-32 bg-emerald-50/50">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <Reveal>
+              <div className="text-center mb-16 lg:mb-24">
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6">Platform Support</h2>
+                <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                  Cross-platform compatibility ensuring no device is left vulnerable.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {platforms.map((p, i) => (
+                <Reveal key={p.name} delayMs={i * 100}>
+                  <div className="p-8 rounded-3xl bg-white border border-emerald-100 shadow-xl hover:shadow-2xl transition-all text-center group">
+                    <div className="w-20 h-20 mx-auto bg-slate-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      {p.icon}
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">{p.name}</h3>
+                    <p className="text-emerald-700 font-semibold text-sm mb-4">{p.versions}</p>
+                    <div className="h-1 w-12 bg-emerald-500 mx-auto rounded-full"></div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ================= FEATURES ================= */}
+        <section id="features" className="py-20 lg:py-32 bg-white">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <Reveal>
+              <div className="text-center mb-16 lg:mb-24">
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6">Advanced Capabilities</h2>
+                <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                  Powered by next-gen technology to automate your mobile asset circular economy.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {moreFeatures.map((feat, i) => (
+                <Reveal key={feat.title} delayMs={i * 100}>
+                  <div className="p-8 rounded-3xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-emerald-200 transition-all h-full">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-6">
+                      {feat.icon}
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 mb-4">{feat.title}</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">{feat.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ================= USE CASES ================= */}
+        <section id="use-cases" className="py-20 lg:py-32 bg-slate-900 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-emerald-500/10 blur-[120px] rounded-full"></div>
+          <div className="container mx-auto px-4 max-w-7xl relative z-10">
+            <Reveal>
+              <div className="text-center mb-16 lg:mb-24">
+                <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">Circular Economy Enabler</h2>
+                <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                  From single devices to warehouse-level processing, we provide the backbone for secure mobile recycling.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {useCases.map((use, i) => (
+                <Reveal key={use.title} delayMs={i * 100}>
+                  <div className="flex items-start gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/[0.08] transition-all">
+                    <div className="w-16 h-16 flex-shrink-0 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center">
+                      {use.icon}
+                    </div>
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-bold text-white">{use.title}</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed">{use.desc}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ================= FAQ SECTION ================= */}
-        <section id="faq" className="py-20 lg:py-32 bg-slate-50">
+        <section id="faq" className="py-20 lg:py-32 bg-emerald-50/50">
           <div className="container mx-auto px-4 max-w-4xl">
             <Reveal>
               <div className="text-center mb-16">
-                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
-                <p className="text-lg text-slate-600">Common questions about Smartphone Eraser deployment.</p>
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6">Common Questions</h2>
+                <p className="text-lg text-slate-600">Expert answers for your security concerns.</p>
               </div>
             </Reveal>
 
             <div className="space-y-4">
               {[
-                {
-                  q: "How many devices can be erased simultaneously?",
-                  a: "D-Secure Smartphone Eraser supports parallel processing of up to 40 devices simultaneously on a single workstation. You can have multiple workstations to increase simultaneous erasure capacity, all managed via a central cloud console.",
-                },
-                {
-                  q: "Does it support eSIM un-enrollment?",
-                  a: "Yes, our software supports eSIM erasure — it specifically identifies and permanently removes eSIM profiles and cellular configurations during the data destruction process, ensuring the device is fully carrier-agnostic for resale.",
-                },
                 {
                   q: "Can I erase locked iPhones or devices with broken screens?",
                   a: "Yes, you can erase locked iPhones — the lock will remain post-erasure. For devices with broken screens or in recovery modes, our Linux-based (Barebone) edition can perform erasure and diagnostics without requiring screen interaction.",
@@ -489,41 +777,18 @@ const SmartphoneEraserPage = memo(() => {
           </div>
         </section>
 
-        {/* ================= CTA ================= */}
-        <section id="contact" className="py-20 lg:py-32">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <Reveal>
-              <div className="relative bg-emerald-600 rounded-[3rem] p-10 lg:p-20 text-center overflow-hidden">
-                {/* Background patterns */}
-                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                  <div className="absolute top-0 left-10 w-96 h-96 bg-white rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
-                  <div className="absolute bottom-0 right-10 w-96 h-96 bg-teal-300 rounded-full translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-                </div>
-
-                <div className="relative z-10 max-w-3xl mx-auto space-y-10">
-                  <h2 className="text-3xl lg:text-5xl font-extrabold text-white leading-tight">
-                    Scale Your Mobile Disposal Business Today
-                  </h2>
-                  <p className="text-lg lg:text-xl text-emerald-50 leading-relaxed">
-                    Join leading ITADs and mobile retailers using D-Secure to process thousands of devices with 100% data security guarantee.
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <button
-                      disabled
-                      className="w-full sm:w-auto bg-slate-400 text-white font-bold px-10 py-5 rounded-2xl cursor-not-allowed opacity-80 shadow-xl"
-                    >
-                      Upcoming
-                    </button>
-                    <button
-                      disabled
-                      className="w-full sm:w-auto border border-white/30 text-white/50 font-bold px-10 py-5 rounded-2xl cursor-not-allowed opacity-50"
-                    >
-                      Upcoming
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+        {/* ================= CONTACT / CTA ================= */}
+        <section id="contact" className="py-24 lg:py-40 bg-white border-t overflow-hidden relative">
+           {/* Subtle background patterns */}
+           <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+           <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-[140px] translate-x-1/4 translate-y-1/4 pointer-events-none"></div>
+          <div className="container mx-auto px-4 max-w-7xl relative z-10">
+            <ProductContactForm 
+              source="Smartphone Eraser Page Contact"
+              solutionType="mobile-erasure"
+              title="Scale Your Mobile Disposal Business Today"
+              subtitle="Join leading ITADs and mobile retailers using D-Secure to process thousands of devices with 100% data security guarantee."
+            />
           </div>
         </section>
       </div>

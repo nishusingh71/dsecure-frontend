@@ -1,9 +1,8 @@
 import React, { useState, memo, useEffect } from "react";
 import { ENV } from "../config/env";
-import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CustomLicenseModal, {
   CustomLicenseData,
 } from "../components/CustomLicenseModal";
@@ -16,14 +15,29 @@ import {
   useFormSubmission,
   formDataTransformers,
 } from "@/hooks/useFormSubmission";
-import { api } from "@/utils/apiClient"; // ✅ Pre-load API client for instant access
+// Dodo Payments Overlay Checkout SDK
+import { initDodoCheckout, openOverlayCheckout } from "@/utils/dodoCheckout";
 
 const PricingAndPlanPage: React.FC = memo(() => {
   const { toast, showToast, hideToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("drive-eraser");
-  const [selectedLicenses, setSelectedLicenses] = useState("100");
+  // Har product ke liye alag quantity maintain karne ke liye state object
+  const [licenseQuantities, setLicenseQuantities] = useState<Record<string, string>>({
+    "drive-eraser": "1",
+    "file-eraser": "1",
+    "hardware-diagnostics": "100",
+    "smart-diagnostic": "1"
+  });
+  // Current selected category ki quantity nikalna
+  const selectedLicenses = licenseQuantities[selectedCategory] || "1";
+  // Quantity update karne wala helper function
+  const setSelectedLicenses = (val: string) => {
+    setLicenseQuantities(prev => ({ ...prev, [selectedCategory]: val }));
+  };
+
+
   const [selectedYears, setSelectedYears] = useState("1");
   const [selectedOS, setSelectedOS] = useState("Select");
   const [deliveryMethod, setDeliveryMethod] = useState("electronic");
@@ -40,17 +54,20 @@ const PricingAndPlanPage: React.FC = memo(() => {
     setIsBuyNowLoading(false);
   }, []);
 
-  // ✅ Preload API client on component mount for instant checkout
+  // ✅ Dodo Payments SDK initialize on mount — overlay mode
   useEffect(() => {
-    // Warm up API client connection (non-blocking)
-    if (typeof window !== "undefined") {
-      // Prefetch DNS for payment domain
-      const link = document.createElement("link");
-      link.rel = "dns-prefetch";
-      link.href = "https://checkout.dodopayments.com";
-      document.head.appendChild(link);
-    }
-  }, []);
+    initDodoCheckout({
+      onComplete: () => {
+        console.log('✅ Payment complete — redirecting to success page');
+        setIsBuyNowLoading(false);
+        navigate('/order-success');
+      },
+      onClose: () => {
+        console.log('🔶 User ne checkout band kiya');
+        setIsBuyNowLoading(false);
+      },
+    });
+  }, [navigate]);
 
   // Read URL parameters and set initial state
   useEffect(() => {
@@ -74,15 +91,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
       if (mappedPlan) {
         setSelectedPlan(mappedPlan);
       }
+
     }
 
     const productFromUrl = searchParams.get("product");
     if (productFromUrl) {
       setSelectedCategory(productFromUrl);
-      if (productFromUrl === "hardware-diagnostics") {
-        setSelectedLicenses("100");
-      }
     }
+
 
     // Read section parameter to expand File Eraser section if needed
     const sectionFromUrl = searchParams.get("section");
@@ -165,7 +181,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         (window as any).gtag("event", "custom_license_request", {
           event_category: "sales",
           event_label: selectedCategory,
-          value: parseInt(data.numberOfLicenses || "0"),
+          value: Number.parseInt(data.numberOfLicenses || "0"),
         });
       }
 
@@ -251,7 +267,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         (window as any).gtag("event", "special_pricing_request", {
           event_category: "sales",
           event_label: data.organizationType,
-          value: parseInt(data.numberOfLicenses || "0"),
+          value: Number.parseInt(data.numberOfLicenses || "0"),
         });
       }
     },
@@ -536,7 +552,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     years: string,
     plan: string,
   ) => {
-    const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
+    const licenseCount = licenses === "custom" ? 0 : Number.parseInt(licenses);
 
     if (category === "drive-eraser") {
       // Drive Eraser: $25 for standard, $30 for diagnostics
@@ -551,13 +567,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     if (category === "smart-diagnostic") {
       // Smart Diagnostic: $20 per license per year
-      const yearCount = parseInt(years);
+      const yearCount = Number.parseInt(years);
       return Math.round(20 * licenseCount * yearCount * 100) / 100;
     }
 
     // File Eraser: $40 per license per year
     const basePrice = 40;
-    const yearCount = parseInt(years);
+    const yearCount = Number.parseInt(years);
     const baseTotal =
       Math.round(basePrice * licenseCount * yearCount * 100) / 100;
     return baseTotal;
@@ -646,7 +662,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       originalPrice: driveEraserVariant === "diagnostics" ? 60 : 50,
       discountPercentage: "50% OFF",
       selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per Use)",
+      selectionNote: "(Pay-per-use)",
       options: [
         "1",
         "10",
@@ -671,7 +687,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       originalPrice: 60,
       discountPercentage: "33% OFF",
       selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per License)",
+      selectionNote: "(Pay per year license)",
       options: [
         "1",
         "10",
@@ -697,7 +713,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       originalPrice: 20,
       discountPercentage: "50% OFF",
       selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per Use)",
+      selectionNote: "(Pay-per-use)",
       options: [
         "1",
         "10",
@@ -723,7 +739,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       originalPrice: 40,
       discountPercentage: "50% OFF",
       selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per License)",
+      selectionNote: "(Pay per year license)",
       options: [
         "1",
         "10",
@@ -769,12 +785,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
 
     if (selectedCategory === "smart-diagnostic") {
-      return `Smart Diagnostic - ${selectedLicenses} licenses × ${selectedYears} year${parseInt(selectedYears) > 1 ? "s" : ""}`;
+      return `Smart Diagnostic - ${selectedLicenses} licenses × ${selectedYears} year${Number.parseInt(selectedYears) > 1 ? "s" : ""}`;
     }
 
     // File Eraser plan-based subtitle
     let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
-    subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? "s" : ""}`;
+    subtitle += ` × ${selectedYears} year${Number.parseInt(selectedYears) > 1 ? "s" : ""}`;
 
     return subtitle;
   };
@@ -784,22 +800,22 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return "Tailored to your needs";
 
     if (selectedCategory === "drive-eraser") {
-      return "Drive Eraser @ $20.00/license (one-time purchase)";
+      return "Drive Eraser @ $20.00/license (One-time purchase)";
     }
 
     if (selectedCategory === "hardware-diagnostics") {
-      return "Hardware Diagnostic @ $10.00/license (one-time purchase)";
+      return "Hardware Diagnostic @ $10.00/license (One-time purchase)";
     }
 
     if (selectedCategory === "smart-diagnostic") {
-      return `Smart Diagnostic @ $20.00/license/year ${parseInt(selectedYears) > 1 ? `× ${selectedYears} years` : ""}`;
+      return `Smart Diagnostic @ $20.00/license/year ${Number.parseInt(selectedYears) > 1 ? `× ${selectedYears} years` : ""}`;
     }
 
     // File Eraser plan-based pricing
     const currentPlan = getCurrentPlan();
     let note = `Professional @ $40.00/license/year`;
 
-    if (parseInt(selectedYears) > 1) {
+    if (Number.parseInt(selectedYears) > 1) {
       note += ` × ${selectedYears} years`;
     }
 
@@ -871,73 +887,35 @@ const PricingAndPlanPage: React.FC = memo(() => {
     };
 
     try {
-      // 3. Category ke hisab se sahi link uthao
-      // const baseLink = BASE_LINKS[selectedCategory];
+      const quantity = Number.parseInt(selectedLicenses) || 1;
 
-      // if (!baseLink) {
-      //   showToast('Product link not found.', 'error');
-      //   setIsBuyNowLoading(false);
-      //   return;
-      // }
-      // setIsBuyNowLoading(false);
+      // 🔑 Reference ID generate karo
+      const clientRef = crypto.randomUUID();
+      localStorage.setItem("pending_client_ref", clientRef);
 
-      // // 4. Quantity nikalo (Dropdown se)
-      // const quantity = parseInt(selectedLicenses) || 1;
-
-      // // 5. Link mein dynamically quantity add karo
-      // // Logic: Agar link mein pehle se '?' hai toh '&' lagao, nahi toh '?' lagao
-      // // const separator = baseLink.includes('?') ? '&' : '?';
-
-      // // Final URL banega: https://.../pdt_ID?quantity=10
-      // const finalUrl = `${baseLink}${quantity}`;
-
-      // // 6. Redirect User
-      // window.location.href = finalUrl;
-
-      const baseLink = BASE_LINKS[selectedCategory];
-      if (!baseLink) {
-        showToast("Product link not found.", "error");
-        setIsBuyNowLoading(false);
-        return;
-      }
-
-      // Handle Drive Eraser Diagnostics variant with a hardcoded session URL
+      // Drive Eraser Diagnostics variant ke liye alag product ID
+      let checkoutProductId = productId;
       if (
         selectedCategory === "drive-eraser" &&
         driveEraserVariant === "diagnostics"
       ) {
-        window.location.href =
-          "https://checkout.dodopayments.com/buy/pdt_0NaKDbbTvncIVcoWRoVvZ?session=sess_sda39m73yW";
-        return;
+        checkoutProductId = "pdt_0NaKDbbTvncIVcoWRoVvZ";
       }
 
-      const quantity = parseInt(selectedLicenses) || 1;
+      // ── OLD REDIRECT CODE (commented out) ──
+      // const baseLink = BASE_LINKS[selectedCategory];
+      // const finalUrl = `${baseLink}${quantity}&client_ref=${clientRef}&redirect_url=${redirectUrl}&cancel_url=${failureUrl}`;
+      // window.location.href = finalUrl;
 
-      // 🔑 Generate your own reference ID (optional but recommended)
-      const clientRef = crypto.randomUUID();
-
-      // Optional: store locally for fallback
-      localStorage.setItem("pending_client_ref", clientRef);
-
-      // Redirect URL (single router page or success page)
-      const redirectUrl = encodeURIComponent(
-        "https://dsecuretech.com/order-success",
+      // ── NEW: Overlay Checkout — SDK apna full-screen overlay dikhayega ──
+      openOverlayCheckout(
+        checkoutProductId,
+        quantity,
+        'https://dsecuretech.com/order-success'
       );
-      const failureUrl = encodeURIComponent(
-        "https://dsecuretech.com/order-failed",
-      );
-      // Final checkout URL
-      const finalUrl =
-        `${baseLink}` +
-        `${quantity}` +
-        `&client_ref=${clientRef}` +
-        `&redirect_url=${redirectUrl}` +
-        `&cancel_url=${failureUrl}`;
 
-      // 🚀 Instant redirect
-      window.location.href = finalUrl;
     } catch (error) {
-      console.error("Navigation error:", error);
+      console.error("Checkout error:", error);
       showToast("Something went wrong. Please try again.", "error");
       setIsBuyNowLoading(false);
     }
@@ -1014,7 +992,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   onClick={() => {
                     setActiveTab("diagnostics");
                     setSelectedCategory("hardware-diagnostics");
-                    setSelectedLicenses("100"); // Reset to 100 for diagnostics
                     navigate(`/pricing-and-plan?product=hardware-diagnostics`, {
                       replace: true,
                     });
@@ -1059,7 +1036,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   onClick={() => {
                     setSelectedCategory(category.id);
                     if (category.id === "hardware-diagnostics") {
-                      setSelectedLicenses("100");
                       setActiveTab("diagnostics");
                     } else if (category.id === "smart-diagnostic") {
                       setActiveTab("diagnostics");
@@ -1250,7 +1226,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               <button
                                 onClick={() => {
                                   const current =
-                                    parseInt(selectedLicenses) || 100;
+                                    Number.parseInt(selectedLicenses) || 100;
                                   if (current > 100) {
                                     setSelectedLicenses(
                                       (current - 100).toString(),
@@ -1274,7 +1250,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               <button
                                 onClick={() => {
                                   const current =
-                                    parseInt(selectedLicenses) || 100;
+                                    Number.parseInt(selectedLicenses) || 100;
                                   if (current === 1) {
                                     setSelectedLicenses("100");
                                   } else {
@@ -1348,9 +1324,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             getCurrentProduct().originalPrice *
                             (selectedLicenses === "custom"
                               ? 0
-                              : parseInt(selectedLicenses)) *
+                              : Number.parseInt(selectedLicenses)) *
                             (selectedCategory === "file-eraser"
-                              ? parseInt(selectedYears)
+                              ? Number.parseInt(selectedYears)
                               : 1)
                           ).toFixed(2)}
                         </div>
@@ -1507,6 +1483,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
           isLoading={isSpecialPricingSubmitting}
         />
       )}
+
+
     </>
   );
 });

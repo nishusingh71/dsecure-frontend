@@ -78,7 +78,7 @@ const navigationTree: NavItem[] = [
               <li><strong>License Status</strong> — Connection and offline mode availability</li>
             </ul>
             <p className="text-slate-700 leading-relaxed mb-4">Click the <strong>"Start Drive Sanitization"</strong> button to begin the erasure process.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="D-Secure Drive Eraser Welcome Screen with System Summary" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="D-Secure Drive Eraser Welcome Screen with System Summary" />
           </>
         ),
       },
@@ -95,7 +95,7 @@ const navigationTree: NavItem[] = [
               <li><strong>Drive Enumeration</strong> — Lists all detected storage devices with model, serial, and capacity information</li>
             </ul>
             <p className="text-slate-700 leading-relaxed mb-4">A loading spinner with status messages is displayed during this process. The status bar at the bottom shows <strong>"Initializing"</strong> while detection is in progress.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Detecting Hardware" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Detecting Hardware" />
           </>
         ),
       },
@@ -111,7 +111,7 @@ const navigationTree: NavItem[] = [
                 <p className="text-slate-700 leading-relaxed mb-4">After hardware detection, a <strong>Network Connection</strong> dialog appears prompting you to connect to the internet for license validation. The Wi-Fi tab displays all available wireless networks.</p>
                 <p className="text-slate-700 leading-relaxed mb-4">Each network entry shows the <strong>network name (SSID)</strong>, <strong>signal strength</strong>, <strong>security status</strong>, and <strong>frequency band</strong> (2.4 GHz or 5 GHz). Click on a network to connect.</p>
                 <p className="text-slate-700 leading-relaxed mb-4">You can also click <strong>"Skip"</strong> to proceed without a network connection and use offline mode instead.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Network Connection - Wi-Fi Networks" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Network Connection - Wi-Fi Networks" />
               </>
             ),
           },
@@ -122,7 +122,7 @@ const navigationTree: NavItem[] = [
               <>
                 <p className="text-slate-700 leading-relaxed mb-4">Switch to the <strong>"LAN / Ethernet"</strong> tab for wired connections. This option is ideal for enterprise environments where wired connections are more reliable.</p>
                 <p className="text-slate-700 leading-relaxed mb-4">If no Ethernet cable is detected, click <strong>"Detect LAN Connection"</strong> after plugging in the cable. The system will automatically configure the network using DHCP.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773305219/zrkffe7ylntxde56budn.png" alt="Network Connection - LAN / Ethernet" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305219/zrkffe7ylntxde56budn.png" alt="Network Connection - LAN / Ethernet" />
               </>
             ),
           },
@@ -133,9 +133,31 @@ const navigationTree: NavItem[] = [
         title: "Authentication & Login",
         content: (
           <>
-            <p className="text-slate-700 leading-relaxed mb-4">After the network setup, the <strong>Authentication Required</strong> screen is displayed. Enter your <strong>Email Address</strong> and <strong>Password</strong> and click <strong>"Login"</strong> to authenticate.</p>
-            <p className="text-slate-700 leading-relaxed mb-4">If you are in an air-gapped environment, click <strong>"Continue in Offline Mode"</strong> to proceed with offline activation.</p>
-            <p className="text-slate-600 text-sm italic">Note: The top-right corner shows the connection status and quick-access icons for Wi-Fi and LAN settings.</p>
+            <p className="text-slate-700 leading-relaxed mb-4">
+              After network setup, the <strong>Authentication Required</strong> screen appears. Enter your registered <strong>Email Address</strong> and <strong>Password</strong> and click <strong>"Login"</strong> to authenticate. After a successful login, you will be connected to the cloud console, and your license credits (Wipes) will be updated.
+            </p>
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+              <p className="text-blue-900 font-semibold mb-1">Pro Tip:</p>
+              <p className="text-blue-800 text-sm">If you are logging in for the first time, ensure your internet connection is stable for license synchronization.</p>
+            </div>
+            <p className="text-slate-700 leading-relaxed mb-4">If you are in an environment where the internet is not available, click <strong>"Continue in Offline Mode"</strong>. You can then follow the offline activation process.</p>
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png" alt="Authentication & Login Interface" />
+            
+            <h4 className="text-base font-semibold text-slate-800 mt-8 mb-4">Getting Started - Product Screenshots</h4>
+            <div className="space-y-6">
+              <div>
+                <p className="text-slate-700 mb-2"><strong>1. Welcome Screen:</strong> This is the first screen after the system boots, showing hardware information.</p>
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="Welcome Screen" />
+              </div>
+              <div>
+                <p className="text-slate-700 mb-2"><strong>2. Hardware Detection:</strong> This process scans all connected SATA, NVMe, and USB drives.</p>
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Hardware Detection" />
+              </div>
+              <div>
+                <p className="text-slate-700 mb-2"><strong>3. Wi-Fi Setup:</strong> List of available wireless networks and signal strength can be seen here.</p>
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Wi-Fi Setup" />
+              </div>
+            </div>
           </>
         ),
       },
@@ -150,7 +172,7 @@ const navigationTree: NavItem[] = [
               <p className="text-slate-700"><strong>Step 2 — Enter Activation Code:</strong> Enter the received activation code and click <strong>"Verify & Activate"</strong> to complete the activation.</p>
             </div>
             <p className="text-slate-700 leading-relaxed mb-4">Click <strong>"Back to Login"</strong> to return to the login screen, or use <strong>"Continue in Offline Mode"</strong> to proceed with limited functionality.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772417779/e7sdh1mazppjy3ikjrrz.png" alt="Offline Activation" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/e7sdh1mazppjy3ikjrrz.png" alt="Offline Activation" />
           </>
         ),
       },
@@ -176,10 +198,10 @@ const navigationTree: NavItem[] = [
               <li><strong>Statistics Card</strong> — Cumulative erasure statistics</li>
               <li><strong>Action Buttons</strong> — "Start New Drive Erasure" and "View Reports"</li>
             </ul>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773300694/whegkqyd3tp2cg7neowp.png" alt="Dashboard Overview" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300694/whegkqyd3tp2cg7neowp.png" alt="Dashboard Overview" />
             <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">Recently Wiped Drives:</h4>
             <p className="text-slate-700 leading-relaxed mb-4">Below the main cards, the <strong>Recently Wiped Drives</strong> section shows history of sanitized drives.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772417779/lpnzpozpc3dnlyjmqmfc.png" alt="Recently Wiped Drives" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/lpnzpozpc3dnlyjmqmfc.png" alt="Recently Wiped Drives" />
           </>
         ),
       },
@@ -201,7 +223,7 @@ const navigationTree: NavItem[] = [
                   <li><strong>System Drive Warning</strong> — Drives marked "SYSTEM" contain the boot environment</li>
                 </ul>
                 <p className="text-slate-700 leading-relaxed mb-4">Select a drive (highlighted with green border) and click <strong>"Continue with Selected Drive"</strong>.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303765/usmphwsihzdg4s5y2637.png" alt="Step 1: Drive Detection" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303765/usmphwsihzdg4s5y2637.png" alt="Step 1: Drive Detection" />
               </>
             ),
           },
@@ -218,10 +240,10 @@ const navigationTree: NavItem[] = [
                   <li><strong>Estimated Time</strong> — Approximate time for the selected method</li>
                 </ul>
                 <p className="text-slate-700 leading-relaxed mb-4">An <strong>"Irreversible Operation"</strong> warning reminds you that all data will be permanently destroyed. Click <strong>"Proceed to Confirmation"</strong> to continue.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303839/svli2uykco9hme2sk0oh.png" alt="Step 2: Wipe Configuration" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png" alt="Step 2: Wipe Configuration" />
                 <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">With Method Selected:</h4>
                 <p className="text-slate-700 leading-relaxed mb-4">Once you select an erasure method and verification level, the configuration summary updates with estimated completion time.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303839/svli2uykco9hme2sk0oh.png" alt="Wipe Configuration with Method Selected" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png" alt="Wipe Configuration with Method Selected" />
               </>
             ),
           },
@@ -230,23 +252,50 @@ const navigationTree: NavItem[] = [
             title: "Step 3: Destructive Confirmation",
             content: (
               <>
-                <p className="text-slate-700 leading-relaxed mb-4"><strong>Step 3</strong> is the final safety checkpoint with a prominent <strong>DESTRUCTIVE OPERATION</strong> warning.</p>
-                <h4 className="text-base font-semibold text-slate-800 mb-3">Confirmation Details:</h4>
+                <p className="text-slate-700 leading-relaxed mb-4"><strong>Step 3</strong> is the final security checkpoint where a clear <strong>DESTRUCTIVE OPERATION</strong> warning is given. You must confirm the selected drive and wipe method here.</p>
                 <ul className="list-disc list-inside space-y-2 text-slate-700 ml-4 mb-4">
-                  <li><strong>Drive</strong> — Selected drive model</li>
-                  <li><strong>Serial</strong> — Drive serial number</li>
-                  <li><strong>Capacity</strong> — Total drive capacity</li>
-                  <li><strong>Method</strong> — Selected erasure standard</li>
-                  <li><strong>Verification</strong> — Selected verification level</li>
+                  <li><strong>Drive Details:</strong> Re-check the model, serial, and capacity.</li>
+                  <li><strong>Method & Verification:</strong> Ensure you have selected the correct standards.</li>
                 </ul>
-                <h4 className="text-base font-semibold text-slate-800 mb-3">Critical Warnings:</h4>
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                  <p className="text-red-900 font-semibold mb-1">Warning:</p>
+                  <p className="text-red-800 text-sm">Once the wipe starts, it cannot be recovered. Data will be permanently destroyed.</p>
+                </div>
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303719/vlshsgzlgnsfu1drxhvh.png" alt="Step 3: Destructive Confirmation" />
+              </>
+            ),
+          },
+          {
+            id: "step4-wipe-progress",
+            title: "Step 4: Wipe Progress Monitoring",
+            content: (
+              <>
+                <p className="text-slate-700 leading-relaxed mb-4">After confirmation, the erasure process begins. You can track progress in real-time.</p>
                 <ul className="list-disc list-inside space-y-2 text-slate-700 ml-4 mb-4">
-                  <li>All data will be permanently destroyed</li>
-                  <li>This operation cannot be cancelled once started</li>
-                  <li>Data recovery will be impossible after completion</li>
-                  <li>Interrupting power during wipe may damage the drive</li>
+                  <li><strong>Progress Bar:</strong> Shows the overall process percentage.</li>
+                  <li><strong>Current Sector:</strong> Information on the disk sector currently being processed.</li>
+                  <li><strong>Speed:</strong> Real-time data erasure speed (MB/s).</li>
+                  <li><strong>Time Elapsed/Remaining:</strong> Time passed and estimated time left.</li>
                 </ul>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303719/vlshsgzlgnsfu1drxhvh.png" alt="Step 3: Destructive Confirmation" />
+                <p className="text-slate-700 leading-relaxed mb-4">If you need to stop the process in an emergency, use the <strong>"Stop"</strong> button at the bottom.</p>
+                <div className="bg-emerald-50 border-l-4 border-emerald-500 p-4 mt-4">
+                  <p className="text-emerald-900 font-medium">Shredding Animation: A professional shredding animation indicates that data is being securely destroyed.</p>
+                </div>
+              </>
+            ),
+          },
+          {
+            id: "step5-completion",
+            title: "Step 5: Completion & Report Generation",
+            content: (
+              <>
+                <p className="text-slate-700 leading-relaxed mb-4">Upon completion, the system shows a <strong>Success Notification</strong>. This means every sector of the drive has been successfully overwritten.</p>
+                <div className="bg-emerald-50 border-emerald-500 border rounded-lg p-6 mb-6">
+                  <h5 className="text-emerald-800 font-bold mb-2">Drive Sanitized Successfully!</h5>
+                  <p className="text-emerald-700 text-sm">A tamper-proof erasure certificate (Report) has been automatically generated. You can view it by clicking the "View Report" button.</p>
+                </div>
+                <p className="text-slate-700 leading-relaxed mb-4">The report includes full drive details, the algorithm used (e.g., NIST 800-88), and verification status. You can save it to a USB or upload it directly to the D-Secure cloud.</p>
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Erasure Completion & Report" />
               </>
             ),
           },
@@ -264,7 +313,7 @@ const navigationTree: NavItem[] = [
               <li><strong>Status Filter</strong> — All Statuses, Completed, Failed, In Progress</li>
               <li><strong>Reports Table</strong> — Report ID, Drive Serial, Method, Date, Status, Action</li>
             </ul>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports & Compliance Certificates" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports Interface" />
           </>
         ),
       },
@@ -283,10 +332,10 @@ const navigationTree: NavItem[] = [
                   <li><strong>Appearance / Theme</strong> — Light, Dark (Default Boot), D-Secure Green, D-Secure Light</li>
                   <li><strong>Defaults</strong> — Default Wipe Method and Verification Level</li>
                 </ul>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - General" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - General" />
                 <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">Default Wipe Method & Verification:</h4>
                 <p className="text-slate-700 leading-relaxed mb-4">Scroll down to set defaults that will be pre-selected for every new erasure session.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - Default Wipe Method" />
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - Default Wipe Method" />
               </>
             ),
           },
@@ -295,8 +344,28 @@ const navigationTree: NavItem[] = [
             title: "Account Settings",
             content: (
               <>
-                <p className="text-slate-700 leading-relaxed mb-4">The <strong>Account</strong> tab allows you to manage your user profile and license information.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773304035/ctjtcp2leqj5c2rarmei.png" alt="Settings - Account" />
+                <p className="text-slate-700 leading-relaxed mb-4">The <strong>Account</strong> tab allows you to manage your user profile and license information. You can see how many wipes have been used and how many remain.</p>
+                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304035/ctjtcp2leqj5c2rarmei.png" alt="Settings - Account" />
+
+                <h4 className="text-base font-semibold text-slate-800 mt-12 mb-4">Reports & Settings - Product Screenshots</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-slate-700 mb-2 text-sm font-medium">Reports Dashboard:</p>
+                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports Interface" />
+                  </div>
+                  <div>
+                    <p className="text-slate-700 mb-2 text-sm font-medium">General Settings:</p>
+                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="General Settings" />
+                  </div>
+                  <div>
+                    <p className="text-slate-700 mb-2 text-sm font-medium">Help Documentation:</p>
+                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303943/cvfupwsy8iejwrxi5jzj.png" alt="Help Page Interface" />
+                  </div>
+                  <div>
+                    <p className="text-slate-700 mb-2 text-sm font-medium">Software Details (About):</p>
+                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Interface" />
+                  </div>
+                </div>
               </>
             ),
           },
@@ -321,7 +390,7 @@ const navigationTree: NavItem[] = [
               <li><strong>Memory</strong> — 16 GB DDR4</li>
               <li><strong>Firmware Mode</strong> — UEFI</li>
             </ul>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Page" />
+            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Page" />
           </>
         ),
       },

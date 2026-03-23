@@ -18,7 +18,7 @@ import {
   HoverIcon,
   CheckIcon,
 } from "@/components/FlatIcons";
-import { Activity, Cpu, HardDrive, Zap, RefreshCcw, Smartphone, Database } from "lucide-react";
+import { Activity, Cpu, HardDrive, Zap, RefreshCcw, Smartphone, Database, Server, Layers, Monitor } from "lucide-react";
 
 /* ───────────── data ───────────── */
 
@@ -43,6 +43,34 @@ const solutions = [
     icon: ClipboardIcon,
     color: "teal",
     link: "/products/file-eraser",
+  },
+  {
+    title: "Removable Media Eraser",
+    desc: "Securely erase data from USB sticks, SD cards, and other removable flash storage. Supports 20+ global standards and generates tamper-proof certificates.",
+    icon: Database,
+    color: "emerald",
+    link: "/products/removable-media-eraser",
+  },
+  {
+    title: "LUN Eraser",
+    desc: "Securely erase logical unit numbers (LUNs) in complex storage environments. Supports hot-swapping and multiple simultaneous erasures without downtime.",
+    icon: Server,
+    color: "cyan",
+    link: "/products/lun-eraser",
+  },
+  {
+    title: "Virtual Machine Eraser",
+    desc: "Securely wipe virtual machines across leading platforms like VMware and Hyper-V. Centralized reporting and audit trails for compliance.",
+    icon: Layers,
+    color: "teal",
+    link: "/products/virtual-machine-eraser",
+  },
+  {
+    title: "Asset Reimaging",
+    desc: "High-speed automated system deployment and reimaging for IT assets. Standardize OS and software configurations across your entire fleet.",
+    icon: RefreshCcw,
+    color: "blue",
+    link: "/products/asset-reimaging",
   },
   {
     title: "Smartphone Eraser",
