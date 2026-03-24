@@ -25,12 +25,12 @@ dist-ssr
 
 # Screenshots and Images (unwanted tracking)
 src/assets/Screenshots/
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
-*.webp
+# Allow images in src/assets for branding/UI
+!src/assets/**/*.png
+!src/assets/**/*.jpg
+!src/assets/**/*.jpeg
+!src/assets/**/*.svg
+!src/assets/**/*.webp
 
 # Desktop folder and unwanted assets
 src/assets/Desktop/
