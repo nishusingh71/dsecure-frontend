@@ -1,5 +1,7 @@
 import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ENV } from "@/config/env";
+import { CloudinaryImage } from "@/components/CloudinaryImage";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
@@ -21,6 +23,7 @@ import {
   BarChart3,
   RefreshCw,
 } from "lucide-react";
+import { getSEOForPage } from "@/utils/seo";
 
 /**
  * HardDriveMonitorPage component
@@ -133,16 +136,20 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
     }
   ];
 
+  // Datasheet डाउनलोड करने के लिए फंक्शन
+  const downloadDatasheet = () => {
+    const link = document.createElement("a");
+    link.href = "https://assets.dsecuretech.com/pdf/D-secure%20smart%20health%20diagnostic.pdf";
+    link.download = "D-secure-smart-health-diagnostic.pdf";
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "Smart Diagnostic - Real-time Disk Health & Performance Monitoring | D-Secure",
-          description: "Monitor smart diagnostic health, temperature, and performance in real-time. S.M.A.R.T. tracking, bad sector scanning, and disk cloning support for total data security.",
-          keywords: "smart diagnostic, disk health, SMART status, disk cloning, bad sector scan, temperature monitor, disk diagnostics",
-          canonicalUrl: "/products/smart-diagnostic",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("hard-drive-monitor")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -186,7 +193,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
               <Reveal>
-                <div className="space-y-8">
+                <div className="space-y-2">
                   <Reveal>
                     <UpcomingBadge className="mb-4" />
                   </Reveal>
@@ -208,7 +215,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                     Monitor health, SMART status, and temperature with total precision.
                   </p>
 
-                  {/* CTA Buttons - Matching File Eraser Style */}
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <button
                       onClick={() => scrollToSection("contact")}
                       className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
@@ -216,11 +223,25 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       Request Early Access
                     </button>
                     <button
-                      onClick={() => scrollToSection("features")}
+                      onClick={downloadDatasheet}
                       className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 font-bold px-8 py-4 rounded-xl hover:bg-emerald-50 transition-all duration-300"
                     >
-                      Explore Features
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      Download Datasheet
                     </button>
+                  </div>
                 </div>
               </Reveal>
 
@@ -330,7 +351,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       </div>
                       <div>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Storage Temp</p>
-                        <p className="text-sm font-black text-slate-900">Optimal (32°C)</p>
+                        <p className="text-sm font-bold text-slate-900">Optimal (32°C)</p>
                       </div>
                     </div>
                   </div>
@@ -343,11 +364,11 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                           <circle cx="22" cy="22" r="18" fill="transparent" stroke="#f1f5f9" strokeWidth="4" />
                           <circle cx="22" cy="22" r="18" fill="transparent" stroke="#10b981" strokeWidth="4" strokeDasharray="113" strokeDashoffset="11" strokeLinecap="round" className="animate-pulse" />
                         </svg>
-                        <span className="absolute text-[10px] font-black text-emerald-800">92%</span>
+                        <span className="absolute text-[10px] font-bold text-emerald-800">92%</span>
                       </div>
                       <div>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Disk Health</p>
-                        <p className="text-sm font-black text-slate-900">Excellent</p>
+                        <p className="text-sm font-bold text-slate-900">Excellent</p>
                       </div>
                     </div>
                   </div>
@@ -361,7 +382,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       <div>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Performance</p>
                         <div className="flex items-center gap-1.5">
-                           <p className="text-sm font-black text-slate-900">Ultra fast</p>
+                           <p className="text-sm font-bold text-slate-900">Ultra fast</p>
                            <div className="flex gap-0.5">
                               {[1,2,3,4,5].map(i => <div key={i} className={`w-1 h-3 rounded-full ${i <= 4 ? 'bg-cyan-500' : 'bg-slate-200'}`}></div>)}
                            </div>
@@ -374,7 +395,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                   <div className="absolute bottom-1/4 -left-16 bg-gradient-to-r from-emerald-500 to-teal-600 p-[1px] rounded-full shadow-lg animate-[float_7s_ease-in-out_infinite_1.5s] hidden lg:block z-30">
                     <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2">
                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
-                       <span className="text-[10px] font-black text-slate-800 uppercase tracking-tighter">S.M.A.R.T. Status: Passed</span>
+                       <span className="text-[10px] font-bold text-slate-800 uppercase tracking-tighter">S.M.A.R.T. Status: Passed</span>
                     </div>
                   </div>
 
@@ -400,10 +421,11 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
               <Reveal>
                 <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-900 group">
                   <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent"></div>
-                  <img 
-                    src="/images/products/drive-monitor-health.png" 
+                  <CloudinaryImage 
+                    publicId="dsecure/products/drive-monitor-health" 
                     alt="SMART Status Reporting Interface Details" 
                     className="w-full h-auto scale-105 group-hover:scale-100 transition-transform duration-700 opacity-90"
+                    fallback="/images/products/drive-monitor-health.png"
                   />
                 </div>
               </Reveal>
@@ -504,11 +526,12 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
               </Reveal>
               <Reveal delayMs={200}>
                 <div className="relative p-4 bg-white rounded-3xl shadow-2xl group border border-emerald-50 overflow-hidden">
-                   <img 
-                    src="/images/products/drive-monitor-cloning-fixed.png" 
-                    alt="D-Secure Drive Cloning Application Screen Preview" 
-                    className="w-full h-auto rounded-2xl group-hover:scale-105 transition-all duration-700"
-                   />
+                   <CloudinaryImage 
+                    publicId="dsecure/products/drive-monitor-cloning" 
+                    alt="Sector-by-Sector Cloning Operation" 
+                    className="w-full h-auto scale-105 group-hover:scale-100 transition-transform duration-700 opacity-90"
+                    fallback="/images/products/drive-monitor-cloning-fixed.png"
+                  />
 
                 </div>
               </Reveal>
@@ -599,7 +622,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                 <div className="flex flex-col sm:flex-row justify-center gap-6">
                   <Link 
                     to="/contact" 
-                    className="inline-flex items-center justify-center bg-white text-emerald-700 px-12 py-5 rounded-2xl font-black transition-all duration-300 hover:scale-105 shadow-xl"
+                    className="inline-flex items-center justify-center bg-white text-emerald-700 px-12 py-5 rounded-2xl font-bold transition-all duration-300 hover:scale-105 shadow-xl"
                   >
                     Get Business Quote
                   </Link>

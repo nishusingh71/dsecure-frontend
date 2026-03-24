@@ -261,7 +261,7 @@ const DriveVerifierPage: React.FC = memo(function DriveVerifierPage() {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage("driveVerifier")} />
+      <SEOHead seo={getSEOForPage("drive-verifier")} />
 
       {/* Sticky Nav */}
       <div

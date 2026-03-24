@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
+import { getSEOForPage } from "@/utils/seo";
 import {
   Zap,
   ChevronDown,
@@ -134,14 +135,7 @@ const DataMigrationPage = memo(() => {
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "D-Secure Data Migration | Secure Enterprise Data Transfer Product",
-          description: "D-Secure Data Migration provides professional, zero-loss data transition across Cloud, Database, and Infrastructure. Enterprise-grade security for mission-critical workloads.",
-          keywords: "data migration tool, enterprise data transfer, cloud migration software, database migration, secure data transition, D-Secure",
-          canonicalUrl: "https://dsecuretech.com/products/data-migration",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("data-migration")} />
       
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -194,9 +188,9 @@ const DataMigrationPage = memo(() => {
                     Enterprise-Grade Data Transfer
                   </div>
 
-                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-[1.1]">
+                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-[1.1]">
                     D-Secure <br />
-                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent italic">
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                       Data Migration
                     </span>
                   </h1>
@@ -263,7 +257,7 @@ const DataMigrationPage = memo(() => {
                           <Zap className="w-12 h-12 lg:w-16 lg:h-16 text-white drop-shadow-lg" />
                         </div>
 
-                        <h3 className="text-white text-xl lg:text-3xl font-bold tracking-tight text-center mb-1 lg:mb-2 italic">
+                        <h3 className="text-white text-xl lg:text-3xl font-bold tracking-tight text-center mb-1 lg:mb-2">
                           Data Migration
                         </h3>
 
@@ -311,7 +305,7 @@ const DataMigrationPage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center max-w-3xl mx-auto mb-20">
-                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 italic tracking-tight underline decoration-emerald-500/30 decoration-8 underline-offset-8">
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
                   Our Migration Methodology
                 </h2>
                 <p className="text-lg text-slate-600 leading-relaxed font-medium">
@@ -330,7 +324,7 @@ const DataMigrationPage = memo(() => {
                ].map((item, idx) => (
                  <Reveal key={item.title} delayMs={idx * 100}>
                     <div className="relative p-8 rounded-[2rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl transition-all duration-500 h-full group text-center">
-                       <span className="absolute top-4 right-6 text-4xl font-black text-slate-200/50 group-hover:text-emerald-500/10 transition-colors uppercase italic">{item.step}</span>
+                       <span className="absolute top-4 right-6 text-4xl font-black text-slate-200/50 group-hover:text-emerald-500/10 transition-colors uppercase">{item.step}</span>
                        <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
                           {React.cloneElement(item.icon as React.ReactElement, { className: "w-6 h-6" })}
                        </div>
@@ -354,7 +348,7 @@ const DataMigrationPage = memo(() => {
                   <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full text-sm font-bold border border-emerald-500/20">
                     Engineered for Velocity
                   </div>
-                  <h2 className="text-4xl lg:text-6xl font-bold italic tracking-tight">
+                  <h2 className="text-4xl lg:text-6xl font-bold tracking-tight">
                     Near-Zero <br/>
                     <span className="text-emerald-500 text-5xl lg:text-7xl">Downtime.</span>
                   </h2>
@@ -414,7 +408,7 @@ const DataMigrationPage = memo(() => {
                              </div>
                              <div>
                                 <p className="text-[10px] text-emerald-100 font-bold uppercase tracking-widest">Active Integrity Guard</p>
-                                <p className="text-sm text-white font-bold italic">CRC-64 Validation Running</p>
+                                <p className="text-sm text-white font-bold">CRC-64 Validation Running</p>
                              </div>
                           </div>
                        </div>
@@ -435,7 +429,7 @@ const DataMigrationPage = memo(() => {
                 <div className="relative">
                   <div className="absolute -top-20 -left-20 w-64 h-64 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
                   <div className="relative z-10 space-y-8">
-                    <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 leading-tight italic tracking-tight">
+                    <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 leading-tight tracking-tight">
                       Fortified <br/>
                       <span className="text-emerald-600">Data Integrity.</span>
                     </h2>
@@ -472,7 +466,7 @@ const DataMigrationPage = memo(() => {
                          <ShieldCheck className="w-8 h-8 text-white" />
                       </div>
                       <div>
-                         <h3 className="text-2xl font-bold italic">Compliance Ready</h3>
+                         <h3 className="text-2xl font-bold">Compliance Ready</h3>
                          <p className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Global Standards Met</p>
                       </div>
                    </div>
@@ -516,7 +510,7 @@ const DataMigrationPage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center max-w-3xl mx-auto mb-20">
-                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 italic tracking-tight">
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
                   Tailored for Every <span className="text-emerald-600">Scenario.</span>
                 </h2>
                 <p className="text-lg text-slate-600 leading-relaxed font-medium">
@@ -554,7 +548,7 @@ const DataMigrationPage = memo(() => {
                        <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-8 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
                           {React.cloneElement(useCase.icon as React.ReactElement, { className: "w-8 h-8" })}
                        </div>
-                       <h3 className="text-2xl font-bold text-slate-900 mb-4 italic tracking-tight">{useCase.title}</h3>
+                       <h3 className="text-2xl font-bold text-slate-900 mb-4 tracking-tight">{useCase.title}</h3>
                        <p className="text-slate-500 text-sm leading-relaxed mb-8">{useCase.desc}</p>
                        
                        <div className="mt-auto w-full pt-8 border-t border-slate-100">
@@ -578,7 +572,7 @@ const DataMigrationPage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center max-w-3xl mx-auto mb-20">
-                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 italic tracking-tight">
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
                   Technical <span className="text-emerald-600">Specifications.</span>
                 </h2>
                 <p className="text-lg text-slate-600 font-medium">
@@ -616,7 +610,7 @@ const DataMigrationPage = memo(() => {
                           <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
                              {React.cloneElement(spec.icon as React.ReactElement, { className: "w-5 h-5" })}
                           </div>
-                          <h4 className="text-lg font-extrabold text-slate-900 tracking-tight">{spec.category}</h4>
+                          <h4 className="text-lg font-bold text-slate-900 tracking-tight">{spec.category}</h4>
                        </div>
                        <ul className="grid grid-cols-1 gap-3">
                           {spec.items.map(item => (
@@ -639,7 +633,7 @@ const DataMigrationPage = memo(() => {
            <div className="container mx-auto px-4 max-w-7xl">
               <Reveal>
                  <div className="text-left mb-16">
-                    <h2 className="text-3xl lg:text-5xl font-bold italic tracking-tight underline decoration-emerald-500/30 decoration-4 underline-offset-8">Advanced Capabilities</h2>
+                    <h2 className="text-3xl lg:text-5xl font-bold tracking-tight">Advanced Capabilities</h2>
                  </div>
               </Reveal>
               
@@ -673,7 +667,7 @@ const DataMigrationPage = memo(() => {
           <div className="container mx-auto px-4 max-w-4xl">
             <Reveal>
               <div className="text-center mb-16 lg:mb-20">
-                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 italic tracking-tight">Migration Q&A</h2>
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 tracking-tight">Migration Q&A</h2>
               </div>
             </Reveal>
 

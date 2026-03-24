@@ -28,6 +28,7 @@ import {
   Radio,
   Mic,
 } from "lucide-react";
+import { getSEOForPage } from "@/utils/seo";
 import { 
   BuildingIcon,
   GlobeIcon,
@@ -241,14 +242,7 @@ const SmartphoneDiagnosticPage = memo(() => {
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "Smartphone Diagnostics | 50+ Automated Health Tests | D-Secure",
-          description: "Comprehensive mobile diagnostic software for iOS & Android. Run 50+ automated tests, check IMEI status, detect MDM/FRP, and grade devices accurately.",
-          keywords: "smartphone diagnostics, mobile test software, iPhone hardware check, android diagnostic tool, IMEI lookup, MDM detection, device grading",
-          canonicalUrl: "https://dsecuretech.com/products/smartphone-diagnostic",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("smartphone-diagnostic")} />
       
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -293,7 +287,7 @@ const SmartphoneDiagnosticPage = memo(() => {
                 <div className="space-y-8">
                   <UpcomingBadge className="mb-4" />
 
-                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight">
+                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
                     Smartphone{" "}
                     <span className="bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent">
                       Diagnostics

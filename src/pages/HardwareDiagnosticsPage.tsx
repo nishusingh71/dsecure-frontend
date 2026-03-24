@@ -614,16 +614,7 @@ const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
   ];
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "D-Secure Hardware Diagnostics | PC & Mac (M1-M4) Diagnostic Tool",
-          description:
-            "Professional hardware diagnostics for PC, Laptop & Apple Mac (Intel & Silicon M1-M4). Mass diagnose 255+ machines via PXE boot with tamper-proof reports.",
-          keywords:
-            "hardware diagnostics, mac diagnostics, apple silicon m4 test, pxe boot diagnostics, pc diagnostic software, laptop health check, MDM detection",
-          canonicalUrl: "https://dsecuretech.com/products/device-analytics",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("hardware-diagnostics")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div

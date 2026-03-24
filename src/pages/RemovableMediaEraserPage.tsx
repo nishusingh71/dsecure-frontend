@@ -5,13 +5,11 @@ import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
 import {
-  ShieldIcon,
   CheckIcon,
   ArrowRightIcon,
-  GlobeIcon,
   GearIcon,
 } from "@/components/FlatIcons";
-import { FileTextIcon, Download, Zap, Database, Smartphone, HardDrive, RefreshCcw, Layers } from "lucide-react";
+import { FileTextIcon, Download, Zap, Database, HardDrive, Server, RefreshCcw, Activity } from "lucide-react";
 import { getSEOForPage } from "@/utils/seo";
 import { ProductContactForm } from "@/components/forms/ProductContactForm";
 
@@ -22,14 +20,14 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
   // Monitor scroll for sticky secondary nav
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
+      const scrollY = globalThis.scrollY;
       const shouldShow = scrollY > 400;
       setIsNavVisible(shouldShow);
 
       // Only dispatch event to hide/show main navbar on desktop (md+) screens
-      const isDesktop = window.innerWidth >= 768;
+      const isDesktop = globalThis.innerWidth >= 768;
       if (isDesktop) {
-        window.dispatchEvent(
+        globalThis.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
             detail: { visible: shouldShow },
           })
@@ -49,10 +47,10 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.dispatchEvent(
+      globalThis.removeEventListener("scroll", handleScroll);
+      globalThis.dispatchEvent(
         new CustomEvent("stickyNavVisible", {
           detail: { visible: false },
         })
@@ -65,8 +63,8 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
     if (element) {
       const offset = 100;
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
+      const offsetPosition = elementPosition + globalThis.pageYOffset - offset;
+      globalThis.scrollTo({
         top: offsetPosition,
         behavior: "smooth"
       });
@@ -92,7 +90,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
     {
       name: "SD & MicroSD Cards",
       desc: "Critical for mobile device security, ensuring no sensitive data remains on external memory cards.",
-      icon: <Smartphone className="w-6 h-6" />,
+      icon: <Activity className="w-6 h-6" />, // Changed from Smartphone
       color: "from-blue-500 to-indigo-600"
     },
     {
@@ -104,32 +102,14 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
     {
       name: "Flash Memory Devices",
       desc: "Broad support for MP3 players, digital cameras, and other removable flash storage.",
-      icon: <Layers className="w-6 h-6" />,
+      icon: <Server className="w-6 h-6" />, // Changed from Layers
       color: "from-teal-500 to-emerald-700"
-    }
-  ];
-
-  const highlights = [
-    {
-      title: "100%",
-      label: "Tamper-proof audit trail with digitally signed certificates.",
-      icon: <ShieldIcon className="w-5 h-5" />
-    },
-    {
-      title: "24+",
-      label: "Simultaneous erasure of flash drives for high-volume processing.",
-      icon: <Layers className="w-5 h-5" />
-    },
-    {
-      title: "25+",
-      label: "Standards for data erasure including NIST & DoD.",
-      icon: <GlobeIcon className="w-5 h-5" />
     }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      <SEOHead {...getSEOForPage("removable-media-eraser")} />
+      <SEOHead seo={getSEOForPage("removable-media-eraser")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -187,7 +167,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
                 </Reveal>
                 
                 <Reveal delayMs={100}>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.1] mb-4 tracking-tight">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.1] mb-4 tracking-tight">
                     Securely Erase <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">USB & Flash</span> Drives
                   </h1>
                 </Reveal>
@@ -207,7 +187,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
                       Request Early Access
                     </button>
                     <a 
-                      href="#" 
+                      href="/contact" 
                       className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 rounded-xl font-bold text-lg transition-all hover:border-emerald-300 flex items-center justify-center gap-3 shadow-md"
                     >
                       <Download className="w-5 h-5 text-emerald-600" />
@@ -300,7 +280,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
           <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <Reveal>
               <div className="text-center mb-16">
-                <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-6">Supported Memory Devices</h2>
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6">Supported Memory Devices</h2>
                 <div className="w-20 h-1.5 bg-emerald-500 mx-auto rounded-full mb-8"></div>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                    Comprehensive data destruction support for all types of flash memory and removable media.
@@ -310,7 +290,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {capabilities.map((item, i) => (
-                <Reveal key={i} delayMs={i * 100}>
+                <Reveal key={item.name} delayMs={i * 100}>
                   <div className="group bg-slate-50 hover:bg-white rounded-2xl p-8 border border-slate-200 hover:border-emerald-300 hover:shadow-2xl hover:shadow-emerald-200/20 transition-all duration-500 text-center">
                     <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
                        {item.icon}
@@ -395,7 +375,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
                               "Customized consolidated reports",
                               "Global regulatory compliance"
                             ].map((item, idx) => (
-                              <li key={idx} className="flex items-center gap-3 text-slate-300">
+                               <li key={item} className="flex items-center gap-3 text-slate-300">
                                 <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-slate-900 flex-shrink-0">
                                    <ArrowRightIcon className="w-3 h-3" />
                                 </div>
@@ -405,7 +385,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
                          </ul>
                          <button 
                            onClick={() => scrollToSection("contact")}
-                           className="mt-10 w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-black rounded-xl transition-all shadow-lg hover:shadow-emerald-500/20 uppercase tracking-widest text-sm"
+                           className="mt-10 w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold rounded-xl transition-all shadow-lg hover:shadow-emerald-500/20 uppercase tracking-widest text-sm"
                          >
                             Explore Case Studies
                          </button>

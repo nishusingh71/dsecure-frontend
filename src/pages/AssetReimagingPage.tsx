@@ -503,7 +503,7 @@ const AssetReimagingPage: React.FC = memo(function AssetReimagingPage() {
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-emerald-600 shadow-sm">
                   {group.icon}
                 </div>
-                <h3 className="text-2xl font-extrabold text-slate-900">{group.title}</h3>
+                <h3 className="text-2xl font-bold text-slate-900">{group.title}</h3>
                 <ul className="space-y-3">
                   {group.list.map((item) => (
                     <li key={item} className="flex items-center gap-2 text-slate-700">

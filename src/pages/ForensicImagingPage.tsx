@@ -1,32 +1,26 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
+import { getSEOForPage } from "@/utils/seo";
 import {
-  ShieldIcon, 
-  CheckIcon, 
-  ArrowRightIcon,
-  CloudIcon,
+  ShieldIcon,
+  CheckIcon,
   GearIcon,
   ClipboardIcon,
-  StarIcon,
+  TagIcon,
 } from "@/components/FlatIcons";
 import Reveal from "@/components/Reveal";
 import SEOHead from "../components/SEOHead";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { ProductContactForm } from "@/components/forms";
 import UpcomingBadge from "../components/ui/UpcomingBadge";
-import { 
-  FileCheck, 
-  ShieldCheck, 
-  Workflow, 
-  Activity, 
-  Cpu, 
-  Cloud, 
-  Download, 
-  X, 
-  Smartphone,
+import {
+  FileCheck,
+  ShieldCheck,
+  Workflow,
+  Activity,
+  Cpu,
+  Cloud,
   Zap,
-  Tag as TagIcon,
-  ChevronDown,
   HardDrive as HardDriveIcon,
   Database as DatabaseIcon,
   Layers as LayersIcon,
@@ -34,7 +28,8 @@ import {
   Lock as LockIcon,
   Boxes as BoxesIcon,
   RefreshCcw as RefreshCcwIcon,
-  FileText as FileTextIcon
+  FileText as FileTextIcon,
+  ChevronDown
 } from "lucide-react";
 
 const ForensicImagingPage = memo(() => {
@@ -242,14 +237,7 @@ const ForensicImagingPage = memo(() => {
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "Forensic Imaging Tool | Bit-for-Bit Data Acquisition | D-Secure",
-          description: "Professional forensic imaging software for secure data acquisition. Features physical write-blocking, MD5/SHA-256 verification, and support for all major file systems.",
-          keywords: "forensic imaging, disk cloning, write blocking, data acquisition, E01 imaging, dd image, forensic hash verification",
-          canonicalUrl: "https://dsecuretech.com/products/forensic-imaging",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("forensic-imaging")} />
       
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -300,7 +288,7 @@ const ForensicImagingPage = memo(() => {
                     Forensic-Grade Acquisition
                   </div>
 
-                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight">
+                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
                     D-Secure <br />
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                       Forensic Imaging
@@ -311,7 +299,6 @@ const ForensicImagingPage = memo(() => {
                     Create immutable, bit-for-bit duplicates of any storage media. Optimized for high-speed acquisition with built-in write-blocking and cryptographic verification.
                   </p>
 
-                  {/* Compliance Badges */}
                   <div className="flex flex-wrap items-center gap-3">
                     {["E01/Ex01", "dd (Raw)", "DMG", "VHDX", "AFF", "SMART"].map((badge) => (
                       <div
@@ -343,23 +330,18 @@ const ForensicImagingPage = memo(() => {
                 </div>
               </Reveal>
 
-              {/* Right: Forensic Imaging Visual (Modern Box Style) */}
               <Reveal delayMs={100}>
                 <div
                   className="relative flex items-center justify-center min-h-[400px] lg:min-h-[500px]"
                   style={{ perspective: "1000px" }}
                 >
-                  {/* Background Glow */}
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-200/30 blur-3xl rounded-full"></div>
 
-                  {/* Floating Particles */}
                   <div className="absolute top-[10%] left-[15%] w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-40"></div>
                   <div className="absolute bottom-[15%] right-[10%] w-2 h-2 bg-teal-400 rounded-full animate-ping opacity-40"></div>
 
-                  {/* Modern 3D Visual Container */}
                   <div className="relative group transition-transform duration-700 hover:rotate-y-12">
                      <div className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border border-emerald-50 overflow-hidden w-[280px] xs:w-[340px] lg:w-[380px] mx-auto transform hover:-translate-y-2 transition-all duration-500">
-                        {/* Internal UI elements */}
                         <div className="space-y-8">
                            <div className="flex items-center justify-between border-b pb-6 border-emerald-50">
                              <div className="flex items-center gap-4">
@@ -386,17 +368,17 @@ const ForensicImagingPage = memo(() => {
 
                            <div className="grid grid-cols-2 gap-4">
                               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left">
-                                 <p className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest text-left">Avg Speed</p>
+                                 <p className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Avg Speed</p>
                                  <p className="text-xl font-black text-slate-900">1.4 GB/s</p>
                               </div>
                               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left">
-                                 <p className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest text-left">Time left</p>
+                                 <p className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Time left</p>
                                  <p className="text-xl font-black text-slate-900">04:12</p>
                               </div>
                            </div>
 
                            <div className="p-5 bg-emerald-600 rounded-2xl shadow-xl shadow-emerald-200 text-left">
-                              <p className="text-[10px] text-emerald-200 font-bold mb-2 uppercase tracking-widest text-left">Hash Fingerprint (SHA-256)</p>
+                              <p className="text-[10px] text-emerald-200 font-bold mb-2 uppercase tracking-widest">Hash Fingerprint (SHA-256)</p>
                               <p className="text-[10px] font-mono text-white break-all leading-tight opacity-90">
                                  7F83B12787B6BC1B498A190BA...
                               </p>
@@ -533,7 +515,7 @@ const ForensicImagingPage = memo(() => {
                 <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full text-sm font-bold border border-emerald-500/20 mb-8 mx-auto">
                    Cryptographic Verification
                 </div>
-                <h2 className="text-4xl lg:text-6xl font-bold mb-6 italic tracking-tight">Every Byte Matters.</h2>
+                <h2 className="text-4xl lg:text-6xl font-bold mb-6 tracking-tight">Every Byte Matters.</h2>
                 <p className="text-lg text-slate-400 leading-relaxed">
                   D-Secure ensures that your forensic image is a perfect, verifiable replica of the original evidence source, ready for legal production.
                 </p>
@@ -562,7 +544,7 @@ const ForensicImagingPage = memo(() => {
             <Reveal>
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 lg:mb-28 gap-8">
                 <div className="max-w-2xl text-left">
-                   <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 italic tracking-tight">Advanced Capabilities</h2>
+                   <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">Advanced Capabilities</h2>
                    <p className="text-lg text-slate-600 leading-relaxed">
                      From single-drive investigations to mass imaging in enterprise networks, our tool handles heavy throughput with absolute precision.
                    </p>
@@ -597,7 +579,7 @@ const ForensicImagingPage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <Reveal>
               <div className="text-center mb-16 lg:mb-24">
-                <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6 italic tracking-tight">Enterprise Investigation Enabler</h2>
+                <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6 tracking-tight">Enterprise Investigation Enabler</h2>
                 <p className="text-lg text-slate-400 max-w-3xl mx-auto">
                   From critical security incidents to law enforcement support, we provide the backbone for immutable digital discovery.
                 </p>
@@ -612,8 +594,8 @@ const ForensicImagingPage = memo(() => {
                       {use.icon}
                     </div>
                     <div className="space-y-3">
-                      <h3 className="text-xl font-bold text-white">{use.title}</h3>
-                      <p className="text-slate-400 text-sm leading-relaxed">{use.desc}</p>
+                       <h3 className="text-xl font-bold text-white">{use.title}</h3>
+                       <p className="text-slate-400 text-sm leading-relaxed">{use.desc}</p>
                     </div>
                   </div>
                 </Reveal>

@@ -660,17 +660,6 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title:
-            "D-Secure File Eraser | Secure File & Folder Deletion Software",
-          description:
-            "Permanently erase files, folders, and traces from your computer with D-Secure File Eraser. Regulatory data destruction compliant with NIST 800-88 and GDPR, for privacy and security.",
-          keywords:
-            "file eraser, secure delete, data destruction, file shredder, privacy software, NIST 800-88, GDPR compliance",
-          canonicalUrl: "https://dsecuretech.com/products/file-eraser",
-        }}
-      />
       <SEOHead seo={getSEOForPage("file-eraser")} />
       {/* ================= STICKY SECTION NAV ================= */}
       <div

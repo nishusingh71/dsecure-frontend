@@ -187,14 +187,7 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "Autopilot Detection & Touchless Recheck | D-Secure",
-          description: "Prevent data recovery and re-enrollment risks. Automatically identify Windows Autopilot and Intune enrolled devices before resale.",
-          keywords: "autopilot detection, intune unenrollment, touchless recheck, ITAD, cloud verification, windows autopilot",
-          canonicalUrl: "https://dsecuretech.com/products/autopilot-detection",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("autopilot-detection")} />
       
       {/* ================= STICKY SECTION NAV ================= */}
       <div

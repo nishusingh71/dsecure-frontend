@@ -41,7 +41,7 @@ const getReadTime = (text: string) => {
   return `${minutes} min read`;
 };
 
-const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
+const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticPage() {
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -623,17 +623,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
   ];
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
-          description:
-            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Regulatory data destruction compliant with NIST 800-88, DoD, and GDPR.",
-          keywords:
-            "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
-          canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
-        }}
-      />
-      <SEOHead seo={getSEOForPage("drive-eraser")} />
+      <SEOHead seo={getSEOForPage("drive-eraser-diagnostic")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div

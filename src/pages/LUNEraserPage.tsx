@@ -5,12 +5,11 @@ import UpcomingBadge from "../components/ui/UpcomingBadge";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
 import {
-  ShieldIcon,
   CheckIcon,
   ArrowRightIcon,
   GlobeIcon,
 } from "@/components/FlatIcons";
-import { FileTextIcon, Download, Zap, Database, HardDrive, Server, Cloud, RefreshCcw, Activity, Layers } from "lucide-react";
+import { FileTextIcon, Download, Zap, Database, HardDrive, Server, Cloud, RefreshCcw, Activity } from "lucide-react";
 import { getSEOForPage } from "@/utils/seo";
 import { ProductContactForm } from "@/components/forms/ProductContactForm";
 
@@ -108,22 +107,9 @@ const LUNEraserPage: React.FC = memo(function LUNEraserPage() {
     }
   ];
 
-  const highlights = [
-    {
-      title: "14+",
-      label: "Global standards support including NIST, DoD, and ISO.",
-      icon: <Layers className="w-5 h-5" />
-    },
-    {
-      title: "25+",
-      label: "Certifications and registrations for global data sanitization.",
-      icon: <GlobeIcon className="w-5 h-5" />
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-white">
-      <SEOHead {...getSEOForPage("lun-eraser")} />
+      <SEOHead seo={getSEOForPage("lun-eraser")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -181,7 +167,7 @@ const LUNEraserPage: React.FC = memo(function LUNEraserPage() {
                 </Reveal>
                 
                 <Reveal delayMs={100}>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.1] mb-4 tracking-tight">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.1] mb-4 tracking-tight">
                     Securely Sanitize <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Logical Unit Numbers</span>
                   </h1>
                 </Reveal>
@@ -292,7 +278,7 @@ const LUNEraserPage: React.FC = memo(function LUNEraserPage() {
           <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <Reveal>
               <div className="text-center mb-16">
-                <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-6">Enterprise Capabilities</h2>
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6">Enterprise Capabilities</h2>
                 <div className="w-20 h-1.5 bg-emerald-500 mx-auto rounded-full mb-8"></div>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                    Blancco LUN Eraser provides the most advanced data sanitization for complex storage environments.
@@ -302,7 +288,7 @@ const LUNEraserPage: React.FC = memo(function LUNEraserPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {capabilities.map((item, i) => (
-                <Reveal key={i} delayMs={i * 100}>
+                <Reveal key={item.name} delayMs={i * 100}>
                   <div className="group bg-slate-50 hover:bg-white rounded-2xl p-8 border border-slate-200 hover:border-emerald-300 hover:shadow-2xl hover:shadow-emerald-200/20 transition-all duration-500 text-center">
                     <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
                        {item.icon}
@@ -387,7 +373,7 @@ const LUNEraserPage: React.FC = memo(function LUNEraserPage() {
                               "Compliance with ISO 27001 & EU GDPR",
                               "Regulatory and tested across major storage vendors."
                             ].map((item, idx) => (
-                              <li key={idx} className="flex items-center gap-3 text-slate-300">
+                              <li key={item} className="flex items-center gap-3 text-slate-300">
                                 <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-slate-900 flex-shrink-0">
                                    <ArrowRightIcon className="w-3 h-3" />
                                 </div>
@@ -397,7 +383,7 @@ const LUNEraserPage: React.FC = memo(function LUNEraserPage() {
                          </ul>
                          <button 
                            onClick={() => scrollToSection("contact")}
-                           className="mt-10 w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-black rounded-xl transition-all shadow-lg hover:shadow-emerald-500/20 uppercase tracking-widest text-sm"
+                           className="mt-10 w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold rounded-xl transition-all shadow-lg hover:shadow-emerald-500/20 uppercase tracking-widest text-sm"
                          >
                             Request Product Sheet
                          </button>

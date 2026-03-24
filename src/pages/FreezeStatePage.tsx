@@ -1,41 +1,35 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
+import { getSEOForPage } from "@/utils/seo";
 import UpcomingBadge from "../components/ui/UpcomingBadge";
 import {
   Settings,
-  AlertCircle,
   ShieldCheck,
   Server,
   Layers,
   Database,
   Lock,
-  Boxes,
-  FileText,
   Search,
   HardDrive,
   Users,
   Activity,
-  History,
-  Zap,
-  ChevronDown,
   RefreshCcw,
   CheckCircle,
-  Shield,
   Layout,
   Globe,
   Monitor,
   Cloud,
+  ChevronDown,
+  Zap,
+  Terminal,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import SEOHead from "../components/SEOHead";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { ProductContactForm } from "@/components/forms";
 import { 
-  ShieldIcon, 
-  CheckIcon, 
   ArrowRightIcon,
-  GearIcon,
-  ClipboardIcon,
 } from "@/components/FlatIcons";
 
 const FreezeStatePage = memo(() => {
@@ -44,8 +38,9 @@ const FreezeStatePage = memo(() => {
 
   const sectionNavItems = [
     { id: "overview", label: "Overview" },
-    { id: "modes", label: "Protection Modes" },
-    { id: "technology", label: "The Technology" },
+    { id: "architecture", label: "Core Architecture" },
+    { id: "editions", label: "Solution Variants" },
+    { id: "technology", label: "How it Works" },
     { id: "security", label: "Security & Compliance" },
     { id: "use-cases", label: "Use Cases" },
     { id: "specs", label: "Specifications" },
@@ -108,14 +103,7 @@ const FreezeStatePage = memo(() => {
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "FreezeState | Reboot-to-Restore Instant PC Recovery | D-Secure",
-          description: "Protect your workstations from configuration drift and unauthorized changes. FreezeState reverts PCs to their pristine state on every restart. Ideal for labs, kiosks, and shared devices.",
-          keywords: "reboot to restore, computer freeze software, deep freeze alternative, workstation protection, configuration drift prevention, instant system recovery",
-          canonicalUrl: "https://dsecuretech.com/products/freeze-state",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("freeze-state")} />
       
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -153,7 +141,7 @@ const FreezeStatePage = memo(() => {
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* ================= HERO SECTION ================= */}
-        <section id="overview" className="relative pt-6 pb-12 lg:pt-10 lg:pb-20 overflow-hidden">
+        <section id="overview" className="relative pt-4 pb-8 lg:pt-6 lg:pb-12 overflow-hidden flex flex-col justify-center min-h-[calc(100vh-64px)]">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
               <Reveal>
@@ -167,9 +155,9 @@ const FreezeStatePage = memo(() => {
                     Indestructible Workstations
                   </div>
 
-                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-[1.1]">
+                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-[1.1]">
                     D-Secure <br />
-                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent italic">
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                       FreezeState
                     </span>
                   </h1>
@@ -195,137 +183,361 @@ const FreezeStatePage = memo(() => {
                 </div>
               </Reveal>
 
-              {/* Right: 3D Frozen Workstation Visual */}
+              {/* Right: Hierarchical Fleet Management Visual */}
               <Reveal delayMs={200}>
-                <div 
-                  className="relative flex items-center justify-center min-h-[400px] lg:min-h-[500px]"
-                  style={{ perspective: "1000px" }}
-                >
-                  {/* Background Glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-200/30 blur-3xl rounded-full"></div>
+                <div className="relative flex flex-col items-center justify-center min-h-[450px] lg:min-h-[480px] w-full max-w-2xl mx-auto overflow-visible pt-4">
+                  {/* Background Network Grid */}
+                  <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:48px_48px] opacity-[0.1] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]"></div>
                   
-                  {/* Floating Particles */}
-                  <div className="absolute top-[10%] left-[15%] w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-40"></div>
-                  <div className="absolute bottom-[15%] right-[10%] w-2 h-2 bg-teal-400 rounded-full animate-ping opacity-40"></div>
-
-                  <div className="relative group transition-transform duration-700 hover:rotate-y-12">
-                     <div className="relative bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl border border-white/50 overflow-hidden w-[280px] xs:w-[340px] lg:w-[380px] mx-auto transform hover:-translate-y-2 transition-all duration-500">
-                        {/* Status bar */}
-                        <div className="flex items-center justify-between mb-8">
-                           <div className="flex items-center gap-3">
-                              <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                              <span className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">System Protected</span>
-                           </div>
-                           <Shield className="w-4 h-4 text-emerald-500" />
-                        </div>
-
-                        {/* Visual Core: The Frozen Screen */}
-                        <div className="relative aspect-video bg-slate-900 rounded-2xl overflow-hidden border-4 border-slate-800 shadow-inner group-hover:scale-105 transition-transform duration-500">
-                           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent"></div>
-                           <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
-                              <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
-                                 <RefreshCcw className="w-6 h-6 text-white animate-spin-slow" />
-                              </div>
-                              <div className="text-center">
-                                 <p className="text-white font-mono text-[10px] tracking-widest">DRIVE_C://FROZEN</p>
-                                 <div className="flex gap-1 mt-2">
-                                    {[1,2,3,4,5].map(i => (
-                                       <div key={i} className="w-4 h-1 bg-emerald-400 rounded-full"></div>
-                                    ))}
-                                 </div>
-                              </div>
+                  {/* CENTRAL ADMIN HUB (TOP) */}
+                  <motion.div 
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    className="relative z-30 mb-6"
+                  >
+                    <div className="bg-white p-5 rounded-[2rem] shadow-2xl border border-emerald-100 w-64 lg:w-72 relative group hover:scale-105 transition-transform duration-500">
+                      <div className="absolute -top-3 -right-3 bg-emerald-500 text-white p-2.5 rounded-xl shadow-lg animate-pulse border-2 border-white">
+                        <ShieldCheck className="w-5 h-5" />
+                      </div>
+                      <div className="bg-slate-900 rounded-2xl p-5 mb-5 relative overflow-hidden group/screen shadow-inner">
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent"></div>
+                        <div className="flex flex-col items-center justify-center py-4 space-y-3">
+                           <Server className="w-10 h-10 text-emerald-400 mb-2" />
+                           <div className="w-full space-y-2">
+                             <div className="h-1 bg-emerald-500/20 rounded-full overflow-hidden">
+                               <motion.div animate={{ x: [-100, 100] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="h-full w-1/2 bg-emerald-500/60"></motion.div>
+                             </div>
+                             <p className="text-[9px] font-mono text-emerald-400 text-center tracking-widest uppercase">Admin: Online</p>
                            </div>
                         </div>
-
-                        {/* Stats/Metrics UI */}
-                        <div className="grid grid-cols-2 gap-4 mt-8">
-                           <div className="p-4 bg-slate-100/50 rounded-2xl border border-white/50">
-                              <p className="text-[9px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Helpdesk Load</p>
-                              <p className="text-lg font-black text-emerald-600">-63%</p>
-                           </div>
-                           <div className="p-4 bg-slate-100/50 rounded-2xl border border-white/50">
-                              <p className="text-[9px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Uptime</p>
-                              <p className="text-lg font-black text-slate-900">100%</p>
-                           </div>
+                      </div>
+                      <div className="flex items-center justify-between px-2">
+                        <div>
+                          <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest leading-none mb-1">Global Manager</p>
+                          <h4 className="text-lg font-black text-slate-900">Fleet Console</h4>
                         </div>
-
-                        {/* ThawSpace indicator */}
-                        <div className="mt-6 flex items-center justify-between p-4 bg-emerald-600 rounded-2xl shadow-xl shadow-emerald-200">
-                           <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                                 <Layout className="w-4 h-4 text-white" />
-                              </div>
-                              <div>
-                                 <p className="text-[9px] text-emerald-100 font-bold uppercase tracking-widest">ThawSpace</p>
-                                 <p className="text-[10px] text-white font-bold italic">Persistence Drive (D:)</p>
-                              </div>
-                           </div>
-                           <CheckCircle className="w-4 h-4 text-white" />
+                        <div className="text-right">
+                          <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">Controlled</p>
+                          <p className="text-sm font-black text-emerald-600">1.2K+ Nodes</p>
                         </div>
-                     </div>
+                      </div>
+                    </div>
+                    {/* Connecting Base to Hub */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-1 h-12 bg-gradient-to-b from-emerald-200 to-transparent"></div>
+                  </motion.div>
+
+                  {/* CONNECTING BRIDGE (MIDDLE) */}
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="relative z-20 w-44 h-8 bg-white rounded-xl shadow-lg border border-slate-100 flex items-center justify-around px-4 mb-10"
+                  >
+                    {[1,2,3,4,5].map(i => (
+                      <div key={i} className="w-2 h-2 rounded-full bg-slate-100 border border-slate-200 shadow-inner group overflow-hidden">
+                        <motion.div 
+                          animate={{ opacity: [0, 1, 0] }} 
+                          transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.2 }} 
+                          className="w-full h-full bg-emerald-500"
+                        ></motion.div>
+                      </div>
+                    ))}
+                    {/* Radial Connector Lines */}
+                    <svg className="absolute top-full left-1/2 -translate-x-1/2 w-[550px] h-24 pointer-events-none overflow-visible" viewBox="0 0 600 100">
+                      {[0,1,2,3,4].map((i) => {
+                        const targetX = 150 * i;
+                        return (
+                          <motion.path
+                            key={i}
+                            d={`M 300 0 C 300 64, ${targetX} 64, ${targetX} 128`}
+                            stroke="#10b981"
+                            strokeWidth="1.5"
+                            strokeOpacity="0.3"
+                            fill="none"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{ duration: 1.5, delay: 1 + i * 0.1 }}
+                          />
+                        );
+                      })}
+                    </svg>
+                  </motion.div>
+
+                  {/* ENDPOINT NODES (BOTTOM) */}
+                  <div className="relative z-20 flex justify-between w-full max-w-2xl px-4 gap-4 mt-4">
+                    {[1,2,3,4,5].map((i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 1 + i * 0.1, duration: 0.6 }}
+                      >
+                        <div className="bg-white/90 backdrop-blur-xl p-2.5 rounded-2xl shadow-xl border border-slate-100 w-22 text-center group hover:-translate-y-2 transition-transform cursor-pointer overflow-hidden">
+                          <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 mx-auto mb-3 flex items-center justify-center text-slate-400 group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-500 transition-colors">
+                            <Monitor className="w-4 h-4" />
+                          </div>
+                          <div className="space-y-1.5">
+                            <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                              <motion.div 
+                                animate={{ width: ["20%", "100%", "20%"] }} 
+                                transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }} 
+                                className="h-full bg-emerald-500/40 rounded-full"
+                              ></motion.div>
+                            </div>
+                            <p className="text-[6px] font-black uppercase text-slate-400 tracking-widest">DRIVE_C</p>
+                            <div className="flex items-center justify-center gap-1">
+                              <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+                              <span className="text-[6px] font-black uppercase text-emerald-600 tracking-widest">Protected</span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
+
+                  {/* Ambient Glows */}
+                  <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-200/20 blur-[100px] -z-10 rounded-full"></div>
                 </div>
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ================= PROTECTION MODES SECTION ================= */}
-        {/* Is section mein hum system ke alag alag states ko explain karenge */}
-        <section id="modes" className="py-24 lg:py-32 bg-white relative overflow-hidden">
-          <div className="container mx-auto px-4 max-w-7xl">
+        {/* ================= CORE ARCHITECTURE SECTION ================= */}
+        <section id="architecture" className="py-24 lg:py-32 bg-white relative overflow-hidden">
+          <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <Reveal>
               <div className="text-center mb-16 lg:mb-24">
-                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 italic tracking-tight underline decoration-emerald-500/30 decoration-8 underline-offset-8">
-                  Intelligent Protection Modes
+                <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
+                  The <span className="text-emerald-600">Core Architecture</span>
                 </h2>
-                <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                  Switch between states seamlessly for maintenance or total lockdown.
+                <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
+                  A dual-product ecosystem designed for maximum control and zero-footprint performance.
                 </p>
               </div>
             </Reveal>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  id: "frozen",
-                  title: "Frozen Mode",
-                  desc: "Every reboot restores the system to its pristine baseline. Permanent configuration immunity.",
-                  icon: <ShieldCheck className="w-8 h-8" />,
-                  color: "bg-emerald-500",
-                  textColor: "text-emerald-600",
-                },
-                {
-                  id: "thawed",
-                  title: "Thawed Mode",
-                  desc: "Maintenance mode where all changes are saved permanently. Use for updates or patches.",
-                  icon: <RefreshCcw className="w-8 h-8" />,
-                  color: "bg-amber-500",
-                  textColor: "text-amber-600",
-                },
-                {
-                  id: "thawed-once",
-                  title: "Thawed on Next Boot",
-                  desc: "Reboot once into thawed mode for scheduled tasks, then automatically re-freeze.",
-                  icon: <Activity className="w-8 h-8" />,
-                  color: "bg-cyan-500",
-                  textColor: "text-cyan-600",
-                },
-              ].map((mode) => (
-                <Reveal key={mode.id}>
-                  <div className="group relative p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-                    <div className={`${mode.color} w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-8 shadow-xl group-hover:rotate-12 transition-transform`}>
-                      {mode.icon}
+            <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+              {/* Product 1: Admin Console */}
+              <Reveal>
+                <div className="p-10 rounded-[2.5rem] bg-slate-900 text-white border border-slate-800 shadow-2xl relative overflow-hidden group h-full">
+                  <div className="absolute top-0 right-0 p-8 opacity-10">
+                    <Layout className="w-32 h-32" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-emerald-500/20">
+                      Product 1
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-900 mb-4">{mode.title}</h4>
-                    <p className="text-slate-600 leading-relaxed font-medium">{mode.desc}</p>
-                    <div className="mt-8 flex items-center gap-2 group-hover:gap-4 transition-all duration-300">
-                      <span className={`text-sm font-bold ${mode.textColor}`}>Learn More</span>
-                      <ArrowRightIcon className={`w-4 h-4 ${mode.textColor}`} />
+                    <h3 className="text-2xl font-bold mb-4">Admin Console</h3>
+                    <p className="text-slate-400 mb-8 leading-relaxed font-medium">
+                      Tailored for lab administrators and professors. A robust web-based dashboard optimized for Windows and cross-platform management.
+                    </p>
+                    <ul className="space-y-3">
+                      {[
+                        "Device grouping by Lab/Room",
+                        "Change request approval flow",
+                        "Remote File/App installation",
+                        "Live Fleet Monitoring (Variant 2+)"
+                      ].map(item => (
+                        <li key={item} className="flex items-center gap-3 text-sm text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-emerald-500" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Product 2: Client Application */}
+              <Reveal delayMs={100}>
+                <div className="p-10 rounded-[2.5rem] bg-white border border-slate-100 shadow-xl relative overflow-hidden group h-full">
+                  <div className="absolute top-0 right-0 p-8 opacity-5">
+                    <Monitor className="w-32 h-32" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="inline-flex items-center gap-2 bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-slate-200">
+                      Product 2
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-slate-900">Client Application (Per Machine)</h3>
+                    <p className="text-slate-500 mb-8 leading-relaxed font-medium">
+                      A lightweight application for every endpoint. Displays real-time freeze state and active session logs without requiring user login.
+                    </p>
+                    <ul className="space-y-3">
+                      {[
+                        "Standard Warning Messages",
+                        "Timeline History showing resets",
+                        "User-side Change Requests",
+                        "Unique Device Identity"
+                      ].map(item => (
+                        <li key={item} className="flex items-center gap-3 text-sm text-slate-600">
+                          <CheckCircle className="w-4 h-4 text-emerald-500" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+        <section id="editions" className="py-24 lg:py-32 bg-emerald-950 text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,#10b98115_0%,transparent_100%)]"></div>
+          <div className="container mx-auto px-4 max-w-7xl relative z-10">
+            <Reveal>
+              <div className="text-center mb-16 lg:mb-24">
+                <h2 className="text-3xl lg:text-5xl font-bold mb-6 italic tracking-tight">
+                  Choose Your <span className="text-emerald-400">Edition</span>
+                </h2>
+                <p className="text-lg text-emerald-100/60 max-w-2xl mx-auto leading-relaxed">
+                  Tailored variants for everything from local workstations to enterprise-wide smart labs.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Variant 1: Core Protection */}
+              <Reveal>
+                <div className="p-8 lg:p-10 rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-500 flex flex-col h-full group">
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-8 border border-emerald-500/20 shadow-inner">
+                    <ShieldCheck className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Deep Freeze Basic</h3>
+                  <p className="text-emerald-100/60 mb-8 font-medium">The essential reboot-to-restore engine for standalone systems.</p>
+                  
+                  <ul className="space-y-4 mb-8 flex-grow">
+                    {[
+                      "Standard Shallow Reset",
+                      "Full Deep Reset Capability",
+                      "MBR & GPT Protection",
+                      "Localized ThawSpaces",
+                      "Windows 10/11 & Server Support"
+                    ].map(feat => (
+                      <li key={feat} className="flex items-start gap-3 text-sm text-emerald-50">
+                        <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1 italic">Best for</p>
+                      <p className="text-sm font-medium">Personal Workstations</p>
+                    </div>
+                    <Link 
+                      to="/products/freeze-state" 
+                      className="inline-flex items-center gap-2 bg-emerald-500/20 px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-500/40 transition-colors"
+                    >
+                      Learn More <ArrowRightIcon className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Variant 2: Smart Diagnostic */}
+              <Reveal delayMs={100}>
+                <div className="p-8 lg:p-10 rounded-[2.5rem] bg-emerald-500 text-white shadow-2xl shadow-emerald-500/20 transform lg:-translate-y-4 transition-all duration-500 flex flex-col h-full group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-6 opacity-10">
+                    <Activity className="w-32 h-32" />
+                  </div>
+                  <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mb-8 border border-white/30 backdrop-blur-md">
+                    <Activity className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="inline-flex items-center gap-2 bg-white text-emerald-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
+                    Most Advanced Monitoring
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Smart Diagnostic</h3>
+                  <p className="text-white/80 mb-8 font-medium italic">Intelligent performance monitoring for managed lab environments.</p>
+                  
+                  <div className="bg-white/10 rounded-2xl p-4 mb-8 border border-white/10 backdrop-blur-sm">
+                    <div className="flex justify-between items-center mb-2">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-100">CPU Usage Scan</span>
+                       <span className="text-xs font-bold">42%</span>
+                    </div>
+                    <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                       <div className="h-full bg-white w-[42%] animate-pulse"></div>
                     </div>
                   </div>
-                </Reveal>
-              ))}
+
+                  <ul className="space-y-4 mb-10 flex-grow">
+                    {[
+                      "Shallow Delete + Smart Monitoring",
+                      "Real-time CPU/RAM/Disk live stats",
+                      "10-20s Dashboard Refresh Rate",
+                      "Admin Console Syncing & Notifications",
+                      "User-side Change Request System",
+                      "Automatic Warning & Alert System"
+                    ].map(feat => (
+                      <li key={feat} className="flex items-start gap-3 text-sm text-white">
+                        <CheckCircle className="w-4 h-4 text-white mt-0.5 shrink-0 shadow-sm" />
+                        <span className="font-medium">{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="pt-6 border-t border-white/20 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-bold text-emerald-100 uppercase tracking-widest mb-1 italic">Best for</p>
+                      <p className="text-sm font-bold">Managed Labs</p>
+                    </div>
+                    <Link 
+                      to="/products/freeze-state-smart" 
+                      className="inline-flex items-center gap-2 bg-white text-emerald-600 px-4 py-2 rounded-xl text-xs font-extrabold hover:bg-emerald-50 transition-colors"
+                    >
+                      Explore Smart <ArrowRightIcon className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Variant 3: Advanced Eraser */}
+              <Reveal delayMs={200}>
+                <div className="p-8 lg:p-10 rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/50 transition-all duration-500 flex flex-col h-full group">
+                  <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-8 border border-cyan-500/20 shadow-inner">
+                    <Zap className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Advanced Eraser</h3>
+                  <p className="text-emerald-100/60 mb-8 font-medium">Military-grade data protection with built-in erasure certs.</p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-8">
+                     {["NIST", "DoD", "BSI", "HMG"].map(std => (
+                       <span key={std} className="px-2 py-1 bg-white/10 rounded-md text-[9px] font-black border border-white/10">{std} 800-88</span>
+                     ))}
+                  </div>
+
+                  <ul className="space-y-4 mb-10 flex-grow">
+                    {[
+                      "All Eraser Algorithms Supported",
+                      "Sector-wise Permanent Erasure",
+                      "Multiple Erasure Passes (DOD/NIST)",
+                      "Health Certificates per Machine",
+                      "Full Suite Reporting & Auditing",
+                      "Enterprise-level Mass Management"
+                    ].map(feat => (
+                      <li key={feat} className="flex items-start gap-3 text-sm text-emerald-50">
+                        <CheckCircle className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1 italic">Best for</p>
+                      <p className="text-sm font-medium">Govt & Healthcare</p>
+                    </div>
+                    <Link 
+                      to="/products/freeze-state-advanced" 
+                      className="inline-flex items-center gap-2 bg-cyan-500/20 px-4 py-2 rounded-xl text-xs font-bold hover:bg-cyan-500/40 transition-colors text-cyan-400"
+                    >
+                      Go Advanced <ArrowRightIcon className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -464,7 +676,7 @@ const FreezeStatePage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <Reveal>
               <div className="max-w-3xl mb-16 lg:mb-24">
-                <h2 className="text-4xl lg:text-6xl font-bold text-white italic mb-8">
+                <h2 className="text-4xl lg:text-6xl font-bold text-white mb-8">
                   One Solution. <br/>
                   <span className="text-emerald-500">Infinite Environments.</span>
                 </h2>
@@ -595,7 +807,7 @@ const FreezeStatePage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-20 lg:mb-28">
-                 <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 italic tracking-tight">Total Control Console</h2>
+                 <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">Total Control Console</h2>
                  <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
                    Manage thousands of workstations efficiently with central management, scheduling, and remote configuration tools.
                  </p>
@@ -631,7 +843,7 @@ const FreezeStatePage = memo(() => {
           <div className="container mx-auto px-4 max-w-4xl">
             <Reveal>
               <div className="text-center mb-16 lg:mb-20">
-                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 italic tracking-tight">FreezeState Q&A</h2>
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 tracking-tight">FreezeState Q&A</h2>
                 <p className="text-lg text-slate-600 font-medium">Expert answers for IT administrators</p>
               </div>
             </Reveal>

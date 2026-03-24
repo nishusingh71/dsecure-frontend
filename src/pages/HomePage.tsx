@@ -217,6 +217,30 @@ const HomePage = memo(function HomePage() {
       features: ["Zero-touch deployment", "Custom image support", "Pre-configured templates", "Network booting"]
     },
     {
+      id: "freeze-state-smart",
+      title: "FreezeState Smart Diagnostic",
+      desc: "Intelligent real-time monitoring and predictive health analysis.",
+      price: "TBA",
+      note: "Smart edition",
+      link: "/products/freeze-state-smart",
+      icon: ActivityIcon,
+      color: "emerald",
+      isUpcoming: true,
+      features: ["Real-time Monitoring", "S.M.A.R.T. Integration", "Health Analytics", "Alert System"]
+    },
+    {
+      id: "freeze-state-advanced",
+      title: "FreezeState Advanced Eraser",
+      desc: "Deep-level sector destruction and military-grade erasure.",
+      price: "TBA",
+      note: "Advanced edition",
+      link: "/products/freeze-state-advanced",
+      icon: LightningIcon,
+      color: "teal",
+      isUpcoming: true,
+      features: ["Advanced Algorithms", "Deep Freeze Wiping", "Sector Level Control", "Compliance Proof"]
+    },
+    {
       id: "autopilot-detection",
       title: t("home.autopilotDetectionTitle"),
       desc: "Automated hardware detection and tracking.",

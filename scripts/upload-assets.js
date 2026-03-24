@@ -16,14 +16,13 @@ import fs from 'fs'
 import path from 'path'
 import { config } from 'dotenv'
 
-// Load environment variables
-config({ path: '.env.local' })
+config({ path: '.env' })
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: process.env.VITE_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.VITE_CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET // You need to add this to .env.local
+  cloud_name: process.env.VITE_CLOUDINARY_CLOUD_NAME?.trim(),
+  api_key: process.env.VITE_CLOUDINARY_API_KEY?.trim(),
+  api_secret: process.env.CLOUDINARY_API_SECRET?.trim()
 })
 
 // Asset mappings
@@ -47,6 +46,16 @@ const assets = [
     local: './public/new-favicon.svg',
     publicId: 'dsecure/logos/dsecure-icon',
     description: 'D-Secure molecular network icon'
+  },
+  {
+    local: './public/images/products/drive-monitor-health.png',
+    publicId: 'dsecure/products/drive-monitor-health',
+    description: 'Hard Drive Monitor Health Dashboard'
+  },
+  {
+    local: './public/images/products/drive-monitor-cloning-fixed.png',
+    publicId: 'dsecure/products/drive-monitor-cloning',
+    description: 'Hard Drive Monitor Cloning Process'
   }
   // Add more assets here as needed
 ]
@@ -58,10 +67,6 @@ async function uploadAsset({ local, publicId, description }) {
       //console.log(`⚠️  File not found: ${local}`)
       return false
     }
-
-    //console.log(`📤 Uploading: ${description}`)
-    //console.log(`   Local: ${local}`)
-    //console.log(`   Public ID: ${publicId}`)
 
     const result = await cloudinary.uploader.upload(local, {
       public_id: publicId,

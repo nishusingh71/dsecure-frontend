@@ -69,6 +69,8 @@ const SmartphoneEraserPage = lazy(() => import("../pages/SmartphoneEraserPage"))
 const SmartphoneDiagnosticPage = lazy(() => import("../pages/SmartphoneDiagnosticPage"));
 const ForensicImagingPage = lazy(() => import("../pages/ForensicImagingPage"));
 const FreezeStatePage = lazy(() => import("../pages/FreezeStatePage"));
+const FreezeStateSmartPage = lazy(() => import("../pages/FreezeStateSmartPage"));
+const FreezeStateAdvancedPage = lazy(() => import("../pages/FreezeStateAdvancedPage"));
 const AssetReimagingPage = lazy(() => import("../pages/AssetReimagingPage"));
 const VirtualMachineEraserPage = lazy(() => import("../pages/VirtualMachineEraserPage"));
 const RemovableMediaEraserPage = lazy(() => import("../pages/RemovableMediaEraserPage"));
@@ -162,6 +164,8 @@ export const PublicRoutes = () => (
       element={<ForensicImagingPage />}
     />
     <Route path="/products/freeze-state" element={<FreezeStatePage />} />
+    <Route path="/products/freeze-state-smart" element={<FreezeStateSmartPage />} />
+    <Route path="/products/freeze-state-advanced" element={<FreezeStateAdvancedPage />} />
     <Route path="/products/data-migration" element={<DataMigrationPage />} />
     <Route path="/products/asset-reimaging" element={<AssetReimagingPage />} />
     <Route

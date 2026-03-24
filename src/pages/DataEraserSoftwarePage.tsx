@@ -237,6 +237,34 @@ const diagnosticSolutions = [
     isUpcoming: true,
   },
   {
+    title: "FreezeState Smart Diagnostic",
+    desc: "Intelligent real-time monitoring and predictive health analysis for frozen system states.",
+    features: [
+      "Real-time Monitoring",
+      "S.M.A.R.T. Integration",
+      "Health Analytics",
+      "Alert System",
+    ],
+    icon: Activity,
+    color: "emerald",
+    link: "/products/freeze-state-smart",
+    isUpcoming: true,
+  },
+  {
+    title: "FreezeState Advanced Eraser",
+    desc: "Deep-level sector destruction and military-grade erasure for sensitive frozen environments.",
+    features: [
+      "Advanced Algorithms",
+      "Deep Freeze Wiping",
+      "Sector Level Control",
+      "Compliance Proof",
+    ],
+    icon: Zap,
+    color: "teal",
+    link: "/products/freeze-state-advanced",
+    isUpcoming: true,
+  },
+  {
     title: "Autopilot Detection",
     desc: "Automated hardware detection and tracking for seamless Microsoft Autopilot deployment.",
     features: [

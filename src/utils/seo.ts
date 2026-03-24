@@ -12,6 +12,7 @@ import {
 import { INDUSTRY_SEO } from "./seo.industries";
 import { SUPPORT_SEO } from "./seo.support";
 import { BLOG_SEO } from "./seo.blog";
+import { PRODUCT_SEO } from "./seo.products";
 
 export type { SEOMetadata };
 export {
@@ -33,23 +34,13 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   ...INDUSTRY_SEO,
   ...SUPPORT_SEO,
   ...BLOG_SEO,
+  ...PRODUCT_SEO,
   // Add core pages
   home: {
     title: "Eraser – Secure Erase Files from Hard Drives",
     description:
       "Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times",
     canonicalUrl: getCanonicalUrl("/"),
-  },
-  hardDriveMonitor: {
-    title: "Hard Drive Monitor - S.M.A.R.T Health Tracking | D-Secure Tech",
-    description: "Monitor hard drive health, temperature, and performance in real-time with D-Secure Hard Drive Monitor. S.M.A.R.T. tracking and disk cloning support.",
-    canonicalUrl: getCanonicalUrl("/products/hard-drive-monitor"),
-  },
-  driveVerifier: {
-    title: "Drive Verifier - Accurately Verify Erased Drives | D-Secure Tech",
-    description: "Verify drives for complete data erasure and confirm if any data traces exist. Compliant with R2, e-Stewards, and NAID AAA standards.",
-    canonicalUrl: getCanonicalUrl("/products/drive-verifier"),
-    keywords: "drive verifier, data erasure verification, R2v3 compliance, NAID AAA verification, e-Stewards audit, PXE boot verification",
   },
 };
 

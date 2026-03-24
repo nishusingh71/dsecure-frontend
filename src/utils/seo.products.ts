@@ -1,0 +1,136 @@
+import { SEOMetadata, generateKeywords, getCanonicalUrl } from "./seo.core";
+
+export const PRODUCT_SEO: Record<string, Partial<SEOMetadata>> = {
+  "drive-eraser": {
+    title: "Drive Eraser - Secure Data Erasure for Hard Drives | D-Secure Tech",
+    description: "Securely erase hard drives (HDD) and solid-state drives (SSD) with D-Secure Drive Eraser. NIST 800-88 and DoD 5220.22-M compliant.",
+    keywords: generateKeywords(["drive eraser", "HDD wiping", "SSD secure erase", "NIST compliant", "hard drive destruction"]),
+    canonicalUrl: getCanonicalUrl("/products/drive-eraser"),
+  },
+  "drive-eraser-diagnostic": {
+    title: "Drive Eraser Diagnostic - Wiping & Hardware Testing | D-Secure Tech",
+    description: "Combine secure data erasure with comprehensive hardware diagnostics. Ensure drive health and data security in one seamless process.",
+    keywords: generateKeywords(["drive diagnostics", "hard drive testing", "secure wiping diagnostic", "health checkup"]),
+    canonicalUrl: getCanonicalUrl("/products/drive-eraser-diagnostic"),
+  },
+  "file-eraser": {
+    title: "File Eraser - Permanently Delete Files & Folders | D-Secure Tech",
+    description: "Shred sensitive files and folders beyond recovery with D-Secure File Eraser. Prevent data leaks by permanently removing individual files.",
+    keywords: generateKeywords(["file eraser", "secure file deletion", "file shredder", "folder wiping", "privacy protection"]),
+    canonicalUrl: getCanonicalUrl("/products/file-eraser"),
+  },
+  "hardware-diagnostics": {
+    title: "Hardware Diagnostics - Complete System Health Test | D-Secure Tech",
+    description: "Identify hardware failures before they happen. Professional-grade diagnostic tools for CPU, Memory, Storage, and more.",
+    keywords: generateKeywords(["hardware diagnostics", "system health test", "PC diagnostic tool", "hardware failure testing"]),
+    canonicalUrl: getCanonicalUrl("/products/hardware-diagnostics"),
+  },
+  "hard-drive-monitor": {
+    title: "Hard Drive Monitor - S.M.A.R.T Health Tracking | D-Secure Tech",
+    description: "Monitor hard drive health, temperature, and performance in real-time with D-Secure Hard Drive Monitor. S.M.A.R.T. tracking and disk cloning support.",
+    keywords: generateKeywords(["hard drive monitor", "disk health", "SMART status", "disk cloning", "bad sector scan"]),
+    canonicalUrl: getCanonicalUrl("/products/hard-drive-monitor"),
+  },
+  "autopilot-detection": {
+    title: "Autopilot Detection - Automated Device Provisioning | D-Secure Tech",
+    description: "Detect and manage Windows Autopilot devices with ease. Ideal for ITADs and refurbishers to ensure secure device lifecycle management.",
+    keywords: generateKeywords(["autopilot detection", "Windows Autopilot", "device provisioning", "ITAD tools"]),
+    canonicalUrl: getCanonicalUrl("/products/autopilot-detection"),
+  },
+  "smartphone-eraser": {
+    title: "Smartphone Eraser - Secure Wiping for iOS & Android | D-Secure Tech",
+    description: "Certified data erasure for mobile devices. Completely wipe personal data from iPhones, iPads, and Android smartphones.",
+    keywords: generateKeywords(["smartphone eraser", "iPhone data wipe", "Android wiping", "mobile data destruction", "tablet eraser"]),
+    canonicalUrl: getCanonicalUrl("/products/smartphone-eraser"),
+  },
+  "smartphone-diagnostic": {
+    title: "Smartphone Diagnostic - Professional Mobile Testing | D-Secure Tech",
+    description: "Over 60+ automated hardware tests for mobile devices. Verify screen, battery, camera, and sensor health for better resale value.",
+    keywords: generateKeywords(["smartphone diagnostic", "mobile health check", "iPhone testing", "Android diagnostic"]),
+    canonicalUrl: getCanonicalUrl("/products/smartphone-diagnostic"),
+  },
+  "forensic-imaging": {
+    title: "Forensic Imaging - Precise Bit-for-Bit Data Capture | D-Secure Tech",
+    description: "Create forensically sound images of storage media. Preserve evidence with bit-by-bit imaging for digital investigations.",
+    keywords: generateKeywords(["forensic imaging", "digital forensics", "bit-for-bit capture", "data preservation"]),
+    canonicalUrl: getCanonicalUrl("/products/forensic-imaging"),
+  },
+  "freeze-state": {
+    title: "Freeze State - System Configuration Protection | D-Secure Tech",
+    description: "Lock your system state to prevent unauthorized changes. Ideal for public kiosks, school labs, and enterprise workstations.",
+    keywords: generateKeywords(["freeze state", "Deep Freeze alternative", "system protection", "kiosk mode"]),
+    canonicalUrl: getCanonicalUrl("/products/freeze-state"),
+  },
+  "freeze-state-smart": {
+    title: "Freeze State Smart - Intelligent State Management | D-Secure Tech",
+    description: "Advanced system protection with automated updates and maintenance windows. Secure your devices without sacrificing performance.",
+    keywords: generateKeywords(["smart freeze", "automated system protection", "maintenance mode", "secure workstations"]),
+    canonicalUrl: getCanonicalUrl("/products/freeze-state-smart"),
+  },
+  "freeze-state-advanced": {
+    title: "Freeze State Advanced - Enterprise-Grade System Locking | D-Secure Tech",
+    description: "The ultimate solution for large-scale device security. Centralized management for frozen states across your entire network.",
+    keywords: generateKeywords(["advanced freeze state", "enterprise system locking", "centralized management", "node security"]),
+    canonicalUrl: getCanonicalUrl("/products/freeze-state-advanced"),
+  },
+  "data-migration": {
+    title: "Data Migration - Secure File Transfer & Sync | D-Secure Tech",
+    description: "Transfer data seamlessly across devices and platforms. Bit-perfect migration ensures your data arrives exactly as it should.",
+    keywords: generateKeywords(["data migration", "file transfer", "secure sync", "system migration"]),
+    canonicalUrl: getCanonicalUrl("/products/data-migration"),
+  },
+  "asset-reimaging": {
+    title: "Asset Reimaging - Zero-Touch OS Deployment | D-Secure Tech",
+    description: "Deploy custom OS images to hundreds of devices simultaneously. Streamline your IT operations with automated reimaging.",
+    keywords: generateKeywords(["asset reimaging", "OS deployment", "zero-touch deployment", "IT automation"]),
+    canonicalUrl: getCanonicalUrl("/products/asset-reimaging"),
+  },
+  "virtual-machine-eraser": {
+    title: "Virtual Machine Eraser - Secure Cloud Data Deletion | D-Secure Tech",
+    description: "Erase virtual disks and cloud instances with precision. Compliant data destruction for AWS, Azure, and Google Cloud environments.",
+    keywords: generateKeywords(["VM eraser", "cloud data deletion", "virtual disk wiping", "Azure data erasure"]),
+    canonicalUrl: getCanonicalUrl("/products/virtual-machine-eraser"),
+  },
+  "removable-media-eraser": {
+    title: "Removable Media Eraser - Wipe USBs & SD Cards | D-Secure Tech",
+    description: "Certified erasure for all types of removable storage. Securely wipe USB drives, SD cards, and external hard disks.",
+    keywords: generateKeywords(["USB eraser", "SD card wiping", "removable media destruction", "portable drive eraser"]),
+    canonicalUrl: getCanonicalUrl("/products/removable-media-eraser"),
+  },
+  "lun-eraser": {
+    title: "LUN Eraser - Secure Storage Area Network Wiping | D-Secure Tech",
+    description: "Certified data erasure for active storage environments. Securely wipe logical units (LUNs) in SAN and NAS architectures.",
+    keywords: generateKeywords(["LUN eraser", "SAN wiping", "NAS data destruction", "active storage erasure"]),
+    canonicalUrl: getCanonicalUrl("/products/lun-eraser"),
+  },
+  "drive-verifier": {
+    title: "Drive Verifier - Accurately Verify Erased Drives | D-Secure Tech",
+    description: "Verify drives for complete data erasure and confirm if any data traces exist. Compliant with R2, e-Stewards, and NAID AAA standards.",
+    keywords: generateKeywords(["drive verifier", "data erasure verification", "R2v3 compliance", "NAID AAA verification", "e-Stewards audit", "PXE boot verification"]),
+    canonicalUrl: getCanonicalUrl("/products/drive-verifier"),
+  },
+  "data-eraser-software": {
+    title: "Data Erasure Software - Secure Wiping for All Devices | D-Secure Tech",
+    description: "The ultimate suite for secure data destruction. Erase files, drives, smartphones, and servers with enterprise-grade security and compliance.",
+    keywords: generateKeywords(["data erasure software", "secure wiping", "data destruction", "compliance software"]),
+    canonicalUrl: getCanonicalUrl("/products/data-eraser-software"),
+  },
+  "mobile-erasure-solutions": {
+    title: "Mobile Erasure Solutions - Secure Smartphone Wiping | D-Secure Tech",
+    description: "Professional solutions for large-scale mobile device erasure. Securely wipe iPhones, iPads, and Android devices for ITAD and resale.",
+    keywords: generateKeywords(["mobile erasure", "smartphone wiping", "secure mobile disposal", "ITAD mobile solutions"]),
+    canonicalUrl: getCanonicalUrl("/products/mobile-erasure-solutions"),
+  },
+  "wipe-mac-m1": {
+    title: "How to Wipe M1 Mac - Secure Data Erasure Guide | D-Secure Tech",
+    description: "Learn how to securely erase your Apple Silicon (M1/M2/M3) Mac. Professional guide for data destruction on modern macOS hardware.",
+    keywords: generateKeywords(["wipe M1 Mac", "Apple Silicon erasure", "macOS secure wipe", "Mac data destruction"]),
+    canonicalUrl: getCanonicalUrl("/products/wipe-mac-m1"),
+  },
+  "wipe-sas-drive": {
+    title: "How to Wipe SAS Drives - Enterprise Data Security | D-Secure Tech",
+    description: "Professional guide for securely erasing enterprise SAS and hardware RAID drives. Ensure data security in your data center environments.",
+    keywords: generateKeywords(["wipe SAS drive", "enterprise data erasure", "RAID wiping", "SAS disk destruction"]),
+    canonicalUrl: getCanonicalUrl("/products/wipe-sas-drive"),
+  },
+};

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import {
   TagIcon,
-  GlobeIcon,
   ServerIcon,
   ClipboardIcon,
 } from "@/components/FlatIcons";
@@ -10,20 +9,15 @@ import {
   Shield,
   Eraser,
   Activity,
-  Monitor,
   Smartphone,
   CheckCircle,
   Zap,
   Settings,
-  ArrowRight,
   ChevronDown,
   Cloud,
   RefreshCcw,
   Globe,
-  Wifi,
-  Battery,
   Cpu,
-  Camera,
   Layers,
   Database,
   Lock,
@@ -33,6 +27,7 @@ import {
   Workflow,
   Layout
 } from "lucide-react";
+import { getSEOForPage } from "@/utils/seo";
 import { ProductContactForm } from "@/components/forms";
 import Reveal from "../components/Reveal";
 import SEOHead from "../components/SEOHead";
@@ -107,7 +102,7 @@ const SmartphoneEraserPage = memo(() => {
     link.target = "_blank";
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    link.remove();
   };
 
   const sectionNavItems = [
@@ -209,33 +204,6 @@ const SmartphoneEraserPage = memo(() => {
     },
   ];
 
-  const keyBenefits = [
-    {
-      title: "Bulk Processing",
-      desc: "Securely erase up to 40+ iOS & Android devices simultaneously on a single workstation. Scale capacity across multiple workstations managed via a central cloud console.",
-      icon: <Layers className="w-8 h-8" />,
-      color: "from-emerald-500 to-teal-600",
-    },
-    {
-      title: "14 Global Standards",
-      desc: "Supports NIST 800-88 Clear & Purge, IEEE 2883:2022 Clear & Purge, DoD 5220.22-M (3 & 7 Pass), Peter Gutmann (35 Pass), and more for total compliance.",
-      icon: <ShieldCheck className="w-8 h-8" />,
-      color: "from-teal-500 to-emerald-600",
-    },
-    {
-      title: "eSIM & Locked Device Erasure",
-      desc: "Permanently remove eSIM profiles, erase locked iPhones, and wipe devices with broken screens or in recovery mode via our Linux-based edition.",
-      icon: <Smartphone className="w-8 h-8" />,
-      color: "from-emerald-600 to-green-700",
-    },
-    {
-      title: "Tamper-Proof Reports",
-      desc: "Generates verifiable erasure reports & certificates in PDF, CSV & XML formats. Customize with your company logo & watermark for audit trails.",
-      icon: <FileCheck className="w-8 h-8" />,
-      color: "from-slate-700 to-slate-900",
-    },
-  ];
-
   const moreFeatures = [
     {
       title: "Unified iOS & Android",
@@ -286,14 +254,7 @@ const SmartphoneEraserPage = memo(() => {
 
   return (
     <>
-      <SEOHead
-        seo={{
-          title: "Smartphone Eraser | Secure iOS & Android Data Destruction | D-Secure",
-          description: "Regulatory data erasure software for ITADs and mobile retailers. Permanently wipe iPhones, iPads, and Android devices with 50+ tests and audit-ready reports.",
-          keywords: "mobile eraser, smartphone data destruction, iPhone wiping software, android secure erase, ITAD mobile processing, NIST 800-88 mobile",
-          canonicalUrl: "https://dsecuretech.com/products/smartphone-eraser",
-        }}
-      />
+      <SEOHead seo={getSEOForPage("smartphone-eraser")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -338,7 +299,7 @@ const SmartphoneEraserPage = memo(() => {
                 <div className="space-y-8">
                   <UpcomingBadge className="mb-4" />
 
-                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight">
+                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
                     Smartphone{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                       Eraser
@@ -392,7 +353,7 @@ const SmartphoneEraserPage = memo(() => {
                       <div className="w-full h-full bg-white rounded-lg overflow-hidden relative flex flex-col items-center justify-center border border-slate-200">
                         {/* Binary Background Pattern */}
                         <div className="absolute inset-0 opacity-[0.03] select-none pointer-events-none font-mono text-[8px] leading-[10px] break-all overflow-hidden p-1">
-                          {Array(10).fill("101010101010101010101010101010101010101010101010101010").join("\n")}
+                          {new Array(10).fill("101010101010101010101010101010101010101010101010101010").join("\n")}
                         </div>
 
                         {/* Heartbeat Line (Animates across) */}
@@ -462,7 +423,7 @@ const SmartphoneEraserPage = memo(() => {
                         { type: 'diag', fill: 65 },
                         { type: 'erase', fill: 20 }
                       ].map((phone, i) => (
-                        <div key={i} className="flex flex-col items-center">
+                        <div key={`${phone.type}-${i}`} className="flex flex-col items-center">
                           <div className="w-20 h-32 bg-white rounded-xl border-2 border-slate-300 p-1.5 shadow-lg relative overflow-hidden group/phone hover:border-emerald-400 transition-colors">
                             {/* Filling animation */}
                             <div
