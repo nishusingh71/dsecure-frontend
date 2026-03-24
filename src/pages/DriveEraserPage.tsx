@@ -700,17 +700,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <button
-                      disabled
-                      className="inline-flex items-center justify-center gap-2 bg-slate-400 text-white font-bold px-8 py-4 rounded-xl shadow-lg cursor-not-allowed opacity-80"
+                    <Link
+                      to="/pricing-and-plan?product=drive-eraser"
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
                     >
                       <HoverIcon>
                         {(filled) => (
                           <LightningIcon className="w-5 h-5" filled={filled} />
                         )}
                       </HoverIcon>
-                      Upcoming
-                    </button>
+                      Buy Now
+                    </Link>
                     <button
                       onClick={downloadCatalog}
                       disabled={false}

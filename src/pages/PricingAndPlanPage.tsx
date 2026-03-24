@@ -1344,7 +1344,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 {/* Action Button */}
                 <button
                   onClick={handleBuyNow}
-                  disabled={selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || selectedCategory === "drive-eraser" || isBuyNowLoading}
+                  disabled={selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || (selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics") || isBuyNowLoading}
                   onMouseEnter={() => {
                     // ✅ Prefetch on hover for even faster response
                     if (
@@ -1357,12 +1357,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     }
                   }}
                   className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 ${
-                    selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || selectedCategory === "drive-eraser"
+                    selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || (selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics")
                       ? "bg-gradient-to-r from-slate-300 to-slate-400 text-white cursor-not-allowed opacity-70"
                       : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
                   }`}
                 >
-                  {selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || selectedCategory === "drive-eraser"
+                  {selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || (selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics")
                     ? "Coming Soon"
                     : selectedLicenses === "custom" || selectedPlan === "custom"
                       ? "Request Custom Quote"

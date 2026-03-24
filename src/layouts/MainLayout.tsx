@@ -31,6 +31,10 @@ export default function MainLayout() {
   const [productsDropdownTab, setProductsDropdownTab] = useState<
     "eraser" | "migration" | "diagnostics" | "verification"
   >("eraser");
+  const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
+  const [solutionsDropdownTab, setSolutionsDropdownTab] = useState<
+    "industry" | "specialized"
+  >("industry");
   const [hideHeader, setHideHeader] = useState(false); // Hide header when sticky section nav is visible
 
   const toggleMobileMenu = useCallback(() => {
@@ -62,6 +66,9 @@ export default function MainLayout() {
       const target = event.target as HTMLElement;
       if (productsDropdownOpen && !target.closest("[data-products-dropdown]")) {
         setProductsDropdownOpen(false);
+      }
+      if (solutionsDropdownOpen && !target.closest("[data-solutions-dropdown]")) {
+        setSolutionsDropdownOpen(false);
       }
     };
 
@@ -850,17 +857,220 @@ export default function MainLayout() {
                   </div>
                 )}
               </div>
-              <NavLink
-                to="/solutions"
-                className={({ isActive }) =>
-                  (isActive
-                    ? "text-brand font-medium"
-                    : "text-slate-600 hover:text-slate-900") +
-                  " inline-flex items-center gap-2 py-2"
-                }
-              >
-                {t("solutions.title")}
-              </NavLink>
+              {/* Solutions Dropdown */}
+              <div data-solutions-dropdown>
+                <button
+                  className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${solutionsDropdownOpen ? "text-brand font-medium" : ""}`}
+                  onClick={() => setSolutionsDropdownOpen(!solutionsDropdownOpen)}
+                >
+                  {t("solutions.title")}
+                </button>
+
+                {/* Dropdown Panel — Zoho-style mega menu */}
+                {solutionsDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-slate-200 z-50 overflow-hidden max-h-[37.5vh] flex flex-col">
+                    {/* Close Button — top right */}
+                    <button
+                      onClick={() => setSolutionsDropdownOpen(false)}
+                      className="absolute top-3 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-all z-[60]"
+                      aria-label="Close solutions menu"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex flex-1 min-h-0 overflow-hidden">
+                      {/* ── LEFT SIDEBAR ── */}
+                      <div className="w-52 flex-shrink-0 border-r border-slate-200 bg-slate-50/80 py-4 overflow-y-auto custom-scrollbar">
+                        <button
+                          className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                            solutionsDropdownTab === "industry"
+                              ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                          }`}
+                          onClick={() => setSolutionsDropdownTab("industry")}
+                        >
+                          Industries
+                          {solutionsDropdownTab === "industry" && (
+                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                            solutionsDropdownTab === "specialized"
+                              ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                          }`}
+                          onClick={() => setSolutionsDropdownTab("specialized")}
+                        >
+                          Specialized
+                          {solutionsDropdownTab === "specialized" && (
+                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                            </svg>
+                          )}
+                        </button>
+
+                        <div className="mt-6 px-5 text-center">
+                          <Link
+                            to="/solutions"
+                            className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors inline-block w-full"
+                            onClick={() => setSolutionsDropdownOpen(false)}
+                          >
+                            All Solutions
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* ── RIGHT CONTENT ── */}
+                      <div className="flex-1 overflow-y-auto custom-scrollbar bg-white px-6 pb-6">
+                        <div className="sticky top-0 bg-white z-20 pt-6 pb-4 -mx-6 px-6 border-b border-slate-100/50">
+                          <h3 className="text-lg font-bold text-slate-800">
+                            {solutionsDropdownTab === "industry" ? "By Industry" : "Specialized Segments"}
+                          </h3>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4 pt-6">
+                          {solutionsDropdownTab === "industry" && (
+                            <>
+                              {/* Enterprise */}
+                              <Link
+                                to="/solutions/enterprise"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Shield className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Enterprise</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Data security and sanitization for global corporations.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Banking & Finance */}
+                              <Link
+                                to="/solutions/financial"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Database className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Banking & Finance</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Compliance-driven erasure for financial institutions.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Government */}
+                              <Link
+                                to="/solutions/government"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Zap className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Government</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Secure sanitization for public sector & defense.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Healthcare */}
+                              <Link
+                                to="/solutions/healthcare"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Activity className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Healthcare</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Privacy-first data disposal for healthcare providers.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Education */}
+                              <Link
+                                to="/solutions/education"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Monitor className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Education</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Managing data privacy across academic institutions.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+                            </>
+                          )}
+
+                          {solutionsDropdownTab === "specialized" && (
+                            <>
+                              {/* Service Providers */}
+                              <Link
+                                to="/solutions/service-providers"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-teal-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Activity className="w-5 h-5 text-teal-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-teal-700 transition-colors">Service Providers</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Scaleable erasure services for MSPs and MSSPs.</p>
+                                <span className="text-xs font-semibold text-teal-600 group-hover:text-teal-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* ITAD */}
+                              <Link
+                                to="/solutions/itad"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-cyan-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <RefreshCcw className="w-5 h-5 text-cyan-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">ITAD</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Maximize asset value with secure disposal workflows.</p>
+                                <span className="text-xs font-semibold text-cyan-600 group-hover:text-cyan-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               <NavLink
                 to="/resources"
                 className={({ isActive }) =>
@@ -1322,21 +1532,32 @@ export default function MainLayout() {
                     {t("solutions.title")}
                   </NavLink>
                   <div className="ml-8 space-y-1 border-l-2 border-emerald-200 pl-4">
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/solutions/healthcare"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
-                    >
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-4 h-4 text-white" />
-                      </div>
-                      <div>
-                        <span className="font-medium">Healthcare</span>
-                        <p className="text-xs text-slate-400">
-                          HIPAA & GDPR Compliance
-                        </p>
-                      </div>
-                    </Link>
+                    {[
+                      { to: "/solutions/enterprise", title: "Enterprise", desc: "Corporate Security", color: "from-brand to-emerald-600" },
+                      { to: "/solutions/financial", title: "Banking & Finance", desc: "Compliance First", color: "from-emerald-500 to-teal-600" },
+                      { to: "/solutions/government", title: "Government", desc: "Public Sector", color: "from-blue-500 to-indigo-600" },
+                      { to: "/solutions/healthcare", title: "Healthcare", desc: "HIPAA & GDPR", color: "from-cyan-500 to-blue-600" },
+                      { to: "/solutions/education", title: "Education", desc: "Academic Privacy", color: "from-emerald-400 to-teal-500" },
+                      { to: "/solutions/service-providers", title: "Service Providers", desc: "MSP & MSSP", color: "from-teal-500 to-emerald-600" },
+                      { to: "/solutions/itad", title: "ITAD", desc: "Asset Disposition", color: "from-cyan-400 to-blue-500" },
+                    ].map((item) => (
+                      <Link
+                        key={item.to}
+                        onClick={() => setOpen(false)}
+                        to={item.to}
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className={`w-8 h-8 bg-gradient-to-br ${item.color} rounded-md flex items-center justify-center flex-shrink-0`}>
+                          <Shield className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <span className="font-medium text-slate-800">{item.title}</span>
+                          <p className="text-[10px] text-slate-500 font-medium">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
                 <NavLink

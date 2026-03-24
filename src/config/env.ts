@@ -8,7 +8,7 @@
  * - Removal of direct process.env / import.meta.env usage
  */
 
-import { Download } from "lucide-react";
+
 
 const validateStr = (value: string | undefined, key: string, required: boolean, fallback: string): string => {
     if (!value && required) {
@@ -25,8 +25,8 @@ const validateBool = (value: string | boolean | undefined, defaultVal: boolean):
 
 const validateInt = (value: string | undefined, defaultVal: number): number => {
     if (!value) return defaultVal;
-    const parsed = parseInt(value, 10);
-    return isNaN(parsed) ? defaultVal : parsed;
+    const parsed = Number.parseInt(value, 10);
+    return Number.isNaN(parsed) ? defaultVal : parsed;
 };
 
 export const ENV = {
@@ -55,6 +55,7 @@ export const ENV = {
     FILE_ERASER: validateStr(import.meta.env.FileEraser, 'FileEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVHHRwPSypqgPTs3kuSu?quantity='),
     DRIVE_ERASER: validateStr(import.meta.env.DriveEraser, 'DriveEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity='),
     FileEraser_Windows_Download_Link: validateStr(import.meta.env.FileEraser_windows_download_link, 'FileEraser_windows_download_link', false, 'https://downloads.dsecuretech.com/windows/D-SFE_installer_v1_0_0_0.exe'),
+    DriveEraser_ISO_Download_Link: validateStr(import.meta.env.DriveEraser_iso_download_link, 'DriveEraser_iso_download_link', false, 'https://downloads.dsecuretech.com/x64x86/Drive%20Eraser/D-Secure-Drive-Eraser(v1.0.0x64-arch-amd).iso'),
     POWER_AUTOMATE_HTTP_URL: validateStr(import.meta.env.POWER_AUTOMATE_HTTP_URL, 'POWER_AUTOMATE_HTTP_URL', false, ''),
 };
 

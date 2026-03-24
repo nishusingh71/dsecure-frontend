@@ -2,22 +2,24 @@ import { SEOMetadata, generateKeywords, getCanonicalUrl } from "./seo.core";
 
 export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
   "solutions/financial-services": {
-    title: "Financial Services Data Erasure | Banking Compliance | D-Secure",
+    title: "Banking & Financial Data Erasure - PCI-DSS & SOX Compliant | D-Secure Tech",
     description:
-      "Secure data sanitization for banks and financial institutions. PCI-DSS and GLBA compliant erasure for high-stakes financial data.",
+      "Secure data erasure solutions for banks and financial institutions. Achieve 100% compliance with PCI-DSS, SOX, GLBA, and FACTA with tamper-proof audit trails.",
     keywords: generateKeywords([
-      "banking data security",
-      "financial compliance",
-      "PCI-DSS erasure",
+      "banking data erasure",
+      "financial data destruction",
+      "PCI-DSS compliance",
+      "SOX data erasure",
       "GLBA compliance",
-      "SOX data destruction",
+      "FACTA disposal rule",
+      "banking ITAD",
     ]),
-    canonicalUrl: getCanonicalUrl("/solutions/financial-services"),
+    canonicalUrl: getCanonicalUrl("/solutions/financial"),
   },
   "solutions/healthcare": {
     title: "Healthcare Data Sanitization | HIPAA Compliance | D-Secure",
     description:
-      "Certified medical record destruction and PHI erasure. HIPAA-compliant data sanitization for hospitals and clinics.",
+      "Secure medical record sanitization and PHI erasure. HIPAA-compliant data sanitization for hospitals and clinics.",
     keywords: generateKeywords([
       "healthcare data privacy",
       "HIPAA compliance",
@@ -28,14 +30,15 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl("/solutions/healthcare"),
   },
   "solutions/government": {
-    title: "Government Data Erasure | NIST 800-88 & DoD | D-Secure",
+    title: "Government Data Erasure - NIST 800-88 & DoD Compliant | D-Secure Tech",
     description:
-      "Military-grade data destruction for government and defense. NIST 800-88 and DoD 5220.22-M compliant sanitization.",
+      "Secure data destruction for government and defense. Meet NIST 800-88, DoD 5220.22-M, and CMMC standards with tamper-proof audit trails.",
     keywords: generateKeywords([
       "government data security",
       "NIST 800-88",
       "military data erasure",
       "DoD 5220.22-M",
+      "CMMC compliance",
       "classified data destruction",
     ]),
     canonicalUrl: getCanonicalUrl("/solutions/government"),
