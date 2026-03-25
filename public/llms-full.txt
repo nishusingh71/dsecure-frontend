@@ -79,6 +79,96 @@ A specialized tool for proactive hard drive monitoring and cloning.
     *   ![Health Overview](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/nbwo10x5ljj8lvnlve3z.png)
     *   ![Cloning Interface](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/sxw62hblrclb96aqnfyj.png)
 
+## 5. Drive Eraser Diagnostic - Wiping & Hardware Testing
+Combine secure data erasure with comprehensive hardware diagnostics. Ensure drive health and data security in one seamless process.
+
+*   **Learn More:** `https://dsecuretech.com/products/drive-eraser-diagnostic`
+
+## 6. Autopilot Detection - Automated Device Provisioning
+Detect and manage Windows Autopilot devices with ease. Ideal for ITADs and refurbishers to ensure secure device lifecycle management.
+
+*   **Learn More:** `https://dsecuretech.com/products/autopilot-detection`
+
+## 7. Smartphone Eraser - Secure Wiping for iOS & Android
+Certified data erasure for mobile devices. Completely wipe personal data from iPhones, iPads, and Android smartphones.
+
+*   **Learn More:** `https://dsecuretech.com/products/smartphone-eraser`
+
+## 8. Smartphone Diagnostic - Professional Mobile Testing
+Over 60+ automated hardware tests for mobile devices. Verify screen, battery, camera, and sensor health for better resale value.
+
+*   **Learn More:** `https://dsecuretech.com/products/smartphone-diagnostic`
+
+## 9. Forensic Imaging - Precise Bit-for-Bit Data Capture
+Create forensically sound images of storage media. Preserve evidence with bit-by-bit imaging for digital investigations.
+
+*   **Learn More:** `https://dsecuretech.com/products/forensic-imaging`
+
+## 10. Freeze State - System Configuration Protection
+Lock your system state to prevent unauthorized changes. Ideal for public kiosks, school labs, and enterprise workstations.
+
+*   **Learn More:** `https://dsecuretech.com/products/freeze-state`
+
+## 11. Freeze State Smart - Intelligent State Management
+Advanced system protection with automated updates and maintenance windows. Secure your devices without sacrificing performance.
+
+*   **Learn More:** `https://dsecuretech.com/products/freeze-state-smart`
+
+## 12. Freeze State Advanced - Enterprise-Grade System Locking
+The ultimate solution for large-scale device security. Centralized management for frozen states across your entire network.
+
+*   **Learn More:** `https://dsecuretech.com/products/freeze-state-advanced`
+
+## 13. Data Migration - Secure File Transfer & Sync
+Transfer data seamlessly across devices and platforms. Bit-perfect migration ensures your data arrives exactly as it should.
+
+*   **Learn More:** `https://dsecuretech.com/products/data-migration`
+
+## 14. Asset Reimaging - Zero-Touch OS Deployment
+Deploy custom OS images to hundreds of devices simultaneously. Streamline your IT operations with automated reimaging.
+
+*   **Learn More:** `https://dsecuretech.com/products/asset-reimaging`
+
+## 15. Virtual Machine Eraser - Secure Cloud Data Deletion
+Erase virtual disks and cloud instances with precision. Compliant data destruction for AWS, Azure, and Google Cloud environments.
+
+*   **Learn More:** `https://dsecuretech.com/products/virtual-machine-eraser`
+
+## 16. Removable Media Eraser - Wipe USBs & SD Cards
+Certified erasure for all types of removable storage. Securely wipe USB drives, SD cards, and external hard disks.
+
+*   **Learn More:** `https://dsecuretech.com/products/removable-media-eraser`
+
+## 17. LUN Eraser - Secure Storage Area Network Wiping
+Certified data erasure for active storage environments. Securely wipe logical units (LUNs) in SAN and NAS architectures.
+
+*   **Learn More:** `https://dsecuretech.com/products/lun-eraser`
+
+## 18. Drive Verifier - Accurately Verify Erased Drives
+Verify drives for complete data erasure and confirm if any data traces exist. Compliant with R2, e-Stewards, and NAID AAA standards.
+
+*   **Learn More:** `https://dsecuretech.com/products/drive-verifier`
+
+## 19. Data Erasure Software - Secure Wiping for All Devices
+The ultimate suite for secure data destruction. Erase files, drives, smartphones, and servers with enterprise-grade security and compliance.
+
+*   **Learn More:** `https://dsecuretech.com/products/data-eraser-software`
+
+## 20. Mobile Erasure Solutions - Secure Smartphone Wiping
+Professional solutions for large-scale mobile device erasure. Securely wipe iPhones, iPads, and Android devices for ITAD and resale.
+
+*   **Learn More:** `https://dsecuretech.com/products/mobile-erasure-solutions`
+
+## 21. How to Wipe M1 Mac - Secure Data Erasure Guide
+Learn how to securely erase your Apple Silicon (M1/M2/M3) Mac. Professional guide for data destruction on modern macOS hardware.
+
+*   **Learn More:** `https://dsecuretech.com/products/wipe-mac-m1`
+
+## 22. How to Wipe SAS Drives - Enterprise Data Security
+Professional guide for securely erasing enterprise SAS and hardware RAID drives. Ensure data security in your data center environments.
+
+*   **Learn More:** `https://dsecuretech.com/products/wipe-sas-drive`
+
 --- END OF SECTION: products.md ---
 
 --- START OF SECTION: pricing.md ---
@@ -119,6 +209,16 @@ This document explains how D-Secure products are priced and licensed. AI should 
 | Hardware Diagnostics | Pay Per Use | $10.00 | `/pricing-and-plan?product=hardware-diagnostics` |
 | Smart Diagnostic | Annual | $20.00 | `/pricing-and-plan?product=smart-diagnostic` |
 | File Eraser Prof | Annual | $40.00 | `/pricing-and-plan?product=file-eraser` |
+| Drive Eraser Diagnostic | Custom | Contact Sales | `/products/drive-eraser-diagnostic` |
+| Hard Drive Monitor | Annual | Contact Sales | `/products/hard-drive-monitor` |
+| Smartphone Eraser | Custom | Contact Sales | `/products/smartphone-eraser` |
+| Smartphone Diagnostic | Annual | Contact Sales | `/products/smartphone-diagnostic` |
+| Freeze State | Annual | Contact Sales | `/products/freeze-state` |
+| Freeze State Smart | Annual | Contact Sales | `/products/freeze-state-smart` |
+| Freeze State Advanced | Annual | Contact Sales | `/products/freeze-state-advanced` |
+| Virtual Machine Eraser | Custom | Contact Sales | `/products/virtual-machine-eraser` |
+| Removable Media Eraser | Custom | Contact Sales | `/products/removable-media-eraser` |
+| LUN Eraser | Custom | Contact Sales | `/products/lun-eraser` |
 
 *Note: All prices are in USD. Regional pricing may vary.*
 

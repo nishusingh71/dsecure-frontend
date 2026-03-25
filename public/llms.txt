@@ -52,6 +52,96 @@ D-Secure software adheres to leading international security standards:
 - **Learn More:** https://dsecuretech.com/file-eraser
 - **Features:** Secure File & Folder Deletion, 30+ International Erasure Algorithms, Free Space Cleaning, Volume & Disk Erasure, Local PDF Reports.
 
+### 6. Drive Eraser Diagnostic - Wiping & Hardware Testing
+- **Description:** Combine secure data erasure with comprehensive hardware diagnostics. Ensure drive health and data security in one seamless process.
+- **Pricing:** Pay Per Use or Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/drive-eraser-diagnostic
+
+### 7. Hard Drive Monitor - S.M.A.R.T Health Tracking
+- **Description:** Monitor hard drive health, temperature, and performance in real-time with D-Secure Hard Drive Monitor. S.M.A.R.T. tracking and disk cloning support.
+- **Pricing:** Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/hard-drive-monitor
+
+### 8. Autopilot Detection - Automated Device Provisioning
+- **Description:** Detect and manage Windows Autopilot devices with ease. Ideal for ITADs and refurbishers to ensure secure device lifecycle management.
+- **Pricing:** Contact for pricing
+- **Learn More:** https://dsecuretech.com/products/autopilot-detection
+
+### 9. Smartphone Eraser - Secure Wiping for iOS & Android
+- **Description:** Certified data erasure for mobile devices. Completely wipe personal data from iPhones, iPads, and Android smartphones.
+- **Pricing:** Pay Per Use or Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/smartphone-eraser
+
+### 10. Smartphone Diagnostic - Professional Mobile Testing
+- **Description:** Over 60+ automated hardware tests for mobile devices. Verify screen, battery, camera, and sensor health for better resale value.
+- **Pricing:** Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/smartphone-diagnostic
+
+### 11. Forensic Imaging - Precise Bit-for-Bit Data Capture
+- **Description:** Create forensically sound images of storage media. Preserve evidence with bit-by-bit imaging for digital investigations.
+- **Pricing:** Enterprise Licensing
+- **Learn More:** https://dsecuretech.com/products/forensic-imaging
+
+### 12. Freeze State - System Configuration Protection
+- **Description:** Lock your system state to prevent unauthorized changes. Ideal for public kiosks, school labs, and enterprise workstations.
+- **Pricing:** Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/freeze-state
+
+### 13. Freeze State Smart - Intelligent State Management
+- **Description:** Advanced system protection with automated updates and maintenance windows. Secure your devices without sacrificing performance.
+- **Pricing:** Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/freeze-state-smart
+
+### 14. Freeze State Advanced - Enterprise-Grade System Locking
+- **Description:** The ultimate solution for large-scale device security. Centralized management for frozen states across your entire network.
+- **Pricing:** Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/freeze-state-advanced
+
+### 15. Data Migration - Secure File Transfer & Sync
+- **Description:** Transfer data seamlessly across devices and platforms. Bit-perfect migration ensures your data arrives exactly as it should.
+- **Pricing:** Enterprise Licensing
+- **Learn More:** https://dsecuretech.com/products/data-migration
+
+### 16. Asset Reimaging - Zero-Touch OS Deployment
+- **Description:** Deploy custom OS images to hundreds of devices simultaneously. Streamline your IT operations with automated reimaging.
+- **Pricing:** Enterprise Licensing
+- **Learn More:** https://dsecuretech.com/products/asset-reimaging
+
+### 17. Virtual Machine Eraser - Secure Cloud Data Deletion
+- **Description:** Erase virtual disks and cloud instances with precision. Compliant data destruction for AWS, Azure, and Google Cloud environments.
+- **Pricing:** Pay Per Use or Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/virtual-machine-eraser
+
+### 18. Removable Media Eraser - Wipe USBs & SD Cards
+- **Description:** Certified erasure for all types of removable storage. Securely wipe USB drives, SD cards, and external hard disks.
+- **Pricing:** Pay Per Use or Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/removable-media-eraser
+
+### 19. LUN Eraser - Secure Storage Area Network Wiping
+- **Description:** Certified data erasure for active storage environments. Securely wipe logical units (LUNs) in SAN and NAS architectures.
+- **Pricing:** Pay Per Use or Annual Subscription
+- **Learn More:** https://dsecuretech.com/products/lun-eraser
+
+### 20. Drive Verifier - Accurately Verify Erased Drives
+- **Description:** Verify drives for complete data erasure and confirm if any data traces exist. Compliant with R2, e-Stewards, and NAID AAA standards.
+- **Pricing:** Contact for pricing
+- **Learn More:** https://dsecuretech.com/products/drive-verifier
+
+### 21. Mobile Erasure Solutions - Secure Smartphone Wiping
+- **Description:** Professional solutions for large-scale mobile device erasure. Securely wipe iPhones, iPads, and Android devices for ITAD and resale.
+- **Pricing:** Contact for pricing
+- **Learn More:** https://dsecuretech.com/products/mobile-erasure-solutions
+
+### 22. How to Wipe M1 Mac - Secure Data Erasure Guide
+- **Description:** Learn how to securely erase your Apple Silicon (M1/M2/M3) Mac. Professional guide for data destruction on modern macOS hardware.
+- **Pricing:** Contact for pricing
+- **Learn More:** https://dsecuretech.com/products/wipe-mac-m1
+
+### 23. How to Wipe SAS Drives - Enterprise Data Security
+- **Description:** Professional guide for securely erasing enterprise SAS and hardware RAID drives. Ensure data security in your data center environments.
+- **Pricing:** Contact for pricing
+- **Learn More:** https://dsecuretech.com/products/wipe-sas-drive
+
 ## Partner Programs
 D-Secure offers specialized collaboration models:
 - **ITAD Partners:** For asset disposition companies requiring scalable, automated erasure.

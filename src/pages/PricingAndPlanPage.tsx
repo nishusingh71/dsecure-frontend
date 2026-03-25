@@ -545,106 +545,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     );
   };
 
-  // Dynamic pricing calculation based on selected plan
-  const calculatePrice = (
-    category: string,
-    licenses: string,
-    years: string,
-    plan: string,
-  ) => {
-    const licenseCount = licenses === "custom" ? 0 : Number.parseInt(licenses);
-
-    if (category === "drive-eraser") {
-      // Drive Eraser: $25 for standard, $30 for diagnostics
-      const pricePerLicense = driveEraserVariant === "diagnostics" ? 30 : 25;
-      return Math.round(pricePerLicense * licenseCount * 100) / 100;
-    }
-
-    if (category === "hardware-diagnostics") {
-      // Hardware Diagnostics: $10 per license (one-time) - Start at 100 ($1000)
-      return Math.round(10 * licenseCount * 100) / 100;
-    }
-
-    if (category === "smart-diagnostic") {
-      // Smart Diagnostic: $20 per license per year
-      const yearCount = Number.parseInt(years);
-      return Math.round(20 * licenseCount * yearCount * 100) / 100;
-    }
-
-    // File Eraser: $40 per license per year
-    const basePrice = 40;
-    const yearCount = Number.parseInt(years);
-    const baseTotal =
-      Math.round(basePrice * licenseCount * yearCount * 100) / 100;
-    return baseTotal;
-  };
-
-  // Get plan-specific features for each product
-  const getProductFeatures = (category: string, plan: string) => {
-    const currentPlan = planOptions.find((p) => p.id === plan);
-    if (!currentPlan) return [];
-
-    if (category === "drive-eraser") {
-      const baseFeatures = [
-        "Complete Hard Drive & SSD Erasure",
-        "Enterprise-Grade Security Standards",
-        "Multi-Platform Device Support",
-        "Compliance Reporting & Regulatory Documents",
-        "Real-time Progress Monitoring",
-        "Batch Processing Capabilities",
-      ];
-
-      if (driveEraserVariant === "diagnostics") {
-        return [
-          ...baseFeatures,
-          "Advanced Hardware Diagnostics",
-          "SMART Health Analysis",
-          "Automated Device Grading",
-        ];
-      }
-      return baseFeatures;
-    } else if (category === "hardware-diagnostics") {
-      return [
-        "PC, Laptops & Mac (Intel & Silicon M1-M4)",
-        "PXE Mass Diagnostics (up to 255 Machines)",
-        "10+ Automated Component Health Tests",
-        "12+ Manual Assessment & Interaction Tests",
-        "MDM Enrollment Detection (Mac)",
-        "Tamper-Proof Signed Reports (PDF)",
-        "Centralized Cloud Management Console",
-        "Customizable ISO Standardization",
-      ];
-    } else if (category === "smart-diagnostic") {
-      return [
-        "Real-time Hard Drive Health Watch",
-        "Monitor S.M.A.R.T. Status & Temperature",
-        "Scan Disk for Damaged/Bad Sectors",
-        "Create Sector-by-Sector Drive Clones",
-        "Predictive Drive Failure Alerts",
-        "Comprehensive SMART Attribute Reporting",
-      ];
-    } else if (category === "file-eraser") {
-      return [
-        "Secure File & Folder Deletion",
-        "30+ International Erasure Algorithms",
-        "Real-time Progress Monitoring",
-        "Windows, Mac & Linux Support",
-        "Free Space Cleaning",
-        "Local PDF Reports",
-        "Enhanced Erasure Features",
-        "Cloud Report Upload/Sync",
-        "White-Label Reports",
-        "XML Report Format",
-        "Volume & Disk Erasure",
-        "Network Deployment",
-        "Web Dashboard Access",
-        "Cloud Commands (Remote Jobs)",
-        "Multi-Level User Logs",
-      ];
-    }
-    return [];
-  };
-
+  // ── PRODUCT CONFIGURATION ──
   const productData = {
     "drive-eraser": {
       title:
@@ -759,6 +660,99 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const getCurrentProduct = () =>
     productData[selectedCategory as keyof typeof productData];
 
+  // Dynamic pricing calculation based on selected configuration
+  const calculatePrice = (
+    category: string,
+    licenses: string,
+    years: string,
+    plan: string,
+  ) => {
+    const licenseCount = licenses === "custom" ? 0 : Number.parseInt(licenses);
+    const product = productData[category as keyof typeof productData];
+
+    if (!product) return 0;
+
+    // One-time purchase products (Drive Eraser, Hardware Diagnostics)
+    if (category === "drive-eraser" || category === "hardware-diagnostics") {
+      return Math.round(product.basePrice * licenseCount * 100) / 100;
+    }
+
+    // Subscription based products (Smart Diagnostic, File Eraser)
+    if (category === "smart-diagnostic" || category === "file-eraser") {
+      const yearCount = Number.parseInt(years);
+      return Math.round(product.basePrice * licenseCount * yearCount * 100) / 100;
+    }
+
+    return 0;
+  };
+
+  // Get plan-specific features for each product
+  const getProductFeatures = (category: string, plan: string) => {
+    const currentPlan = planOptions.find((p) => p.id === plan);
+    if (!currentPlan) return [];
+
+    if (category === "drive-eraser") {
+      const baseFeatures = [
+        "Complete Hard Drive & SSD Erasure",
+        "Enterprise-Grade Security Standards",
+        "Multi-Platform Device Support",
+        "Compliance Reporting & Regulatory Documents",
+        "Real-time Progress Monitoring",
+        "Batch Processing Capabilities",
+      ];
+
+      if (driveEraserVariant === "diagnostics") {
+        return [
+          ...baseFeatures,
+          "Advanced Hardware Diagnostics",
+          "SMART Health Analysis",
+          "Automated Device Grading",
+        ];
+      }
+      return baseFeatures;
+    } else if (category === "hardware-diagnostics") {
+      return [
+        "PC, Laptops & Mac (Intel & Silicon M1-M4)",
+        "PXE Mass Diagnostics (up to 255 Machines)",
+        "10+ Automated Component Health Tests",
+        "12+ Manual Assessment & Interaction Tests",
+        "MDM Enrollment Detection (Mac)",
+        "Tamper-Proof Signed Reports (PDF)",
+        "Centralized Cloud Management Console",
+        "Customizable ISO Standardization",
+      ];
+    } else if (category === "smart-diagnostic") {
+      return [
+        "Real-time Hard Drive Health Watch",
+        "Monitor S.M.A.R.T. Status & Temperature",
+        "Scan Disk for Damaged/Bad Sectors",
+        "Create Sector-by-Sector Drive Clones",
+        "Predictive Drive Failure Alerts",
+        "Comprehensive SMART Attribute Reporting",
+      ];
+    } else if (category === "file-eraser") {
+      return [
+        "Secure File & Folder Deletion",
+        "30+ International Erasure Algorithms",
+        "Real-time Progress Monitoring",
+        "Windows, Mac & Linux Support",
+        "Free Space Cleaning",
+        "Local PDF Reports",
+        "Enhanced Erasure Features",
+        "Cloud Report Upload/Sync",
+        "White-Label Reports",
+        "XML Report Format",
+        "Volume & Disk Erasure",
+        "Network Deployment",
+        "Web Dashboard Access",
+        "Cloud Commands (Remote Jobs)",
+        "Multi-Level User Logs",
+      ];
+    }
+    return [];
+  };
+
+
   const getDisplayPrice = () => {
     if (selectedLicenses === "custom" || selectedPlan === "custom")
       return "Custom Quote";
@@ -796,27 +790,34 @@ const PricingAndPlanPage: React.FC = memo(() => {
   };
 
   const getPriceNote = () => {
+    // Agar custom quantity ya plan hai to message dikhao
     if (selectedLicenses === "custom" || selectedPlan === "custom")
       return "Tailored to your needs";
 
+    const currentProduct = getCurrentProduct();
+
     if (selectedCategory === "drive-eraser") {
-      return "Drive Eraser @ $20.00/license (One-time purchase)";
+      // Drive Eraser ke liye dynamic price note ($25 standard, $30 diagnostics)
+      return `Drive Eraser @ $${currentProduct.basePrice.toFixed(2)}/license (One-time purchase)`;
     }
 
     if (selectedCategory === "hardware-diagnostics") {
-      return "Hardware Diagnostic @ $10.00/license (One-time purchase)";
+      // Hardware Diagnostic ka price note ($10)
+      return `Hardware Diagnostic @ $${currentProduct.basePrice.toFixed(2)}/license (One-time purchase)`;
     }
 
     if (selectedCategory === "smart-diagnostic") {
-      return `Smart Diagnostic @ $20.00/license/year ${Number.parseInt(selectedYears) > 1 ? `× ${selectedYears} years` : ""}`;
+      // Smart Diagnostic ka price note ($20)
+      const yearCount = Number.parseInt(selectedYears);
+      return `Smart Diagnostic @ $${currentProduct.basePrice.toFixed(2)}/license/year ${yearCount > 1 ? `× ${yearCount} years` : ""}`;
     }
 
     // File Eraser plan-based pricing
-    const currentPlan = getCurrentPlan();
-    let note = `Professional @ $40.00/license/year`;
+    let note = `Professional @ $${currentProduct.basePrice.toFixed(2)}/license/year`;
 
-    if (Number.parseInt(selectedYears) > 1) {
-      note += ` × ${selectedYears} years`;
+    const yearCount = Number.parseInt(selectedYears);
+    if (yearCount > 1) {
+      note += ` × ${yearCount} years`;
     }
 
     return note;
