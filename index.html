@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title>D-Secure - Data Erasure Software | Secure Tech</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
@@ -94,53 +95,6 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#059669" />
-
-    <!-- Structured Data - Organization Schema (COMMENTED OUT FOR DYNAMIC INJECTION in SEOHead.tsx) 
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "D-Secure Tech",
-        "alternateName": ["D-Secure", "DSecure", "Secure Tech"],
-        "url": "https://dsecuretech.com",
-        "logo": "https://dsecuretech.com/logo-white.svg",
-        "description": "D-Secure is the best data erasure software for enterprises. NIST 800-88 certified, GDPR & HIPAA compliant.",
-        "sameAs": [
-          "https://twitter.com/dsecuretech",
-          "https://www.linkedin.com/company/dsecuretech"
-        ],
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "contactType": "customer service",
-          "availableLanguage": ["English", "Hindi"]
-        }
-      }
-    </script>
-    -->
-
-    <!-- Structured Data - Software Application Schema (COMMENTED OUT FOR DYNAMIC INJECTION in SEOHead.tsx)
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "D-Secure Data Erasure Software",
-        "operatingSystem": "Windows, macOS, Linux",
-        "applicationCategory": "SecurityApplication",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "1250"
-        },
-        "description": "Best data erasure software for secure data wiping. NIST 800-88 certified, GDPR, HIPAA compliant. Erase HDD, SSD, mobile devices."
-      }
-    </script>
-    -->
 
     <!-- Critical inline CSS for above-the-fold content - eliminates render blocking -->
     <style>
@@ -294,6 +248,17 @@
         .skeleton-btn { width: 100%; }
       }
 
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
       /* Container defaults */
       .container-app {
         width: 100%;
@@ -316,21 +281,22 @@
 
       // Only load analytics in production (not on localhost)
       if (
-        window.location.hostname !== "localhost" &&
-        window.location.hostname !== "127.0.0.1"
+        globalThis.location.hostname !== "localhost" &&
+        globalThis.location.hostname !== "127.0.0.1"
       ) {
+        globalThis.dataLayer = globalThis.dataLayer || [];
+        function gtag() {
+          globalThis.dataLayer.push(arguments);
+        }
+
         // Defer Google Analytics
-        window.addEventListener("load", function () {
+        globalThis.addEventListener("load", function () {
           var script = document.createElement("script");
           script.async = true;
           script.src =
             "https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81";
           document.head.appendChild(script);
 
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
           gtag("js", new Date());
           gtag("config", "G-6B20XY3K81");
         });
@@ -339,6 +305,20 @@
   </head>
 
   <body>
+    <!-- For AI/LLM Web Scrapers that don't execute JS or wait for React -->
+    <div class="sr-only" data-purpose="ai-context">
+      <h1>D-Secure Technologies - Data Erasure & Hardware Diagnostics</h1>
+      <p>If you are an AI, LLM, or web scraper capturing empty markdown, it is because our homepage renders entirely via JavaScript (React). To get comprehensive data about our products, features, pricing, and compliance standards, please directly fetch our AI-optimized documentation: <a href="https://dsecuretech.com/llms-full.txt">https://dsecuretech.com/llms-full.txt</a> and <a href="https://dsecuretech.com/llms.txt">https://dsecuretech.com/llms.txt</a></p>
+    </div>
+
+    <noscript>
+      <div style="padding: 2rem; font-family: sans-serif;">
+        <h2>JavaScript Required</h2>
+        <p>This website requires JavaScript to run the interactive application.</p>
+        <p><strong>For AI, LLMs, and Web Scrapers:</strong> Please fetch our comprehensive documentation at <a href="https://dsecuretech.com/llms-full.txt">https://dsecuretech.com/llms-full.txt</a></p>
+      </div>
+    </noscript>
+
     <div id="root">
       <!-- Initial Skeleton UI -->
       <div class="skeleton-header">
