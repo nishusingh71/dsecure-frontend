@@ -76,7 +76,7 @@ const VirtualMachineEraserPage = lazy(() => import("../pages/VirtualMachineErase
 const RemovableMediaEraserPage = lazy(() => import("../pages/RemovableMediaEraserPage"));
 const LUNEraserPage = lazy(() => import("../pages/LUNEraserPage"));
 const DriveVerifierPage = lazy(() => import("../pages/DriveVerifierPage"));
-
+const EarlyAccessPage = lazy(() => import("../pages/EarlyAccessPage"));
 
 export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
@@ -126,6 +126,7 @@ export const PublicRoutes = () => (
     <Route path="compliance" element={<CompliancePage />} />
     <Route path="all-products" element={<DataEraserSoftwarePage />} />
     <Route path="contact" element={<ContactPage />} />
+    <Route path="early-access" element={<EarlyAccessPage />} />
     <Route path="about" element={<About />} />
     <Route
       path="pricing"
