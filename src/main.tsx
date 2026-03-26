@@ -71,11 +71,11 @@ if (sessionStorage.redirect) {
   window.history.replaceState(null, "", url.pathname + url.search + url.hash);
 }
 
-// Optimize React rendering
-const root = ReactDOM.createRoot(document.getElementById("root")!);
+// Optimize React rendering & Hydration
+const rootElement = document.getElementById("root")!;
+const isPrerendered = "prerendered" in rootElement.dataset;
 
-// Use concurrent features for better performance
-root.render(
+const appWrapper = (
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter
@@ -88,3 +88,14 @@ root.render(
     </HelmetProvider>
   </React.StrictMode>
 );
+
+if (isPrerendered) {
+  // Hydrate statically pre-rendered HTML sent by Node SSG
+  ReactDOM.hydrateRoot(rootElement, appWrapper);
+} else {
+  // Standard SPA initialization for Dev mode or un-prerendered routes
+  // Clear skeleton first to avoid React 19 complaining about mismatched nodes
+  rootElement.innerHTML = '';
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(appWrapper);
+}

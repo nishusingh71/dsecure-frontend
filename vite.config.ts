@@ -80,6 +80,9 @@ export default defineConfig({
       overlay: false,
     },
   },
+  ssr: {
+    noExternal: ["react-helmet-async", "lucide-react"],
+  },
   build: {
     outDir: "dist",
     assetsDir: "assets",

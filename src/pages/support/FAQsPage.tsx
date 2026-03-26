@@ -118,9 +118,27 @@ const FAQsPage: React.FC = memo(() => {
     setOpenFAQ(openFAQ === id ? null : id);
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
     <>
-      <SEOHead seo={getSEOForPage('faqs')} />
+      <SEOHead 
+        seo={{
+          ...getSEOForPage('faqs'),
+          structuredData: faqSchema
+        }} 
+      />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

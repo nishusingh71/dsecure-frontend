@@ -959,9 +959,29 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
   ];
 
+  const pricingSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "D-Secure Data Erasure Software",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Windows, macOS, Linux",
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "USD",
+      "lowPrice": "10.00",
+      "highPrice": "500.00",
+      "offerCount": "10"
+    }
+  };
+
   return (
     <>
-      <SEOHead seo={getSEOForPage("pricing-and-plan")} />
+      <SEOHead 
+        seo={{
+          ...getSEOForPage("pricing-and-plan"),
+          structuredData: pricingSchema
+        }} 
+      />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <div className="container mx-auto px-4 xs:px-6 sm:px-6 md:px-8 py-8 xs:py-10 sm:py-12 md:py-12 max-w-7xl">
@@ -1023,8 +1043,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
             </h1>
             <p className="text-base xs:text-lg sm:text-xl md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
               Professional data erasure solutions trusted by enterprises
-              worldwide. NIST & DoD compliant with lifetime support and instant
-              deployment.
+              worldwide. NIST & DoD compliant starting at just <strong>$25/license (Pay-Per-Use)</strong>. 
+              Get our exclusive <strong>Drive Eraser + Diagnostics Combined for only $30</strong>.
             </p>
           </div>
 

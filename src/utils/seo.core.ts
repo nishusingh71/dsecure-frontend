@@ -50,6 +50,14 @@ export const BASE_KEYWORDS = [
   "Blancco alternative",
   "secure file shredder",
   "permanent data destruction",
+  "bitraser data erasure software",
+  "Certified Data Eraser Software For Permanently Wiping Data",
+  "data wiping software enterprise",
+  "hard drive eraser software certified",
+  "NIST 800-88 data erasure tool",
+  "ITAD data wiping solution",
+  "blancco alternative data erasure",
+  "GDPR compliant data erasure",
 ];
 
 export const getCanonicalUrl = (path: string): string => {

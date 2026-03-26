@@ -78,6 +78,12 @@ const LUNEraserPage = lazy(() => import("../pages/LUNEraserPage"));
 const DriveVerifierPage = lazy(() => import("../pages/DriveVerifierPage"));
 const EarlyAccessPage = lazy(() => import("../pages/EarlyAccessPage"));
 
+// SEO Competitive Strategy Pages
+const NIST80088Page = lazy(() => import("../pages/compliance/NIST80088Page"));
+const GDPRCompliancePage = lazy(() => import("../pages/compliance/GDPRCompliancePage"));
+const MacErasurePage = lazy(() => import("../pages/solutions/MacErasurePage"));
+const BlanccoAlternativePage = lazy(() => import("../pages/solutions/BlanccoAlternativePage"));
+
 export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
     <Route index element={<HomePage />} />
@@ -134,6 +140,10 @@ export const PublicRoutes = () => (
     />
     <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
     <Route path="download" element={<DownloadPage />} />
+    <Route path="compliance/nist-800-88" element={<NIST80088Page />} />
+    <Route path="compliance/gdpr" element={<GDPRCompliancePage />} />
+    <Route path="solutions/mac-erasure" element={<MacErasurePage />} />
+    <Route path="solutions/blancco-alternative" element={<BlanccoAlternativePage />} />
     <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
     <Route
       path="/products/drive-eraser-diagnostic"

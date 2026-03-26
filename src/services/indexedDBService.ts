@@ -68,62 +68,66 @@ class IndexedDBService {
   private dbPromise: Promise<IDBPDatabase<DSecureDB>>;
 
   constructor() {
-    this.dbPromise = openDB<DSecureDB>(DB_NAME, DB_VERSION, {
-      upgrade(db: IDBPDatabase<DSecureDB>) {
-        // Create object stores if they don't exist
-        if (!db.objectStoreNames.contains("dashboard_stats")) {
-          db.createObjectStore("dashboard_stats");
-        }
-        if (!db.objectStoreNames.contains("user_activity")) {
-          db.createObjectStore("user_activity");
-        }
-        if (!db.objectStoreNames.contains("groups")) {
-          db.createObjectStore("groups");
-        }
-        if (!db.objectStoreNames.contains("licenses")) {
-          db.createObjectStore("licenses");
-        }
-        if (!db.objectStoreNames.contains("recent_reports")) {
-          db.createObjectStore("recent_reports");
-        }
-        if (!db.objectStoreNames.contains("profile")) {
-          db.createObjectStore("profile");
-        }
-        if (!db.objectStoreNames.contains("subusers")) {
-          db.createObjectStore("subusers");
-        }
-        if (!db.objectStoreNames.contains("sessions")) {
-          db.createObjectStore("sessions");
-        }
-        if (!db.objectStoreNames.contains("erasure_metrics")) {
-          db.createObjectStore("erasure_metrics");
-        }
-        // ********** NAYA CODE — Phase 1: New stores **********
-        if (!db.objectStoreNames.contains("machines")) {
-          db.createObjectStore("machines");
-        }
-        if (!db.objectStoreNames.contains("audit_reports")) {
-          db.createObjectStore("audit_reports");
-        }
-        if (!db.objectStoreNames.contains("system_logs")) {
-          db.createObjectStore("system_logs");
-        }
-        if (!db.objectStoreNames.contains("downloads")) {
-          db.createObjectStore("downloads");
-        }
-        if (!db.objectStoreNames.contains("enhanced_audit_reports")) {
-          db.createObjectStore("enhanced_audit_reports");
-        }
-        // *******************************************
-      },
-    });
+    if (typeof indexedDB !== "undefined") {
+      this.dbPromise = openDB<DSecureDB>(DB_NAME, DB_VERSION, {
+        upgrade(db: IDBPDatabase<DSecureDB>) {
+          // Create object stores if they don't exist
+          if (!db.objectStoreNames.contains("dashboard_stats")) {
+            db.createObjectStore("dashboard_stats");
+          }
+          if (!db.objectStoreNames.contains("user_activity")) {
+            db.createObjectStore("user_activity");
+          }
+          if (!db.objectStoreNames.contains("groups")) {
+            db.createObjectStore("groups");
+          }
+          if (!db.objectStoreNames.contains("licenses")) {
+            db.createObjectStore("licenses");
+          }
+          if (!db.objectStoreNames.contains("recent_reports")) {
+            db.createObjectStore("recent_reports");
+          }
+          if (!db.objectStoreNames.contains("profile")) {
+            db.createObjectStore("profile");
+          }
+          if (!db.objectStoreNames.contains("subusers")) {
+            db.createObjectStore("subusers");
+          }
+          if (!db.objectStoreNames.contains("sessions")) {
+            db.createObjectStore("sessions");
+          }
+          if (!db.objectStoreNames.contains("erasure_metrics")) {
+            db.createObjectStore("erasure_metrics");
+          }
+          if (!db.objectStoreNames.contains("machines")) {
+            db.createObjectStore("machines");
+          }
+          if (!db.objectStoreNames.contains("audit_reports")) {
+            db.createObjectStore("audit_reports");
+          }
+          if (!db.objectStoreNames.contains("system_logs")) {
+            db.createObjectStore("system_logs");
+          }
+          if (!db.objectStoreNames.contains("downloads")) {
+            db.createObjectStore("downloads");
+          }
+          if (!db.objectStoreNames.contains("enhanced_audit_reports")) {
+            db.createObjectStore("enhanced_audit_reports");
+          }
+        },
+      });
+    } else {
+      this.dbPromise = Promise.resolve(null as any);
+    }
   }
 
   async get<StoreName extends keyof DSecureDB>(
     storeName: StoreName,
     key: DSecureDB[StoreName]["key"],
   ): Promise<DSecureDB[StoreName]["value"] | undefined> {
-    return (await this.dbPromise).get(storeName as any, key);
+    const db = await this.dbPromise;
+    if (!db) return undefined;
+    return db.get(storeName as any, key);
   }
 
   async put<StoreName extends keyof DSecureDB>(
@@ -131,18 +135,24 @@ class IndexedDBService {
     key: DSecureDB[StoreName]["key"],
     value: DSecureDB[StoreName]["value"],
   ): Promise<DSecureDB[StoreName]["key"]> {
-    return (await this.dbPromise).put(storeName as any, value, key);
+    const db = await this.dbPromise;
+    if (!db) return key;
+    return db.put(storeName as any, value, key);
   }
 
   async delete<StoreName extends keyof DSecureDB>(
     storeName: StoreName,
     key: DSecureDB[StoreName]["key"],
   ): Promise<void> {
-    await (await this.dbPromise).delete(storeName as any, key);
+    const db = await this.dbPromise;
+    if (!db) return;
+    await db.delete(storeName as any, key);
   }
 
   async clear(storeName: keyof DSecureDB): Promise<void> {
-    await (await this.dbPromise).clear(storeName as any);
+    const db = await this.dbPromise;
+    if (!db) return;
+    await db.clear(storeName as any);
   }
 
   async clearAll(): Promise<void> {
