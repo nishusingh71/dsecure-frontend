@@ -7,6 +7,8 @@ import { ShieldIcon, CheckIcon, ClipboardIcon, GlobeIcon, StarIcon, ArrowRightIc
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const CaptionCallFCCSettlementBlog: React.FC = () => {
   return (
@@ -255,7 +257,9 @@ const CaptionCallFCCSettlementBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="caption-call-fcc-settlement" />
+          
+      <FAQSection faqs={blogFaqs["caption-call-fcc-settlement"]} />
+      <EngagementSection blogId="caption-call-fcc-settlement" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="caption-call-fcc-settlement" />

@@ -3,6 +3,11 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
+import EngagementSection from "./EngagementSection";
+import CommentSection from "./CommentSection";
+import EnquiryForm from "./EnquiryForm";
 
 const ReturningLeasedITHardwareDosAndDonts: React.FC = () => {
   return (
@@ -156,7 +161,24 @@ const ReturningLeasedITHardwareDosAndDonts: React.FC = () => {
         </Reveal>
 
       </section>
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["returning-leased-it-hardware-dos-and-donts"]} />
+          <EngagementSection blogId="returning-leased-it-hardware-dos-and-donts" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="returning-leased-it-hardware-dos-and-donts" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="returning-leased-it-hardware-dos-and-donts" 
+            blogTitle="Returning Leased It Hardware Dos And Donts" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 };
 

@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const DoDVsIEEEBlog: React.FC = () => {
     return (
@@ -414,7 +416,24 @@ const DoDVsIEEEBlog: React.FC = () => {
         </Reveal>
       </section>
 
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["dod-vs-ieee"]} />
+          <EngagementSection blogId="dod-vs-ieee" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="dod-vs-ieee" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="dod-vs-ieee" 
+            blogTitle="Dod Vs Ieee" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 
 };

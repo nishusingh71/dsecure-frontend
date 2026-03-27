@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const PIIDisposalBreachBlog: React.FC = () => {
     return (
@@ -299,7 +301,9 @@ const PIIDisposalBreachBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="p-i-i-disposal-breach" />
+          
+      <FAQSection faqs={blogFaqs["p-i-i-disposal-breach"]} />
+      <EngagementSection blogId="p-i-i-disposal-breach" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="p-i-i-disposal-breach" />

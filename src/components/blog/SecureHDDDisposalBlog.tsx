@@ -2,6 +2,8 @@ import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -215,47 +217,12 @@ const SecureHDDDisposalBlog: React.FC = () => {
                         </Link>
                     </div>
                 </Reveal>
-
-                {/* FAQs */}
-                <Reveal>
-                    <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 mt-10">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-8">Frequently Asked Questions</h2>
-
-                        <div className="space-y-8">
-                            <div className="border-b border-slate-200 pb-6">
-                                <h3 className="font-semibold text-slate-900 text-xl mb-3">Why do organizations need to dispose of hard disk drives securely?</h3>
-                                <p className="text-slate-700 text-lg leading-loose">
-                                    Organizations must dispose of HDDs securely to prevent data breaches and comply with data protection regulations. Unsecured disposal exposes sensitive information like PII, financial data, and PHI to unauthorized access, potentially resulting in identity theft, regulatory penalties, lawsuits, and reputational damage.
-                                </p>
-                            </div>
-
-                            <div className="border-b border-slate-200 pb-6">
-                                <h3 className="font-semibold text-slate-900 text-xl mb-3">What methods can be used for HDD disposal?</h3>
-                                <p className="text-slate-700 text-lg leading-loose">
-                                    HDD disposal can be performed through data erasure (software-based overwriting), degaussing (magnetic field disruption), physical shredding, or disintegration. Data erasure is recommended when devices will be reused, while physical methods are reserved for drives with bad sectors or containing highly classified data requiring NSA-compliant destruction.
-                                </p>
-                            </div>
-
-                            <div className="border-b border-slate-200 pb-6">
-                                <h3 className="font-semibold text-slate-900 text-xl mb-3">How does software-based erasure help with secure HDD disposal?</h3>
-                                <p className="text-slate-700 text-lg leading-loose">
-                                    Software-based erasure overwrites all data on the drive with random patterns, making original data unrecoverable. Certified tools provide verification capabilities, generate audit-ready documentation, and enable device reuse while ensuring compliance with regulations like GDPR, HIPAA, and industry standards like NIST 800-88.
-                                </p>
-                            </div>
-
-                            <div>
-                                <h3 className="font-semibold text-slate-900 text-xl mb-3">Should I combine erasure with physical destruction?</h3>
-                                <p className="text-slate-700 text-lg leading-loose">
-                                    For drives containing national security data or highly sensitive information, combining data erasure with physical destruction provides maximum security assurance. The erasure process removes data first, then physical destruction ensures no recovery is possible. This combination approach is recommended for the most sensitive disposal scenarios.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </Reveal>
             </section>
+
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
+          <FAQSection faqs={blogFaqs["secure-h-d-d-disposal"]} />
           <EngagementSection blogId="secure-h-d-d-disposal" />
         </Reveal>
         <Reveal>
@@ -264,11 +231,10 @@ const SecureHDDDisposalBlog: React.FC = () => {
         <Reveal>
           <EnquiryForm 
             blogId="secure-h-d-d-disposal" 
-            blogTitle="Secure H D D Disposal" 
+            blogTitle="Secure HDD Disposal" 
           />
         </Reveal>
       </section>
-
 
             {/* CTA Section */}
             <section className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-center">
@@ -302,9 +268,3 @@ const SecureHDDDisposalBlog: React.FC = () => {
 };
 
 export default SecureHDDDisposalBlog;
-
-
-
-
-
-

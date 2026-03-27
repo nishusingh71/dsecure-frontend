@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const FinancialDataBreachCaseStudyBlog: React.FC = () => {
     return (
@@ -249,7 +251,24 @@ const FinancialDataBreachCaseStudyBlog: React.FC = () => {
                     </div>
                 </Reveal>
             </section>
-        </div>
+        
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["financial-data-breach-case-study"]} />
+          <EngagementSection blogId="financial-data-breach-case-study" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="financial-data-breach-case-study" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="financial-data-breach-case-study" 
+            blogTitle="Financial Data Breach Case Study" 
+          />
+        </Reveal>
+      </section>
+</div>
     );
 };
 

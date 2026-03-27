@@ -710,9 +710,20 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
               {/* Left: Content */}
               <Reveal>
                 <div className="space-y-8">
-                  <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
-                    <ShieldIcon className="w-4 h-4" />
-                    Enterprise-Grade File Erasure
+                  <div className="flex flex-col sm:flex-row items-center gap-3">
+                    <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
+                      <ShieldIcon className="w-4 h-4" />
+                      Enterprise-Grade File Erasure
+                    </div>
+                    {/* Link to Network Edition */}
+                    <Link 
+                      to="/products/file-eraser-network"
+                      className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-full text-sm font-semibold border border-blue-100 transition-colors group"
+                    >
+                      <Monitor className="w-4 h-4 animate-pulse text-blue-500" />
+                      <span>New: Network Edition Available</span>
+                      <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                   </div>
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
@@ -723,9 +734,9 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    The industry's first "Monitor + Erase" suite. Track drive
-                    health, predict failures, and securely erase data with
-                    Regulatory hardware diagnostics across major mobile ecosystems.
+                    Permanently erase files, folders, system traces, and cloud
+                    data using internationally recognized erasure standards.
+                    Designed for privacy, security, and audit readiness.
                   </p>
 
                   {/* Compliance Badges */}

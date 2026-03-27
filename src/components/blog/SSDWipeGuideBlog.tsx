@@ -5,6 +5,8 @@ import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { ShieldIcon, CheckIcon, HardDriveIcon, GlobeIcon, StarIcon, ArrowRightIcon, HoverIcon } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -285,7 +287,9 @@ const SSDWipeGuideBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="ssd-wipe-guide" />
+          
+      <FAQSection faqs={blogFaqs["ssd-wipe-guide"]} />
+      <EngagementSection blogId="ssd-wipe-guide" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="ssd-wipe-guide" />

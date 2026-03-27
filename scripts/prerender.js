@@ -11,7 +11,7 @@ globalThis.addEventListener = noop;
 globalThis.removeEventListener = noop;
 globalThis.dispatchEvent = () => true;
 
-// Mock function using delete + defineProperty to bypass Node 24 restrictions
+// Mock function using delete + defineProperty to bypass Node 24+ restrictions
 function mock(prop, value) {
   try {
     delete globalThis[prop];
@@ -21,7 +21,8 @@ function mock(prop, value) {
       writable: true,
       enumerable: true
     });
-  } catch (e) {
+  } catch (err) {
+    // If defineProperty fails, fallback to simple assignment
     globalThis[prop] = value;
   }
 }
@@ -68,7 +69,7 @@ mock('location', {
 mock('history', { pushState: noop, replaceState: noop });
 mock('localStorage', { getItem: () => null, setItem: noop, removeItem: noop, clear: noop });
 mock('sessionStorage', { getItem: () => null, setItem: noop, removeItem: noop, clear: noop });
-mock('performance', { now: () => Date.now() });
+// mock('performance', { now: () => Date.now() });
 mock('requestIdleCallback', (cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 50 }), 1));
 mock('cancelIdleCallback', (id) => clearTimeout(id));
 mock('matchMedia', () => ({ matches: false, addListener: noop, removeListener: noop, addEventListener: noop, removeEventListener: noop }));
@@ -78,7 +79,13 @@ mock('ResizeObserver', class {
   disconnect() { noop(); } 
 });
 mock('IntersectionObserver', class { 
-  observe() { noop(); } 
+  constructor(cb) { this.cb = cb; }
+  observe(el) { 
+    // SSG mein content ko visible rakhne ke liye callback ko turant call karo
+    if (this.cb) {
+      this.cb([{ isIntersecting: true, target: el }]); 
+    }
+  } 
   unobserve() { noop(); } 
   disconnect() { noop(); } 
 });
@@ -102,7 +109,7 @@ const sitemapPath = toAbsolute('public/sitemap.xml');
 // Vite hashes the output file (e.g., dist/server/js/entry-server-xxxx.js)
 const serverJsDir = toAbsolute('dist/server/js');
 let serverEntryPath;
-if (fs.existsSync(serverJsDir)) {
+if (fs.readdirSync(serverJsDir)) {
   const files = fs.readdirSync(serverJsDir);
   const entryFile = files.find(f => f.startsWith('entry-server') && f.endsWith('.js'));
   if (entryFile) {
@@ -127,21 +134,24 @@ function isExcludedRoute(routePath) {
 function getRoutesToPrerender() {
   const routes = new Set(['/']);
   
-  if (fs.existsSync(sitemapPath)) {
-    const content = fs.readFileSync(sitemapPath, 'utf-8');
-    const locRegex = /<loc>https:\/\/dsecuretech\.com([^<]*)<\/loc>/g;
-    let match;
-    while ((match = locRegex.exec(content)) !== null) {
-      const routePath = match[1] || '/';
-      if (isExcludedRoute(routePath)) continue;
-      routes.add(routePath.startsWith('/') ? routePath : '/' + routePath);
-    }
-    console.log(`🔍 Discovered ${routes.size} HTML routes from sitemap.xml`);
-  } else {
+  if (!fs.existsSync(sitemapPath)) {
     console.warn('⚠️ sitemap.xml not found, falling back to basic routes.');
     ['/compliance/nist-800-88', '/compliance/gdpr', '/solutions/mac-erasure'].forEach(r => routes.add(r));
+    return Array.from(routes).sort((a, b) => a.localeCompare(b));
   }
+
+  const content = fs.readFileSync(sitemapPath, 'utf-8');
+  const locRegex = /<loc>https:\/\/dsecuretech\.com([^<]*)<\/loc>/g;
+  let match;
   
+  while ((match = locRegex.exec(content)) !== null) {
+    const routePath = match[1] || '/';
+    if (!isExcludedRoute(routePath)) {
+      routes.add(routePath.startsWith('/') ? routePath : '/' + routePath);
+    }
+  }
+
+  console.log(`🔍 Discovered ${routes.size} HTML routes from sitemap.xml`);
   return Array.from(routes).sort((a, b) => a.localeCompare(b));
 }
 
@@ -161,38 +171,54 @@ async function prerender() {
   let failCount = 0;
 
   for (const url of routesToPrerender) {
-    const helmetContext = {};
+    let html = template;
     let appHtml = '';
     
     try {
-      appHtml = await render(url, helmetContext);
+      const result = await render(url);
+      appHtml = result.html;
+      const { helmet } = result;
+      
+      if (helmet) {
+        const helmetContent = [
+          helmet.title.toString(),
+          helmet.meta.toString(),
+          helmet.link.toString(),
+          helmet.script.toString(),
+          helmet.noscript.toString(),
+        ].filter(t => t && t.toString().length > 0).join('\n');
+        
+        // Robustly remove existing title using string indexing (regex can be flaky with large files/new-lines)
+        const tStart = html.indexOf('<title>');
+        const tEnd = html.indexOf('</title>', tStart);
+        if (tStart !== -1 && tEnd !== -1) {
+          html = html.substring(0, tStart) + html.substring(tEnd + 8);
+        }
+
+        // Remove default meta tags
+        html = html.replace(/<meta\s+name=["']description["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+name=["']keywords["'][^>]*?\/?>/gi, '');
+        
+        // Inject helmet content before </head>
+        html = html.replace('</head>', `${helmetContent}\n</head>`);
+        
+        // Log title for verification (will show in terminal)
+        if (url.includes('freeze-state') && !url.includes('smart') && !url.includes('advanced')) {
+          console.log(`✅ [SEO] Frozen State Title: ${helmet.title.toString().replace(/<[^>]*>?/gm, '')}`);
+        }
+      }
+      
       successCount++;
     } catch (err) {
       console.error(`❌ Render failed for ${url}:`, err.message);
       appHtml = `<!-- Render Error: ${err.message} -->`;
       failCount++;
     }
-    
-    const { helmet } = helmetContext;
-    let html = template;
-    
-    if (helmet) {
-      const helmetContent = `
-        ${helmet.title.toString()}
-        ${helmet.meta.toString()}
-        ${helmet.link.toString()}
-      `;
-      
-      html = html.replace(/<title>[\s\S]*?<\/title>/, '');
-      html = html.replace(/<meta name="description"[\s\S]*?\/>/, '');
-      html = html.replace(/<meta name="title"[\s\S]*?\/>/, '');
-      html = html.replace(/<meta name="keywords"[\s\S]*?\/>/, '');
-      html = html.replace('</head>', `${helmetContent}\n</head>`);
-    }
 
+    // Inject page content into the template's root div
     html = html.replace(
-      /<div id="root">[\s\S]*<\/div>(?=\s*?<footer style="position:[\s\S]*?absolute;)/ ,
-      `<div id="root" data-prerendered="true">${appHtml}</div>`
+      /(<div id="root"[^>]*>)([\s\S]*?)(<\/div>)(?=\s*?<footer)/,
+      (_, p1, _p2, p3) => `${p1}${appHtml}${p3}`
     );
 
     const filePath = url === '/' ? 'index.html' : `${url}/index.html`;
@@ -200,7 +226,6 @@ async function prerender() {
     const dir = path.dirname(absoluteFilePath);
     
     try {
-      // Check if a FILE exists with the same name as the directory we want to create
       if (fs.existsSync(dir) && !fs.lstatSync(dir).isDirectory()) {
          console.warn(`⚠️ Skipping ${url}: Directory path collision with existing file.`);
          continue;

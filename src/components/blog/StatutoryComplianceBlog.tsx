@@ -4,6 +4,8 @@ import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -145,6 +147,7 @@ const StatutoryComplianceBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
+          <FAQSection faqs={blogFaqs["statutory-compliance"]} />
           <EngagementSection blogId="statutory-compliance" />
         </Reveal>
         <Reveal>
@@ -164,9 +167,3 @@ const StatutoryComplianceBlog: React.FC = () => {
 };
 
 export default StatutoryComplianceBlog;
-
-
-
-
-
-

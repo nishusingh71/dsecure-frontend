@@ -5,6 +5,8 @@ import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { ServerIcon, ClipboardIcon, DatabaseIcon, ShieldIcon, ArrowRightIcon, HoverIcon } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -254,7 +256,9 @@ const ITAMDisposalGuideBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="itam-disposal-guide" />
+          
+      <FAQSection faqs={blogFaqs["itam-disposal-guide"]} />
+      <EngagementSection blogId="itam-disposal-guide" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="itam-disposal-guide" />

@@ -77,6 +77,7 @@ const RemovableMediaEraserPage = lazy(() => import("../pages/RemovableMediaErase
 const LUNEraserPage = lazy(() => import("../pages/LUNEraserPage"));
 const DriveVerifierPage = lazy(() => import("../pages/DriveVerifierPage"));
 const EarlyAccessPage = lazy(() => import("../pages/EarlyAccessPage"));
+const FileEraserNetworkPage = lazy(() => import("../pages/FileEraserNetwork"));
 
 // SEO Competitive Strategy Pages
 const NIST80088Page = lazy(() => import("../pages/compliance/NIST80088Page"));
@@ -150,6 +151,7 @@ export const PublicRoutes = () => (
       element={<DriveEraserDiagnosticPage />}
     />
     <Route path="/products/file-eraser" element={<FileEraserPage />} />
+    <Route path="/products/file-eraser-network" element={<FileEraserNetworkPage />} />
     <Route
       path="/products/hardware-diagnostics"
       element={<HardwareDiagnosticsPage />}

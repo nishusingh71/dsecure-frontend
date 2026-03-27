@@ -8,20 +8,21 @@ import i18n from './utils/internationalization';
 import { I18nextProvider } from 'react-i18next';
 import { Writable } from 'node:stream';
 
-export function render(url: string, helmetContext: { helmet?: HelmetServerState }): Promise<string> {
+export function render(url: string): Promise<{ html: string; helmet: HelmetServerState }> {
   return new Promise((resolve, reject) => {
     let html = '';
+    const helmetContext: { helmet?: HelmetServerState } = {};
     
     // Custom writable to capture the stream content
     const writable = new Writable({
       write(chunk, _encoding, callback) {
         html += chunk.toString();
         callback();
-      },
-      final(callback) {
-        resolve(html);
-        callback();
       }
+    });
+
+    writable.on('finish', () => {
+      resolve({ html, helmet: helmetContext.helmet! });
     });
 
     const { pipe } = renderToPipeableStream(
@@ -37,10 +38,8 @@ export function render(url: string, helmetContext: { helmet?: HelmetServerState 
         </HelmetProvider>
       </React.StrictMode>
     , {
-      // onAllReady is for SSG/Crawlers - waits for all lazy components/Suspense to resolve
       onAllReady() {
         pipe(writable);
-        writable.end(); // Trigger the 'final' callback
       },
       onError(error) {
         console.error('SSG Render Error:', error);

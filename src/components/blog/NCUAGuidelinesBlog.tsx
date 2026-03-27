@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const NCUAGuidelinesBlog: React.FC = () => {
     return (
@@ -345,7 +347,24 @@ const NCUAGuidelinesBlog: React.FC = () => {
         </Reveal>
       </section>
 
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["ncua-guidelines"]} />
+          <EngagementSection blogId="ncua-guidelines" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="ncua-guidelines" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="ncua-guidelines" 
+            blogTitle="Ncua Guidelines" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 
 };

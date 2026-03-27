@@ -4,6 +4,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -127,7 +129,9 @@ const RemoteWorkDataErasureBestPracticesBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="remote-work-data-erasure-best-practices" />
+          
+      <FAQSection faqs={blogFaqs["remote-work-data-erasure-best-practices"]} />
+      <EngagementSection blogId="remote-work-data-erasure-best-practices" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="remote-work-data-erasure-best-practices" />

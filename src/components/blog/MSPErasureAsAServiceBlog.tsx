@@ -4,6 +4,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -145,7 +147,9 @@ const MSPErasureAsAServiceBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="msp-erasure-as-a-service" />
+          
+      <FAQSection faqs={blogFaqs["msp-erasure-as-a-service"]} />
+      <EngagementSection blogId="msp-erasure-as-a-service" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="msp-erasure-as-a-service" />

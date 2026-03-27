@@ -197,7 +197,6 @@ function ServicesPageContent() {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage('services')} />
       <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
         {/* Hero Section */}
         <section>
@@ -402,7 +401,7 @@ function ServicesPageContent() {
 
                 {/* Free Enterprise Trial Banner */}
                 <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 text-center">
-                  <h3 className="text-xl font-bold mb-2">🎉 Try Enterprise FREE for 14 Days</h3>
+                  <h3 className="text-xl font-bold mb-2">🎉 Try Enterprise FREE for 30 Days</h3>
                   <p className="mb-4">Test all Enterprise features on 1 device - No credit card required</p>
                   <Link to="/contact" className="bg-white text-green-800 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                     Start Free Trial

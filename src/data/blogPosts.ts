@@ -16,6 +16,19 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "nist-800-88-compliance-india",
+    slug: "nist-800-88-compliance-india",
+    title: "NIST 800-88 Compliance in India: The Ultimate Enterprise Guide",
+    excerpt: "Learn how the global NIST 800-88 media sanitization standard maps perfectly to India's Digital Personal Data Protection (DPDP) Act 2023 requirements.",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1600&h=900&fit=crop",
+    link: "/blog/nist-800-88-compliance-india",
+    tag: "Compliance",
+    category: "Regulatory",
+    keywords: "NIST 800-88, DPDP Act 2023, data erasure India, enterprise security",
+    publishDate: "March 27, 2026",
+    author: "Nitesh Kushwaha"
+  },
+  {
     id: "overwrite-guide",
     slug: "overwrite-guide",
     title: "Overwrite Standards: Beyond the Basics",

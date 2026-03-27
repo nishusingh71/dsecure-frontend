@@ -6,6 +6,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -188,7 +190,9 @@ const CommonCriteriaCertifiedDataWipingBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="common-criteria-certified-data-wiping" />
+          
+      <FAQSection faqs={blogFaqs["common-criteria-certified-data-wiping"]} />
+      <EngagementSection blogId="common-criteria-certified-data-wiping" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="common-criteria-certified-data-wiping" />

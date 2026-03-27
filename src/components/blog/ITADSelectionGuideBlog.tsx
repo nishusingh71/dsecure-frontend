@@ -5,6 +5,8 @@ import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { BriefcaseIcon, ShieldIcon, StarIcon, ArrowRightIcon, HoverIcon } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -185,7 +187,9 @@ const ITADSelectionGuideBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="itad-selection-guide" />
+          
+      <FAQSection faqs={blogFaqs["itad-selection-guide"]} />
+      <EngagementSection blogId="itad-selection-guide" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="itad-selection-guide" />

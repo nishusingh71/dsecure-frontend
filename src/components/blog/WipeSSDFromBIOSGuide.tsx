@@ -10,6 +10,8 @@ import {
   HoverIcon,
 } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -280,7 +282,9 @@ const WipeSSDFromBIOSGuide: React.FC = () => {
       {/* Engagement */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="wipe-ssd-from-bios" />
+          
+      <FAQSection faqs={blogFaqs["wipe-ssd-from-bios"]} />
+      <EngagementSection blogId="wipe-ssd-from-bios" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="wipe-ssd-from-bios" />

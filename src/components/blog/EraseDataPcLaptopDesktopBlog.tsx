@@ -10,6 +10,8 @@ import {
   HoverIcon,
 } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -196,7 +198,9 @@ const EraseDataPcLaptopDesktopBlog: React.FC = () => {
       {/* Engagement */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="erase-data-pc-laptop-desktop" />
+          
+      <FAQSection faqs={blogFaqs["erase-data-pc-laptop-desktop"]} />
+      <EngagementSection blogId="erase-data-pc-laptop-desktop" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="erase-data-pc-laptop-desktop" />

@@ -7,6 +7,8 @@ import { ShieldIcon, CheckIcon, GlobeIcon, StarIcon, ArrowRightIcon, HoverIcon }
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const BestErasureMethodBlog: React.FC = () => {
   return (
@@ -245,7 +247,9 @@ const BestErasureMethodBlog: React.FC = () => {
       {/* Engagement Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="best-erasure-methods" />
+          
+      <FAQSection faqs={blogFaqs["best-erasure-methods"]} />
+      <EngagementSection blogId="best-erasure-methods" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="best-erasure-methods" />

@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const ITAssetLifecycleBlog: React.FC = () => {
     return (
@@ -294,31 +296,24 @@ const ITAssetLifecycleBlog: React.FC = () => {
                 </Reveal>
             </section>
 
-      {/* Engagement, Comments & Enquiry Section */}
-      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
-        <Reveal>
-          <EngagementSection blogId="i-t-asset-lifecycle" />
-        </Reveal>
-        <Reveal>
-          <CommentSection blogId="i-t-asset-lifecycle" />
-        </Reveal>
-        <Reveal>
-          <EnquiryForm 
-            blogId="i-t-asset-lifecycle" 
-            blogTitle="I T Asset Lifecycle" 
-          />
-        </Reveal>
-      </section>
-
-    </div>
-  );
-
+            {/* Engagement, Comments & Enquiry Section */}
+            <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+                <Reveal>
+                    <FAQSection faqs={blogFaqs["it-asset-lifecycle"]} />
+                    <EngagementSection blogId="it-asset-lifecycle" />
+                </Reveal>
+                <Reveal>
+                    <CommentSection blogId="it-asset-lifecycle" />
+                </Reveal>
+                <Reveal>
+                    <EnquiryForm 
+                        blogId="it-asset-lifecycle" 
+                        blogTitle="IT Asset Lifecycle Management" 
+                    />
+                </Reveal>
+            </section>
+        </div>
+    );
 };
 
 export default ITAssetLifecycleBlog;
-
-
-
-
-
-

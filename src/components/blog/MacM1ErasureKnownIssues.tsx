@@ -12,6 +12,8 @@ import {
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const MacM1ErasureKnownIssues: React.FC = () => {
   return (
@@ -285,7 +287,24 @@ const MacM1ErasureKnownIssues: React.FC = () => {
           />
         </Reveal>
       </section>
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["mac-m1-erasure-known-issues"]} />
+          <EngagementSection blogId="mac-m1-erasure-known-issues" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="mac-m1-erasure-known-issues" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="mac-m1-erasure-known-issues" 
+            blogTitle="Mac M1 Erasure Known Issues" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 };
 

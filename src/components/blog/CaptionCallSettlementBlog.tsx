@@ -2,6 +2,8 @@ import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -166,15 +168,16 @@ const CaptionCallSettlementBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="caption-call-settlement" />
+          <FAQSection faqs={blogFaqs["caption-call-fcc-settlement"]} />
+          <EngagementSection blogId="caption-call-fcc-settlement" />
         </Reveal>
         <Reveal>
-          <CommentSection blogId="caption-call-settlement" />
+          <CommentSection blogId="caption-call-fcc-settlement" />
         </Reveal>
         <Reveal>
           <EnquiryForm 
-            blogId="caption-call-settlement" 
-            blogTitle="Caption Call Settlement" 
+            blogId="caption-call-fcc-settlement" 
+            blogTitle="CaptionCall Settlement" 
           />
         </Reveal>
       </section>
@@ -185,9 +188,3 @@ const CaptionCallSettlementBlog: React.FC = () => {
 };
 
 export default CaptionCallSettlementBlog;
-
-
-
-
-
-

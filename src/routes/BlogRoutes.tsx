@@ -51,6 +51,7 @@ const WipeSSDFromBIOSGuideBlog = lazy(() => import("../components/blog/WipeSSDFr
 const DataErasureForNonProfitsBlog = lazy(() => import("../components/blog/DataErasureForNonProfits"));
 const EraseMacDataSafelyUsingDSecureBlog = lazy(() => import("../components/blog/EraseMacDataSafelyUsingDSecureBlog"));
 const EraseDataPcLaptopDesktopBlog = lazy(() => import("../components/blog/EraseDataPcLaptopDesktopBlog"));
+const NIST80088IndiaBlog = lazy(() => import("../components/blog/NIST80088IndiaBlog"));
 
 const CCPAViolationBlog = lazy(() => import("../components/blog/CCPAViolationBlog"));
 const CertifiedITADReasonsBlog = lazy(() => import("../components/blog/CertifiedITADReasonsBlog"));
@@ -196,6 +197,7 @@ export const BlogRoutes = () => (
     <Route path="blog/data-erasure-for-non-profits" element={<DataErasureForNonProfitsBlog />} />
     <Route path="blog/erase-mac-data-safely-using-dsecure" element={<EraseMacDataSafelyUsingDSecureBlog />} />
     <Route path="blog/erase-data-pc-laptop-desktop" element={<EraseDataPcLaptopDesktopBlog />} />
+    <Route path="blog/nist-800-88-compliance-india" element={<NIST80088IndiaBlog />} />
     <Route path="blog/ccpa-violation" element={<CCPAViolationBlog />} />
     <Route path="blog/certified-itad-reasons" element={<CertifiedITADReasonsBlog />} />
     <Route path="blog/chain-of-custody" element={<ChainOfCustodyBlog />} />

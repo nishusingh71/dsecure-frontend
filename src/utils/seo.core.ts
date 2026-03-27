@@ -15,7 +15,7 @@ export interface SEOMetadata {
   twitterTitle?: string;
   twitterDescription?: string;
   twitterImage?: string;
-  structuredData?: any;
+  structuredData?: any | any[];
 }
 
 export const SEO_CONFIG = {

@@ -2,9 +2,9 @@ import { SEOMetadata, generateKeywords, getCanonicalUrl } from "./seo.core";
 
 export const PRODUCT_SEO: Record<string, Partial<SEOMetadata>> = {
   "drive-eraser": {
-    title: "Drive Eraser - Secure Data Erasure for Hard Drives | D-Secure Tech",
-    description: "Securely erase hard drives (HDD) and solid-state drives (SSD) with D-Secure Drive Eraser. NIST 800-88 and DoD 5220.22-M compliant.",
-    keywords: generateKeywords(["drive eraser", "HDD wiping", "SSD secure erase", "NIST compliant", "hard drive destruction"]),
+    title: "Drive Eraser - #1 Secure Data Erasure Software for HDD & SSD | D-Secure",
+    description: "Securely erase hard drives (HDD) and solid-state drives (SSD) with D-Secure. NIST 800-88 and DoD 5220.22-M compliant enterprise data erasure.",
+    keywords: generateKeywords(["drive eraser", "HDD wiping", "SSD secure erase", "NIST compliant", "hard drive destruction", "secure data erasure software"]),
     canonicalUrl: getCanonicalUrl("/products/drive-eraser"),
   },
   "drive-eraser-diagnostic": {
@@ -14,10 +14,16 @@ export const PRODUCT_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl("/products/drive-eraser-diagnostic"),
   },
   "file-eraser": {
-    title: "File Eraser - Permanently Delete Files & Folders | D-Secure Tech",
-    description: "Shred sensitive files and folders beyond recovery with D-Secure File Eraser. Prevent data leaks by permanently removing individual files.",
-    keywords: generateKeywords(["file eraser", "secure file deletion", "file shredder", "folder wiping", "privacy protection"]),
+    title: "File Eraser - Secure File Deletion & Enterprise Data Sanitization | D-Secure",
+    description: "Permanently delete sensitive files and folders with D-Secure File Eraser. Certified enterprise data sanitization beyond forensic recovery.",
+    keywords: generateKeywords(["file eraser", "secure file deletion", "file shredder", "folder wiping", "privacy protection", "enterprise data erasure"]),
     canonicalUrl: getCanonicalUrl("/products/file-eraser"),
+  },
+  "file-eraser-network": {
+    title: "File Eraser Network - Enterprise Network Data Sanitization | D-Secure",
+    description: "Securely erase files and folders across your entire network with D-Secure File Eraser Network. Centralized management for enterprise data destruction.",
+    keywords: generateKeywords(["file eraser network", "network data wiping", "remote file deletion", "enterprise network security", "centralized data erasure"]),
+    canonicalUrl: getCanonicalUrl("/products/file-eraser-network"),
   },
   "hardware-diagnostics": {
     title: "Hardware Diagnostics - Complete System Health Test | D-Secure Tech",

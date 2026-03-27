@@ -6,6 +6,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -191,7 +193,9 @@ const ErasureAsAServiceDSecureBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="erasure-as-a-service-dsecure" />
+          
+      <FAQSection faqs={blogFaqs["erasure-as-a-service-dsecure"]} />
+      <EngagementSection blogId="erasure-as-a-service-dsecure" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="erasure-as-a-service-dsecure" />

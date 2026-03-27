@@ -183,10 +183,10 @@ export default defineConfig({
     treeShaking: true,
   },
   // Vitest configuration
-  // test: {
-  //   globals: true,
-  //   environment: 'jsdom',
-  //   setupFiles: ['./src/setupTests.ts'],
-  //   include: ['src/**/*.{test,spec}.{ts,tsx}'],
-  // },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./src/setupTests.ts"],
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+  },
 });

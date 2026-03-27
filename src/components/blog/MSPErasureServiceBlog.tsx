@@ -4,6 +4,8 @@ import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -47,27 +49,27 @@ const MSPErasureServiceBlog: React.FC = () => {
 
                         <div className="grid md:grid-cols-3 gap-4">
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <span className="text-2xl"></span>
+                                <span className="text-2xl">📊</span>
                                 <p className="text-slate-700 mt-2 font-medium">24/7 Monitoring</p>
                             </div>
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <span className="text-2xl"></span>
+                                <span className="text-2xl">💾</span>
                                 <p className="text-slate-700 mt-2 font-medium">Data Backups</p>
                             </div>
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <span className="text-2xl"></span>
+                                <span className="text-2xl">🛡️</span>
                                 <p className="text-slate-700 mt-2 font-medium">Intrusion Detection</p>
                             </div>
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <span className="text-2xl">️</span>
+                                <span className="text-2xl">🔍</span>
                                 <p className="text-slate-700 mt-2 font-medium">Vulnerability Assessments</p>
                             </div>
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <span className="text-2xl"></span>
+                                <span className="text-2xl">📋</span>
                                 <p className="text-slate-700 mt-2 font-medium">Compliance Audits</p>
                             </div>
                             <div className="bg-slate-50 rounded-lg p-4 text-center">
-                                <span className="text-2xl"></span>
+                                <span className="text-2xl">⚡</span>
                                 <p className="text-slate-700 mt-2 font-medium">Incident Response</p>
                             </div>
                         </div>
@@ -125,26 +127,26 @@ const MSPErasureServiceBlog: React.FC = () => {
 
                                 <div className="grid md:grid-cols-2 gap-4 mt-4">
                                     <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                                        <h5 className="font-bold text-emerald-700 mb-2"> Custody Transitions</h5>
+                                        <h5 className="font-bold text-emerald-700 mb-2">🤝 Custody Transitions</h5>
                                         <p className="text-slate-700 text-sm">Clear documentation every time drives or devices change hands – in transit, staging, processing, storage, or disposal.</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                                        <h5 className="font-bold text-emerald-700 mb-2"> Auditable Logs</h5>
+                                        <h5 className="font-bold text-emerald-700 mb-2">📜 Auditable Logs</h5>
                                         <p className="text-slate-700 text-sm">Each device's status and access control throughout sanitization and disposal must be logged to prevent compromise.</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                                        <h5 className="font-bold text-emerald-700 mb-2"> Detailed Reports</h5>
+                                        <h5 className="font-bold text-emerald-700 mb-2">📊 Detailed Reports</h5>
                                         <p className="text-slate-700 text-sm">Device information, erasure completion status, and tamper-proof certificates must be provided.</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                                        <h5 className="font-bold text-emerald-700 mb-2"> System Integration</h5>
+                                        <h5 className="font-bold text-emerald-700 mb-2">🔗 System Integration</h5>
                                         <p className="text-slate-700 text-sm">Integration with organization's existing asset management systems for comprehensive record-keeping.</p>
                                     </div>
                                 </div>
 
                                 <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-500 p-4 mt-4 rounded-r-lg">
                                     <p className="text-slate-700">
-                                        <strong>️ Warning:</strong> Without rigorous checks and verification of chain of custody protocols, organizations risk data leakage and regulatory violations.
+                                        <strong>⚠️ Warning:</strong> Without rigorous checks and verification of chain of custody protocols, organizations risk data leakage and regulatory violations.
                                     </p>
                                 </div>
                             </div>
@@ -164,32 +166,32 @@ const MSPErasureServiceBlog: React.FC = () => {
 
                                 <div className="grid md:grid-cols-3 gap-4 mt-4">
                                     <div className="bg-emerald-50 rounded-lg p-4 text-center border border-emerald-200">
-                                        <span className="text-3xl"></span>
+                                        <span className="text-3xl">💻</span>
                                         <p className="text-slate-700 mt-2 font-medium">PCs & Laptops</p>
                                         <p className="text-slate-500 text-sm">Windows, macOS, Linux</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 text-center border border-emerald-200">
-                                        <span className="text-3xl">️</span>
+                                        <span className="text-3xl">🖥️</span>
                                         <p className="text-slate-700 mt-2 font-medium">Servers</p>
                                         <p className="text-slate-500 text-sm">On-premise & rack-mounted</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 text-center border border-emerald-200">
-                                        <span className="text-3xl"></span>
+                                        <span className="text-3xl">💽</span>
                                         <p className="text-slate-700 mt-2 font-medium">HDDs & SSDs</p>
                                         <p className="text-slate-500 text-sm">All interfaces & types</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 text-center border border-emerald-200">
-                                        <span className="text-3xl"></span>
+                                        <span className="text-3xl">📱</span>
                                         <p className="text-slate-700 mt-2 font-medium">Mobile Devices</p>
                                         <p className="text-slate-500 text-sm">iOS & Android</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 text-center border border-emerald-200">
-                                        <span className="text-3xl"></span>
+                                        <span className="text-3xl">🍎</span>
                                         <p className="text-slate-700 mt-2 font-medium">Mac Devices</p>
                                         <p className="text-slate-500 text-sm">Intel & Apple Silicon</p>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 text-center border border-emerald-200">
-                                        <span className="text-3xl"></span>
+                                        <span className="text-3xl">📦</span>
                                         <p className="text-slate-700 mt-2 font-medium">Chromebooks</p>
                                         <p className="text-slate-500 text-sm">Education & enterprise</p>
                                     </div>
@@ -234,7 +236,7 @@ const MSPErasureServiceBlog: React.FC = () => {
 
                                 <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-500 p-4 mt-4 rounded-r-lg">
                                     <p className="text-slate-700">
-                                        <strong>️ Risk Alert:</strong> Ensure the MSP you select fulfills the SLA and KPI requirements, otherwise you risk delays, non-compliance, and potential breaches.
+                                        <strong>⚠️ Risk Alert:</strong> Ensure the MSP you select fulfills the SLA and KPI requirements, otherwise you risk delays, non-compliance, and potential breaches.
                                     </p>
                                 </div>
                             </div>
@@ -256,19 +258,19 @@ const MSPErasureServiceBlog: React.FC = () => {
                                     <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
                                         <h5 className="font-bold text-emerald-700 mb-2">Standards Compliance</h5>
                                         <ul className="text-slate-700 text-sm space-y-1">
-                                            <li> NIST SP 800-88 (Clear, Purge)</li>
-                                            <li> IEEE 2883-2022</li>
-                                            <li> DoD 5220.22-M</li>
-                                            <li> HMG Infosec Standard 5</li>
+                                            <li>✅ NIST SP 800-88 (Clear, Purge)</li>
+                                            <li>✅ IEEE 2883-2022</li>
+                                            <li>✅ DoD 5220.22-M</li>
+                                            <li>✅ HMG Infosec Standard 5</li>
                                         </ul>
                                     </div>
                                     <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
                                         <h5 className="font-bold text-emerald-700 mb-2">Regulatory Compliance</h5>
                                         <ul className="text-slate-700 text-sm space-y-1">
-                                            <li> GDPR (EU)</li>
-                                            <li> HIPAA (Healthcare)</li>
-                                            <li> PCI-DSS (Payment Cards)</li>
-                                            <li> SOC 2 Type II</li>
+                                            <li>✅ GDPR (EU)</li>
+                                            <li>✅ HIPAA (Healthcare)</li>
+                                            <li>✅ PCI-DSS (Payment Cards)</li>
+                                            <li>✅ SOC 2 Type II</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -319,15 +321,16 @@ const MSPErasureServiceBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="m-s-p-erasure-service" />
+          <FAQSection faqs={blogFaqs["msp-erasure-service"]} />
+          <EngagementSection blogId="msp-erasure-service" />
         </Reveal>
         <Reveal>
-          <CommentSection blogId="m-s-p-erasure-service" />
+          <CommentSection blogId="msp-erasure-service" />
         </Reveal>
         <Reveal>
           <EnquiryForm 
-            blogId="m-s-p-erasure-service" 
-            blogTitle="M S P Erasure Service" 
+            blogId="msp-erasure-service" 
+            blogTitle="MSP Erasure Service" 
           />
         </Reveal>
       </section>
@@ -338,9 +341,3 @@ const MSPErasureServiceBlog: React.FC = () => {
 };
 
 export default MSPErasureServiceBlog;
-
-
-
-
-
-

@@ -6,6 +6,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -145,7 +147,9 @@ const DoDVsIEEEDataSanitizationBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="dod-vs-ieee-data-sanitization" />
+          
+      <FAQSection faqs={blogFaqs["dod-vs-ieee-data-sanitization"]} />
+      <EngagementSection blogId="dod-vs-ieee-data-sanitization" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="dod-vs-ieee-data-sanitization" />

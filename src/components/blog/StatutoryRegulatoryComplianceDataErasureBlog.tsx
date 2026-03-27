@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const StatutoryRegulatoryComplianceDataErasureBlog: React.FC = () => {
     return (
@@ -231,7 +233,9 @@ const StatutoryRegulatoryComplianceDataErasureBlog: React.FC = () => {
         {/* Engagement, Comments & Enquiry Section */}
         <section className="w-full px-4 md:px-8 lg:px-16 py-8">
           <Reveal>
-            <EngagementSection blogId="statutory-regulatory-compliance" />
+            
+      <FAQSection faqs={blogFaqs["statutory-regulatory-compliance"]} />
+      <EngagementSection blogId="statutory-regulatory-compliance" />
           </Reveal>
           <Reveal>
             <CommentSection blogId="statutory-regulatory-compliance" />

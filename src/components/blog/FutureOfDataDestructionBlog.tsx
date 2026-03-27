@@ -5,6 +5,8 @@ import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { ShieldIcon, CheckIcon, LightningIcon, ArrowRightIcon, HoverIcon, StarIcon, GlobeIcon } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -258,7 +260,9 @@ const FutureOfDataDestructionBlog: React.FC = () => {
       {/* Engagement Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="future-data-destruction" />
+          
+      <FAQSection faqs={blogFaqs["future-data-destruction"]} />
+      <EngagementSection blogId="future-data-destruction" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="future-data-destruction" />

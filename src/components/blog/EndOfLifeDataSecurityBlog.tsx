@@ -2,6 +2,8 @@ import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -227,7 +229,9 @@ const EndOfLifeDataSecurityBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="end-of-life-data-security" />
+          
+      <FAQSection faqs={blogFaqs["end-of-life-data-security"]} />
+      <EngagementSection blogId="end-of-life-data-security" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="end-of-life-data-security" />

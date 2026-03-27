@@ -12,6 +12,8 @@ import {
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const DataErasureForNonProfits: React.FC = () => {
   return (
@@ -295,7 +297,24 @@ const DataErasureForNonProfits: React.FC = () => {
           />
         </Reveal>
       </section>
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["data-erasure-for-non-profits"]} />
+          <EngagementSection blogId="data-erasure-for-non-profits" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="data-erasure-for-non-profits" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="data-erasure-for-non-profits" 
+            blogTitle="Data Erasure For Non Profits" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 };
 

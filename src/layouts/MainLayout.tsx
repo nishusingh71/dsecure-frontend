@@ -373,52 +373,49 @@ export default function MainLayout() {
                                 </div>
                               </div>
 
-                              {/* File Eraser */}
-                              <Link
-                                to="/products/file-eraser"
-                                className="group border border-slate-200 rounded-xl p-5 hover:border-blue-300 hover:shadow-md transition-all"
-                                onClick={() => setProductsDropdownOpen(false)}
+                              {/* File Eraser — with 2 variants */}
+                              <div 
+                                className="border border-slate-200 rounded-xl p-5 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group/card"
+                                onClick={() => {
+                                  navigate('/products/file-eraser');
+                                  setProductsDropdownOpen(false);
+                                }}
                               >
                                 <div className="flex items-center gap-3 mb-3">
-                                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg
-                                      className="w-5 h-5 text-blue-600"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                      />
+                                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover/card:bg-blue-200 transition-colors">
+                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                   </div>
-                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                                    File Eraser
-                                  </h4>
+                                  <h4 className="font-bold text-slate-900 group-hover/card:text-blue-700 transition-colors">File Eraser</h4>
                                 </div>
                                 <p className="text-sm text-slate-500 leading-relaxed mb-3">
                                   Wipe files, folders, traces & browser history.
                                 </p>
-                                <span className="text-xs font-semibold text-blue-600 group-hover:text-blue-700 uppercase tracking-wide flex items-center gap-1">
-                                  Learn More{" "}
-                                  <svg
-                                    className="w-3 h-3"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                <div className="flex flex-wrap gap-2">
+                                  <Link
+                                    to="/products/file-eraser"
+                                    className="px-3 py-1.5 rounded-full border bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 text-[11px] font-bold transition-all"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductsDropdownOpen(false);
+                                    }}
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2.5}
-                                      d="M9 5l7 7-7 7"
-                                    />
-                                  </svg>
-                                </span>
-                              </Link>
+                                    Standard
+                                  </Link>
+                                  <Link
+                                    to="/products/file-eraser-network"
+                                    className="px-3 py-1.5 rounded-full border bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700 text-[11px] font-bold transition-all flex items-center gap-1.5"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductsDropdownOpen(false);
+                                    }}
+                                  >
+                                    <span>Network Edition</span>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                  </Link>
+                                </div>
+                              </div>
 
                               {/* Smartphone Eraser */}
                               <Link

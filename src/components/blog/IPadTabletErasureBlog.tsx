@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const IPadTabletErasureBlog: React.FC = () => {
     return (
@@ -333,7 +335,24 @@ const IPadTabletErasureBlog: React.FC = () => {
                     </div>
                 </Reveal>
             </section>
-        </div>
+        
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["ipad-tablet-erasure"]} />
+          <EngagementSection blogId="ipad-tablet-erasure" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="ipad-tablet-erasure" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="ipad-tablet-erasure" 
+            blogTitle="Ipad Tablet Erasure" 
+          />
+        </Reveal>
+      </section>
+</div>
     );
 };
 

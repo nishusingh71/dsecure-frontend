@@ -7,6 +7,8 @@ import { ShieldIcon, CheckIcon, ClipboardIcon, GlobeIcon, StarIcon, ArrowRightIc
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const ErasureBestPracticesBlog: React.FC = () => {
   return (
@@ -293,7 +295,24 @@ const ErasureBestPracticesBlog: React.FC = () => {
                 </div>
             </Reveal>
         </section>
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["erasure-best-practices"]} />
+          <EngagementSection blogId="erasure-best-practices" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="erasure-best-practices" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="erasure-best-practices" 
+            blogTitle="Erasure Best Practices" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 };
 

@@ -5,6 +5,7 @@ import {
   SEO_CONFIG,
   generateKeywords,
 } from "./seo.core";
+import { FAQ } from "../data/blogFaqs";
 
 export {
   SEO_CONFIG,
@@ -34,14 +35,14 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   ...PRODUCT_SEO,
   // Home page SEO - "D-Secure" branding use karo, "Eraser" nahi
   home: {
-    title: "D-Secure - Best Data Erasure Software | NIST 800-88 Certified | Secure Tech",
+    title: "D-Secure - #1 Data Erasure Software | NIST 800-88 Certified | Secure Tech",
     description:
-      "D-Secure is India's leading data erasure software. NIST 800-88 certified, GDPR & HIPAA compliant. Securely erase HDD, SSD, mobile devices. Free trial available.",
+      "Looking for the best data erasure software? D-Secure is #1 for NIST 800-88 certified, GDPR & HIPAA compliant wiping. Securely erase HDD, SSD, and mobile devices with audit-ready reports.",
     canonicalUrl: getCanonicalUrl("/"),
   },
   nist80088: {
-    title: "NIST 800-88 Data Erasure Tool | Certified Data Eraser Software | D-Secure",
-    description: "Looking for a NIST 800-88 data erasure tool? D-Secure is the certified data eraser software for permanently wiping data from HDDs, SSDs, and mobile devices.",
+    title: "NIST 800-88 Compliant Data Erasure Tool | Certified Software India | D-Secure",
+    description: "Secure your enterprise with the leading NIST 800-88 data erasure tool. D-Secure provides certified software for permanently wiping data from HDDs, SSDs, and mobiles in India.",
     canonicalUrl: getCanonicalUrl("/compliance/nist-800-88"),
   },
   gdpr: {
@@ -55,8 +56,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl("/solutions/mac-erasure"),
   },
   itad: {
-    title: "ITAD Data Wiping Solution | Certified & Secure Data Wiping Software | D-Secure",
-    description: "The best ITAD data wiping solution. Certified & secure data wiping software for IT asset disposal companies. NIST 800-88 compliant reporting.",
+    title: "ITAD Data Wiping Solution | Secure IT Asset Disposal Software | D-Secure",
+    description: "The best ITAD data wiping solution for secure IT asset disposal. Certified software with NIST 800-88 compliant reporting and automation for processing loose drives.",
     canonicalUrl: getCanonicalUrl("/solutions/itad"),
   },
   alternative: {
@@ -67,21 +68,30 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 };
 
 // Default SEO ke saath page-specific SEO merge karo
-export const getSEOForPage = (pageName: keyof typeof PAGE_SEO): SEOMetadata => {
+export const getSEOForPage = (
+  pageName: keyof typeof PAGE_SEO,
+  overrides?: Partial<SEOMetadata>
+): SEOMetadata => {
   const defaultSEO = getDefaultSEO();
   const pageSEO = PAGE_SEO[pageName] || {};
 
-  return {
+  const merged = {
     ...defaultSEO,
     ...pageSEO,
-    ogTitle: pageSEO.ogTitle || pageSEO.title || defaultSEO.ogTitle,
+    ...overrides,
+  };
+
+  return {
+    ...merged,
+    ogTitle: overrides?.ogTitle || pageSEO.ogTitle || merged.title || defaultSEO.ogTitle,
     ogDescription:
-      pageSEO.ogDescription || pageSEO.description || defaultSEO.ogDescription,
+      overrides?.ogDescription || pageSEO.ogDescription || merged.description || defaultSEO.ogDescription,
     twitterTitle:
-      pageSEO.twitterTitle || pageSEO.title || defaultSEO.twitterTitle,
+      overrides?.twitterTitle || pageSEO.twitterTitle || merged.title || defaultSEO.twitterTitle,
     twitterDescription:
+      overrides?.twitterDescription ||
       pageSEO.twitterDescription ||
-      pageSEO.description ||
+      merged.description ||
       defaultSEO.twitterDescription,
   };
 };
@@ -115,6 +125,7 @@ export const getBlogSEO = (blogData: {
   keywords?: string;
   category?: string;
   tag?: string;
+  faqs?: FAQ[];
 }): SEOMetadata => {
   const canonicalUrl = `${SEO_CONFIG.baseUrl}/blog/${blogData.slug}`;
   const ogImage = `${SEO_CONFIG.baseUrl}/blog/${blogData.slug}.webp`;
@@ -147,6 +158,24 @@ export const getBlogSEO = (blogData: {
     articleSection: blogData.category || "Blog",
   };
 
+  // FAQPage structured data agar FAQs exist karte hain
+  const faqStructuredData = blogData.faqs ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": blogData.faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  } : null;
+
+  const combinedStructuredData = faqStructuredData 
+    ? [articleStructuredData, faqStructuredData] 
+    : articleStructuredData;
+
   return {
     title: `${blogData.title} | D-Secure Tech Blog`,
     description: blogData.excerpt,
@@ -162,6 +191,6 @@ export const getBlogSEO = (blogData: {
     twitterTitle: blogData.title,
     twitterDescription: blogData.excerpt,
     twitterImage: ogImage,
-    structuredData: articleStructuredData,
+    structuredData: combinedStructuredData,
   };
 };

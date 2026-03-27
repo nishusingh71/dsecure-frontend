@@ -6,6 +6,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -137,7 +139,9 @@ const HardwareDiagnosticsITADComplianceBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="hardware-diagnostics-itad-compliance" />
+          
+      <FAQSection faqs={blogFaqs["hardware-diagnostics-itad-compliance"]} />
+      <EngagementSection blogId="hardware-diagnostics-itad-compliance" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="hardware-diagnostics-itad-compliance" />

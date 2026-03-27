@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, memo } from "react";
+import React, { useState, useEffect, useCallback, memo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getSEOForPage } from "@/utils/seo";
 import UpcomingBadge from "../components/ui/UpcomingBadge";
@@ -22,6 +22,8 @@ import {
   ChevronDown,
   Zap,
   Terminal,
+  X,
+  Maximize2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "@/components/Reveal";
@@ -35,12 +37,93 @@ import {
 const FreezeStatePage = memo(() => {
   const [activeSection, setActiveSection] = useState("overview");
   const [isNavVisible, setIsNavVisible] = useState(false);
+  const [isDemoActive, setIsDemoActive] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const adminDemoRef = useRef<HTMLDivElement>(null);
+  const endpointDemoRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = async (ref: React.RefObject<HTMLDivElement>) => {
+    try {
+      if (!document.fullscreenElement) {
+        if (ref.current?.requestFullscreen) {
+          await ref.current.requestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.error("Error attempting to toggle fullscreen:", err);
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  // Gallery items for Freeze State
+  const galleryImages = [
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774604168/xrwipx3vuan13hjjwnj1.png", alt: "Freeze State Dashboard" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774591000/cgzvgr5oul9zxmthfuec.png", alt: "Configuration Panel" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774591000/ozaytww9dvu2s5svgd30.png", alt: "Device Status" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774604168/ukxskeygfmoharbyjorw.png", alt: "Restore Logs" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774591001/eqrw6enz8hikdbq30q0o.png", alt: "Security Settings" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774604168/h4znw6i7cy1bh8ecre85.png", alt: "Network Overview" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774591000/piculehus7uyqzamdese.png", alt: "User Management" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774591000/ckgbgnkk5kdzbrwy2ppm.png", alt: "Advanced Rules" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774591000/cw580wy7krnkdpu7tdwu.png", alt: "Session History" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774604168/t26cfx8sdbkpkldflc5i.png", alt: "Compliance Report" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774604169/nsslvhal5fgx3jovhlai.png", alt: "Deployment Flow" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774590999/wtzud8nhb6goulq5huu8.png", alt: "Client Health" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774590999/cobnpnwqcme3nntbm3fj.png", alt: "System Updates" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774590999/bpetitvd1bkbjdfmfnpi.png", alt: "Alert Configuration" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774590999/gfz8y3yjoxmo4wkiepu5.png", alt: "Storage Analysis" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1774604168/omjmjs0iofi2gisn85iz.png", alt: "Audit Trail" },
+  ];
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const handlePrevImage = useCallback(() => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(prev => 
+        prev === 0 ? galleryImages.length - 1 : (prev !== null ? prev - 1 : 0)
+      );
+    }
+  }, [selectedImageIndex, galleryImages.length]);
+
+  const handleNextImage = useCallback(() => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(prev => 
+        prev === galleryImages.length - 1 ? 0 : (prev !== null ? prev + 1 : 0)
+      );
+    }
+  }, [selectedImageIndex, galleryImages.length]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImageIndex === null) return;
+      if (e.key === "ArrowLeft") handlePrevImage();
+      if (e.key === "ArrowRight") handleNextImage();
+      if (e.key === "Escape") setSelectedImageIndex(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImageIndex, handlePrevImage, handleNextImage]);
 
   const sectionNavItems = [
     { id: "overview", label: "Overview" },
     { id: "architecture", label: "Core Architecture" },
     { id: "editions", label: "Solution Variants" },
     { id: "technology", label: "How it Works" },
+    { id: "demo", label: "Demo" },
     { id: "security", label: "Security & Compliance" },
     { id: "use-cases", label: "Use Cases" },
     { id: "specs", label: "Specifications" },
@@ -633,6 +716,218 @@ const FreezeStatePage = memo(() => {
           </div>
         </section>
 
+        {/* ================= VIDEO SECTION ================= */}
+        <section
+          id="demo"
+          className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-emerald-50"
+        >
+          <div className="container mx-auto px-4 max-w-6xl">
+            <Reveal>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                  See Freeze State in Action
+                </h2>
+                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                  Watch how D-Secure Freeze State instantly restores your workstation to a pristine condition.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Media Grid - Dual Demos */}
+            <div className="grid grid-cols-1 gap-16 lg:gap-24">
+              {!isDemoActive ? (
+                <Reveal delayMs={100}>
+                  <div
+                    onClick={() => setIsDemoActive(true)}
+                    className="group relative w-full rounded-[2.5rem] overflow-hidden shadow-xl border border-emerald-100 cursor-pointer bg-white min-h-[500px] flex flex-col md:flex-row transition-all duration-500 hover:shadow-2xl hover:border-emerald-200"
+                  >
+                    {/* Left: Admin Preview */}
+                    <div className="flex-1 relative flex flex-col items-center justify-center p-12 border-b md:border-b-0 md:border-r border-emerald-50 group/admin transition-all duration-500 hover:bg-emerald-50/50">
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover/admin:opacity-100 transition-opacity"></div>
+                      <div className="relative z-10 flex flex-col items-center text-center space-y-4">
+                        <div className="w-20 h-20 rounded-2xl bg-slate-50 text-emerald-600 flex items-center justify-center shadow-sm border border-emerald-100 group-hover/admin:scale-110 group-hover/admin:bg-emerald-600 group-hover/admin:text-white transition-all duration-500">
+                          <Layout className="w-10 h-10" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-slate-900 mb-1">Admin Console</h4>
+                          <p className="text-slate-500 text-sm font-medium">Enterprise Management</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Endpoint Preview */}
+                    <div className="flex-1 relative flex flex-col items-center justify-center p-12 group/endpoint transition-all duration-500 hover:bg-blue-50/50">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover/endpoint:opacity-100 transition-opacity"></div>
+                      <div className="relative z-10 flex flex-col items-center text-center space-y-4">
+                        <div className="w-20 h-20 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center shadow-sm border border-blue-100 group-hover/endpoint:scale-110 group-hover/endpoint:bg-blue-600 group-hover/endpoint:text-white transition-all duration-500">
+                          <Monitor className="w-10 h-10" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-slate-900 mb-1">Endpoint</h4>
+                          <p className="text-slate-500 text-sm font-medium">Local Device Protection</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Centered Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                      <div className="flex flex-col items-center gap-6">
+                        <div className="w-24 h-24 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-lg flex items-center justify-center group-hover:scale-110 group-hover:bg-white/60 transition-all duration-500">
+                          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-xl pointer-events-auto shadow-emerald-500/20">
+                            <svg
+                              className="w-8 h-8 text-white ml-1"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <span className="pointer-events-auto text-sm font-black text-slate-900 bg-white/90 backdrop-blur-md px-8 py-3 rounded-full shadow-xl border border-emerald-100 uppercase tracking-[0.2em] group-hover:border-emerald-500/50 transition-all duration-300">
+                          Start Interactive Demo
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Decorative patterns */}
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+                      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05)_0%,transparent_70%)]"></div>
+                    </div>
+                  </div>
+                </Reveal>
+              ) : (
+                <>
+                  {/* Admin Console Section */}
+                  <Reveal>
+                    <div className="space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                            <Layout className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold text-slate-900">Admin Console</h3>
+                            <p className="text-slate-500 font-medium">Manage fleet groups, approve changes, and monitor live health stats.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => toggleFullscreen(adminDemoRef)}
+                            className="flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 shadow-sm transition-all"
+                          >
+                            <Maximize2 className="w-3.5 h-3.5" />
+                            View Full Mode
+                          </button>
+                          <div className="flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-200">
+                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                            Sandbox
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div 
+                        ref={adminDemoRef}
+                        className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 h-[650px] group transition-all duration-500 hover:shadow-emerald-500/5"
+                      >
+                        <iframe
+                          src="https://admin-web-silk-delta.vercel.app/"
+                          className="w-full h-full border-0"
+                          title="D-Secure Freeze Admin Console"
+                          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                          loading="lazy"
+                          allow="clipboard-read; clipboard-write; fullscreen"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+                  </Reveal>
+
+                  {/* Endpoint Section */}
+                  <Reveal delayMs={100}>
+                    <div className="space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <Monitor className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold text-slate-900">Endpoint</h3>
+                            <p className="text-slate-500 font-medium">Real-time protection stats and local override request experience.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => toggleFullscreen(endpointDemoRef)}
+                            className="flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 shadow-sm transition-all"
+                          >
+                            <Maximize2 className="w-3.5 h-3.5" />
+                            View Full Mode
+                          </button>
+                          <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-blue-100">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                            Sandbox
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div 
+                        ref={endpointDemoRef}
+                        className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 h-[650px] group transition-all duration-500 hover:shadow-blue-500/5"
+                      >
+                        <iframe
+                          src="https://endpoint-webapp.vercel.app/"
+                          className="w-full h-full border-0"
+                          title="D-Secure Freeze Endpoint Sandbox"
+                          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                          loading="lazy"
+                          allow="clipboard-read; clipboard-write; fullscreen"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+                  </Reveal>
+                </>
+              )}
+            </div>
+
+              {/* Screenshot Cards Grid - Commented out as per request */}
+              {/* 
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {galleryImages.slice(0, 4).map((image, index) => (
+                  <Reveal key={index} delayMs={150 + index * 50}>
+                    <div
+                      onClick={() => setSelectedImageIndex(index)}
+                      className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                    >
+                      <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                        <img
+                          src={image.url}
+                          alt={image.alt}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        
+                        {index === 3 && galleryImages.length > 4 && (
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px] group-hover:backdrop-blur-0 transition-all">
+                            <span className="text-white text-xl font-bold">
+                              +{galleryImages.length - 4} More
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                          <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                            <Search className="w-5 h-5 text-emerald-800" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div> 
+              */}
+            </div>
+        </section>
+
         {/* ================= SECURITY & COMPLIANCE SECTION ================= */}
         {/* Security and standards compliance details */}
         <section id="security" className="py-24 lg:py-32 bg-white relative overflow-hidden">
@@ -904,6 +1199,93 @@ const FreezeStatePage = memo(() => {
           </div>
         </section>
       </div>
+
+      {/* Lightbox Modal with Gallery Navigation */}
+      <AnimatePresence>
+        {selectedImageIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setSelectedImageIndex(null)}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedImageIndex(null)}
+              className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Left Arrow */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevImage();
+              }}
+              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Right Arrow */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextImage();
+              }}
+              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            {/* Image Container */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-7xl w-full max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={galleryImages[selectedImageIndex].url}
+                alt={galleryImages[selectedImageIndex].alt}
+                className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              />
+            </motion.div>
+
+            {/* Image Counter */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full text-white text-sm">
+              {selectedImageIndex + 1} / {galleryImages.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 });

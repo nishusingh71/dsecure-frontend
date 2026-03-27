@@ -5,6 +5,8 @@ import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { ShieldIcon, CheckIcon, ClipboardIcon, GlobeIcon, StarIcon, ArrowRightIcon, HoverIcon } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -278,7 +280,9 @@ const OverwriteGuideBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="overwrite-guide" />
+          
+      <FAQSection faqs={blogFaqs["overwrite-guide"]} />
+      <EngagementSection blogId="overwrite-guide" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="overwrite-guide" />

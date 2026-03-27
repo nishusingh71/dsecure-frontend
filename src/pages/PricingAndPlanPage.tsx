@@ -48,6 +48,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("eraser"); // "eraser" or "diagnostics"
   const [driveEraserVariant, setDriveEraserVariant] = useState("standard"); // "standard" or "diagnostics"
+  const [fileEraserVariant, setFileEraserVariant] = useState("standard"); // "standard" or "network"
+  const [freezeStateVariant, setFreezeStateVariant] = useState("standard"); // "standard", "smart", or "advanced"
+  const [forensicImagingVariant, setForensicImagingVariant] = useState("basic"); // "basic", "advanced", or "hardware"
 
   // Reset loading state when component mounts (handles back navigation)
   useEffect(() => {
@@ -116,9 +119,25 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
 
     // Set active tab based on selected category
-    if (productFromUrl === "hardware-diagnostics" || productFromUrl === "smart-diagnostic") {
+    if (
+      productFromUrl === "hardware-diagnostics" ||
+      productFromUrl === "smart-diagnostic" ||
+      productFromUrl === "smartphone-diagnostic" ||
+      productFromUrl === "autopilot-mdm"
+    ) {
       setActiveTab("diagnostics");
-    } else {
+    } else if (
+      productFromUrl === "data-migration" ||
+      productFromUrl === "freeze-state" ||
+      productFromUrl === "forensic-imaging"
+    ) {
+      setActiveTab("migration");
+    } else if (
+      productFromUrl === "drive-eraser" ||
+      productFromUrl === "file-eraser" ||
+      productFromUrl === "virtual-machine-eraser" ||
+      productFromUrl === "smartphone-eraser"
+    ) {
       setActiveTab("eraser");
     }
   }, [location.search]);
@@ -289,12 +308,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
     {
       id: "hardware-diagnostics",
-      name: "Hardware Diagnostics",
+      name: "Hardware",
       subtitle: "Test Device Hardware Health & Performance",
     },
     {
       id: "smart-diagnostic",
-      name: "Smart Diagnostic",
+      name: "Smart",
       subtitle: "Professional Hard Drive Health Monitoring",
     },
     {
@@ -302,15 +321,67 @@ const PricingAndPlanPage: React.FC = memo(() => {
       name: "File Eraser",
       subtitle: "Erase Files, Folders & Volumes",
     },
+    {
+      id: "virtual-machine-eraser",
+      name: "VM Eraser",
+      subtitle: "Erase Virtual Machines in VMware & Hyper-V",
+    },
+    {
+      id: "smartphone-eraser",
+      name: "Smartphone Eraser",
+      subtitle: "Erase iOS & Android Devices",
+    },
+    {
+      id: "smartphone-diagnostic",
+      name: "Smartphone",
+      subtitle: "iOS & Android Diagnostics",
+    },
+    {
+      id: "autopilot-mdm",
+      name: "Autopilot+MDM",
+      subtitle: "Autopilot & MDM Enrollment Detection",
+    },
+    {
+      id: "data-migration",
+      name: "Data Migration",
+      subtitle: "Fast & Secure Data Migration Solution",
+    },
+    {
+      id: "freeze-state",
+      name: "Freeze State",
+      subtitle: "System restore and protection solution",
+    },
+    {
+      id: "forensic-imaging",
+      name: "Forensic Imaging",
+      subtitle: "Professional data acquisition and analysis",
+    },
   ];
 
   // Tab categorization
-  const filteredCategories = categories.filter((cat) => {
-    if (activeTab === "eraser") {
-      return cat.id === "drive-eraser" || cat.id === "file-eraser";
-    }
-    return cat.id === "hardware-diagnostics" || cat.id === "smart-diagnostic";
-  });
+    const filteredCategories = categories.filter((cat) => {
+      if (activeTab === "eraser") {
+        return (
+          cat.id === "drive-eraser" ||
+          cat.id === "file-eraser" ||
+          cat.id === "virtual-machine-eraser" ||
+          cat.id === "smartphone-eraser"
+        );
+      }
+      if (activeTab === "migration") {
+        return (
+          cat.id === "data-migration" ||
+          cat.id === "freeze-state" ||
+          cat.id === "forensic-imaging"
+        );
+      }
+      return (
+        cat.id === "hardware-diagnostics" ||
+        cat.id === "smart-diagnostic" ||
+        cat.id === "smartphone-diagnostic" ||
+        cat.id === "autopilot-mdm"
+      );
+    });
 
   // Plans configuration with their features and pricing based on D-Secure feature matrix
   const planOptions = [
@@ -579,13 +650,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
       showDeliveryOptions: true,
     },
     "file-eraser": {
-      title: "D-Secure File Eraser Professional",
-      subtitle: "Complete File, Folder & Application Trace Elimination. (Available for Windows)",
+      title:
+        fileEraserVariant === "network"
+          ? "D-Secure File Eraser Network"
+          : "D-Secure File Eraser Professional",
+      subtitle:
+        fileEraserVariant === "network"
+          ? "Enterprise network-wide file sanitization and management across your domain. (Available for Windows)"
+          : "Complete File, Folder & Application Trace Elimination. (Available for Windows)",
       image: getProductIcon("file-eraser", 64),
       imageCategory: "file-eraser",
-      version: "Professional",
-      basePrice: 40,
-      originalPrice: 60,
+      version: fileEraserVariant === "network" ? "Network Edition" : "Professional",
+      basePrice: fileEraserVariant === "network" ? 50 : 40,
+      originalPrice: fileEraserVariant === "network" ? 75 : 60,
       discountPercentage: "33% OFF",
       selectionLabel: "Number of Licenses:",
       selectionNote: "(Pay per year license)",
@@ -655,6 +732,209 @@ const PricingAndPlanPage: React.FC = memo(() => {
       ],
       showDeliveryOptions: false,
     },
+    "virtual-machine-eraser": {
+      title: "D-Secure VM Eraser",
+      subtitle: "Erase Virtual Hard Disks and Virtual Machines securely.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "virtual-machine-eraser",
+      version: "V1.0.0.0",
+      basePrice: 20,
+      originalPrice: 40,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay-per-use)",
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "300",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "smartphone-eraser": {
+      title: "D-Secure Smartphone Eraser",
+      subtitle: "Erase Android & iOS Mobile Devices & Tablets.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "smartphone-eraser",
+      version: "V1.0.0.0",
+      basePrice: 1,
+      originalPrice: 2,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay-per-use)",
+      options: [
+        "1",
+        "10",
+        "50",
+        "100",
+        "250",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "smartphone-diagnostic": {
+      title: "Smartphone Diagnostic",
+      subtitle:
+        "Comprehensive hardware & software diagnostics for mobile devices.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "smartphone-diagnostic",
+      version: "V1.0.0.0",
+      basePrice: 20,
+      originalPrice: 40,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay per year license)",
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "autopilot-mdm": {
+      title: "Autopilot & MDM Detection",
+      subtitle: "Instantly detect Autopilot & MDM status on devices.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "autopilot-mdm",
+      version: "V1.0.0.0",
+      basePrice: 5,
+      originalPrice: 10,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay-per-use)",
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "data-migration": {
+      title: "Data Migration",
+      subtitle: "Secure and high-speed data migration between devices.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "data-migration",
+      version: "V1.0.0.0",
+      basePrice: 5,
+      originalPrice: 10,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay-per-use)",
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "freeze-state": {
+      title:
+        freezeStateVariant === "smart"
+          ? "Smart Diagnostic (Freeze State)"
+          : freezeStateVariant === "advanced"
+            ? "Advanced Eraser (Freeze State)"
+            : "Freeze State Standard",
+      subtitle:
+        freezeStateVariant === "smart"
+          ? "Advanced hardware health monitoring for critical systems."
+          : freezeStateVariant === "advanced"
+            ? "Government-grade data sanitization for high-security areas."
+            : "Protect system configuration and restore on reboot.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "freeze-state",
+      version: "V1.0.0.0",
+      basePrice:
+        freezeStateVariant === "smart"
+          ? 85
+          : freezeStateVariant === "advanced"
+            ? 90
+            : 80,
+      originalPrice:
+        freezeStateVariant === "smart"
+          ? 170
+          : freezeStateVariant === "advanced"
+            ? 180
+            : 160,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: `(Starting from $${freezeStateVariant === "smart" ? 85 : freezeStateVariant === "advanced" ? 90 : 80})`,
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "forensic-imaging": {
+      title:
+        forensicImagingVariant === "advanced"
+          ? "Forensic Imaging Advanced"
+          : forensicImagingVariant === "hardware"
+            ? "Forensic Imaging Hardware"
+            : "Forensic Imaging Basic",
+      subtitle:
+        forensicImagingVariant === "hardware"
+          ? "Professional hardware acquisition station for forensic labs."
+          : "Complete bit-stream data acquisition and forensic analysis.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "forensic-imaging",
+      version: "V1.0.0.0",
+      basePrice:
+        forensicImagingVariant === "advanced"
+          ? 10526
+          : forensicImagingVariant === "hardware"
+            ? 31579
+            : 1053,
+      originalPrice:
+        forensicImagingVariant === "advanced"
+          ? 21052
+          : forensicImagingVariant === "hardware"
+            ? 63158
+            : 2106,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Units:",
+      selectionNote: `(Starting from $${forensicImagingVariant === "advanced" ? "10,526" : forensicImagingVariant === "hardware" ? "31,579" : "1,053"})`,
+      options: [
+        "1",
+        "5",
+        "10",
+        "25",
+        "custom",
+      ],
+      showDeliveryOptions: forensicImagingVariant === "hardware",
+    },
   };
 
   const getCurrentProduct = () =>
@@ -672,13 +952,26 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     if (!product) return 0;
 
-    // One-time purchase products (Drive Eraser, Hardware Diagnostics)
-    if (category === "drive-eraser" || category === "hardware-diagnostics") {
+    // One-time purchase products (Drive Eraser, Hardware Diagnostics, VM Eraser, Smartphone Eraser, Autopilot+MDM)
+    if (
+      category === "drive-eraser" ||
+      category === "hardware-diagnostics" ||
+      category === "virtual-machine-eraser" ||
+      category === "smartphone-eraser" ||
+      category === "autopilot-mdm" ||
+      category === "data-migration" ||
+      category === "freeze-state" ||
+      category === "forensic-imaging"
+    ) {
       return Math.round(product.basePrice * licenseCount * 100) / 100;
     }
 
-    // Subscription based products (Smart Diagnostic, File Eraser)
-    if (category === "smart-diagnostic" || category === "file-eraser") {
+    // Subscription based products (Smart Diagnostic, File Eraser, Smartphone Diagnostic)
+    if (
+      category === "smart-diagnostic" ||
+      category === "file-eraser" ||
+      category === "smartphone-diagnostic"
+    ) {
       const yearCount = Number.parseInt(years);
       return Math.round(product.basePrice * licenseCount * yearCount * 100) / 100;
     }
@@ -731,22 +1024,138 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "Comprehensive SMART Attribute Reporting",
       ];
     } else if (category === "file-eraser") {
-      return [
+      const baseFeatures = [
         "Secure File & Folder Deletion",
         "30+ International Erasure Algorithms",
         "Real-time Progress Monitoring",
         "Windows, Mac & Linux Support",
         "Free Space Cleaning",
         "Local PDF Reports",
+      ];
+
+      if (fileEraserVariant === "network") {
+        return [
+          ...baseFeatures,
+          "Network-wide File Wiping",
+          "Centralized Admin Control",
+          "Domain Network Support",
+          "Compliance Reporting",
+          "Web Dashboard Access",
+          "Cloud Commands (Remote Jobs)",
+          "Multi-Level User Logs",
+        ];
+      }
+
+      return [
+        ...baseFeatures,
         "Enhanced Erasure Features",
         "Cloud Report Upload/Sync",
         "White-Label Reports",
         "XML Report Format",
         "Volume & Disk Erasure",
-        "Network Deployment",
-        "Web Dashboard Access",
-        "Cloud Commands (Remote Jobs)",
-        "Multi-Level User Logs",
+      ];
+    } else if (category === "virtual-machine-eraser") {
+      return [
+        "Erase VHD/VHDX/VMDK Files",
+        "Supports VMware, Hyper-V, VirtualBox",
+        "Multiple Erasure Algorithms",
+        "Secure Report Generation",
+        "Parallel VM Erasure",
+        "Command Line Support",
+      ];
+    } else if (category === "smartphone-eraser") {
+      return [
+        "Android & iOS Device Wiping",
+        "MDM Removal Capability",
+        "Diagnostic Health Check",
+        "Full Device Factory Reset",
+        "Certified Sanitization Reports",
+        "Auto-Detection & Batch Wiping",
+      ];
+    } else if (category === "smartphone-diagnostic") {
+      return [
+        "iOS & Android Support",
+        "Battery Health Analysis",
+        "Hardware Component Test",
+        "Screen & Touch Calibration",
+        "Network & Connectivity Check",
+        "Automated PDF Reports",
+      ];
+    } else if (category === "autopilot-mdm") {
+      return [
+        "Autopilot Status Detection",
+        "MDM Enrollment Check",
+        "Hardware ID Retrieval",
+        "Provisioning Status Audit",
+        "Deployment Readiness Test",
+        "CSV/PDF Audit Reports",
+      ];
+    } else if (category === "data-migration") {
+      return [
+        "High-Speed Data Transfer",
+        "Secure End-to-End Encryption",
+        "Selective File Migration",
+        "Drive-to-Drive Cloning",
+        "Post-Migration Integrity Check",
+        "Detailed Transfer Logs",
+      ];
+    } else if (category === "freeze-state") {
+      if (freezeStateVariant === "smart") {
+        return [
+          "Deep System Health Audit",
+          "Real-time Hardware Monitoring",
+          "Predictive Failure Analysis",
+          "Freeze Protection Integrity Check",
+          "Remote Diagnostic Reports",
+          "Auto-Alerting System",
+        ];
+      }
+      if (freezeStateVariant === "advanced") {
+        return [
+          "Government-Grade Sanitization",
+          "30+ International Standards",
+          "High-Volume Throughput",
+          "Certified Audit Reports",
+          "Hardware-Level Integration",
+          "Secure Asset Disposal Chain",
+        ];
+      }
+      return [
+        "System Configuration Protection",
+        "Instant Restore on Reboot",
+        "Unrestricted User Access",
+        "Centralized Management Console",
+        "Deploy Stealth Mode",
+        "Automated Maintenance Windows",
+      ];
+    } else if (category === "forensic-imaging") {
+      if (forensicImagingVariant === "advanced") {
+        return [
+          "Multi-pass Imaging Techniques",
+          "Parallel Data Acquisition",
+          "Live RAM Capture & Analysis",
+          "Universal File System Support",
+          "Encrypted Volume Decryption",
+          "Advanced Forensic Reporting",
+        ];
+      }
+      if (forensicImagingVariant === "hardware") {
+        return [
+          "Stationary Lab-Grade Machine",
+          "Integrated Hardware Write-Blocker",
+          "High-Speed NVMe/SAS Channels",
+          "Touchscreen Control Interface",
+          "Built-in Cooling & Power",
+          "Enterprise Lifecycle Support",
+        ];
+      }
+      return [
+        "Professional Bit-Stream Imaging",
+        "MD5/SHA-256 Verification Hash",
+        "Basic Disk Topology Analysis",
+        "Standard Case Reports",
+        "USB 3.0/SATA Support",
+        "Portable Field Edition",
       ];
     }
     return [];
@@ -782,7 +1191,37 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return `Smart Diagnostic - ${selectedLicenses} licenses × ${selectedYears} year${Number.parseInt(selectedYears) > 1 ? "s" : ""}`;
     }
 
-    // File Eraser plan-based subtitle
+    if (selectedCategory === "smartphone-diagnostic") {
+      return `Smartphone Diagnostic - ${selectedLicenses} licenses × ${selectedYears} year${Number.parseInt(selectedYears) > 1 ? "s" : ""}`;
+    }
+
+    if (selectedCategory === "autopilot-mdm") {
+      return `Autopilot+MDM - ${selectedLicenses} licenses (one-time purchase)`;
+    }
+
+    if (selectedCategory === "data-migration") {
+      return `Data Migration - ${selectedLicenses} licenses (one-time purchase)`;
+    }
+
+    if (selectedCategory === "freeze-state") {
+      const variantLabel =
+        freezeStateVariant === "smart"
+          ? "Smart Diagnostic"
+          : freezeStateVariant === "advanced"
+            ? "Advanced Eraser"
+            : "Standard";
+      return `Freeze State ${variantLabel} - ${selectedLicenses} licenses (one-time purchase)`;
+    }
+
+    if (selectedCategory === "forensic-imaging") {
+      const variantLabel =
+        forensicImagingVariant === "advanced"
+          ? "Advanced"
+          : forensicImagingVariant === "hardware"
+            ? "Hardware"
+            : "Basic";
+      return `Forensic Imaging ${variantLabel} - ${selectedLicenses} ${selectedLicenses === "1" ? "unit" : "units"} (one-time purchase)`;
+    }
     let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
     subtitle += ` × ${selectedYears} year${Number.parseInt(selectedYears) > 1 ? "s" : ""}`;
 
@@ -812,7 +1251,35 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return `Smart Diagnostic @ $${currentProduct.basePrice.toFixed(2)}/license/year ${yearCount > 1 ? `× ${yearCount} years` : ""}`;
     }
 
-    // File Eraser plan-based pricing
+    if (selectedCategory === "autopilot-mdm") {
+      // Autopilot+MDM का price note ($5)
+      return `Autopilot+MDM @ $${currentProduct.basePrice.toFixed(2)}/license (One-time purchase)`;
+    }
+
+    if (selectedCategory === "data-migration") {
+      // Data Migration का price note ($5)
+      return `Data Migration @ $${currentProduct.basePrice.toFixed(2)}/license (One-time purchase)`;
+    }
+
+    if (selectedCategory === "freeze-state") {
+      const variantLabel =
+        freezeStateVariant === "smart"
+          ? "Smart Diagnostic"
+          : freezeStateVariant === "advanced"
+            ? "Advanced Eraser"
+            : "Standard";
+      return `Freeze State ${variantLabel} @ $${currentProduct.basePrice.toFixed(2)}/license (One-time purchase)`;
+    }
+
+    if (selectedCategory === "forensic-imaging") {
+      const variantLabel =
+        forensicImagingVariant === "advanced"
+          ? "Advanced"
+          : forensicImagingVariant === "hardware"
+            ? "Hardware"
+            : "Basic";
+      return `Forensic Imaging ${variantLabel} @ $${currentProduct.basePrice.toLocaleString()}/unit (One-time purchase)`;
+    }
     let note = `Professional @ $${currentProduct.basePrice.toFixed(2)}/license/year`;
 
     const yearCount = Number.parseInt(selectedYears);
@@ -1026,7 +1493,26 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   <div
                     className={`w-1.5 h-1.5 rounded-full ${activeTab === "diagnostics" ? "bg-white animate-pulse" : "bg-gray-300"}`}
                   ></div>
-                  D-Secure Diagnostic
+                  Diagnostic
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("migration");
+                    setSelectedCategory("data-migration");
+                    navigate(`/pricing-and-plan?product=data-migration`, {
+                      replace: true,
+                    });
+                  }}
+                  className={`flex-1 py-2.5 px-6 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+                    activeTab === "migration"
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-teal-200"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  }`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${activeTab === "migration" ? "bg-white animate-pulse" : "bg-gray-300"}`}
+                  ></div>
+                  Migration
                 </button>
               </div>
             </div>
@@ -1048,36 +1534,50 @@ const PricingAndPlanPage: React.FC = memo(() => {
             </p>
           </div>
 
-          {/* Category Selection */}
-          <div className="flex justify-center mb-8 xs:mb-10 sm:mb-12 md:mb-12">
-            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3 xs:gap-4 sm:gap-4 max-w-2xl w-full px-4 xs:px-0 sm:px-0">
+          {/* Category Selection (Pill Row Switcher) */}
+          <div className="flex justify-center mb-10 xs:mb-12 sm:mb-12 md:mb-12 px-2 xs:px-4">
+            <div className="bg-white/80 backdrop-blur-sm p-1.5 rounded-2xl shadow-sm border border-emerald-100/50 flex flex-wrap items-stretch gap-2 w-full max-w-5xl">
               {filteredCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => {
                     setSelectedCategory(category.id);
-                    if (category.id === "hardware-diagnostics") {
+                    // Explicitly set activeTab based on selected category type
+                    if (
+                      category.id === "hardware-diagnostics" ||
+                      category.id === "smart-diagnostic" ||
+                      category.id === "smartphone-diagnostic" ||
+                      category.id === "autopilot-mdm"
+                    ) {
                       setActiveTab("diagnostics");
-                    } else if (category.id === "smart-diagnostic") {
-                      setActiveTab("diagnostics");
+                    } else {
+                      setActiveTab("eraser");
                     }
                     // Update URL with product parameter
                     navigate(`/pricing-and-plan?product=${category.id}`, {
                       replace: true,
                     });
                   }}
-                  className={`p-4 xs:p-5 sm:p-6 rounded-xl text-left transition-all duration-300 border-2 ${
+                  className={`flex-1 min-w-[140px] xs:min-w-[160px] py-2.5 xs:py-3 px-3 xs:px-4 sm:px-6 rounded-xl font-bold text-sm transition-all duration-300 flex flex-col items-center justify-center gap-1 ${
                     selectedCategory === category.id
-                      ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102"
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-teal-200 transform scale-[1.02]"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                   }`}
                 >
-                  <h3 className="font-semibold text-xs xs:text-sm sm:text-sm mb-1">
-                    {category.name}
-                  </h3>
-                  <p className="text-xs xs:text-xs sm:text-xs opacity-90">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${selectedCategory === category.id ? "bg-white animate-pulse" : "bg-gray-400"}`}
+                    ></div>
+                    <span className="whitespace-nowrap text-xs xs:text-sm uppercase tracking-wider">
+                      {category.name}
+                    </span>
+                  </div>
+                  {/* Ek-line description ko comment out kiya gaya hai pills ko clean rakhne ke liye */}
+                  {/* <span
+                    className={`text-[9px] xs:text-[10px] font-medium leading-tight text-center opacity-80 ${selectedCategory === category.id ? "text-teal-50" : "text-gray-500"}`}
+                  >
                     {category.subtitle}
-                  </p>
+                  </span> */}
                 </button>
               ))}
             </div>
@@ -1202,10 +1702,362 @@ const PricingAndPlanPage: React.FC = memo(() => {
                                 + Smart Health Analysis
                               </span>
                             </div>
-                            <span className="text-sm font-bold text-emerald-800">
-                              $30.00
-                            </span>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-bold text-emerald-800">
+                                $30.00
+                              </span>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
+                            </div>
                             {driveEraserVariant === "diagnostics" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* File Eraser Variant Selection */}
+                    {selectedCategory === "file-eraser" && (
+                      <div className="mb-6 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                        <label className="block text-xs xs:text-sm font-bold text-emerald-900 mb-3">
+                          Product Variant:
+                        </label>
+                        <div className="grid grid-cols-1 gap-2">
+                          <button
+                            onClick={() => setFileEraserVariant("standard")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              fileEraserVariant === "standard"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${fileEraserVariant === "standard" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Professional Edition
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                Standard file wiping solution
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-emerald-800">
+                              $40.00
+                            </span>
+                            {fileEraserVariant === "standard" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setFileEraserVariant("network")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              fileEraserVariant === "network"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${fileEraserVariant === "network" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Network Edition
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                + Centralized domain management
+                              </span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-bold text-emerald-800">
+                                $50.00
+                              </span>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
+                            </div>
+                            {fileEraserVariant === "network" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Freeze State Variant Selection */}
+                    {selectedCategory === "freeze-state" && (
+                      <div className="mb-6 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                        <label className="block text-xs xs:text-sm font-bold text-emerald-900 mb-3">
+                          Product Variant:
+                        </label>
+                        <div className="grid grid-cols-1 gap-2">
+                          <button
+                            onClick={() => setFreezeStateVariant("standard")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              freezeStateVariant === "standard"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${freezeStateVariant === "standard" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Freeze State Standard
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                Core Protection & Restore
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-emerald-800">
+                              $80.00
+                            </span>
+                            {freezeStateVariant === "standard" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setFreezeStateVariant("smart")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              freezeStateVariant === "smart"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${freezeStateVariant === "smart" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Smart Diagnostic
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                + Health Monitoring
+                              </span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-bold text-emerald-800">
+                                $85.00
+                              </span>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
+                            </div>
+                            {freezeStateVariant === "smart" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setFreezeStateVariant("advanced")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              freezeStateVariant === "advanced"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${freezeStateVariant === "advanced" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Advanced Eraser
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                + High-Level Sanitization
+                              </span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-bold text-emerald-800">
+                                $90.00
+                              </span>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
+                            </div>
+                            {freezeStateVariant === "advanced" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Forensic Imaging Variant Selection */}
+                    {selectedCategory === "forensic-imaging" && (
+                      <div className="mb-6 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                        <label className="block text-xs xs:text-sm font-bold text-emerald-900 mb-3">
+                          Product Variant:
+                        </label>
+                        <div className="grid grid-cols-1 gap-2">
+                          <button
+                            onClick={() => setForensicImagingVariant("basic")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              forensicImagingVariant === "basic"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${forensicImagingVariant === "basic" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Forensic Imaging Basic
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                Professional field imaging
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-emerald-800">
+                              $1,053
+                            </span>
+                            {forensicImagingVariant === "basic" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setForensicImagingVariant("advanced")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              forensicImagingVariant === "advanced"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${forensicImagingVariant === "advanced" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Advanced
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                + Live capture & Decryption
+                              </span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-bold text-emerald-800">
+                                $10,526
+                              </span>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
+                            </div>
+                            {forensicImagingVariant === "advanced" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setForensicImagingVariant("hardware")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              forensicImagingVariant === "hardware"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${forensicImagingVariant === "hardware" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Hardware
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                Stationary Lab Station
+                              </span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <span className="text-sm font-bold text-emerald-800">
+                                $31,579
+                              </span>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
+                            </div>
+                            {forensicImagingVariant === "hardware" && (
                               <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
                                 <svg
                                   className="w-2.5 h-2.5 text-white"
@@ -1366,10 +2218,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 <button
                   onClick={handleBuyNow}
                   disabled={
-                    selectedCategory === "hardware-diagnostics" ||
-                    selectedCategory === "smart-diagnostic" ||
-                    (selectedCategory === "drive-eraser" &&
-                      driveEraserVariant === "diagnostics") ||
+                    true || // All products are now Coming Soon as requested
                     isBuyNowLoading
                   }
                   onMouseEnter={() => {
@@ -1384,18 +2233,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     }
                   }}
                   className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 ${
-                    selectedCategory === "hardware-diagnostics" ||
-                    selectedCategory === "smart-diagnostic" ||
-                    (selectedCategory === "drive-eraser" &&
-                      driveEraserVariant === "diagnostics")
+                    true // All products are now Coming Soon
                       ? "bg-gradient-to-r from-slate-300 to-slate-400 text-white cursor-not-allowed opacity-70"
                       : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
                   }`}
                 >
-                  {selectedCategory === "hardware-diagnostics" ||
-                  selectedCategory === "smart-diagnostic" ||
-                  (selectedCategory === "drive-eraser" &&
-                    driveEraserVariant === "diagnostics")
+                  {true // All products show Coming Soon as requested
                     ? "Coming Soon"
                     : selectedLicenses === "custom" || selectedPlan === "custom"
                       ? "Request Custom Quote"

@@ -346,7 +346,6 @@ const DataGuardianAwardPage: React.FC = () => {
             "D-Secure assurance badge, data hygiene certification, secure data protection, data erasure assurance, IT data security certification, trusted data partner",
         }}
       />
-      <SEOHead seo={getSEOForPage("data-guardian-award")} />
 
       {/* Toast Notification */}
       {toast && (

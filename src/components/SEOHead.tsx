@@ -78,9 +78,17 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
 
       {/* Structured Data */}
       {effectiveSeo.structuredData && (
-        <script type="application/ld+json">
-          {formatStructuredData(effectiveSeo.structuredData)}
-        </script>
+        Array.isArray(effectiveSeo.structuredData) 
+          ? effectiveSeo.structuredData.map((schema, index) => (
+              <script key={index} type="application/ld+json">
+                {formatStructuredData(schema)}
+              </script>
+            ))
+          : (
+            <script type="application/ld+json">
+              {formatStructuredData(effectiveSeo.structuredData)}
+            </script>
+          )
       )}
 
       {/* Additional Head Elements for Performance & SEO */}

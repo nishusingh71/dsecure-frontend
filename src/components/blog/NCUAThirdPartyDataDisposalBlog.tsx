@@ -6,6 +6,8 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
@@ -135,7 +137,9 @@ const NCUAThirdPartyDataDisposalBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          <EngagementSection blogId="ncua-third-party-data-disposal" />
+          
+      <FAQSection faqs={blogFaqs["ncua-third-party-data-disposal"]} />
+      <EngagementSection blogId="ncua-third-party-data-disposal" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="ncua-third-party-data-disposal" />

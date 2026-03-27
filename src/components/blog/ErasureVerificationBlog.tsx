@@ -2,6 +2,8 @@ import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -247,7 +249,9 @@ const ErasureVerificationBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="erasure-verification" />
+          
+      <FAQSection faqs={blogFaqs["erasure-verification"]} />
+      <EngagementSection blogId="erasure-verification" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="erasure-verification" />

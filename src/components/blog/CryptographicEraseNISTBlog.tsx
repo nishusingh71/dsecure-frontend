@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const CryptographicEraseNISTBlog: React.FC = () => {
     return (
@@ -243,7 +245,24 @@ const CryptographicEraseNISTBlog: React.FC = () => {
                     </div>
                 </Reveal>
             </section>
-        </div>
+        
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["cryptographic-erase-nist"]} />
+          <EngagementSection blogId="cryptographic-erase-nist" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="cryptographic-erase-nist" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="cryptographic-erase-nist" 
+            blogTitle="Cryptographic Erase Nist" 
+          />
+        </Reveal>
+      </section>
+</div>
     );
 };
 

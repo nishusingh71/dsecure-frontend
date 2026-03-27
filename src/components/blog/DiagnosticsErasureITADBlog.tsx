@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const DiagnosticsErasureITADBlog: React.FC = () => {
     return (
@@ -242,7 +244,24 @@ const DiagnosticsErasureITADBlog: React.FC = () => {
                     </div>
                 </Reveal>
             </section>
-        </div>
+        
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["diagnostics-erasure-itad"]} />
+          <EngagementSection blogId="diagnostics-erasure-itad" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="diagnostics-erasure-itad" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="diagnostics-erasure-itad" 
+            blogTitle="Diagnostics Erasure Itad" 
+          />
+        </Reveal>
+      </section>
+</div>
     );
 };
 

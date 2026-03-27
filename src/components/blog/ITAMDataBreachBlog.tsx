@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const ITAMDataBreachBlog: React.FC = () => {
     return (
@@ -260,7 +262,24 @@ const ITAMDataBreachBlog: React.FC = () => {
         </Reveal>
       </section>
 
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["itam-data-breach"]} />
+          <EngagementSection blogId="itam-data-breach" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="itam-data-breach" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="itam-data-breach" 
+            blogTitle="Itam Data Breach" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 
 };

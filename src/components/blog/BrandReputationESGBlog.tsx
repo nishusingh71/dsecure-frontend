@@ -7,6 +7,8 @@ import { ShieldIcon, CheckIcon, HeartIcon, GlobeIcon, StarIcon, ArrowRightIcon, 
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const BrandReputationESGBlog: React.FC = () => {
   return (
@@ -233,7 +235,9 @@ const BrandReputationESGBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="brand-reputation-esg" />
+          
+      <FAQSection faqs={blogFaqs["brand-reputation-esg"]} />
+      <EngagementSection blogId="brand-reputation-esg" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="brand-reputation-esg" />

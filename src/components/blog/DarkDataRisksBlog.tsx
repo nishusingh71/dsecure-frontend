@@ -2,6 +2,8 @@ import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -285,7 +287,9 @@ const DarkDataRisksBlog: React.FC = () => {
       {/* Engagement, Comments & Enquiry Section */}
       <section className="w-full px-4 md:px-8 lg:px-16 py-8">
         <Reveal>
-          <EngagementSection blogId="dark-data-risks" />
+          
+      <FAQSection faqs={blogFaqs["dark-data-risks"]} />
+      <EngagementSection blogId="dark-data-risks" />
         </Reveal>
         <Reveal>
           <CommentSection blogId="dark-data-risks" />

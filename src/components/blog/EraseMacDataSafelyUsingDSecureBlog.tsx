@@ -12,6 +12,8 @@ import {
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const EraseMacDataSafelyUsingDSecureBlog: React.FC = () => {
   return (
@@ -288,7 +290,24 @@ const EraseMacDataSafelyUsingDSecureBlog: React.FC = () => {
           />
         </Reveal>
       </section>
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["erase-mac-data-safely-using-dsecure"]} />
+          <EngagementSection blogId="erase-mac-data-safely-using-dsecure" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="erase-mac-data-safely-using-dsecure" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="erase-mac-data-safely-using-dsecure" 
+            blogTitle="Erase Mac Data Safely Using Dsecure" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 };
 

@@ -107,6 +107,20 @@ const eraserSolutions = [
     link: "/products/virtual-machine-eraser",
     isUpcoming: true,
   },
+  {
+    title: "D-Secure File Eraser Network",
+    desc: "Enterprise network-wide file sanitization and management across your domain.",
+    features: [
+      "Network-wide File Wiping",
+      "Centralized Admin Control",
+      "Domain Network Support",
+      "Compliance Reporting",
+    ],
+    icon: Server,
+    color: "emerald",
+    link: "/products/file-eraser-network",
+    isUpcoming: true,
+  },
 ];
 
 const diagnosticSolutions = [

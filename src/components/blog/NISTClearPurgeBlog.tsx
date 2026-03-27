@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import FAQSection from "./FAQSection";
+import { blogFaqs } from "@/data/blogFaqs";
 
 const NISTClearPurgeBlog: React.FC = () => {
     return (
@@ -404,7 +406,24 @@ const NISTClearPurgeBlog: React.FC = () => {
         </Reveal>
       </section>
 
-    </div>
+    
+      {/* Engagement, Comments & Enquiry Section */}
+      <section className="w-full px-4 md:px-8 lg:px-16 py-8">
+        <Reveal>
+          <FAQSection faqs={blogFaqs["nist-clear-purge"]} />
+          <EngagementSection blogId="nist-clear-purge" />
+        </Reveal>
+        <Reveal>
+          <CommentSection blogId="nist-clear-purge" />
+        </Reveal>
+        <Reveal>
+          <EnquiryForm 
+            blogId="nist-clear-purge" 
+            blogTitle="Nist Clear Purge" 
+          />
+        </Reveal>
+      </section>
+</div>
   );
 
 };
