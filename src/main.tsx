@@ -9,7 +9,8 @@ import "./responsive.css";
 import { HelmetProvider } from "react-helmet-async";
 import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
-import './utils/internationalization'; // Initialize i18n
+import i18n from './utils/internationalization'; // Initialize i18n
+import { I18nextProvider } from 'react-i18next';
 
 // -------------------------------------------------------------------------------
 // ?? GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean
@@ -78,24 +79,34 @@ const isPrerendered = "prerendered" in rootElement.dataset;
 const appWrapper = (
   <React.StrictMode>
     <HelmetProvider>
-      <BrowserRouter
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
-        <ToastProvider>
-          <App />
-        </ToastProvider>
-      </BrowserRouter>
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
+          <ToastProvider>
+            <App />
+          </ToastProvider>
+        </BrowserRouter>
+      </I18nextProvider>
     </HelmetProvider>
   </React.StrictMode>
 );
 
-if (isPrerendered) {
-  // Hydrate statically pre-rendered HTML sent by Node SSG
-  ReactDOM.hydrateRoot(rootElement, appWrapper);
+const mountApp = () => {
+  if (isPrerendered) {
+    // Hydrate statically pre-rendered HTML sent by Node SSG
+    ReactDOM.hydrateRoot(rootElement, appWrapper);
+  } else {
+    // Standard SPA initialization for Dev mode or un-prerendered routes
+    rootElement.innerHTML = '';
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(appWrapper);
+  }
+};
+
+// Wait for i18next to load before hydrating, otherwise it renders keys momentarily
+if (i18n.isInitialized) {
+  mountApp();
 } else {
-  // Standard SPA initialization for Dev mode or un-prerendered routes
-  // Clear skeleton first to avoid React 19 complaining about mismatched nodes
-  rootElement.innerHTML = '';
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(appWrapper);
+  i18n.on('initialized', mountApp);
 }

@@ -72,8 +72,27 @@ mock('performance', { now: () => Date.now() });
 mock('requestIdleCallback', (cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 50 }), 1));
 mock('cancelIdleCallback', (id) => clearTimeout(id));
 mock('matchMedia', () => ({ matches: false, addListener: noop, removeListener: noop, addEventListener: noop, removeEventListener: noop }));
-mock('ResizeObserver', class { observe() {} unobserve() {} disconnect() {} });
-mock('IntersectionObserver', class { observe() {} unobserve() {} disconnect() {} });
+mock('ResizeObserver', class { 
+  observe() { noop(); } 
+  unobserve() { noop(); } 
+  disconnect() { noop(); } 
+});
+mock('IntersectionObserver', class { 
+  observe() { noop(); } 
+  unobserve() { noop(); } 
+  disconnect() { noop(); } 
+});
+
+// SSR mein React ke form warnings suppress karo (value/checked without onChange)
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  const msg = typeof args[0] === 'string' ? args[0] : '';
+  if (
+    msg.includes('You provided a `value` prop') ||
+    msg.includes('You provided a `checked` prop')
+  ) return; // SSR mein ye warnings irrelevant hain
+  originalConsoleError.apply(console, args);
+};
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const toAbsolute = (p) => path.resolve(__dirname, '..', p);
@@ -92,6 +111,17 @@ if (fs.existsSync(serverJsDir)) {
 }
 
 /**
+ * Determines if a route should be excluded from pre-rendering
+ */
+function isExcludedRoute(routePath) {
+  const excludedExtensions = ['.txt', '.xml', '.json', '.svg', '.png'];
+  if (excludedExtensions.some(ext => routePath.endsWith(ext))) return true;
+  if (routePath.includes('?') || routePath.includes('#')) return true;
+  if (routePath.includes('data-guardian-award')) return true;
+  return false;
+}
+
+/**
  * Automatically discovers routes from sitemap.xml
  */
 function getRoutesToPrerender() {
@@ -102,22 +132,9 @@ function getRoutesToPrerender() {
     const locRegex = /<loc>https:\/\/dsecuretech\.com([^<]*)<\/loc>/g;
     let match;
     while ((match = locRegex.exec(content)) !== null) {
-      let routePath = match[1] || '/';
-      
-      // Filter out non-HTML routes and static files
-      if (
-        routePath.endsWith('.txt') || 
-        routePath.endsWith('.xml') || 
-        routePath.endsWith('.json') ||
-        routePath.endsWith('.svg') ||
-        routePath.endsWith('.png') ||
-        routePath.includes('?') || 
-        routePath.includes('#') ||
-        routePath.includes('data-guardian-award')
-      ) continue;
-
-      if (!routePath.startsWith('/')) routePath = '/' + routePath;
-      routes.add(routePath);
+      const routePath = match[1] || '/';
+      if (isExcludedRoute(routePath)) continue;
+      routes.add(routePath.startsWith('/') ? routePath : '/' + routePath);
     }
     console.log(`🔍 Discovered ${routes.size} HTML routes from sitemap.xml`);
   } else {
@@ -125,7 +142,7 @@ function getRoutesToPrerender() {
     ['/compliance/nist-800-88', '/compliance/gdpr', '/solutions/mac-erasure'].forEach(r => routes.add(r));
   }
   
-  return Array.from(routes).sort();
+  return Array.from(routes).sort((a, b) => a.localeCompare(b));
 }
 
 async function prerender() {

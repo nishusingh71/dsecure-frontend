@@ -28,37 +28,11 @@ export const SEO_CONFIG = {
   twitterHandle: "@D-Securetech",
 };
 
-export const BASE_KEYWORDS = [
-  "data erasure software",
-  "data erasure tool",
-  "data erasure solution",
-  "data wiping software",
-  "data destruction software",
-  "data sanitization tool",
-  "secure data erasure",
-  "permanent data erasure",
-  "NIST 800-88 compliance",
-  "GDPR data erasure",
-  "HIPAA data erasure",
-  "enterprise data erasure",
-  "hard drive wiping software",
-  "SSD data erasure",
-  "D-Secure Tech",
-  "certified data wiping",
-  "secure drive disposal",
-  "NIST 800-88 rev 1",
-  "Blancco alternative",
-  "secure file shredder",
-  "permanent data destruction",
-  "bitraser data erasure software",
-  "Certified Data Eraser Software For Permanently Wiping Data",
-  "data wiping software enterprise",
-  "hard drive eraser software certified",
-  "NIST 800-88 data erasure tool",
-  "ITAD data wiping solution",
-  "blancco alternative data erasure",
-  "GDPR compliant data erasure",
-];
+import { ALL_SEO_KEYWORDS } from "./seo.keywords";
+
+// Deduplicated keyword array - sabhi categories se unique keywords
+export const BASE_KEYWORDS = [...new Set(ALL_SEO_KEYWORDS)];
+
 
 export const getCanonicalUrl = (path: string): string => {
   const cleanPath = path.startsWith("/") ? path : `/${path}`;

@@ -545,7 +545,7 @@ const CompleteDSecureDriveManual: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SEOHead seo={getSEOForPage("complete-dsecure-manual")} />
+      <SEOHead seo={getSEOForPage("support/help-manual/complete-drive-manual")} />
       <style>{`
         .sidebar-scroll::-webkit-scrollbar { width: 6px; }
         .sidebar-scroll::-webkit-scrollbar-track { background: #f3f4f6; border-radius: 3px; }

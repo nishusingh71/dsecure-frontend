@@ -588,11 +588,19 @@ const navigationTree: NavItem[] = [
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - File & Folder Erase Confirmation:</strong> Confirm the cloud file and folder erasure operation.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/dsecure-manual/08_Cloud_Erase/2_cloude_file_folder_Erase_conform" alt="Cloud Erase - File & Folder Erase Confirmation" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+                <div className="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl">
+                 <div className="font-bold text-emerald-800 mb-2">Step 2: Confirm Destruction</div>
+                 <p className="text-gray-700">Before the erasure begins, you will see a confirmation screen. Click <strong>Erase</strong> to proceed.</p>
+                 <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035441/dsecure-manual/08_Cloud_Erase/7.png" alt="Cloud Erase - File & Folder Erase Confirmation" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+               </div>
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - File & Folder Erase Progress:</strong> Monitor the cloud file and folder erasure progress.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/dsecure-manual/08_Cloud_Erase/3_cloud_erase_file_folder_erase_progress" alt="Cloud Erase - File & Folder Erase Progress" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+                <div className="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl">
+                 <div className="font-bold text-emerald-800 mb-2">Step 4: Completion</div>
+                 <p className="text-gray-700">Once the erasure is successful, a confirmation message will be displayed.</p>
+                 <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035530/dsecure-manual/08_Cloud_Erase/8.png" alt="Cloud Erase - File & Folder Erase Progress" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+               </div>
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - Browse Files:</strong> Browse and select cloud files for erasure.</p>
@@ -604,19 +612,19 @@ const navigationTree: NavItem[] = [
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - Confirm Selection:</strong> Review and confirm selected cloud items for erasure.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035441/dsecure-manual/08_Cloud_Erase/7.png" alt="Cloud Erase - Confirm Selection" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772035441/dsecure-manual/08_Cloud_Erase/7.png" alt="Cloud Erase - Confirm Selection" className="w-full mb-4" style={{ borderRadius: '3%' }} />
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - Erasure Progress:</strong> Cloud erasure operation in progress.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035530/dsecure-manual/08_Cloud_Erase/8.png" alt="Cloud Erase - Erasure Progress" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772035530/dsecure-manual/08_Cloud_Erase/8.png" alt="Cloud Erase - Erasure Progress" className="w-full mb-4" style={{ borderRadius: '3%' }} />
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - Processing:</strong> Cloud data being processed for secure deletion.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035619/dsecure-manual/08_Cloud_Erase/9.png" alt="Cloud Erase - Processing" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772035619/dsecure-manual/08_Cloud_Erase/9.png" alt="Cloud Erase - Processing" className="w-full mb-4" style={{ borderRadius: '3%' }} />
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - Summary:</strong> Cloud erasure operation summary and results.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772034560/dsecure-manual/08_Cloud_Erase/10.png" alt="Cloud Erase - Summary" className="w-full mb-4" style={{ borderRadius: '3%' }} />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772034560/dsecure-manual/08_Cloud_Erase/10.png" alt="Cloud Erase - Summary" className="w-full mb-4" style={{ borderRadius: '3%' }} />
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>Cloud Erase - Volume Overview:</strong> Cloud volume storage overview and usage details.</p>
@@ -655,14 +663,14 @@ const navigationTree: NavItem[] = [
               <p className="text-slate-700 mb-3"><strong>1.</strong> <strong>    Open Scheduler Tab    </strong>  Click on the "Scheduler" icon in the left sidebar to access the configuration screen for automated tasks. This section allows you to create new schedules or manage existing ones to ensure your data is wiped at specific intervals.      </p>
             </div>
             <div>
-              <p className="text-slate-700 mb-3"><strong>2.</strong> <strong>   Configure Task Details     </strong> Define the parameters for your automated erasure:
+              <div className="text-slate-700 mb-3"><strong>2.</strong> <strong>   Configure Task Details     </strong> Define the parameters for your automated erasure:
                 <br />
                 <br />
-                <h5> <strong>2.1  Frequency & Timing: </strong>Set how often the task should run (e.g., "Once") and the exact Date and Time for it to start.</h5>
+                <div className="font-semibold text-slate-800 mt-2"> <strong>2.1  Frequency & Timing: </strong>Set how often the task should run (e.g., "Once") and the exact Date and Time for it to start.</div>
 
-                <h5><strong>2.2 Task Identification:</strong> Select "New Task" and enter a descriptive Task Name (e.g., "ERASEFILES").</h5>
+                <div className="font-semibold text-slate-800 mt-2"><strong>2.2 Task Identification:</strong> Select "New Task" and enter a descriptive Task Name (e.g., "ERASEFILES").</div>
 
-                <h5><strong>2.3 Select Data: </strong>Click "Browse" to choose the files or folders you want to schedule for permanent deletion.   </h5>   </p>
+                <div className="font-semibold text-slate-800 mt-2"><strong>2.3 Select Data: </strong>Click "Browse" to choose the files or folders you want to schedule for permanent deletion.   </div>   </div>
               <br />
             </div>
             <div>
@@ -1320,7 +1328,7 @@ const CompleteDSecureManual: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SEOHead seo={getSEOForPage("complete-dsecure-manual")} />
+      <SEOHead seo={getSEOForPage("support/help-manual/complete-manual")} />
 
       <style>{`
         .sidebar-scroll::-webkit-scrollbar { width: 6px; }

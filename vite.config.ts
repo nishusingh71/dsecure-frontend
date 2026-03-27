@@ -90,7 +90,18 @@ export default defineConfig({
     // Reduce chunk size warning limit
     chunkSizeWarningLimit: 500,
     // Enhanced minification
-    minify: "esbuild",
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ["console.log", "console.info", "console.debug", "console.warn"],
+        passes: 2,
+      },
+      format: {
+        comments: false,
+      },
+    },
     // Target modern browsers for better performance
     target: ["es2020", "chrome80", "firefox78", "safari14"],
     // Disable compressed size reporting for faster builds
@@ -99,59 +110,47 @@ export default defineConfig({
     cssCodeSplit: true,
     cssMinify: true,
     rollupOptions: {
-      treeshake: "recommended",
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
       output: {
-        // [OLD CODE PRESERVED AS COMMENT]
-        // manualChunks: (id) => {
-        //   if (id.includes('node_modules')) {
-        //     // Core UI dependencies (React + UI libraries) - must be together to avoid initialization errors
-        //     if (id.includes('react') || id.includes('react-dom') || id.includes('react-router') ||
-        //       id.includes('lucide-react') || id.includes('framer-motion') || id.includes('@tanstack')) {
-        //       return 'vendor-ui'
-        //     }
-        //     // Heavy charting libraries - split out for dashboards only
-        //     if (id.includes('recharts') || id.includes('d3')) {
-        //       return 'vendor-charts'
-        //     }
-        //     // PDF/Excel generation - split out for export functionality only
-        //     if (id.includes('jspdf') || id.includes('exceljs') || id.includes('jszip') || id.includes('file-saver') || id.includes('pako')) {
-        //       return 'vendor-export'
-        //     }
-        //     // Everything else together
-        //     return 'vendor-other'
-        //   }
-        // },
-
-        // [MINIMALIST SAFER CHUNKING]
+        // [REFINE CHUNKING STRATEGY]
         manualChunks: (id) => {
           if (id.includes("node_modules")) {
-            // React core — rarely changes, alag cache hona chahiye
+            // 1. Core React & Navigation (Essentials)
             if (
               id.includes("react/") ||
               id.includes("react-dom") ||
               id.includes("react-router") ||
-              id.includes("react-helmet")
-            )
-              return "vendor-react";
+              id.includes("react-helmet") ||
+              id.includes("scheduler")
+            ) {
+              return "vendor-core";
+            }
 
-            // Heavy Utilities & Data
-            if (id.includes("exceljs") || id.includes("file-saver"))
-              return "vendor-exceljs";
-            if (id.includes("jspdf") || id.includes("jspdf-autotable"))
-              return "vendor-jspdf";
-            if (id.includes("react-pdf") || id.includes("pdfjs-dist"))
-              return "vendor-pdf";
-            if (id.includes("jszip") || id.includes("pako"))
-              return "vendor-zip";
+            // 2. Large Visualization Libraries
+            if (id.includes("recharts")) return "vendor-recharts";
+            if (id.includes("d3")) return "vendor-d3";
+            if (id.includes("leaflet") || id.includes("react-leaflet")) return "vendor-maps";
 
-            // Visualization
-            if (id.includes("recharts") || id.includes("d3"))
-              return "vendor-viz";
-            if (id.includes("leaflet")) return "vendor-maps";
+            // 3. Document Processing (Heavy)
+            if (id.includes("exceljs")) return "vendor-exceljs";
+            if (id.includes("pdfjs-dist")) return "vendor-pdfjs";
+            if (id.includes("jspdf")) return "vendor-jspdf";
+            
+            // 4. Animation & UI frameworks
+            if (id.includes("framer-motion")) return "vendor-motion";
+            if (id.includes("lucide-react")) return "vendor-lucide";
 
-            // We do NOT return "vendor" or "vendor-core" here as a catch-all.
-            // This lets Vite/Rollup intelligently split the remaining dependencies
-            // alongside the route components that actually use them, reducing upfront load.
+            // 5. Cloud & Utilities
+            if (id.includes("cloudinary-build")) return "vendor-cloudinary";
+            if (id.includes("@tanstack") || id.includes("axios")) return "vendor-utils";
+
+            // By NOT grouping everything else into "vendor", 
+            // we allow Rollup to keep smaller specialized libraries
+            // closer to the routes that use them.
           }
         },
 

@@ -4,8 +4,9 @@ import { StaticRouter } from 'react-router-dom/server';
 import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
 import App from './App';
 import { ToastProvider } from './components/Toast';
-import './utils/internationalization';
-import { Writable } from 'stream';
+import i18n from './utils/internationalization';
+import { I18nextProvider } from 'react-i18next';
+import { Writable } from 'node:stream';
 
 export function render(url: string, helmetContext: { helmet?: HelmetServerState }): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -26,11 +27,13 @@ export function render(url: string, helmetContext: { helmet?: HelmetServerState 
     const { pipe } = renderToPipeableStream(
       <React.StrictMode>
         <HelmetProvider context={helmetContext}>
-          <StaticRouter location={url}>
-            <ToastProvider>
-              <App />
-            </ToastProvider>
-          </StaticRouter>
+          <I18nextProvider i18n={i18n}>
+            <StaticRouter location={url}>
+              <ToastProvider>
+                <App />
+              </ToastProvider>
+            </StaticRouter>
+          </I18nextProvider>
         </HelmetProvider>
       </React.StrictMode>
     , {

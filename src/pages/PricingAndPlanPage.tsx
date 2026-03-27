@@ -976,11 +976,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         seo={{
           ...getSEOForPage("pricing-and-plan"),
-          structuredData: pricingSchema
-        }} 
+          structuredData: pricingSchema,
+        }}
       />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
@@ -1043,8 +1043,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
             </h1>
             <p className="text-base xs:text-lg sm:text-xl md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
               Professional data erasure solutions trusted by enterprises
-              worldwide. NIST & DoD compliant starting at just <strong>$25/license (Pay-Per-Use)</strong>. 
-              Get our exclusive <strong>Drive Eraser + Diagnostics Combined for only $30</strong>.
+              worldwide. NIST & DoD compliant with lifetime support and instant
+              deployment.
             </p>
           </div>
 
@@ -1365,7 +1365,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 {/* Action Button */}
                 <button
                   onClick={handleBuyNow}
-                  disabled={selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || (selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics") || isBuyNowLoading}
+                  disabled={
+                    selectedCategory === "hardware-diagnostics" ||
+                    selectedCategory === "smart-diagnostic" ||
+                    (selectedCategory === "drive-eraser" &&
+                      driveEraserVariant === "diagnostics") ||
+                    isBuyNowLoading
+                  }
                   onMouseEnter={() => {
                     // ✅ Prefetch on hover for even faster response
                     if (
@@ -1378,12 +1384,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     }
                   }}
                   className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 ${
-                    selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || (selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics")
+                    selectedCategory === "hardware-diagnostics" ||
+                    selectedCategory === "smart-diagnostic" ||
+                    (selectedCategory === "drive-eraser" &&
+                      driveEraserVariant === "diagnostics")
                       ? "bg-gradient-to-r from-slate-300 to-slate-400 text-white cursor-not-allowed opacity-70"
                       : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
                   }`}
                 >
-                  {selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || (selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics")
+                  {selectedCategory === "hardware-diagnostics" ||
+                  selectedCategory === "smart-diagnostic" ||
+                  (selectedCategory === "drive-eraser" &&
+                    driveEraserVariant === "diagnostics")
                     ? "Coming Soon"
                     : selectedLicenses === "custom" || selectedPlan === "custom"
                       ? "Request Custom Quote"
@@ -1425,58 +1437,58 @@ const PricingAndPlanPage: React.FC = memo(() => {
             </div>
           </div>
 
-        {/* OS Compatibility */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-          <div className="text-center">
-            <span className="text-blue-700 font-medium">
-              OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
-              regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
-              Instant Delivery Available
-            </span>
+          {/* OS Compatibility */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+            <div className="text-center">
+              <span className="text-blue-700 font-medium">
+                OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
+                regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
+                Instant Delivery Available
+              </span>
+            </div>
           </div>
-        </div>
 
-        {/* FAQ Section */}
-        <div className="bg-white rounded-2xl p-4 xs:p-6 sm:p-8 shadow-lg border border-gray-200">
-          <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 xs:mb-6 sm:mb-8">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4 max-w-4xl mx-auto">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="border border-gray-200 rounded-lg overflow-hidden"
-              >
-                <button
-                  onClick={() =>
-                    setExpandedFaq(expandedFaq === index ? null : index)
-                  }
-                  className="w-full px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-left text-sm xs:text-base font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
+          {/* FAQ Section */}
+          <div className="bg-white rounded-2xl p-4 xs:p-6 sm:p-8 shadow-lg border border-gray-200">
+            <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 xs:mb-6 sm:mb-8">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-lg overflow-hidden"
                 >
-                  <span>{faq.question}</span>
-                  <svg
-                    className={`w-5 h-5 transform transition-transform ${
-                      expandedFaq === index ? "rotate-180" : ""
-                    }`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                  <button
+                    onClick={() =>
+                      setExpandedFaq(expandedFaq === index ? null : index)
+                    }
+                    className="w-full px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-left text-sm xs:text-base font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-                {expandedFaq === index && (
-                  <div className="px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-sm xs:text-base text-gray-700 bg-white">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
+                    <span>{faq.question}</span>
+                    <svg
+                      className={`w-5 h-5 transform transition-transform ${
+                        expandedFaq === index ? "rotate-180" : ""
+                      }`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  {expandedFaq === index && (
+                    <div className="px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-sm xs:text-base text-gray-700 bg-white">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -1504,8 +1516,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
           isLoading={isSpecialPricingSubmitting}
         />
       )}
-
-
     </>
   );
 });
