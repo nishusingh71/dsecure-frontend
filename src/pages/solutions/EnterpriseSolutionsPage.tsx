@@ -255,7 +255,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                           Guaranteed Compliance
                         </h3>
                         <p style={{ color: "#6b7280" }}>
-                          Tamper-proof erasure reports & certificates
+                          Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)
                         </p>
                       </div>
 
@@ -364,7 +364,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                 {
                   icon: "☁️",
                   title: "Cloud Console Utility",
-                  desc: "Centralized admin console for managing users, licenses, and maintaining a repository of erasure certificates.",
+                  desc: "Centralized admin console for managing users, licenses, and maintaining a repository of tamper-proof audit reports with certificate.",
                 },
               ].map((feature, idx) => (
                 <div
@@ -508,7 +508,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   desc: "Ensures compliance with US government standards for media sanitization.",
                   features: [
                     "Clear, Purge, and Destroy guidelines",
-                    "Automated detailed reports",
+                    "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
                     "Cryptographic erase support",
                   ],
                 },
@@ -619,7 +619,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   a: "Yes. Our bootable USB solutions are ideal for high-security facilities (like military or R&D environments) with strict internet usage policies, allowing offline erasure and secure report saving.",
                 },
                 {
-                  q: "Where are the erasure reports saved?",
+                  q: "Where are the tamper-proof audit reports with certificate saved?",
                   a: "For internet-connected endpoints, tamper-proof, digitally signed certificates are instantly uploaded to a secure, centralized Cloud Console. For offline tasks, they can be saved locally.",
                 },
               ].map((faq, idx) => (

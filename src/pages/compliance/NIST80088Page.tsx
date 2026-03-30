@@ -10,7 +10,7 @@ export default function NIST80088Page() {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "NIST 800-88 Data Erasure Standard Compliance Guide",
-    "description": "Learn how D-Secure helps organizations achieve NIST SP 800-88 Rev. 1 compliant data erasure for HDDs, SSDs, and storage arrays with tamper-proof certificates.",
+    "description": "Learn how D-Secure helps organizations achieve NIST SP 800-88 Rev. 1 compliant data erasure for HDDs, SSDs, and storage arrays with tamper-proof audit reports with certificate.",
     "publisher": {
       "@type": "Organization",
       "name": "D-Secure",
@@ -62,7 +62,7 @@ export default function NIST80088Page() {
                 Achieve <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">NIST 800-88</span> Data Erasure Compliance
               </h1>
               <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed">
-                Meet the gold standard for data sanitization. D-Secure provides verifiable, tamper-proof data erasure that strictly adheres to the National Institute of Standards and Technology (NIST) Special Publication 800-88 Guidelines for Media Sanitization.
+                Meet the gold standard for data sanitization. D-Secure provides verifiable, tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary) that strictly adheres to the National Institute of Standards and Technology (NIST) Special Publication 800-88 Guidelines for Media Sanitization.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/pricing-and-plan" className="btn-primary hover:scale-105 transition-transform">
@@ -132,7 +132,7 @@ export default function NIST80088Page() {
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900">Audit-Proof Documentation</h4>
-                      <p className="text-slate-600">NIST requires verification. D-Secure generates digitally signed, tamper-proof Certificates of Erasure for every single sanitized device.</p>
+                      <p className="text-slate-600">NIST requires verification. D-Secure generates digitally signed, tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary) for every single sanitized device.</p>
                     </div>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export default function NIST80088Page() {
                 <div className="absolute top-0 right-0 p-8 opacity-10">
                   <ShieldIcon className="w-48 h-48" filled={true} />
                 </div>
-                <h3 className="text-2xl font-bold mb-6 relative z-10">Generate Tamper-Proof Certificates</h3>
+                <h3 className="text-2xl font-bold mb-6 relative z-10">Tamper-proof audit reports with certificate</h3>
                 <ul className="space-y-4 mb-8 relative z-10 text-slate-300">
                   <li className="flex items-center gap-3">
                     <CheckIcon className="w-5 h-5 text-emerald-400" filled={true} />
@@ -180,7 +180,7 @@ export default function NIST80088Page() {
           <Reveal>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to achieve NIST compliance?</h2>
             <p className="text-emerald-100 text-lg mb-8 max-w-2xl mx-auto">
-              Join thousands of IT asset disposition (ITAD) facilities, enterprises, and government agencies relying on D-Secure for certified data erasure.
+              Join thousands of IT asset disposition (ITAD) facilities, enterprises, and government agencies relying on D-Secure for tamper-proof audit reports with certificate.
             </p>
             <Link to="/pricing-and-plan" className="btn bg-white text-emerald-700 hover:bg-slate-50 border-transparent shadow-lg hover:shadow-xl px-8 py-4 font-bold rounded-xl text-lg transition-all hover:scale-105">
               Get Started Now

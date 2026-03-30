@@ -15,9 +15,9 @@ import { ENV } from "@/config/env";
 const DataGuardianMap = React.lazy(() => import("../components/DataGuardianMap"));
 
 // Icon will be initialized on the client to avoid SSR errors
-let certifiedMarkerIcon: any = null;
+let complianceVerifiedMarkerIcon: any = null;
 
-// Type for certified company
+// Type for compliance-verified company
 interface VerifiedCompany {
   id: number;
   name: string;
@@ -338,9 +338,9 @@ const DataGuardianAwardPage: React.FC = () => {
       <SEOHead
         seo={{
           title:
-            "D-Secure Data Guardian Award: Recognition for excellence in Regulatory data erasure and sustainable ITAD practices.",
+            "D-Secure Data Hygiene Assurance: Recognition for excellence in regulatory data erasure and sustainable ITAD practices.",
           description:
-            "D-Secure Assurance Badge recognizes organizations with complete data hygiene setup and processes. Verify certified companies and get your assurance badge today.",
+            "D-Secure Assurance Badge recognizes organizations with complete data hygiene setup and processes. Verify compliance-verified companies and get your assurance badge today.",
           canonicalUrl: "https://dsecuretech.com/data-guardian-award",
           keywords:
             "D-Secure assurance badge, data hygiene certification, secure data protection, data erasure assurance, IT data security certification, trusted data partner",
@@ -739,7 +739,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       Trusted Brand
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Build customer confidence with D-Secure certified data
+                      Build customer confidence with D-Secure compliance-verified data
                       handling practices
                     </p>
                   </div>
@@ -1009,7 +1009,7 @@ const DataGuardianAwardPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Certified Partners Map Section */}
+        {/* Compliance-Verified Partners Map Section */}
         <section id="verify" className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 relative overflow-hidden">
           {/* Background Effects */}
           <div className="absolute inset-0">
@@ -1076,7 +1076,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       {searchResults.length > 0 ? (
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                           <p className="text-emerald-400 font-medium mb-3">
-                            Found {searchResults.length} certified
+                            Found {searchResults.length} compliance verified
                             organization(s):
                           </p>
                           {searchResults.map((company: VerifiedCompany) => (
@@ -1111,7 +1111,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       ) : (
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                           <p className="text-slate-300">
-                            No certified organizations found matching "
+                            No compliance-verified organizations found matching "
                             {searchQuery}"
                           </p>
                         </div>
@@ -1269,7 +1269,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       Apply for Assurance Badge
                     </h2>
                     <p className="text-slate-600 text-center mb-6">
-                      Get your organization certified with D-Secure Data Hygiene
+                      Verify your organization with D-Secure Data Hygiene Assurance
                       Assurance
                     </p>
 

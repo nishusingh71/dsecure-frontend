@@ -112,7 +112,7 @@ const HomePage = memo(function HomePage() {
         isUpcoming: true,
         features: [
           "Bulk processing",
-          "Tamper-proof reports",
+          "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
           "Support iOS & Android",
           "Full Factory Reset",
         ],
@@ -181,7 +181,7 @@ const HomePage = memo(function HomePage() {
         features: [
           "Erasure Verification",
           "Compliance Auditing",
-          "Digitally Signed Reports",
+          "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
           "USB & PXE Support",
         ],
       },
@@ -248,7 +248,7 @@ const HomePage = memo(function HomePage() {
         isUpcoming: true, // Already true, confirmed
         features: [
           "Bit-for-bit imaging",
-          "Chain of custody proof",
+          "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
           "E01 & Raw formats",
           "Hashing verification",
         ],
@@ -335,7 +335,7 @@ const HomePage = memo(function HomePage() {
           "Advanced Algorithms",
           "Deep Freeze Wiping",
           "Sector Level Control",
-          "Compliance Proof",
+          "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
         ],
       },
       {

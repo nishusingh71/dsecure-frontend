@@ -42,7 +42,7 @@ const RemoteWorkDataErasureBestPracticesBlog = lazy(() => import("../components/
 const NCUAThirdPartyDataDisposalBlog = lazy(() => import("../components/blog/NCUAThirdPartyDataDisposalBlog"));
 const MSPErasureAsAServiceBlog = lazy(() => import("../components/blog/MSPErasureAsAServiceBlog"));
 const DellDataWipeVsDSecureBlog = lazy(() => import("../components/blog/DellDataWipeVsDSecureBlog"));
-const CommonCriteriaCertifiedDataWipingBlog = lazy(() => import("../components/blog/CommonCriteriaCertifiedDataWipingBlog"));
+const CommonCriteriaComplianceVerifiedDataWipingBlog = lazy(() => import("../components/blog/CommonCriteriaComplianceVerifiedDataWipingBlog"));
 const ErasureAsAServiceDSecureBlog = lazy(() => import("../components/blog/ErasureAsAServiceDSecureBlog"));
 const ReturningLeasedITHardwareDosAndDontsBlog = lazy(() => import("../components/blog/ReturningLeasedITHardwareDosAndDonts"));
 const HealthcareRansomwareLessonsBlog = lazy(() => import("../components/blog/HealthcareRansomwareLessonsBlog"));
@@ -54,7 +54,7 @@ const EraseDataPcLaptopDesktopBlog = lazy(() => import("../components/blog/Erase
 const NIST80088IndiaBlog = lazy(() => import("../components/blog/NIST80088IndiaBlog"));
 
 const CCPAViolationBlog = lazy(() => import("../components/blog/CCPAViolationBlog"));
-const CertifiedITADReasonsBlog = lazy(() => import("../components/blog/CertifiedITADReasonsBlog"));
+const ComplianceVerifiedITADReasonsBlog = lazy(() => import("../components/blog/ComplianceVerifiedITADReasonsBlog"));
 const ChainOfCustodyBlog = lazy(() => import("../components/blog/ChainOfCustodyBlog"));
 const ChangeHealthcareAttackBlog = lazy(() => import("../components/blog/ChangeHealthcareAttackBlog"));
 const ChromebookDataRisksBlog = lazy(() => import("../components/blog/ChromebookDataRisksBlog"));
@@ -188,7 +188,7 @@ export const BlogRoutes = () => (
     <Route path="blog/ncua-third-party-data-disposal" element={<NCUAThirdPartyDataDisposalBlog />} />
     <Route path="blog/msp-erasure-as-a-service" element={<MSPErasureAsAServiceBlog />} />
     <Route path="blog/dell-data-wipe-vs-dsecure" element={<DellDataWipeVsDSecureBlog />} />
-    <Route path="blog/common-criteria-certified-data-wiping" element={<CommonCriteriaCertifiedDataWipingBlog />} />
+    <Route path="blog/common-criteria-certified-data-wiping" element={<CommonCriteriaComplianceVerifiedDataWipingBlog />} />
     <Route path="blog/erasure-as-a-service-dsecure" element={<ErasureAsAServiceDSecureBlog />} />
     <Route path="blog/returning-leased-it-hardware-dos-and-donts" element={<ReturningLeasedITHardwareDosAndDontsBlog />} />
     <Route path="blog/healthcare-ransomware-lessons" element={<HealthcareRansomwareLessonsBlog />} />
@@ -199,7 +199,7 @@ export const BlogRoutes = () => (
     <Route path="blog/erase-data-pc-laptop-desktop" element={<EraseDataPcLaptopDesktopBlog />} />
     <Route path="blog/nist-800-88-compliance-india" element={<NIST80088IndiaBlog />} />
     <Route path="blog/ccpa-violation" element={<CCPAViolationBlog />} />
-    <Route path="blog/certified-itad-reasons" element={<CertifiedITADReasonsBlog />} />
+    <Route path="blog/certified-itad-reasons" element={<ComplianceVerifiedITADReasonsBlog />} />
     <Route path="blog/chain-of-custody" element={<ChainOfCustodyBlog />} />
     <Route path="blog/change-healthcare-attack" element={<ChangeHealthcareAttackBlog />} />
     <Route path="blog/chromebook-data-risks" element={<ChromebookDataRisksBlog />} />

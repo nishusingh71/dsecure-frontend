@@ -10,7 +10,7 @@ interface NavItem {
   children?: NavItem[];
 }
 
-const IMG = ({ src, alt }: { src: string; alt: string }) => (
+const ImageManual = ({ src, alt }: { src: string; alt: string }) => (
   <div className="mt-4 border border-gray-200 rounded-lg overflow-hidden">
     <img src={src} alt={alt} className="w-full" style={{ borderRadius: "3%" }} />
   </div>
@@ -22,8 +22,8 @@ const navigationTree: NavItem[] = [
     title: "About D-Secure Drive Eraser",
     content: (
       <>
-        <p className="text-slate-700 leading-relaxed mb-4"><strong>D-Secure Drive Eraser</strong> is a boot-based, enterprise-grade drive sanitization solution designed to permanently and irreversibly erase all data from storage devices including HDDs, SSDs, NVMe drives, and USB storage. The software boots from a USB or PXE environment, operating independently of the host operating system to ensure complete and certified data destruction.</p>
-        <p className="text-slate-700 leading-relaxed mb-4">D-Secure Drive Eraser supports <strong>20+ internationally recognized erasure standards</strong> including NIST SP 800-88 Rev1, DoD 5220.22-M (3-pass and 7-pass), and custom overwrite methods. Each erasure operation generates a tamper-proof compliance certificate that can be uploaded to the D-Secure Cloud Console for centralized reporting and audit trail management.</p>
+        <p className="text-slate-700 leading-relaxed mb-4"><strong>D-Secure Drive Eraser</strong> is a boot-based, enterprise-grade drive sanitization solution designed to permanently and irreversibly erase all data from storage devices including HDDs, SSDs, NVMe drives, and USB storage. The software boots from a USB or PXE environment, operating independently of the host operating system to ensure complete and Tamper-proof audit reports with certificate for data destruction.</p>
+        <p className="text-slate-700 leading-relaxed mb-4">D-Secure Drive Eraser supports <strong>20+ internationally recognized erasure standards</strong> including NIST SP 800-88 Rev1, DoD 5220.22-M (3-pass and 7-pass), and custom overwrite methods. Each erasure operation generates a Tamper-proof audit report with certificate that can be uploaded to the D-Secure Cloud Console for centralized reporting and audit trail management.</p>
         <p className="text-slate-700 leading-relaxed mb-6">The software features an intuitive graphical interface with a step-by-step wizard that guides users through drive detection, wipe configuration, destructive confirmation, wipe progress monitoring, and completion verification. It requires no prior technical expertise and is suitable for IT administrators, ITAD companies, data centers, and compliance teams.</p>
         <h3 className="text-lg font-semibold text-slate-800 mb-3">Key Features:</h3>
         <ul className="list-disc list-inside space-y-2 text-slate-700 ml-4">
@@ -34,7 +34,7 @@ const navigationTree: NavItem[] = [
           <li><strong>Enterprise Dashboard</strong> — View license status, network connection, recent activity, and statistics at a glance.</li>
           <li><strong>Wi-Fi & LAN Connectivity</strong> — Connect via Wi-Fi networks or LAN/Ethernet for cloud license validation and report upload.</li>
           <li><strong>Offline Mode</strong> — Operate in air-gapped environments with offline activation and local report storage.</li>
-          <li><strong>Compliance Reports</strong> — Generate tamper-proof erasure certificates with drive details, method used, and verification status.</li>
+          <li><strong>Compliance Reports</strong> — Generate Tamper-proof audit reports with certificate including drive details, method used, and verification status.</li>
           <li><strong>Cloud Integration</strong> — Automatic report upload to D-Secure Cloud Console for centralized management.</li>
           <li><strong>Multi-Theme Support</strong> — Switch between Light, Dark, D-Secure Green, and D-Secure Light themes.</li>
         </ul>
@@ -78,7 +78,7 @@ const navigationTree: NavItem[] = [
               <li><strong>License Status</strong> — Connection and offline mode availability</li>
             </ul>
             <p className="text-slate-700 leading-relaxed mb-4">Click the <strong>"Start Drive Sanitization"</strong> button to begin the erasure process.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="D-Secure Drive Eraser Welcome Screen with System Summary" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="D-Secure Drive Eraser Welcome Screen with System Summary" />
           </>
         ),
       },
@@ -95,7 +95,7 @@ const navigationTree: NavItem[] = [
               <li><strong>Drive Enumeration</strong> — Lists all detected storage devices with model, serial, and capacity information</li>
             </ul>
             <p className="text-slate-700 leading-relaxed mb-4">A loading spinner with status messages is displayed during this process. The status bar at the bottom shows <strong>"Initializing"</strong> while detection is in progress.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Detecting Hardware" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Detecting Hardware" />
           </>
         ),
       },
@@ -111,7 +111,7 @@ const navigationTree: NavItem[] = [
                 <p className="text-slate-700 leading-relaxed mb-4">After hardware detection, a <strong>Network Connection</strong> dialog appears prompting you to connect to the internet for license validation. The Wi-Fi tab displays all available wireless networks.</p>
                 <p className="text-slate-700 leading-relaxed mb-4">Each network entry shows the <strong>network name (SSID)</strong>, <strong>signal strength</strong>, <strong>security status</strong>, and <strong>frequency band</strong> (2.4 GHz or 5 GHz). Click on a network to connect.</p>
                 <p className="text-slate-700 leading-relaxed mb-4">You can also click <strong>"Skip"</strong> to proceed without a network connection and use offline mode instead.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Network Connection - Wi-Fi Networks" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Network Connection - Wi-Fi Networks" />
               </>
             ),
           },
@@ -122,7 +122,7 @@ const navigationTree: NavItem[] = [
               <>
                 <p className="text-slate-700 leading-relaxed mb-4">Switch to the <strong>"LAN / Ethernet"</strong> tab for wired connections. This option is ideal for enterprise environments where wired connections are more reliable.</p>
                 <p className="text-slate-700 leading-relaxed mb-4">If no Ethernet cable is detected, click <strong>"Detect LAN Connection"</strong> after plugging in the cable. The system will automatically configure the network using DHCP.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305219/zrkffe7ylntxde56budn.png" alt="Network Connection - LAN / Ethernet" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305219/zrkffe7ylntxde56budn.png" alt="Network Connection - LAN / Ethernet" />
               </>
             ),
           },
@@ -141,21 +141,21 @@ const navigationTree: NavItem[] = [
               <p className="text-blue-800 text-sm">If you are logging in for the first time, ensure your internet connection is stable for license synchronization.</p>
             </div>
             <p className="text-slate-700 leading-relaxed mb-4">If you are in an environment where the internet is not available, click <strong>"Continue in Offline Mode"</strong>. You can then follow the offline activation process.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png" alt="Authentication & Login Interface" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png" alt="Authentication & Login Interface" />
             
             <h4 className="text-base font-semibold text-slate-800 mt-8 mb-4">Getting Started - Product Screenshots</h4>
             <div className="space-y-6">
               <div>
                 <p className="text-slate-700 mb-2"><strong>1. Welcome Screen:</strong> This is the first screen after the system boots, showing hardware information.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="Welcome Screen" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png" alt="Welcome Screen" />
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>2. Hardware Detection:</strong> This process scans all connected SATA, NVMe, and USB drives.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Hardware Detection" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png" alt="Hardware Detection" />
               </div>
               <div>
                 <p className="text-slate-700 mb-2"><strong>3. Wi-Fi Setup:</strong> List of available wireless networks and signal strength can be seen here.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Wi-Fi Setup" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png" alt="Wi-Fi Setup" />
               </div>
             </div>
           </>
@@ -172,7 +172,7 @@ const navigationTree: NavItem[] = [
               <p className="text-slate-700"><strong>Step 2 — Enter Activation Code:</strong> Enter the received activation code and click <strong>"Verify & Activate"</strong> to complete the activation.</p>
             </div>
             <p className="text-slate-700 leading-relaxed mb-4">Click <strong>"Back to Login"</strong> to return to the login screen, or use <strong>"Continue in Offline Mode"</strong> to proceed with limited functionality.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/e7sdh1mazppjy3ikjrrz.png" alt="Offline Activation" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/e7sdh1mazppjy3ikjrrz.png" alt="Offline Activation" />
           </>
         ),
       },
@@ -198,10 +198,10 @@ const navigationTree: NavItem[] = [
               <li><strong>Statistics Card</strong> — Cumulative erasure statistics</li>
               <li><strong>Action Buttons</strong> — "Start New Drive Erasure" and "View Reports"</li>
             </ul>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300694/whegkqyd3tp2cg7neowp.png" alt="Dashboard Overview" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300694/whegkqyd3tp2cg7neowp.png" alt="Dashboard Overview" />
             <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">Recently Wiped Drives:</h4>
             <p className="text-slate-700 leading-relaxed mb-4">Below the main cards, the <strong>Recently Wiped Drives</strong> section shows history of sanitized drives.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/lpnzpozpc3dnlyjmqmfc.png" alt="Recently Wiped Drives" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/lpnzpozpc3dnlyjmqmfc.png" alt="Recently Wiped Drives" />
           </>
         ),
       },
@@ -223,7 +223,7 @@ const navigationTree: NavItem[] = [
                   <li><strong>System Drive Warning</strong> — Drives marked "SYSTEM" contain the boot environment</li>
                 </ul>
                 <p className="text-slate-700 leading-relaxed mb-4">Select a drive (highlighted with green border) and click <strong>"Continue with Selected Drive"</strong>.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303765/usmphwsihzdg4s5y2637.png" alt="Step 1: Drive Detection" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303765/usmphwsihzdg4s5y2637.png" alt="Step 1: Drive Detection" />
               </>
             ),
           },
@@ -240,10 +240,10 @@ const navigationTree: NavItem[] = [
                   <li><strong>Estimated Time</strong> — Approximate time for the selected method</li>
                 </ul>
                 <p className="text-slate-700 leading-relaxed mb-4">An <strong>"Irreversible Operation"</strong> warning reminds you that all data will be permanently destroyed. Click <strong>"Proceed to Confirmation"</strong> to continue.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png" alt="Step 2: Wipe Configuration" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png" alt="Step 2: Wipe Configuration" />
                 <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">With Method Selected:</h4>
                 <p className="text-slate-700 leading-relaxed mb-4">Once you select an erasure method and verification level, the configuration summary updates with estimated completion time.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png" alt="Wipe Configuration with Method Selected" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png" alt="Wipe Configuration with Method Selected" />
               </>
             ),
           },
@@ -261,7 +261,7 @@ const navigationTree: NavItem[] = [
                   <p className="text-red-900 font-semibold mb-1">Warning:</p>
                   <p className="text-red-800 text-sm">Once the wipe starts, it cannot be recovered. Data will be permanently destroyed.</p>
                 </div>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303719/vlshsgzlgnsfu1drxhvh.png" alt="Step 3: Destructive Confirmation" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303719/vlshsgzlgnsfu1drxhvh.png" alt="Step 3: Destructive Confirmation" />
               </>
             ),
           },
@@ -292,10 +292,14 @@ const navigationTree: NavItem[] = [
                 <p className="text-slate-700 leading-relaxed mb-4">Upon completion, the system shows a <strong>Success Notification</strong>. This means every sector of the drive has been successfully overwritten.</p>
                 <div className="bg-emerald-50 border-emerald-500 border rounded-lg p-6 mb-6">
                   <h5 className="text-emerald-800 font-bold mb-2">Drive Sanitized Successfully!</h5>
-                  <p className="text-emerald-700 text-sm">A tamper-proof erasure certificate (Report) has been automatically generated. You can view it by clicking the "View Report" button.</p>
+                  <p className="text-emerald-700 text-sm">A Tamper-proof audit report with certificate has been automatically generated. You can view it by clicking the "View Report" button.</p>
                 </div>
                 <p className="text-slate-700 leading-relaxed mb-4">The report includes full drive details, the algorithm used (e.g., NIST 800-88), and verification status. You can save it to a USB or upload it directly to the D-Secure cloud.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Erasure Completion & Report" />
+                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                  <p className="text-blue-900 font-semibold mb-1">Report Structure:</p>
+                  <p className="text-blue-800 text-sm">Each generated report is structured for maximum compliance. The **first page** serves as the official **Certificate**, while the **second page** onwards contains the detailed **Summary** and **Annexure** including drive health and erasure logs.</p>
+                </div>
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Erasure Completion & Report" />
               </>
             ),
           },
@@ -303,17 +307,20 @@ const navigationTree: NavItem[] = [
       },
       {
         id: "reports",
-        title: "Reports & Compliance Certificates",
+        title: "Reports & Compliance Proofs",
         content: (
           <>
-            <p className="text-slate-700 leading-relaxed mb-4">The <strong>Reports</strong> section provides a centralized view of all erasure compliance certificates and records.</p>
+            <p className="text-slate-700 leading-relaxed mb-4">The <strong>Reports</strong> section provides a centralized view of all compliance reports with certificate and records.</p>
             <ul className="list-disc list-inside space-y-2 text-slate-700 ml-4 mb-4">
               <li><strong>Total Reports Counter</strong> — Total number of reports generated</li>
               <li><strong>Search Bar</strong> — Filter by Report ID, Drive Serial, or Model</li>
               <li><strong>Status Filter</strong> — All Statuses, Completed, Failed, In Progress</li>
               <li><strong>Reports Table</strong> — Report ID, Drive Serial, Method, Date, Status, Action</li>
             </ul>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports Interface" />
+            <div className="p-4 bg-slate-50 border rounded-lg mb-6">
+                <p className="text-sm text-slate-600 italic">Note: Reports are cryptographically signed to ensure tamper-proof integrity. The **Certificate (Page 1)** is designed for quick compliance audits, with subsequent pages providing full forensic audit trails.</p>
+            </div>
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports Interface" />
           </>
         ),
       },
@@ -332,10 +339,10 @@ const navigationTree: NavItem[] = [
                   <li><strong>Appearance / Theme</strong> — Light, Dark (Default Boot), D-Secure Green, D-Secure Light</li>
                   <li><strong>Defaults</strong> — Default Wipe Method and Verification Level</li>
                 </ul>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - General" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - General" />
                 <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">Default Wipe Method & Verification:</h4>
                 <p className="text-slate-700 leading-relaxed mb-4">Scroll down to set defaults that will be pre-selected for every new erasure session.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - Default Wipe Method" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="Settings - Default Wipe Method" />
               </>
             ),
           },
@@ -345,25 +352,25 @@ const navigationTree: NavItem[] = [
             content: (
               <>
                 <p className="text-slate-700 leading-relaxed mb-4">The <strong>Account</strong> tab allows you to manage your user profile and license information. You can see how many wipes have been used and how many remain.</p>
-                <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304035/ctjtcp2leqj5c2rarmei.png" alt="Settings - Account" />
+                <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304035/ctjtcp2leqj5c2rarmei.png" alt="Settings - Account" />
 
                 <h4 className="text-base font-semibold text-slate-800 mt-12 mb-4">Reports & Settings - Product Screenshots</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-slate-700 mb-2 text-sm font-medium">Reports Dashboard:</p>
-                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports Interface" />
+                    <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png" alt="Reports Interface" />
                   </div>
                   <div>
                     <p className="text-slate-700 mb-2 text-sm font-medium">General Settings:</p>
-                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="General Settings" />
+                    <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png" alt="General Settings" />
                   </div>
                   <div>
                     <p className="text-slate-700 mb-2 text-sm font-medium">Help Documentation:</p>
-                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303943/cvfupwsy8iejwrxi5jzj.png" alt="Help Page Interface" />
+                    <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303943/cvfupwsy8iejwrxi5jzj.png" alt="Help Page Interface" />
                   </div>
                   <div>
                     <p className="text-slate-700 mb-2 text-sm font-medium">Software Details (About):</p>
-                    <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Interface" />
+                    <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Interface" />
                   </div>
                 </div>
               </>
@@ -390,7 +397,7 @@ const navigationTree: NavItem[] = [
               <li><strong>Memory</strong> — 16 GB DDR4</li>
               <li><strong>Firmware Mode</strong> — UEFI</li>
             </ul>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Page" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png" alt="About Page" />
           </>
         ),
       },
@@ -403,15 +410,15 @@ const navigationTree: NavItem[] = [
             <ul className="list-disc list-inside space-y-2 text-slate-700 ml-4 mb-4">
               <li><strong>Getting Started</strong> — Boot environment, hardware detection, login</li>
               <li><strong>Drive Erasure Process</strong> — Step-by-step guide</li>
-              <li><strong>Compliance & Certification</strong> — Standards and certificates</li>
-              <li><strong>Reports & Certificates</strong> — Managing reports</li>
+              <li><strong>Compliance & Reporting</strong> — Standards and reports</li>
+              <li><strong>Reports & Compliance Documents</strong> — Managing reports</li>
               <li><strong>Configuration & Settings</strong> — Customizing preferences</li>
               <li><strong>Troubleshooting</strong> — Common issues</li>
             </ul>
             <p className="text-slate-700 leading-relaxed mb-4">For additional help: <strong>support@dsecure.io</strong> and <strong>docs.dsecure.io</strong>.</p>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303943/cvfupwsy8iejwrxi5jzj.png" alt="Help Page - Top" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303943/cvfupwsy8iejwrxi5jzj.png" alt="Help Page - Top" />
             <h4 className="text-base font-semibold text-slate-800 mt-8 mb-3">Help Topics (Continued):</h4>
-            <IMG src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303980/gemjfmgk3cw7wnvgh2z6.png" alt="Help Page - Bottom" />
+            <ImageManual src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1773303980/gemjfmgk3cw7wnvgh2z6.png" alt="Help Page - Bottom" />
           </>
         ),
       },
@@ -440,7 +447,7 @@ const Anchor: React.FC<{ id: string }> = ({ id }) => (
 
 const useScrollToHash = () => {
   useEffect(() => {
-    const { hash } = window.location;
+    const { hash } = globalThis.location;
     if (hash) {
       const el = document.querySelector(hash);
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -455,18 +462,27 @@ const SidebarItem: React.FC<{ item: NavItem; activeSection: string; onJump: (id:
 
   return (
     <div className="text-sm">
-      <div className={`flex items-center gap-2 py-1.5 px-3 rounded-md transition-colors cursor-pointer ${isActive ? "bg-blue-100 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"}`}
+      <button 
+        className={`flex items-center w-full text-left gap-2 py-1.5 px-3 rounded-md transition-colors cursor-pointer ${isActive ? "bg-blue-100 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"}`}
         style={{ paddingLeft: `${(level * 12) + 12}px` }}
+        tabIndex={0}
         onClick={(e) => { e.stopPropagation(); onJump(`#${item.id}`); if (hasChildren) setIsExpanded(!isExpanded); }}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); onJump(`#${item.id}`); if (hasChildren) setIsExpanded(!isExpanded); } }}
       >
         {hasChildren && (
-          <span onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} className="p-0.5 hover:bg-gray-200 rounded">
+          <span 
+            role="button"
+            tabIndex={0}
+            onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} 
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); setIsExpanded(!isExpanded); } }}
+            className="p-0.5 hover:bg-gray-200 rounded"
+          >
             {isExpanded ? <ChevronRight className="w-3.5 h-3.5 rotate-90 transition-transform" /> : <ChevronRight className="w-3.5 h-3.5 transition-transform" />}
           </span>
         )}
         {!hasChildren && <span className="w-3.5" />}
-        <a href={`#${item.id}`} onClick={(e) => e.preventDefault()} className="flex-1 break-words">{item.title}</a>
-      </div>
+        <span className="flex-1 break-words">{item.title}</span>
+      </button>
       {hasChildren && isExpanded && (
         <div className="mt-1 border-l border-gray-200 ml-6">
           {item.children!.map(child => (<SidebarItem key={child.id} item={child} activeSection={activeSection} onJump={onJump} level={level + 1} />))}
@@ -481,9 +497,18 @@ const ContentSection: React.FC<{ item: NavItem; level?: number }> = ({ item, lev
     <Anchor id={item.id} />
     <div className={`mb-6 ${level === 0 ? 'pb-4 border-b-2 border-gray-200' : ''}`}>
       <div className="flex items-center gap-3">
-        <h2 className={`${level === 0 ? 'text-3xl font-bold text-gray-900' : level === 1 ? 'text-2xl font-semibold text-gray-800 mt-8' : 'text-xl font-medium text-gray-800 mt-6'}`}>
-          {item.title}
-        </h2>
+        {(() => {
+          let headingClass = 'text-xl font-medium text-gray-800 mt-6';
+          if (level === 0) headingClass = 'text-3xl font-bold text-gray-900';
+          else if (level === 1) headingClass = 'text-2xl font-semibold text-gray-800 mt-8';
+          
+          const HeadingTag = level === 0 ? 'h2' : level === 1 ? 'h3' : 'h4';
+          return (
+            <HeadingTag className={headingClass}>
+              {item.title}
+            </HeadingTag>
+          );
+        })()}
       </div>
     </div>
     {item.content && (
@@ -508,7 +533,7 @@ const CompleteDSecureDriveManual: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShouldShowScrollTop(window.scrollY > 400);
+      setShouldShowScrollTop(globalThis.scrollY > 400);
       const headingElements = document.querySelectorAll('[id]');
       let currentSection = "";
       headingElements.forEach((el) => {
@@ -517,8 +542,8 @@ const CompleteDSecureDriveManual: React.FC = () => {
       });
       if (currentSection) setActiveSection(currentSection);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
+    return () => globalThis.removeEventListener("scroll", handleScroll);
   }, []);
 
   const onJump = (hash: string) => {
@@ -526,8 +551,8 @@ const CompleteDSecureDriveManual: React.FC = () => {
     if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); setActiveSection(hash.replace('#', '')); }
   };
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-  const handleDownloadPDF = () => window.print();
+  const scrollToTop = () => globalThis.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleDownloadPDF = () => globalThis.print();
 
   const handleDownloadEditable = () => {
     const content = contentRef.current;
@@ -535,12 +560,12 @@ const CompleteDSecureDriveManual: React.FC = () => {
     const clone = content.cloneNode(true) as HTMLElement;
     clone.querySelectorAll('button, .pdf-hide-btn, aside, nav, thead, tfoot, .print-watermark').forEach(el => el.remove());
     const images = clone.querySelectorAll('img');
-    images.forEach(img => { img.style.maxWidth = '100%'; img.style.height = 'auto'; if (img.src.startsWith('/')) img.src = window.location.origin + img.src; });
-    const watermarkUrl = window.location.origin + '/company-logo.png';
+    images.forEach(img => { img.style.maxWidth = '100%'; img.style.height = 'auto'; if (img.src.startsWith('/')) img.src = globalThis.location.origin + img.src; });
+    const watermarkUrl = globalThis.location.origin + '/company-logo.png';
     const htmlContent = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset="utf-8"><title>D-Secure Drive Eraser - User Manual</title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]--><style>body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-size:12pt;line-height:1.6;color:#1a1a1a;padding:20px 40px}h1{font-size:24pt;font-weight:bold;color:#111827;margin-top:30px;margin-bottom:12px}h2{font-size:18pt;font-weight:bold;color:#1f2937;margin-top:24px;margin-bottom:10px}h3{font-size:14pt;font-weight:bold;color:#374151;margin-top:18px;margin-bottom:8px}h4,h5,h6{font-size:12pt;font-weight:bold;color:#4b5563;margin-top:14px;margin-bottom:6px}p{margin:6px 0}ul,ol{margin:8px 0;padding-left:24px}li{margin:4px 0}img{max-width:100%;height:auto;display:block;margin:10px auto}a{color:#2563eb}.watermark{position:fixed;top:10px;right:10px;width:60px;height:60px;opacity:0.08;z-index:-1}@page{size:A4;margin:20mm 15mm}</style></head><body><img src="${watermarkUrl}" class="watermark" alt="" />${clone.innerHTML}</body></html>`;
     const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'D-Secure_Drive_Eraser_User_Manual.doc'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    const a = document.createElement('a'); a.href = url; a.download = 'D-Secure_Drive_Eraser_User_Manual.doc'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   };
 
   return (
@@ -615,7 +640,7 @@ const CompleteDSecureDriveManual: React.FC = () => {
 
             <table className="w-full border-collapse" style={{ tableLayout: 'fixed' }}>
               <thead className="hidden print:table-header-group">
-                <tr><td className="p-0 border-none"><div style={{ height: '96px' }} /></td></tr>
+                <tr><th className="p-0 border-none font-normal"><div style={{ height: '96px' }} /></th></tr>
               </thead>
               <tbody>
                 <tr>

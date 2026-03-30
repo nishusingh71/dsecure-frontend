@@ -39,7 +39,7 @@ const comparisonFeatures = [
   },
   {
     feature: "Report Generation",
-    dsecure: "Instant Tamper-Proof PDF/XML in Cloud",
+    dsecure: "Instant Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
     blancco: "Central Management Console Required",
     better: "dsecure"
   }
@@ -72,7 +72,7 @@ export default function BlanccoAlternativePage() {
               </h1>
               
               <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Why pay for legacy complexity? D-Secure provides enterprise-grade, certified data sanitization that's faster to deploy, easier to manage, and 40% more cost-effective.
+                Why pay for legacy complexity? D-Secure provides enterprise-grade, tamper-proof audit reports with certificate that's faster to deploy, easier to manage, and 40% more cost-effective.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -151,7 +151,7 @@ export default function BlanccoAlternativePage() {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-4">Unified Compliance</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Audit-ready certificates for NIST, GDPR, and HIPAA out of the box. No extra modules or hidden costs for standard compliance reporting.
+                  Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary) for NIST, GDPR, and HIPAA out of the box. No extra modules or hidden costs for standard compliance reporting.
                 </p>
               </div>
 

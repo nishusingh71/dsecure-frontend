@@ -74,7 +74,7 @@ export default function MainLayout() {
 
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [productsDropdownOpen]);
+  }, [productsDropdownOpen, solutionsDropdownOpen]);
 
   // ? Idle Auto-Logout (15 minutes = 900,000 ms)
   // Only active when user is logged in
@@ -164,7 +164,10 @@ export default function MainLayout() {
               <div data-products-dropdown>
                 <button
                   className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${productsDropdownOpen ? "text-brand font-medium" : ""}`}
-                  onClick={() => setProductsDropdownOpen(!productsDropdownOpen)}
+                  onClick={() => {
+                    setProductsDropdownOpen(!productsDropdownOpen);
+                    setSolutionsDropdownOpen(false);
+                  }}
                 >
                   {t("common.products")}
                 </button>
@@ -866,7 +869,10 @@ export default function MainLayout() {
               <div data-solutions-dropdown>
                 <button
                   className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${solutionsDropdownOpen ? "text-brand font-medium" : ""}`}
-                  onClick={() => setSolutionsDropdownOpen(!solutionsDropdownOpen)}
+                  onClick={() => {
+                    setSolutionsDropdownOpen(!solutionsDropdownOpen);
+                    setProductsDropdownOpen(false);
+                  }}
                 >
                   {t("solutions.title")}
                 </button>

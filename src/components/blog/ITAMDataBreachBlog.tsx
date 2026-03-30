@@ -232,7 +232,7 @@ const ITAMDataBreachBlog: React.FC = () => {
                             Strengthen Your IT Asset Security with D-Secure
                         </h2>
                         <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                            D-Secure provides certified data sanitization solutions that help IT asset managers protect organizational data and meet compliance requirements throughout the asset lifecycle.
+                            D-Secure provides compliance-verified data sanitization solutions that help IT asset managers protect organizational data and meet compliance requirements throughout the asset lifecycle.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link to="/contact" className="inline-block bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all text-lg">

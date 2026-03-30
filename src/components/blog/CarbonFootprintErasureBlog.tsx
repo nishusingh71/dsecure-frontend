@@ -26,7 +26,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                     <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Reducing Carbon Footprint Through Data Erasure</span>
                 </h1>
                 <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                    How certified data erasure enables IT asset reuse, reducing e-waste and lowering your organization's carbon footprint significantly.
+                    How compliance-verified data erasure enables IT asset reuse, reducing e-waste and lowering your organization's carbon footprint significantly.
                 </p>
             </div>
         </Reveal>
@@ -44,7 +44,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                         Electronic waste is one of the fastest-growing waste streams globally. Manufacturing new IT equipment contributes significantly to carbon emissions through mining, processing, and production.
                     </p>
                     <p className="text-slate-700 leading-relaxed">
-                        The irony is that many devices are destroyed prematurely simply because organizations lack certified methods to sanitize data. Physical destruction eliminates any possibility of reuse, sending functional hardware to landfills.
+                        The irony is that many devices are destroyed prematurely simply because organizations lack compliance-verified methods to sanitize data. Physical destruction eliminates any possibility of reuse, sending functional hardware to landfills.
                     </p>
                     <div className="p-6 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg my-4">
                         <strong className="text-emerald-800 block mb-2">Environmental Impact</strong>
@@ -58,7 +58,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                 <div className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">2. Manufacturing vs. Reuse: Carbon Comparison</h2>
                     <p className="text-slate-700 leading-relaxed">
-                        The carbon footprint of IT equipment is heavily front-loaded in manufacturing. Extending device life through certified erasure and resale offers substantial environmental benefits.
+                        The carbon footprint of IT equipment is heavily front-loaded in manufacturing. Extending device life through compliance-verified erasure and resale offers substantial environmental benefits.
                     </p>
                     <div className="grid md:grid-cols-3 gap-4 mt-4">
                         <div className="bg-red-50 border border-red-200 p-4 rounded-lg text-center">
@@ -83,12 +83,12 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                 <div className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">3. Data Erasure: Enabling the Circular Economy</h2>
                     <p className="text-slate-700 leading-relaxed">
-                         Certified data erasure is the bridge between secure decommissioning and sustainable reuse. Without it, organizations face a false choice between security and sustainability.
+                         Compliance-verified data erasure is the bridge between secure decommissioning and sustainable reuse. Without it, organizations face a false choice between security and sustainability.
                     </p>
                      <div className="bg-slate-900 border-b border-slate-800 text-slate-100 p-6 rounded-xl font-mono text-sm leading-relaxed">
                         <p className="text-emerald-400 font-bold mb-2">// The Circular IT Economy</p>
                         <p className="mb-2">1. Deploy → Use → Decommission</p>
-                        <p className="mb-2">2. <span className="text-emerald-400">Certified Erasure</span> → Data Security Assured</p>
+                        <p className="mb-2">2. <span className="text-emerald-400">Compliance-Verified Erasure</span> → Data Security Assured</p>
                         <p className="mb-2">3. Refurbish → Resell/Donate</p>
                         <p>4. Responsible Recycling (End of Life)</p>
                     </div>
@@ -110,7 +110,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                         </li>
                         <li className="flex gap-3 items-start">
                             <span className="text-emerald-500 font-bold text-xl">✓</span>
-                            <span><strong>Waste Reduction:</strong> Track and report devices diverted from destruction through certified erasure.</span>
+                            <span><strong>Waste Reduction:</strong> Track and report devices diverted from destruction through compliance-verified erasure.</span>
                         </li>
                         <li className="flex gap-3 items-start">
                              <span className="text-emerald-500 font-bold text-xl">✓</span>
@@ -128,7 +128,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">D-Secure: Enabling Sustainable IT Lifecycle</h2>
                 
                 <p className="text-slate-700 leading-relaxed mb-6">
-                    D-Secure provides the certified data erasure capabilities that enable safe device reuse, helping organizations meet their sustainability targets while maintaining data security.
+                    D-Secure provides the compliance-verified data erasure capabilities that enable safe device reuse, helping organizations meet their sustainability targets while maintaining data security.
                 </p>
 
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -144,7 +144,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                     <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
                             <ShieldIcon className="w-5 h-5 text-emerald-800" filled={true} />
-                            <h4 className="font-bold text-slate-900">Certified Erasure</h4>
+                            <h4 className="font-bold text-slate-900">Compliance-Verified Erasure</h4>
                         </div>
                         <p className="text-sm text-slate-600">
                             NIST 800-88 compliant erasure ensures data is irrecoverable, enabling confident resale or donation of retired equipment.
@@ -183,7 +183,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                         </div>
                         <div className="flex items-start gap-2">
                             <CheckIcon className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" filled={true} />
-                            <span>Support circular economy initiatives with certified erasure</span>
+                            <span>Support circular economy initiatives with compliance-verified erasure</span>
                         </div>
                         <div className="flex items-start gap-2">
                             <CheckIcon className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" filled={true} />
@@ -207,7 +207,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
              <div className="bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600 rounded-xl shadow-lg p-8 mt-8 text-white">
                 <h2 className="text-2xl font-bold mb-4">Final Thoughts</h2>
                 <p className="leading-relaxed mb-6">
-                    Data security and environmental sustainability are not competing priorities. Certified data erasure enables organizations to protect sensitive information while significantly reducing their carbon footprint through IT asset reuse. Make erasure the cornerstone of your sustainable IT strategy.
+                    Data security and environmental sustainability are not competing priorities. Compliance-verified data erasure enables organizations to protect sensitive information while significantly reducing their carbon footprint through IT asset reuse. Make erasure the cornerstone of your sustainable IT strategy.
                 </p>
                 <Link
                     to="/#products"
@@ -251,7 +251,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                         Start Your Sustainable IT Journey
                     </h2>
                     <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                        Reduce e-waste, lower carbon emissions, and maintain data security with certified erasure solutions.
+                        Reduce e-waste, lower carbon emissions, and maintain data security with compliance-verified erasure solutions.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link

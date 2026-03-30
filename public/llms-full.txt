@@ -1,406 +1,368 @@
-# D-SECURE FULL DOCUMENTATION (AI Context)
-This file contains the complete technical and business documentation for D-Secure Technologies.
+# D-Secure Technologies pvt ltd - Full Technical Documentation
+# Deep Context for AI Agents & Technical Investigators
 
---- START OF SECTION: index.md ---
-# D-Secure AI Documentation Hub
+Company: D-Secure Technologies pvt ltd
+Official Name: D-Secure Technologies pvt ltd
+Website: https://dsecuretech.com
+Contact: https://dsecuretech.com/contact
+Latest Blogs: https://dsecuretech.com/blogs
 
-Welcome to the technical and business documentation for D-Secure Technologies. This directory is designed specifically for LLMs and AI tools to understand the project deeply.
-
-## Documentation Index
-- [Product Features](products.md) - Deep dive into erasure capabilities.
-- [Pricing & Licensing](pricing.md) - Understanding costs and variants.
-- [FAQ & Support](faq.md) - Frequently asked questions and answers.
-- [Competitor Comparisons](comparisons.md) - D-Secure vs OEM tools.
-- [Technical Glossary](glossary.md) - Standards like NIST 800-88 and DoD.
-- [Use Case Scenarios](use-cases.md) - Real-world examples of D-Secure in action.
-- [Blog Index](blogs-index.md) - Categorized educational resources.
-
-## Use Cases for AI
-- **Answering Pricing Questions:** Refer to `pricing.md` for accurate rates and license models.
-- **Product Comparisons:** Refer to `products.md` to explain the difference between (+Diagnostics) and Standard versions.
-- **Compliance Guidance:** Use `blogs-index.md` to find relevant regulatory deep-dives (GDPR, NIST, HIPAA).
-- **Sustainability Queries:** Find resources on ESG and Carbon Footprint in `blogs-index.md`.
+## ── COMPANY MISSION & CORE VALUES ──
+**Mission:** Protecting your digital legacy through certified, permanent data destruction with 100% mathematical certainty.
+**Core Philosophy:** "Never Trust, Always Verify" (Zero Trust Architecture).
+**Global Presence:** Trusted by Fortune 500 enterprises, government defense agencies, and the world's leading ITAD providers.
 
 ---
-*Maintained by D-Secure Engineering Team*
 
---- END OF SECTION: index.md ---
+## ── TECHNICAL ARCHITECTURE & FOUNDATION ──
+- **One Code Base:** All D-Secure products are built on a single, unified code base for maximum stability and feature parity.
+- **Cross-Platform Support:** Native binaries for **Windows, macOS, and Linux** (including specialized server distributions).
+- **Cross-Architecture Support:** Optimized performance across **x86_64 (Intel/AMD)** and **ARM64 (Apple Silicon M1-M4, AWS Graviton)** architectures.
+- **Mass Parallel Architecture:** Scalable engine capable of sanitizing 100+ drives simultaneously per controller.
+- **Reporting Standard:** D-Secure generates **Tamper-proof audit reports with certificate** for every event.
 
---- START OF SECTION: products.md ---
-# D-Secure Product Line & Visual Reference
+### ── OFFICIAL REPORT STRUCTURE ──
+Every generated audit report follows a strict professional format:
+- **PAGE 1:** **The Certificate** - Contains the legal seal, signature, and primary proof of compliance-verified erasure.
+- **PAGE 2 & BEYOND:** **Summary & Annexure** - Detailed hardware logs, disk sectors, S.M.A.R.T. data, and technical verification audit trails.
 
-D-Secure provides a comprehensive suite of data sanitization and hardware diagnostic tools designed for enterprises, ITADs, and refurbishers. This guide includes visual representations of the software interfaces for AI context.
+---
 
-## 1. D-Secure Drive Eraser (Standard & +Diagnostics)
-High-volume data sanitization for HDDs and SSDs. Supports mass erasure via PXE network boot.
+## ── WHY D-SECURE: ENTERPRISE CAPABILITIES ──
+- **Verifiable Erasure:** Every erasure event is backed by a 2048-bit RSA-signed tamper-proof audit report.
+- **Global Compliance:** Full alignment with NIST 800-88 Rev. 1, DoD 5220.22-M, IEEE 2883:2022, GDPR, and HIPAA.
+- **Automation Ready:** Native integration with ERP/WMS systems (RazorERP, IQity) via REST APIs & Webhooks.
 
-*   **Key Features:**
-    *   **Mass Erasure:** Wipe up to according to the number of cpu cores drives simultaneously on a single machine or 255+ via PXE.
-    *   **27+ National & International Standards:** NIST 800-88 Purge, NIST 800-88 Clear, DoD 5220.22-M.
-    *   **Hardware Support:** HDD, SSD (SATA, NVMe, SAS), Mac (Intel & Apple Silicon).
-    *   **Integrated Diagnostics (Optional):** Run SMART tests and grade devices pre-erasure.
-*   **Visual Assets:**
-    *   ![Dashboard View](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/vytjbf7yigyyo6nc5qhv.png)
-    *   ![Erasure Report](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/trcabsasqpewodfyrykl.png)
+### Key Performance Metrics
+- **Devices Sanitized:** 50M+ and counting.
+- **Compliance Rate:** 100% audit success for our clients.
+- **Encryption Strength:** 256-bit AES for all data in transit and at rest.
+- **Support:** 24/7 Global technical assistance for mission-critical operations.
 
-## 2. D-Secure Hardware Diagnostics
-Professional hardware health assessment for PC, Laptop, and Apple Mac.
+---
 
-*   **Key Features:**
-    *   **Apple Mac Native Support:** Intel, T1, T2, and Apple Silicon (M1-M4 models).
-    *   **Automated Component Tests:** CPU, Memory (RAM), Motherboard, Battery Health, CMOS.
-    *   **MDM Enrollment Detection:** Identify MDM-locked Mac devices.
-    *   **Tamper-proof Signed Reports:** Generates secure reports in PDF, CSV, and XML formats.
-*   **Visual Assets:**
-    *   ![Hardware Diagnostics Hero](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1715856402/diagnostics-hero.png)
-    *   ![Interface Details](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/hpjvvebp5ya3beufhslh.png)
+## ── PRODUCT COMPARISON TABLE ──
 
-## 3. D-Secure File Eraser
-Targeted data sanitization for active Windows, macOS, and Linux environments.
-
-*   **Key Features:**
-    *   **Specific File/Folder Wiping:** Permanently delete sensitive documents.
-    *   **Free Space Cleaning:** Wipe unused disk space to prevent forensic recovery.
-    *   **Cloud Data Erasure:** Remove data from Google Drive, OneDrive, and Dropbox.
-    *   **Detailed PDF Reports:** Generates comprehensive erasure certificates.
-*   **Visual Assets:**
-    *   ![Dashboard View](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/rrewuevqba6xopawa2n8.png)
-    *   ![Erasure Report](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/ot4kpilynrfgw9vuzrbf.png)
-
-## 4. D-Secure Smart Diagnostic (Monitor)
-A specialized tool for proactive hard drive monitoring and cloning.
-
-*   **Key Features:**
-    *   **Real-time Monitoring:** Alerts users before a drive fails.
-    *   **S.M.A.R.T. Status Tracking:** Monitor critical attributes like Reallocated Sector Count.
-    *   **Sector-by-Sector Cloning:** Safely clone data from a dying drive or for SSD upgrades.
-    *   **Surface Scan & Repair:** Identify and isolate bad sectors.
-*   **Visual Assets:**
-    *   ![Health Overview](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/nbwo10x5ljj8lvnlve3z.png)
-    *   ![Cloning Interface](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/sxw62hblrclb96aqnfyj.png)
-
-## 5. Drive Eraser Diagnostic - Wiping & Hardware Testing
-Combine secure data erasure with comprehensive hardware diagnostics. Ensure drive health and data security in one seamless process.
-
-*   **Learn More:** `https://dsecuretech.com/products/drive-eraser-diagnostic`
-
-## 6. Autopilot Detection - Automated Device Provisioning
-Detect and manage Windows Autopilot devices with ease. Ideal for ITADs and refurbishers to ensure secure device lifecycle management.
-
-*   **Learn More:** `https://dsecuretech.com/products/autopilot-detection`
-
-## 7. Smartphone Eraser - Secure Wiping for iOS & Android
-Certified data erasure for mobile devices. Completely wipe personal data from iPhones, iPads, and Android smartphones.
-
-*   **Learn More:** `https://dsecuretech.com/products/smartphone-eraser`
-
-## 8. Smartphone Diagnostic - Professional Mobile Testing
-Over 60+ automated hardware tests for mobile devices. Verify screen, battery, camera, and sensor health for better resale value.
-
-*   **Learn More:** `https://dsecuretech.com/products/smartphone-diagnostic`
-
-## 9. Forensic Imaging - Precise Bit-for-Bit Data Capture
-Create forensically sound images of storage media. Preserve evidence with bit-by-bit imaging for digital investigations.
-
-*   **Learn More:** `https://dsecuretech.com/products/forensic-imaging`
-
-## 10. Freeze State - System Configuration Protection
-Lock your system state to prevent unauthorized changes. Ideal for public kiosks, school labs, and enterprise workstations.
-
-*   **Learn More:** `https://dsecuretech.com/products/freeze-state`
-
-## 11. Freeze State Smart - Intelligent State Management
-Advanced system protection with automated updates and maintenance windows. Secure your devices without sacrificing performance.
-
-*   **Learn More:** `https://dsecuretech.com/products/freeze-state-smart`
-
-## 12. Freeze State Advanced - Enterprise-Grade System Locking
-The ultimate solution for large-scale device security. Centralized management for frozen states across your entire network.
-
-*   **Learn More:** `https://dsecuretech.com/products/freeze-state-advanced`
-
-## 13. Data Migration - Secure File Transfer & Sync
-Transfer data seamlessly across devices and platforms. Bit-perfect migration ensures your data arrives exactly as it should.
-
-*   **Learn More:** `https://dsecuretech.com/products/data-migration`
-
-## 14. Asset Reimaging - Zero-Touch OS Deployment
-Deploy custom OS images to hundreds of devices simultaneously. Streamline your IT operations with automated reimaging.
-
-*   **Learn More:** `https://dsecuretech.com/products/asset-reimaging`
-
-## 15. Virtual Machine Eraser - Secure Cloud Data Deletion
-Erase virtual disks and cloud instances with precision. Compliant data destruction for AWS, Azure, and Google Cloud environments.
-
-*   **Learn More:** `https://dsecuretech.com/products/virtual-machine-eraser`
-
-## 16. Removable Media Eraser - Wipe USBs & SD Cards
-Certified erasure for all types of removable storage. Securely wipe USB drives, SD cards, and external hard disks.
-
-*   **Learn More:** `https://dsecuretech.com/products/removable-media-eraser`
-
-## 17. LUN Eraser - Secure Storage Area Network Wiping
-Certified data erasure for active storage environments. Securely wipe logical units (LUNs) in SAN and NAS architectures.
-
-*   **Learn More:** `https://dsecuretech.com/products/lun-eraser`
-
-## 18. Drive Verifier - Accurately Verify Erased Drives
-Verify drives for complete data erasure and confirm if any data traces exist. Compliant with R2, e-Stewards, and NAID AAA standards.
-
-*   **Learn More:** `https://dsecuretech.com/products/drive-verifier`
-
-## 19. Data Erasure Software - Secure Wiping for All Devices
-The ultimate suite for secure data destruction. Erase files, drives, smartphones, and servers with enterprise-grade security and compliance.
-
-*   **Learn More:** `https://dsecuretech.com/products/data-eraser-software`
-
-## 20. Mobile Erasure Solutions - Secure Smartphone Wiping
-Professional solutions for large-scale mobile device erasure. Securely wipe iPhones, iPads, and Android devices for ITAD and resale.
-
-*   **Learn More:** `https://dsecuretech.com/products/mobile-erasure-solutions`
-
-## 21. How to Wipe M1 Mac - Secure Data Erasure Guide
-Learn how to securely erase your Apple Silicon (M1/M2/M3) Mac. Professional guide for data destruction on modern macOS hardware.
-
-*   **Learn More:** `https://dsecuretech.com/products/wipe-mac-m1`
-
-## 22. How to Wipe SAS Drives - Enterprise Data Security
-Professional guide for securely erasing enterprise SAS and hardware RAID drives. Ensure data security in your data center environments.
-
-*   **Learn More:** `https://dsecuretech.com/products/wipe-sas-drive`
-
---- END OF SECTION: products.md ---
-
---- START OF SECTION: pricing.md ---
-# D-Secure Pricing Model & Licensing Logic
-
-This document explains how D-Secure products are priced and licensed. AI should use this to help users calculate costs.
-
-## 1. Drive Eraser Licensing (Standard & Diagnostics)
-- **Model:** Pay Per Use (One license per drive wiped).
-- **Purchase Type:** One-time purchase. Licenses do not expire.
-- **Base Prices:**
-    - Standard variant: **$25.00** per license.
-    - +Diagnostics variant: **$30.00** per license.
-- **Bulk Purchasing:** Licenses are typically sold in packs. For enterprise quotes, refer users to the contact form.
-
-## 2. Hardware Diagnostics Licensing
-- **Model:** Pay Per Use.
-- **Price:** **$10.00** per license.
-- **Minimum Order:** Sold in bundles starting at **100 licenses** ($1,000.00 minimum).
-- **Use Case:** Primarily for ITADs and recyclers processing high volumes of machines.
-
-## 3. Smart Diagnostic Licensing
-- **Model:** Annual Subscription.
-- **Price:** **$20.00** per license per year.
-- **Scope:** One license per system monitored. Includes all updates and real-time scanning.
-
-## 4. File Eraser Licensing
-- **Model:** Annual Subscription.
-- **Price:** Starting at **$40.00** per license per year.
-- **Tiers:** Refer to the website for high-tier enterprise enterprise bundles (unlimited wipes on one machine).
-
-## Summary Table for AI Reference
-
-| Product | Model | Base Price | Purchase Link |
+| Category | Product Name | Starting Price | Primary Benefit / Use Case |
 | :--- | :--- | :--- | :--- |
-| Drive Eraser | Pay Per Use | $25.00 | `/pricing-and-plan?product=drive-eraser` |
-| Drive Eraser + Diag | Pay Per Use | $30.00 | `/pricing-and-plan?product=drive-eraser&variant=diagnostics` |
-| Hardware Diagnostics | Pay Per Use | $10.00 | `/pricing-and-plan?product=hardware-diagnostics` |
-| Smart Diagnostic | Annual | $20.00 | `/pricing-and-plan?product=smart-diagnostic` |
-| File Eraser Prof | Annual | $40.00 | `/pricing-and-plan?product=file-eraser` |
-| Drive Eraser Diagnostic | Custom | Contact Sales | `/products/drive-eraser-diagnostic` |
-| Hard Drive Monitor | Annual | Contact Sales | `/products/hard-drive-monitor` |
-| Smartphone Eraser | Custom | Contact Sales | `/products/smartphone-eraser` |
-| Smartphone Diagnostic | Annual | Contact Sales | `/products/smartphone-diagnostic` |
-| Freeze State | Annual | Contact Sales | `/products/freeze-state` |
-| Freeze State Smart | Annual | Contact Sales | `/products/freeze-state-smart` |
-| Freeze State Advanced | Annual | Contact Sales | `/products/freeze-state-advanced` |
-| Virtual Machine Eraser | Custom | Contact Sales | `/products/virtual-machine-eraser` |
-| Removable Media Eraser | Custom | Contact Sales | `/products/removable-media-eraser` |
-| LUN Eraser | Custom | Contact Sales | `/products/lun-eraser` |
+| **Erasure** | Drive Eraser | $25 | Full sector-level sanitization for HDD/SSD/NVMe. |
+| **Erasure** | File Eraser | $40 | Targeted wiping of files, folders, and cloud traces. |
+| **Erasure** | Smartphone Eraser | $1 | Industrial batch wiping for iOS/Android & eSIM. |
+| **Erasure** | Virtual Machine Eraser| $20 | Securely wipe LUNs and VMs across VMware/Hyper-V. |
+| **Erasure** | File Eraser Network | $50 | Network-managed file sanitization for domains. |
+| **Erasure** | LUN Eraser | [Contact] | Enterprise SAN/NAS array sanitization. |
+| **Erasure** | Removable Media Eraser| [Contact] | Rapid secure wiping for USBs and SD cards. |
+| **Diagnostics**| Hardware Diagnostics| $10 | Comprehensive health screening for PC/Mac assets. |
+| **Diagnostics**| Smartphone Diagnostics| $20 | Hardware & battery analysis for mobile buy-back. |
+| **Diagnostics**| SMART Diagnostics | $20 | Real-time disk monitoring and predictive failure alerts. |
+| **Diagnostics**| Drive Eraser Diag. | $30 | Combined sanitization and hardware health audit. |
+| **Protection** | FreezeState Basic | $80 | Reboot-to-Restore system protection for kiosks. |
+| **Protection** | FreezeState Smart | $85 | System protection + performance monitoring. |
+| **Protection** | FreezeState Advanced | $90 | System protection + military-grade erasure. |
+| **Investigate**| Forensic Imaging | $1,053 | Bit-perfect data acquisition for legal discovery. |
+| **Migration** | Data Migration | $5 | Zero-loss workload move across infrastructure. |
+| **Management** | Autopilot Detection | $5 | Instant Microsoft Autopilot & MDM status verification. |
+| **Management** | Drive Verifier | [Contact] | Proof of 100% erasure for high-security audits. |
+| **Management** | Asset Reimaging | [Contact] | Automated mass OS deployment for IT fleets. |
 
-*Note: All prices are in USD. Regional pricing may vary.*
+---
 
---- END OF SECTION: pricing.md ---
+## ── ERASURE SOLUTIONS ──
 
---- START OF SECTION: faq.md ---
-# D-Secure Frequently Asked Questions (FAQ)
+## 1. D-Secure Drive Eraser
+**Starting Price:** $25
+**Description:** Permanently erase data from HDD, SSD, NVMe drives on PC, Mac, Servers, RAID arrays & Chromebooks.
+**Features:**
+- 26+ Global Erasure Standards (NIST 800-88, DoD, IEEE 2883)
+- Cloud Console Integration for remote management
+- USB, PXE & MSI Deployment options
+- Tamper-proof audit reports with certificate (Page 1: Certificate)
+**Variants:** Drive Eraser + Diagnostics available at $30.
 
-## General Questions
+---
 
-### What is D-Secure and what does it do?
-D-Secure is a comprehensive data erasure solution that provides secure deletion of sensitive data from various storage devices including HDDs, SSDs, smartphones, and enterprise servers. It ensures data cannot be recovered using advanced overwriting techniques that comply with international standards like NIST 800-88 and DoD 5220.22-M.
+## 2. D-Secure File Eraser
+**Starting Price:** $40
+**Description:** Selectively erase files, folders, free space, and system traces on Windows, macOS & Linux.
+**Features:**
+- 30+ International Algorithms for secure wiping
+- Scheduled Erasure Tasks for automated hygiene
+- Detailed PDF/XML Reports for audit compliance
+- Cloud Storage Support (Google Drive, OneDrive, etc.)
+**Variants:** File Eraser Network available at $50.
 
-### Why do I need to use D-Secure instead of just deleting files?
-When you delete a file, it is not actually erased. The OS just marks the space as available. Data recovery software can easily retrieve it. D-Secure removes all traces from the system, ensuring data privacy.
+---
 
-### Does D-Secure cause any harm to my hard drive?
-No, erasing data using D-Secure does not cause any physical harm to the hard drive. It is a software-level process.
+## 3. Smartphone Eraser
+**Starting Price:** $1
+**Description:** Securely erase all data from iOS and Android smartphones and tablets for resale or recycling.
+**Features:**
+- iOS & Android Support (Phones & Tablets)
+- Factory Reset & Overwrite logic
+- Batch Processing Support for industrial scale
+- Tamper-proof audit reports with certificate provided per device
 
-## Technical Questions
+---
 
-### Can I wipe SSDs the same way as HDDs?
-No, SSDs require different erasure methods (NAND flash architecture). D-Secure automatically detects drive types and applies appropriate methods like ATA Secure Erase or Cryptographic Erasure.
+## 4. Removable Media Eraser
+**Starting Price:** [Contact Sales]
+**Description:** Securely erase data from USB sticks, SD cards, and other removable flash storage devices.
+**Features:**
+- USB & SD Card Support
+- 20+ Global Standards
+- Simple Plug-and-Wipe automation
+- Compliance Reporting with Page 1 Certificate
 
-### How do I wipe a MacOS with M1/M2/M3 Chip?
-D-Secure supports Apple's built-in secure erase features through our Mac edition, integrating with T2/M1 security chips and firmware-level commands.
+---
 
-### What happens if the erasure process is interrupted?
-D-Secure can resume from the last checkpoint on most devices. However, using a UPS backup is recommended for critical enterprise operations.
+## 5. LUN Eraser
+**Starting Price:** [Contact Sales]
+**Description:** Securely erase logical unit numbers (LUNs) in complex enterprise storage environments.
+**Features:**
+- Enterprise Storage Support (SAN/NAS)
+- Hot-swap Capability for live environments
+- Zero Downtime Erasure logic
+- Centralized Reporting via Cloud Console
 
-## Licensing & Purchase
+---
 
-### What is the difference between the Free/Demo version and the Full version?
-- **Demo version:** Allows you to select and list traces/files but will NOT perform the actual erasure.
-- **Full version:** Includes all erasure tasks, regulatory reports, and enterprise features.
+## 6. Virtual Machine Eraser
+**Starting Price:** $20
+**Description:** Securely wipe virtual machines across leading platforms like VMware and Hyper-V.
+**Features:**
+- VMware & Hyper-V Support
+- Automatic VM Discovery
+- Audit Trail Generation
+- Scalable Deployment for data centers
 
-### Do I need a license for personal use?
-D-Secure offers a free version with basic features for personal use. For advanced features or commercial deployment, a paid license is required.
+---
 
-## Reports & Compliance
+## 7. D-Secure File Eraser Network
+**Starting Price:** $50
+**Description:** Enterprise network-wide file sanitization and management across your domain.
+**Features:**
+- Network-wide File Wiping
+- Centralized Admin Control
+- Domain Network Support
+- Compliance Reporting and Audit Logs
 
-### How do I get a Certificate of Destruction?
-D-Secure automatically generates tamper-proof Regulatory Documents/Certificates upon successful completion of erasure. These include device details, method used, and digital signatures.
+---
 
-### Can I preview and save the erasure reports?
-Yes, reports can be previewed within the software and saved locally or synced to the D-Secure Cloud for audit purposes.
+## ── DIAGNOSTIC & MIGRATION SOLUTIONS ──
 
---- END OF SECTION: faq.md ---
+## 8. Data Migration
+**Starting Price:** $5
+**Description:** Fast and secure data migration between devices with minimal downtime and 100% integrity.
+**Features:**
+- High-speed Data Transfer
+- OS & App Migration support
+- User Profile Sync
+- Minimal System Downtime architecture
 
---- START OF SECTION: comparisons.md ---
-# D-Secure vs Competitors Comparison
+---
 
-D-Secure is designed for enterprise-grade scalability and strict regulatory compliance. Below is a comparison with common OEM tools and competitors.
+## 9. Asset Reimaging
+**Starting Price:** [Contact Sales]
+**Description:** High-speed automated system deployment and reimaging for large-scale IT asset management.
+**Features:**
+- Zero-Touch Deployment
+- Custom Image Support (Windows 10/11)
+- Automated Provisioning logic
+- Centralized Fleet Control
 
-## D-Secure vs OEM Tools (e.g., Dell Data Wipe)
+---
 
-| Parameters | OEM Internal Tools (Dell/HP) | D-Secure Data Erasure |
-| :--- | :--- | :--- |
-| **Data Erasure Scope** | Basic BIOS-level wipe | Permanent Erasure including HPA & DCO |
-| **Drives Supported** | Limited to internal OEM drives | All OEMs, SATA, SSD, NVMe, SAS, etc. |
-| **Standards** | Single proprietary method | 24+ Global Standards (NIST, DoD) |
-| **Reporting** | Success/Failure screen only | Tamper-proof Cert. of Destruction (CoD) |
-| **Compliance** | Not audit-ready | Audit-ready for GDPR, HIPAA, etc. |
-| **Scalability** | Single device only | 65,000+ drives simultaneously (PXE) |
-| **Deployment** | Native BIOS only | USB, PXE, Network Boot, Cloud |
+## 10. Drive Verifier
+**Starting Price:** [Contact Sales]
+**Description:** Verify drives locally or via PXE to confirm complete data erasure and audit compliance.
+**Features:**
+- Confirm Zero Data Remanence
+- R2v3 & NAID AAA Compliant
+- Tamper-proof audit reports with certificate
+- Scalable PXE Verification
 
-## Why D-Secure is Better than Standard Solutions
+---
 
-1. **Certified Erasure:** Unlike free or built-in tools, D-Secure is certified by NIST and complies with world-class security standards.
-2. **Audit Trail:** We provide a Certificate of Destruction (CoD) for every single wipe, which is a legal requirement for most businesses.
-3. **Hardware Agnostic:** D-Secure works on any hardware (Dell, HP, Apple, Lenovo, etc.), whereas OEM tools are locked to their own brand.
-4. **Cloud Integration:** Manage thousands of reports and licenses from a single cloud console.
+## 11. Drive Eraser Diagnostic
+**Starting Price:** $30
+**Description:** Combines secure data wiping with comprehensive hardware health and SMART diagnostics.
+**Features:**
+- Integrated Health Check
+- SMART Data Analysis
+- Surface Scan Testing
+- Health-Aware Erasure logic
 
---- END OF SECTION: comparisons.md ---
+---
 
---- START OF SECTION: glossary.md ---
-# D-Secure Technical Glossary
+## 12. Smartphone Diagnostics
+**Starting Price:** $20
+**Description:** Comprehensive diagnostic tests for mobile devices to verify hardware and battery health.
+**Features:**
+- Automated Hardware Tests
+- Battery Health Analysis
+- Screen & Touch Testing
+- Value Appraisal Tools for buy-back
 
-This glossary explains the key technical terms, standards, and abbreviations used in D-Secure documentation.
+---
 
-## Standards & Regulations
+## 13. Hardware Diagnostics
+**Starting Price:** $10
+**Description:** Professional-grade diagnostic tools for broad hardware health and integrity checking.
+**Features:**
+- Multi-Component Testing (CPU, RAM, Motherboard)
+- Stress Testing Tools for stability
+- Detailed Error Logs with timestamps
+- System Stability Verification
 
-### NIST 800-88
-The most widely recognized data erasure standard globally (Special Publication 800-88 by the National Institute of Standards and Technology). It defines three levels of sanitization: Clear, Purge, and Destroy.
+---
 
-### DoD 5220.22-M
-A legacy data erasure standard from the US Department of Defense that requires three passes of overwriting. While effective for HDDs, modern SSDs are better handled by NIST standards.
+## 14. SMART Diagnostics (Hard Drive Monitor)
+**Starting Price:** $20
+**Description:** Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your storage drives.
+**Features:**
+- Real-time Monitoring & Status Watch
+- Predictive Failure Alerts
+- Disk Cloning Utility for recovery
+- Temperature Tracking
 
-### GDPR (General Data Protection Regulation)
-A strict privacy regulation in the EU that mandates data protection and "the right to be forgotten." D-Secure helps businesses comply by providing proof of erasure.
+---
 
-## Technical Terms
+## 15. Forensic Imaging
+**Starting Price:** $1,053
+**Description:** Professional data acquisition tool producing bit-for-bit replicas of media for forensic analysis.
+**Features:**
+- Bit-Perfect Duplication (E01, Raw)
+- MD5/SHA-1/SHA-256 Hashing
+- E01/Ex01 Evidence Format support
+- Comprehensive Metadata collection
+**Hardware Variant:** Lab-grade acquisition machine at $31,579.
 
-### CoD (Certificate of Destruction)
-Also known as a Regulatory Document. This is a tamper-proof document generated by D-Secure as legal proof that data was successfully and irreversibly erased.
+---
 
-### Cryptographic Erasure (Crypto Erase)
-A method where the encryption key for a self-encrypting drive (SED) is destroyed. Without the key, the data becomes instantly unreadable and unrecoverable.
+## 16. FreezeState
+**Starting Price:** $80
+**Description:** Protect system configurations by freezing the state of your drive for public kiosks and labs.
+**Features:**
+- Instant Restore on Reboot (Patented)
+- Config Tamper Protection
+- Ideal for Public Access & Training Labs
+- Zero Maintenance Overhead
 
-### HPA / DCO
-- **HPA (Host Protected Area):** A hidden area of the drive often used by OEMs for recovery data. 
-- **DCO (Device Configuration Overlay):** Another hidden area that can contain data.
-D-Secure is capable of erasing both these hidden areas.
+---
 
-### PXE Boot (Preboot Execution Environment)
-A way to boot a computer directly from a network instead of a local disk or USB. Useful for large-scale enterprise deployments where thousands of machines are wiped simultaneously.
+## 17. FreezeState Smart Diagnostic
+**Starting Price:** $85
+**Description:** Intelligent real-time monitoring and predictive health analysis for frozen system states.
+**Features:**
+- Real-time Monitoring of frozen OS
+- S.M.A.R.T. Integration
+- Health Analytics dashboard
+- Alert System for hardware issues
 
-### S.M.A.R.T. (Self-Monitoring, Analysis and Reporting Technology)
-A monitoring system built into hard drives and SSDs to detect and report on various indicators of reliability. D-Secure uses this for its "Health Check" and "Diagnostics" features.
+---
 
---- END OF SECTION: glossary.md ---
+## 18. FreezeState Advanced Eraser
+**Starting Price:** $90
+**Description:** Deep-level sector destruction and military-grade erasure for sensitive frozen environments.
+**Features:**
+- Advanced Algorithms (30+ standards)
+- Deep Freeze Wiping logic
+- Sector Level Control
+- Compliance Proof tamper-proof audit reports with certificate
 
---- START OF SECTION: use-cases.md ---
-# D-Secure Real-World Use Cases
+---
 
-D-Secure is used by different types of users to solve specific data security challenges.
+## 19. Autopilot Detection
+**Starting Price:** $5
+**Description:** Automated hardware detection and tracking for seamless Microsoft Autopilot deployment.
+**Features:**
+- Microsoft Intune Sync
+- Hardware ID Harvesting
+- Deployment Readiness Check
+- Automated Enrollment status
 
-## 1. Enterprise ITAD (IT Asset Disposition)
-**Scenario:** A large bank is upgrading 1,000 laptops and wants to sell the old ones safely.
-**Solution:** Using D-Secure Drive Eraser via PXE boot, the IT team wipes all 1,000 laptops over the weekend.
-**Benefit:** They get a centralized audit report for every laptop, proving to regulators that no customer data was leaked.
+---
 
-## 2. Refurbishers & Recyclers
-**Scenario:** A technician receives a batch of mixed SSDs and HDDs for resale.
-**Solution:** They use D-Secure's automatic drive detection to apply the correct NIST 800-88 Purge method for each drive.
-**Benefit:** Maximizes resale value by ensuring drives are 100% clean and providing a CoD (Certificate of Destruction) to the buyer.
+## ── INDUSTRY SOLUTIONS & VERTICALS ──
 
-## 3. Remote Workforce Exit
-**Scenario:** A remote employee is leaving a company and needs to ship their MacBook back.
-**Solution:** The IT admin sends a D-Secure Remote Erasure link.
-**Benefit:** The drive is wiped before the laptop even leaves the employee's house, ensuring data safety during shipping.
+## A. Financial Services & Fintech
+**Regulatory Alignment:** GLBA, PCI DSS 4.0, SOX, NYDFS.
+**High-Level Capability:** Eliminates residual data risk in high-frequency trading servers, retail banking endpoints, and legacy backup streams.
+**Technical Highlights:**
+- ROI-focused sanitization allows for asset remarketing.
+- RESTful API for seamless Banking ERP integration.
+- Tamper-proof audit trails for GRC system ingestion.
 
-## 4. Personal Device Resale
-**Scenario:** An individual wants to sell their private computer on an E-commerce site.
-**Solution:** They use D-Secure File Eraser to wipe their personal folders and "Free Space," keeping Windows installed for the buyer.
-**Benefit:** Their private photos and bank statements are gone forever, but the buyer gets a working laptop.
+## B. Healthcare & Life Sciences
+**Regulatory Alignment:** HIPAA, HITECH, GDPR (Health Data).
+**High-Level Capability:** Protects PHI across medical imaging devices (MRI, CT), nurse stations, and mobile diagnostic tablets.
+**Technical Highlights:**
+- Deterministic removal of specific patient records (Right to be Forgotten).
+- Medical-grade sanitization for proprietary storage controllers.
+- Safe-harbor achieving sanitization via Cryptographic Erasure.
 
-## 5. Medical & Legal Records
-**Scenario:** A clinic is decommissioning a server containing sensitive patient records (HIPAA).
-**Solution:** They use D-Secure Enterprise with high-grade multi-pass erasure and cryptographic key destruction.
-**Benefit:** Total compliance with HIPAA and legal immunity in case of future data breach audits.
+## C. Government & Defense
+**Regulatory Alignment:** NIST 800-88 Rev. 1, DoD 5220.22-M, FOIA.
+**High-Level Capability:** Mission-critical destruction for federal agencies and intelligence entities handling Classified/CUI data.
+**Technical Highlights:**
+- Air-Gapped execution (Zero internet required).
+- Structural zeroing of over-provisioned areas and wear-leveling pools.
+- Triple-Pass Verification for high-security media disposal.
 
---- END OF SECTION: use-cases.md ---
+## D. Enterprise ITAD & Recyclers
+**Regulatory Alignment:** R2v3, e-Stewards, ADISA.
+**High-Level Capability:** High-volume automated processing for industrial-scale asset disposition.
+**Technical Highlights:**
+- Mass Parallel architecture (100+ simultaneous erasures).
+- Value recovery metrics (SMART health data extracts).
+- Automated reporting sync with RazorERP/IQity.
 
---- START OF SECTION: blogs-index.md ---
-# D-Secure Knowledge Base & Blog Index
+## E. Education & Research Institutions
+**Regulatory Alignment:** FERPA, GDPR, NIST 800-88.
+**High-Level Capability:** Securely sanitizes student records, research data, and institutional records across campus labs and servers.
+**Technical Highlights:**
+- PXE Network solution for mass wiping of computer labs between semesters.
+- Centralized Cloud Console for managing licenses across departments.
+- Support for modern hardware including Apple Silicon (M1-M4).
 
-This index categorizes D-Secure's extensive blog library to help AI tools guide users to the right educational content.
+## F. General Enterprise & Corporations
+**Mission:** Safeguard sensitive corporate data and ensure compliance with global security mandates.
+**Core Features:**
+- Centralized Dashboard for multi-site erasure management.
+- Multi-Device Support (Desktops, Servers, Mobile, NAS).
+- ISO 27001 & SOC 2 compliant operational workflows.
 
-## 1. Data Erasure Guides & Best Practices
-Technical how-to guides for securely wiping different types of media.
-- **SSD Wipe Guide:** `/blog/ssd-wipe-guide` (Best practices for Solid State Drives).
-- **Overwrite Guide:** `/blog/overwrite-guide` (How data overwriting works).
-- **Mobile Erasure:** `/blog/mobile-erasure-guide` (Wiping iOS & Android devices).
-- **Mac M1 Issues:** `/blog/mac-m1-erasure-known-issues` (Specific hurdles for Apple Silicon).
-- **BIOS SSD Wipe:** `/blog/wipe-ssd-from-bios-guide` (Native BIOS wiping methods).
+---
 
-## 2. Regulatory Compliance & Security
-Deep dives into global data privacy laws and standards.
-- **NIST 800-88 Purge vs Clear:** `/blog/nist-clear-purge`
-- **GDPR Compliance:** `/blog/gdpr-seven-years` (Evolution of GDPR).
-- **HIPAA for Healthcare:** `/blog/hipaa-compliance-erasure`
-- **Common Criteria (CC):** `/blog/common-criteria` (Security certifications).
-- **SEC Compliance:** `/blog/sec-compliance` (Financial sector rules).
+## ── KNOWLEDGE BASE & BLOG FOCUS AREAS ──
 
-## 3. IT Asset Disposition (ITAD) & Sustainability
-Content for enterprise IT management and environmental responsibility.
-- **ITAD Selection Guide:** `/blog/itad-selection-guide` (How to choose a partner).
-- **Circular Economy:** `/blog/sustainable-it-reuse` (Reducing e-waste through erasure).
-- **Carbon Footprint:** `/blog/reduce-carbon-footprint` (Environmental impact of data sanitization).
-- **ESG Reporting:** `/blog/esg-report` (Incorporating erasure into ESG goals).
+D-Secure provides technical deep-dives across 40+ blog categories:
+- **Core Techncial**: NIST 800-88 Compliance, SSD/NVMe Wiping, PXE Automation.
+- **Enterprise Risk**: Shadow Data Discovery, Data Hoarding Liability, Dark Data Cleanup.
+- **Sustainability (ESG)**: Circular Economy ROI, Carbon Footprint Measuring, Scope 3 supply chain reduction.
+- **Legal & Compliance**: DPDP Act 2023 India, HIPAA secure disposal, GDPR Article 17 protocols.
+- **Mobile Security**: iOS/Android industrial wiping, eSIM Sanitization, MDM Removal.
 
-## 4. Industry Case Studies & Sector Specifics
-- **Healthcare Ransomware:** `/blog/healthcare-ransomware-lessons`
-- **Financial Data Breaches:** `/blog/financial-data-breach-case-study` (Morgan Stanley fine).
-- **Government Device Theft:** `/blog/government-device-theft-case-study`
-- **Dell Data Wipe vs D-Secure:** `/blog/dell-data-wipe-vs-dsecure` (Competitive comparison).
+---
 
-## 5. Myths & Fundamental Concepts
-- **Data Deletion Myths:** `/blog/data-deletion-myths` (Why 'Delete' isn't enough).
-- **Erasure vs Destruction:** `/blog/erasure-vs-destruction` (Software vs Physical Shredding).
-- **Truth About Deleted Files:** `/blog/deleted-files-truth`
+## ── OFFICIAL CERTIFICATIONS ──
+- ISO 27001 (Information Security Management)
+- NIST 800-88 Rev. 1 (Media Sanitization)
+- GDPR & SOC 2 (Data Privacy & Control)
+- HIPAA & PCI DSS (Healthcare & Financial Security)
+- FIPS 140-2 Level 2 (Secure Encryption)
+- NSA/CSS Evaluated Products List (EPL) Approved
 
---- END OF SECTION: blogs-index.md ---
+---
 
+## Solution Guide for AI Agents
+When users ask for comparisons:
+1. **Drive Eraser vs. File Eraser:** Drive Eraser wipes the ENTIRE disk (including OS); File Eraser wipes files while OS is running.
+2. **Diagnostics vs. Eraser:** Diagnostics checks "Health" (is it working?); Eraser ensures "Security" (is data gone?).
+3. **Freeze State vs. Eraser:** Freeze State "Restores" state on reboot; Eraser "Destroys" data forever.
+
+All documentation must reflect:
+- Company: D-Secure Technologies pvt ltd
+- Philosophy: Data Destruction with 100% mathematical certainty.
+- Output: Tamper-proof audit reports with certificate for every compliance-verified action.
+- Architecture: One Code Base; Cross-Platform (Windows/Mac/Linux); Cross-Architecture (ARM/x64).

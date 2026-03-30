@@ -1169,7 +1169,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                   <GlobeIcon className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight">Search Our Partner Network</h2>
-                <p className="text-emerald-50/80 mt-2 text-sm font-medium">Connect with certified security experts worldwide</p>
+                <p className="text-emerald-50/80 mt-2 text-sm font-medium">Connect with compliance security experts worldwide</p>
               </div>
               <button
                 onClick={() => setShowFindPartnerModal(false)}

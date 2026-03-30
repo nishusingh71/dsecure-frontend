@@ -1010,7 +1010,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "10+ Automated Component Health Tests",
         "12+ Manual Assessment & Interaction Tests",
         "MDM Enrollment Detection (Mac)",
-        "Tamper-Proof Signed Reports (PDF)",
+        "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
         "Centralized Cloud Management Console",
         "Customizable ISO Standardization",
       ];
@@ -1069,7 +1069,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "MDM Removal Capability",
         "Diagnostic Health Check",
         "Full Device Factory Reset",
-        "Certified Sanitization Reports",
+        "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
         "Auto-Detection & Batch Wiping",
       ];
     } else if (category === "smartphone-diagnostic") {
@@ -1088,7 +1088,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "Hardware ID Retrieval",
         "Provisioning Status Audit",
         "Deployment Readiness Test",
-        "CSV/PDF Audit Reports",
+        "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
       ];
     } else if (category === "data-migration") {
       return [
@@ -1106,7 +1106,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           "Real-time Hardware Monitoring",
           "Predictive Failure Analysis",
           "Freeze Protection Integrity Check",
-          "Remote Diagnostic Reports",
+          "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
           "Auto-Alerting System",
         ];
       }
@@ -1115,7 +1115,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           "Government-Grade Sanitization",
           "30+ International Standards",
           "High-Volume Throughput",
-          "Certified Audit Reports",
+          "Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary)",
           "Hardware-Level Integration",
           "Secure Asset Disposal Chain",
         ];

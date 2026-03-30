@@ -93,7 +93,7 @@ const BlogPostTemplate: React.FC<BlogPostTemplateProps> = ({
         <Reveal>
             <h2 className="text-3xl font-bold text-white mb-6">Need Professional Data Security?</h2>
             <p className="text-slate-400 max-w-2xl mx-auto mb-8 text-lg">
-                Explore our certified erasure solutions compliant with global standards.
+                Explore our compliance-verified erasure solutions compliant with global standards.
             </p>
              <a href="/solutions/enterprise" className="inline-block bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg shadow-brand-500/20">
                 View Solutions

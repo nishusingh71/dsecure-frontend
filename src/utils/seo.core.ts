@@ -15,7 +15,9 @@ export interface SEOMetadata {
   twitterTitle?: string;
   twitterDescription?: string;
   twitterImage?: string;
-  structuredData?: any | any[];
+  fragment?: string;
+  structuredData?: Record<string, any> | Record<string, any>[];
+  breadcrumbs?: { name: string; item: string }[];
 }
 
 export const SEO_CONFIG = {
@@ -59,30 +61,80 @@ export const generateOrganizationSchema = () => ({
 export const generateSoftwareProductSchema = (
   productName: string,
   description: string,
-) => ({
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: productName,
-  description: description,
-  applicationCategory: "SecurityApplication",
-  operatingSystem: "Windows, macOS, Linux",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-    availability: "https://schema.org/InStock",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "D-Secure Tech",
-  },
-});
+  options: {
+    category?: string;
+    os?: string;
+    price?: string;
+    currency?: string;
+    image?: string;
+    ratingValue?: number;
+    reviewCount?: number;
+  } = {}
+) => {
+  const schema: any = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: productName,
+    description: description,
+    applicationCategory: options.category || "SecurityApplication",
+    operatingSystem: options.os || "Windows, macOS, Linux, Android, iOS",
+    offers: {
+      "@type": "Offer",
+      price: options.price || "0",
+      priceCurrency: options.currency || "USD",
+      availability: "https://schema.org/InStock",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "D-Secure Tech",
+    },
+  };
+
+  if (options.image) {
+    schema.image = options.image;
+  }
+
+  if (options.ratingValue && options.reviewCount) {
+    schema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: options.ratingValue.toString(),
+      reviewCount: options.reviewCount.toString(),
+    };
+  }
+
+  return schema;
+};
+
+export const generateBreadcrumbSchema = (
+  breadcrumbs: { name: string; item: string }[]
+) => {
+  const itemListElement = breadcrumbs.map((crumb, index) => {
+    let itemUrl = crumb.item;
+    if (!itemUrl.startsWith("http")) {
+      const slash = itemUrl.startsWith("/") ? "" : "/";
+      itemUrl = `${SEO_CONFIG.baseUrl}${slash}${itemUrl}`;
+    }
+      
+    return {
+      "@type": "ListItem" as const,
+      position: index + 1,
+      name: crumb.name,
+      item: itemUrl,
+    };
+  });
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement,
+  };
+};
 
 export const getDefaultSEO = (): SEOMetadata => ({
   title:
     "D-Secure - Best Data Erasure Software | Secure Tech for Enterprise Data Wiping",
   description:
-    "D-Secure is the best data erasure software trusted globally. Secure data wiping for HDD, SSD, mobile devices. NIST 800-88, GDPR, HIPAA certified. Free trial available. Secure tech for enterprise.",
+    "D-Secure is the best data erasure software trusted globally. Secure data wiping for HDD, SSD, mobile devices. NIST 800-88, GDPR, HIPAA compliance with Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary). Free trial available. Secure tech for enterprise.",
   keywords: generateKeywords(),
   canonicalUrl: SEO_CONFIG.baseUrl,
   ogTitle: "D-Secure Tech - Secure Data Erasure Solutions",
@@ -90,6 +142,7 @@ export const getDefaultSEO = (): SEOMetadata => ({
     "Professional data erasure and sanitization software for enterprise compliance and security.",
   ogImage: SEO_CONFIG.defaultImage,
   ogType: "website",
+  fragment: "!",
   twitterCard: "summary_large_image",
   twitterTitle: "D-Secure Tech - Data Erasure Solutions",
   twitterDescription:

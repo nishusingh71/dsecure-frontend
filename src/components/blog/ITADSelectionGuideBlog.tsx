@@ -73,12 +73,12 @@ const ITADSelectionGuideBlog: React.FC = () => {
 
                 {/* Key Factor 2 */}
                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-slate-900">2. Certified Media Sanitization</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">2. Compliance-Verified Media Sanitization</h2>
                     <p className="text-slate-700 leading-relaxed">
                         Organizations' procurement teams should choose an ITAD that provides media sanitization services to handle their need for performing onsite, offsite, and remote data destruction services. The organizations having no worries regarding offsite data sanitization can encrypt their data-bearing IT assets before sending them to an ITAD.
                     </p>
                     <p className="text-slate-700 leading-relaxed">
-                        The leaders must ensure that chosen ITADs use certified data erasure software like D-Secure to destroy data permanently even from hidden disk zones (HPAs and DCOs). Likewise, when the IT assets contain classified information, the ITAD should have the ability to destroy the device using shredding or degaussing techniques. Organizations can choose some of the large ITADs across the globe from here.
+                        The leaders must ensure that chosen ITADs use compliance-verified data erasure software like D-Secure to destroy data permanently even from hidden disk zones (HPAs and DCOs). Likewise, when the IT assets contain classified information, the ITAD should have the ability to destroy the device using shredding or degaussing techniques. Organizations can choose some of the large ITADs across the globe from here.
                     </p>
                     <div className="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-r-lg">
                         <h4 className="font-bold text-indigo-900 mb-2">Erasure Verification</h4>
@@ -207,10 +207,10 @@ const ITADSelectionGuideBlog: React.FC = () => {
             <Reveal>
                 <div className="max-w-5xl mx-auto px-4">
                     <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                        Partner with D-Secure for Certified Data Erasure
+                        Partner with D-Secure for Compliance-Verified Data Erasure
                     </h2>
                     <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                        D-Secure integrates with leading ITAD ERPs and provides certified media sanitization that meets ISO 27001, NIST SP 800-88, and NAID-AAA standards.
+                        D-Secure integrates with leading ITAD ERPs and provides compliance-verified media sanitization that meets ISO 27001, NIST SP 800-88, and NAID-AAA standards.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link

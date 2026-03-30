@@ -1,412 +1,510 @@
-import React from "react";
-import SEOHead from "../components/SEOHead";
-import { getSEOForPage } from "../utils/seo";
-import Reveal from "@/components/Reveal";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import ThemeAwareLogo from "@/components/ThemeAwareLogo";
+import { LicenseForm } from "@/components/forms";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 
-const DigitalProtectionSolutions: React.FC = () => {
+/**
+ * EducationPage Component
+ * Is page mein Educational Institutions (Schools, Universities) ke liye data erasure solutions dikhaye gaye hain.
+ * Yeh HealthcareSolutionsPage ke Emerald Green theme aur BitRaser data par based hai.
+ */
+const EducationPage: React.FC = () => {
+  const [activeSection, setActiveSection] = useState("overview");
+  const [isNavVisible, setIsNavVisible] = useState(false);
+  const [showLicenseModal, setShowLicenseModal] = useState(false);
+
+  // Secondary navbar items
+  const sectionNavItems = [
+    { id: "overview", label: "Overview" },
+    { id: "compliance", label: "Compliance" },
+    { id: "assets", label: "Assets" },
+    { id: "solutions", label: "Solutions" },
+    { id: "faq", label: "FAQ" },
+  ];
+
+  // Scroll handle karne ke liye useEffect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = typeof window !== "undefined" ? window.scrollY : 0;
+      const shouldShow = scrollPosition > 400;
+      setIsNavVisible(shouldShow);
+
+      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", {
+            detail: { visible: shouldShow },
+          }),
+        );
+      }
+
+      const sections = sectionNavItems.map((item) =>
+        document.getElementById(item.id),
+      );
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop - 150 <= scrollPosition) {
+          setActiveSection(sectionNavItems[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+        );
+      }
+    };
+  }, []);
+
+  // Smooth scroll function
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition =
+        element.getBoundingClientRect().top + (typeof window !== "undefined" ? window.scrollY : 0);
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
-      {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("digital-protection-solutions")} />
+      <SEOHead seo={getSEOForPage("solutions/education")} />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50">
-        {/* Hero Section */}
-        <section className="py-16 md:py-24">
-          <div className="container-responsive text-center max-w-4xl mx-auto">
-            <Reveal>
-              <div className="w-20 h-20 bg-gradient-to-br from-slate-600 to-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-10 h-10 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+      {/* ================= STICKY SECTION NAV ================= */}
+      <div
+        className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isNavVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-b border-emerald-100 shadow-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-14">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
+                <ThemeAwareLogo
+                  className="h-7 sm:h-8 w-auto"
+                  responsive={true}
+                />
+              </Link>
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      activeSection === item.id
+                        ? "bg-emerald-500 text-white shadow-md"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased"
+        style={{ backgroundColor: "#ffffff", color: "#1f2937" }}
+      >
+        {/* Hero Section - Overview */}
+        <section
+          id="overview"
+          className="relative py-24 overflow-hidden"
+          style={{ backgroundColor: "#e8f5e9" }}
+        >
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+              <div className="space-y-8">
+                <div
+                  className="inline-flex items-center space-x-2 px-4 py-2 backdrop-blur-sm rounded-full text-sm font-semibold shadow-sm"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.8)",
+                    color: "#059669",
+                  }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-6.75 3.524z" />
+                  </svg>
+                  <span>Secure. Privacy-Compliant. Education Focused.</span>
+                </div>
+
+                <div>
+                  <h1
+                    className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+                    style={{ color: "#1f2937" }}
+                  >
+                    Digital Data{" "}
+                    <span className="block bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+                      Erasure for Schools
+                    </span>
+                  </h1>
+                  <p
+                    className="text-xl leading-relaxed"
+                    style={{ color: "#4b5563" }}
+                  >
+                    Securely erase student and staff sensitive data permanently from Chromebooks, PCs, laptops, and lab servers. 
+                    Ensure 100% compliance with FERPA and COPPA standards for student data privacy while decommissioning old IT assets.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button
+                    onClick={() => setShowLicenseModal(true)}
+                    className="inline-flex items-center justify-center text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    style={{ backgroundColor: "#059669" }}
+                  >
+                    Get Free Campus License
+                    <svg
+                      className="ml-2 w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    className="inline-flex items-center justify-center border-2 px-8 py-4 rounded-lg font-semibold transition-all"
+                    style={{ borderColor: "#059669", color: "#059669" }}
+                  >
+                    Campus Solution Guide
+                  </button>
+                </div>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
-                <span className="bg-gradient-to-r from-slate-700 to-blue-700 bg-clip-text text-transparent">
-                  D-Secure: Digital Protection Solutions
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
-                Revolutionizing Cybersecurity with Cutting-Edge Technology and
-                Accessible Enterprise-Grade Protection
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80"
-                alt="Digital Security"
-                className="rounded-2xl shadow-lg mx-auto max-h-[400px] object-cover"
-              />
-            </Reveal>
+              <div className="hidden md:block">
+                <div className="relative">
+                  <div
+                    className="relative rounded-3xl shadow-2xl p-10 border"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderColor: "#e5e7eb",
+                    }}
+                  >
+                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl rotate-12 opacity-20"></div>
+                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-blue-400 to-emerald-500 rounded-2xl -rotate-12 opacity-20"></div>
+
+                    <div className="relative space-y-8">
+                      <div className="flex justify-center">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl blur-xl opacity-50"></div>
+                          <div className="relative w-32 h-32 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl flex items-center justify-center shadow-xl">
+                            <svg
+                              className="w-16 h-16 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-center space-y-3">
+                        <h3 className="text-2xl font-bold" style={{ color: "#1f2937" }}>
+                          Student Data Protection
+                        </h3>
+                        <p style={{ color: "#6b7280" }}>
+                          Compliance-verified sanitization across school assets
+                        </p>
+                      </div>
+
+                      <div
+                        className="grid grid-cols-2 gap-4 pt-6 border-t"
+                        style={{ borderColor: "#e5e7eb" }}
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl font-bold" style={{ color: "#059669" }}>
+                            100%
+                          </div>
+                          <div className="text-xs mt-1" style={{ color: "#9ca3af" }}>
+                            FERPA Compliant
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold" style={{ color: "#059669" }}>
+                            Ready
+                          </div>
+                          <div className="text-xs mt-1" style={{ color: "#9ca3af" }}>
+                            Audit Trails
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Mission & Vision */}
-        <section className="py-16 bg-white/70">
-          <div className="container-responsive max-w-5xl mx-auto space-y-10">
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                  Our Mission and Vision
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6">
-                    <h3 className="text-xl font-bold text-slate-900 mb-4">
-                      Mission Statement
-                    </h3>
-                    <p className="text-slate-700 mb-4">
-                      To empower businesses of all sizes with enterprise-grade
-                      security solutions that are accessible, affordable, and
-                      adaptable. We believe every organisation deserves robust
-                      protection against evolving digital threats.
-                    </p>
-                    <ul className="list-disc ml-5 text-slate-700 space-y-2">
-                      <li>Democratising cybersecurity technology</li>
-                      <li>Building trust through transparency</li>
-                      <li>Continuous innovation and improvement</li>
-                    </ul>
-                  </div>
-                  <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6">
-                    <h3 className="text-xl font-bold text-slate-900 mb-4">
-                      Vision for the Future
-                    </h3>
-                    <p className="text-slate-700 mb-4">
-                      To become the most trusted name in digital security across
-                      India and beyond, creating a safer digital ecosystem for
-                      businesses, institutions, and individuals.
-                    </p>
-                    <ul className="list-disc ml-5 text-slate-700 space-y-2">
-                      <li>Leading industry standards</li>
-                      <li>Expanding global reach</li>
-                      <li>Fostering security awareness</li>
-                    </ul>
-                  </div>
-                </div>
+        {/* Compliance Section */}
+        <section
+          id="compliance"
+          className="py-20"
+          style={{ backgroundColor: "#ffffff" }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div
+                className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4"
+                style={{ backgroundColor: "#e8f5e9", color: "#059669" }}
+              >
+                Education Privacy & Standards
               </div>
-            </Reveal>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: "#1f2937" }}>
+                Strict Compliance for Institutions
+              </h2>
+              <p className="text-lg max-w-2xl mx-auto" style={{ color: "#6b7280" }}>
+                Meet student data protection laws with our auditable sanitization solutions for schools and universities.
+              </p>
+            </div>
 
-            {/* Core Services */}
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-blue-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                  Core Services and Solutions
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {[
-                    {
-                      title: "Threat Detection",
-                      desc: "Real-time monitoring and advanced threat intelligence to identify and neutralise security risks before they impact your operations.",
-                      img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
-                    },
-                    {
-                      title: "Network Security",
-                      desc: "Comprehensive firewall solutions and intrusion prevention systems that safeguard your entire digital infrastructure.",
-                      img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80",
-                    },
-                    {
-                      title: "Data Encryption",
-                      desc: "Military-grade encryption protocols protecting sensitive information across all platforms and devices, ensuring complete confidentiality.",
-                      img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=800&q=80",
-                    },
-                    {
-                      title: "Cloud Protection",
-                      desc: "Secure cloud environments with continuous monitoring, ensuring your data remains protected wherever it resides.",
-                      img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-                    },
-                  ].map((service, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col items-center bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-6 text-center"
-                    >
-                      <img
-                        src={service.img}
-                        alt={service.title}
-                        className="rounded-xl mb-4 h-40 w-full object-cover shadow-sm"
-                      />
-                      <h3 className="text-xl font-bold text-slate-800 mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="text-slate-700">{service.desc}</p>
-                    </div>
-                  ))}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  title: "FERPA Compliance",
+                  desc: "Protect student educational records during equipment disposal to ensure Family Educational Rights and Privacy Act adherence.",
+                  icon: "🎓",
+                },
+                {
+                  title: "COPPA Readiness",
+                  desc: "Comply with Children's Online Privacy Protection Act by permanently deleting kids' personal data from school-issued devices.",
+                  icon: "🛡️",
+                },
+                {
+                  title: "NIST 800-88",
+                  desc: "Follow the latest U.S. federal media sanitization guidelines to render data completely unrecoverable by forensic tools.",
+                  icon: "📜",
+                },
+                {
+                  title: "Tamper-proof Reports",
+                  desc: "Automated compliance-verified certificates generated for every asset wiped, providing a clear audit trail for regulators.",
+                  icon: "✅",
+                },
+              ].map((comp, idx) => (
+                <div
+                  key={idx}
+                  className="p-8 rounded-2xl border bg-slate-50 hover:shadow-lg transition-all"
+                  style={{ borderColor: "#e5e7eb" }}
+                >
+                  <div className="text-4xl mb-4">{comp.icon}</div>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: "#1f2937" }}>
+                    {comp.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed" style={{ color: "#6b7280" }}>
+                    {comp.desc}
+                  </p>
                 </div>
-              </div>
-            </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
 
-            {/* Why Choose D-Secure */}
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-purple-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                  Why Choose D-Secure?
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {[
-                    {
-                      title: "AI-Powered Protection",
-                      desc: "Leveraging artificial intelligence and machine learning to predict and prevent threats with unprecedented accuracy.",
-                      icon: "🤖",
-                    },
-                    {
-                      title: "24/7 Expert Support",
-                      desc: "Round-the-clock assistance from regulated security professionals who understand your unique challenges.",
-                      icon: "🛡️",
-                    },
-                    {
-                      title: "Scalable Solutions",
-                      desc: "Flexible packages that grow with your business, from startups to enterprises, without compromising on security.",
-                      icon: "📈",
-                    },
-                  ].map((feature, i) => (
-                    <div
-                      key={i}
-                      className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 text-center"
-                    >
-                      <div className="text-3xl mb-4">{feature.icon}</div>
-                      <h3 className="font-bold text-slate-900 text-lg mb-3">
-                        {feature.title}
-                      </h3>
-                      <p className="text-slate-700">{feature.desc}</p>
-                    </div>
-                  ))}
+        {/* Supported Assets Section */}
+        <section
+          id="assets"
+          className="py-20 bg-slate-50"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div
+                className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4"
+                style={{ backgroundColor: "#e8f5e9", color: "#059669" }}
+              >
+                Hardware Support
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: "#1f2937" }}>
+                Erase Campus IT Assets
+              </h2>
+              <p className="text-lg max-w-2xl mx-auto" style={{ color: "#6b7280" }}>
+                Supporting a wide range of devices found in modern educational environments.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: "🎓", title: "Chromebooks", desc: "Bulk wiping for student laptops and education-grade devices." },
+                { icon: "🔬", title: "Lab PCs & Macs", desc: "Sanitize high-performance workstations in research and computer labs." },
+                { icon: "🏫", title: "School Servers", desc: "Securely erase server-side student information and admin records." },
+                { icon: "📱", title: "Staff Tablets", desc: "Sanitize iOS and Android devices used by faculty and staff." },
+              ].map((asset, idx) => (
+                <div
+                  key={idx}
+                  className="text-center p-8 rounded-2xl bg-white shadow-sm hover:shadow-md transition-all"
+                >
+                  <div className="text-5xl mb-4">{asset.icon}</div>
+                  <h4 className="text-lg font-bold mb-2" style={{ color: "#1f2937" }}>
+                    {asset.title}
+                  </h4>
+                  <p className="text-sm" style={{ color: "#6b7280" }}>{asset.desc}</p>
                 </div>
-              </div>
-            </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
 
-            {/* D-Secure Advantage */}
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">
-                  The D-Secure Advantage
+        {/* School Solutions Section */}
+        <section
+          id="solutions"
+          className="py-20"
+          style={{ backgroundColor: "#ffffff" }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "#1f2937" }}>
+                  Institutional Grade Data Disposal
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {[
-                    {
-                      value: "99.9%",
-                      label: "Uptime Guarantee",
-                      desc: "Ensuring your security systems are always operational",
-                    },
-                    {
-                      value: "<5min",
-                      label: "Response Time",
-                      desc: "Lightning-fast threat response to minimise damage",
-                    },
-                    {
-                      value: "500+",
-                      label: "Threats Blocked Daily",
-                      desc: "Proactive defence stopping attacks before they reach you",
-                    },
-                    {
-                      value: "100%",
-                      label: "Compliance Ready",
-                      desc: "Meeting GDPR, ISO 27001, and local standards",
-                    },
-                  ].map((advantage, i) => (
-                    <div
-                      key={i}
-                      className="text-center bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6"
-                    >
-                      <div className="text-2xl font-bold text-slate-800 mb-2">
-                        {advantage.value}
-                      </div>
-                      <div className="font-semibold text-slate-900 mb-2">
-                        {advantage.label}
-                      </div>
-                      <div className="text-sm text-slate-700">
-                        {advantage.desc}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Implementation Process */}
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-blue-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                  Our Implementation Process
-                </h2>
-                <div className="space-y-6">
-                  {[
-                    {
-                      step: "Initial Assessment",
-                      desc: "Comprehensive evaluation of your current security posture, identifying vulnerabilities and areas for improvement.",
-                    },
-                    {
-                      step: "Custom Strategy",
-                      desc: "Development of a tailored security roadmap aligned with your business objectives, budget, and risk tolerance.",
-                    },
-                    {
-                      step: "Seamless Deployment",
-                      desc: "Expert installation and configuration with minimal disruption to your operations, ensuring smooth transition.",
-                    },
-                    {
-                      step: "Team Training",
-                      desc: "Comprehensive education programmes for your staff, building security awareness and best practices.",
-                    },
-                    {
-                      step: "Ongoing Optimisation",
-                      desc: "Continuous monitoring, updates, and improvements to keep your defences ahead of emerging threats.",
-                    },
-                  ].map((process, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start space-x-4 bg-gradient-to-r from-blue-50/60 to-transparent rounded-xl p-6"
-                    >
-                      <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg">
-                        {i + 1}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-slate-900 text-xl mb-2">
-                          {process.step}
-                        </h3>
-                        <p className="text-slate-700">{process.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Industry Applications */}
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-purple-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                  Industry Applications
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {[
-                    {
-                      industry: "Healthcare",
-                      desc: "Protecting patient data and medical records with HIPAA-compliant solutions, ensuring confidentiality whilst enabling seamless care delivery.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093103/cp7t7nascrxgvlbjxj7t.jpg",
-                    },
-                    {
-                      industry: "Financial Services",
-                      desc: "Safeguarding transactions and customer information with banking-grade encryption and fraud prevention systems.",
-                      img: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
-                    },
-                    {
-                      industry: "Education",
-                      desc: "Securing student data and institutional systems whilst maintaining accessibility for learning and research activities.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093103/fqyls0ledhjwmgoph0bq.jpg",
-                    },
-                    {
-                      industry: "E-Commerce",
-                      desc: "Protecting customer transactions and business data, building trust and ensuring compliance with payment security standards.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093292/c3s2iz7zd1g5qmnpkw6d.jpg",
-                    },
-                  ].map((application, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-col bg-gradient-to-br from-slate-50 to-purple-50 rounded-xl overflow-hidden"
-                    >
-                      <img
-                        src={application.img}
-                        alt={application.industry}
-                        className="h-48 w-full object-cover"
-                      />
-                      <div className="p-6">
-                        <h3 className="font-bold text-slate-900 text-xl mb-3">
-                          {application.industry}
-                        </h3>
-                        <p className="text-slate-700">{application.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Client Success Stories */}
-            <Reveal>
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-blue-100 hover:shadow-xl transition-all duration-300">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                  Client Success Stories
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {[
-                    {
-                      company: "TechVentures Pvt Ltd",
-                      quote:
-                        "D-Secure transformed our security infrastructure within weeks. Their team's expertise and responsiveness exceeded our expectations. We've experienced zero breaches since implementation.",
-                      author: "Rajesh Kumar, CTO",
-                    },
-                    {
-                      company: "MediCare Hospitals",
-                      quote:
-                        "Patient data security is paramount in healthcare. D-Secure's solutions not only meet compliance requirements but provide peace of mind. Their 24/7 support has been invaluable.",
-                      author: "Dr. Priya Sharma, IT Director",
-                    },
-                    {
-                      company: "FinanceFirst Bank",
-                      quote:
-                        "The implementation was seamless, and the results speak for themselves. Transaction security has improved dramatically, and customer confidence has soared.",
-                      author: "Amit Patel, Security Manager",
-                    },
-                  ].map((testimonial, i) => (
-                    <div
-                      key={i}
-                      className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-xl p-6"
-                    >
-                      <h3 className="font-bold text-slate-900 text-lg mb-3">
-                        {testimonial.company}
-                      </h3>
-                      <p className="text-slate-700 italic mb-4">
-                        "{testimonial.quote}"
-                      </p>
-                      <p className="text-slate-600 font-semibold">
-                        {testimonial.author}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* CTA Section */}
-            <Reveal>
-              <div className="bg-gradient-to-r from-slate-700 via-blue-700 to-purple-800 rounded-2xl p-8 text-white shadow-lg">
-                <h2 className="text-3xl font-bold mb-4 text-center">
-                  Begin Your Security Journey Today
-                </h2>
-                <p className="text-center text-slate-200 text-lg max-w-3xl mx-auto mb-6">
-                  Don't wait for a security incident to take action. D-Secure is
-                  ready to protect your organisation with industry-leading
-                  solutions tailored to your needs.
+                <p className="text-lg mb-8" style={{ color: "#4b5563" }}>
+                  Educational institutions frequently upgrade technology. We help IT departments manage large-scale data destruction 
+                  efficiently without physical disk destruction, promoting green campus initiatives.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                  {/* <button className="bg-white text-slate-800 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors">
-                    Schedule Consultation
-                  </button> */}
-                  <Link to={'/contact'} className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                    Request Demo
-                  </Link>
-                  {/* <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                    Get Started
-                  </button> */}
-                </div>
-                <div className="text-center text-slate-300">
-                  <p>Email: info@d-secure.com</p>
-                  <p>Phone: +91-XXXX-XXXXXXX</p>
-                  <p>Website: www.d-secure.com</p>
+                <ul className="space-y-4">
+                  {[
+                    "Network PXE booting for mass wiping of entire computer labs",
+                    "USB sanitization for hybrid work laptops and off-site staff",
+                    "Cloud-based management for central tracking across multiple campuses",
+                    "Sustainability-focused disposal through high-grade reusable wiping",
+                  ].map((item, idx) => (
+                    <li key={idx} className="flex items-start space-x-3">
+                      <svg className="w-5 h-5 text-emerald-500 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span style={{ color: "#4b5563" }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 shadow-inner">
+                <h3 className="text-2xl font-bold mb-6" style={{ color: "#065f46" }}>
+                  Why Education Leaders Trust D-Secure?
+                </h3>
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="font-bold text-emerald-900 mb-1">Compliance Verification</h4>
+                    <p className="text-sm text-emerald-800">Generate auditable proofs for State and Federal privacy auditors.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-emerald-900 mb-1">Asset Lifetime Value</h4>
+                    <p className="text-sm text-emerald-800">Erase data while keeping the hardware intact for resale or donations.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-emerald-900 mb-1">Campus-Wide Centralization</h4>
+                    <p className="text-sm text-emerald-800">Manage all student data sanitization from a single web dashboard.</p>
+                  </div>
                 </div>
               </div>
-            </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section
+          id="faq"
+          className="py-20 bg-slate-50"
+        >
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#1f2937" }}>
+                Frequently Asked Questions
+              </h2>
+              <p style={{ color: "#6b7280" }}>Common queries for institutional IT teams</p>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  q: "How does D-Secure ensure FERPA compliance?",
+                  a: "D-Secure uses NIST-level wiping to ensure all personally identifiable information (PII) of students is non-recoverable, and then creates a compliance-verified audit report as proof for regulators.",
+                },
+                {
+                  q: "Can we wipe devices across different campus buildings?",
+                  a: "Yes, our cloud console allows you to manage erasure tasks across geographically dispersed campus sites, providing real-time visibility into every asset being sanitized.",
+                },
+                {
+                  q: "Is it possible to donate old school computers securely?",
+                  a: "Absolutely. D-Secure wipes the storage data but keeps the device working perfectly. You can donate sanitized PCs with a Compliance Certificate to ensure the school's data never leaves the campus.",
+                },
+                {
+                  q: "What standards are used for institutional wiping?",
+                  a: "We support NIST 800-88, US Department of Defense (DoD), and other international sanitization standards to ensure the highest level of information security.",
+                },
+              ].map((faq, idx) => (
+                <details
+                  key={idx}
+                  className="group rounded-xl p-6 bg-white shadow-sm hover:shadow-md transition-all border"
+                  style={{ borderColor: "#e5e7eb" }}
+                >
+                  <summary className="flex items-center justify-between cursor-pointer list-none">
+                    <span className="text-lg font-semibold" style={{ color: "#1f2937" }}>
+                      {faq.q}
+                    </span>
+                    <svg
+                      className="w-5 h-5 group-open:rotate-180 transition-transform"
+                      style={{ color: "#059669" }}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <p className="mt-4 leading-relaxed" style={{ color: "#6b7280" }}>
+                    {faq.a}
+                  </p>
+                </details>
+              ))}
+            </div>
           </div>
         </section>
       </div>
+
+      {/* License Request Modal */}
+      {showLicenseModal && (
+        <LicenseForm
+          onClose={() => setShowLicenseModal(false)}
+          title="Request Free Campus License - Education"
+        />
+      )}
     </>
   );
 };
 
-export default DigitalProtectionSolutions;
+export default EducationPage;

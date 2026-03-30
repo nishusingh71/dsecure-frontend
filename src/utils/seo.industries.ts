@@ -15,6 +15,11 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
       "banking ITAD",
     ]),
     canonicalUrl: getCanonicalUrl("/solutions/financial"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Financial Services", item: "/solutions/financial" },
+    ],
   },
   "solutions/healthcare": {
     title: "Healthcare Data Sanitization | HIPAA Compliance | D-Secure",
@@ -28,6 +33,11 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
       "secure medical record disposal",
     ]),
     canonicalUrl: getCanonicalUrl("/solutions/healthcare"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Healthcare", item: "/solutions/healthcare" },
+    ],
   },
   "solutions/government": {
     title: "Government Data Erasure - NIST 800-88 & DoD Compliant | D-Secure Tech",
@@ -42,18 +52,48 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
       "classified data destruction",
     ]),
     canonicalUrl: getCanonicalUrl("/solutions/government"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Government", item: "/solutions/government" },
+    ],
   },
   "solutions/itad": {
     title: "ITAD Data Erasure Solutions | Asset Disposal | D-Secure",
-    description:
-      "Secure data wiping for IT asset disposition and recyclers. Ensure certified sanitization during hardware retirement.",
+    description: "Secure data wiping for IT asset disposition and recyclers. Ensure compliance sanitization with Tamper-proof audit reports (Page 1: Certificate, Page 2+: Summary) during hardware retirement.",
     keywords: generateKeywords([
       "ITAD data erasure",
       "asset disposal",
-      "certified wiping",
+      "compliance wiping",
       "R2v3 compliance",
       "e-Stewards data destruction",
     ]),
     canonicalUrl: getCanonicalUrl("/solutions/itad"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "ITAD", item: "/solutions/itad" },
+    ],
+  },
+  "solutions/education": {
+    title: "Education Data Erasure & Privacy - FERPA & COPPA Compliant | D-Secure Tech",
+    description:
+      "Secure data erasure solutions for schools, universities, and research institutions. Ensure FERPA and COPPA compliance with compliance-verified student data sanitization.",
+    keywords: generateKeywords([
+      "education data erasure",
+      "FERPA compliance software",
+      "COPPA data privacy",
+      "student data privacy",
+      "university IT asset disposal",
+      "school computer wiping",
+      "educational data sanitization",
+      "NIST 800-88 education",
+    ]),
+    canonicalUrl: getCanonicalUrl("/solutions/education"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Education", item: "/solutions/education" },
+    ],
   },
 };

@@ -1,4 +1,4 @@
-﻿import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/react-query";
 import { AuthProvider } from "./auth/AuthContext";
@@ -38,6 +38,16 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  // Domain Redirect Logic - ensures dsecuretech.com is the canonical domain
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    // Check if the current hostname is the dashed version (with or without www)
+    if (hostname.includes("d-securetech.com")) {
+      const newUrl = window.location.href.replace("d-securetech.com", "dsecuretech.com");
+      window.location.replace(newUrl);
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>

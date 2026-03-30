@@ -82,7 +82,7 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                                 <li>• Post-erasure read verification</li>
                                 <li>• Sampling-based confirmation</li>
                                 <li>• Independent forensic checks</li>
-                                <li>• Certificate authenticity</li>
+                                <li>• Compliance report authenticity</li>
                             </ul>
                         </div>
                     </div>
@@ -97,7 +97,7 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                      <div className="bg-slate-900 border-b border-slate-800 text-slate-100 p-6 rounded-xl font-mono text-sm leading-relaxed">
                         <p className="text-rose-400 font-bold mb-2">// Common Trust Failures</p>
                         <p className="mb-2">❌ "IT said they formatted the drives"</p>
-                        <p className="mb-2">❌ "The vendor gave us a certificate"</p>
+                        <p className="mb-2">❌ "The vendor gave us an audit report"</p>
                         <p className="mb-2">❌ "We've always used this process"</p>
                         <p>❌ "The software said it completed"</p>
                     </div>
@@ -119,16 +119,16 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                             <span><strong>Verify Device:</strong> Independently confirm serial numbers. Check for hidden partitions and secondary storage.</span>
                         </li>
                         <li className="flex gap-3 items-start">
-                             <span className="text-rose-500 font-bold text-xl">3.</span>
-                             <span><strong>Verify Process:</strong> Use automated verification that reads sectors post-erasure. Never rely on software reports alone.</span>
+                            <span className="text-rose-500 font-bold text-xl">3.</span>
+                            <span><strong>Verify Process:</strong> Use automated verification that reads sectors post-erasure. Never rely on software reports alone.</span>
                         </li>
                         <li className="flex gap-3 items-start">
                              <span className="text-rose-500 font-bold text-xl">4.</span>
-                             <span><strong>Verify Documentation:</strong> Use tamper-proof certificates with digital signatures. Validate against central records.</span>
+                             <span><strong>Verify Documentation:</strong> Use Tamper-proof audit reports with certificate including digital signatures. Validate against central records.</span>
                         </li>
                         <li className="flex gap-3 items-start">
                              <span className="text-rose-500 font-bold text-xl">5.</span>
-                             <span><strong>Verify Vendors:</strong> Audit ITAD partners regularly. Don't accept certificates at face value.</span>
+                             <span><strong>Verify Vendors:</strong> Audit ITAD partners regularly. Don't accept reports at face value.</span>
                         </li>
                     </ul>
                 </div>
@@ -142,7 +142,7 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">D-Secure Zero Trust Features</h2>
                 
                 <p className="text-slate-700 leading-relaxed mb-6">
-                    D-Secure is built on Zero Trust principles, providing verification at every stage of the data disposal process.
+                    D-Secure is built on Zero Trust principles, providing compliance-verified media sanitization at every stage of the data disposal process.
                 </p>
 
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -161,16 +161,16 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                             <h4 className="font-bold text-slate-900">Automated Verification</h4>
                         </div>
                         <p className="text-sm text-slate-600">
-                            Post-erasure verification reads sectors to confirm destruction. Failed verifications trigger alerts and prevent certification.
+                            Post-erasure verification reads sectors to confirm destruction. Failed verifications trigger alerts and prevent reporting.
                         </p>
                     </div>
                     <div className="bg-gradient-to-br from-rose-50 to-red-50 p-6 rounded-xl border border-rose-100">
                         <div className="flex items-center gap-2 mb-3">
                             <GlobeIcon className="w-5 h-5 text-rose-600" filled={true} />
-                            <h4 className="font-bold text-slate-900">Tamper-Proof Certificates</h4>
+                            <h4 className="font-bold text-slate-900">Tamper-Proof Audit Reports</h4>
                         </div>
                         <p className="text-sm text-slate-600">
-                            Digitally signed certificates stored in immutable cloud storage. Any modification attempt is detected and blocked.
+                            Digitally signed compliance reports with certificate stored in immutable cloud storage. Any modification attempt is detected and blocked.
                         </p>
                     </div>
                     <div className="bg-gradient-to-br from-rose-50 to-red-50 p-6 rounded-xl border border-rose-100">
@@ -201,7 +201,7 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                         </div>
                         <div className="flex items-start gap-2">
                             <CheckIcon className="w-4 h-4 text-rose-400 mt-0.5 flex-shrink-0" filled={true} />
-                            <span>Cryptographically signed certificates</span>
+                            <span>Cryptographically signed compliance reports</span>
                         </div>
                         <div className="flex items-start gap-2">
                             <CheckIcon className="w-4 h-4 text-rose-400 mt-0.5 flex-shrink-0" filled={true} />

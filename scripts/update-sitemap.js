@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -117,10 +117,13 @@ function extractRoutesFromFiles() {
 
   queryRoutes.forEach((r) => allRoutes.add(r));
 
-  // Filter out excluded routes and prefixes
-  return Array.from(allRoutes)
+  // Filter out excluded routes and prefixes, and ensure uniqueness
+  const seen = new Set();
+  const finalRoutes = Array.from(allRoutes)
     .filter((route) => {
-      if (!route) return false;
+      if (!route || seen.has(route)) return false;
+      seen.add(route);
+      
       const isExcluded = EXCLUDED_ROUTES.some((excluded) => {
         if (excluded === "*") return route === "*";
         return (
@@ -131,7 +134,10 @@ function extractRoutesFromFiles() {
       });
       return !isExcluded;
     })
-    .sort();
+    .sort((a, b) => a.localeCompare(b));
+
+  console.log(`✅ Extracted ${finalRoutes.length} unique routes from source files.`);
+  return finalRoutes;
 }
 
 function normalizePath(p) {
@@ -176,10 +182,27 @@ function generateSitemap() {
     }
 
     const loc = `${baseUrl}${routePath}`.replace(/&/g, "&amp;");
+    
+    // lastmod calculation: Try to find the source file to get actual modification date
+    let lastmod = currentDate;
+    try {
+      // Basic mapping from route to file path for lastmod
+      let potentialFile = '';
+      if (routePath === '/') potentialFile = 'src/pages/HomePage.tsx';
+      else if (routePath.includes('blog/')) potentialFile = `src/pages/blog/${routePath.split('/').pop()}Page.tsx`; // Heuristic
+      else potentialFile = `src/pages/${routePath.split('/').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('')}Page.tsx`;
+
+      const fullPath = path.join(__dirname, "..", potentialFile);
+      if (fs.existsSync(fullPath)) {
+        lastmod = fs.statSync(fullPath).mtime.toISOString().split("T")[0];
+      }
+    } catch (e) {
+      // Fallback to currentDate
+    }
 
     xml += `  <url>\n`;
     xml += `    <loc>${loc}</loc>\n`;
-    xml += `    <lastmod>${currentDate}</lastmod>\n`;
+    xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>${changefreq}</changefreq>\n`;
     xml += `    <priority>${priority}</priority>\n`;
     xml += `  </url>\n`;

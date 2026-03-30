@@ -95,7 +95,7 @@ const HardwareDiagnosticsITADComplianceBlog: React.FC = () => {
               support USB and PXE network boot, allow simultaneous testing of
               multiple systems, perform over 20 automated and manual checks, and
               generate tamper-proof diagnostic reports for audit and
-              certification.
+              compliance verification.
             </p>
 
             <p>
@@ -139,9 +139,10 @@ const HardwareDiagnosticsITADComplianceBlog: React.FC = () => {
 
         {/* Engagement, Comments & Enquiry Section */}
         <Reveal>
-          
-      <FAQSection faqs={blogFaqs["hardware-diagnostics-itad-compliance"]} />
-      <EngagementSection blogId="hardware-diagnostics-itad-compliance" />
+          <div className="mt-12 space-y-10">
+            <FAQSection faqs={blogFaqs["hardware-diagnostics-itad-compliance"]} />
+            <EngagementSection blogId="hardware-diagnostics-itad-compliance" />
+          </div>
         </Reveal>
         <Reveal>
           <CommentSection blogId="hardware-diagnostics-itad-compliance" />
@@ -163,7 +164,7 @@ const HardwareDiagnosticsITADComplianceBlog: React.FC = () => {
             </h2>
             <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
               Meet R2v3, e-Stewards, and WEEE requirements with D-Secure's
-              certified hardware diagnostics.
+              compliance-verified hardware diagnostics.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

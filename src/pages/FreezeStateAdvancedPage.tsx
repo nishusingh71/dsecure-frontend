@@ -198,7 +198,7 @@ const FreezeStateAdvancedPage = memo(() => {
                           </div>
                           <div>
                              <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm leading-none mb-1">Erasure Active</h4>
-                             <p className="text-emerald-600 text-[10px] font-bold uppercase tracking-widest animate-pulse">Certified Secure Mode</p>
+                             <p className="text-emerald-600 text-[10px] font-bold uppercase tracking-widest animate-pulse">Compliance Secure Mode</p>
                           </div>
                        </div>
 
@@ -421,7 +421,7 @@ const FreezeStateAdvancedPage = memo(() => {
                   { label: "Erasure Algorithms", value: "25+ Military Standards" },
                   { label: "Overwrite Logic", value: "Random Pattern / Zero-Fill" },
                   { label: "Verification Level", value: "Sector-Wise Comparative Scan" },
-                  { label: "Compliance Engine", value: "NIST 800-88 / DoD Certified" },
+                  { label: "Compliance Engine", value: "NIST 800-88 / DoD Compliance" },
                   { label: "Reporting Format", value: "Signed PDF / Cryptographic Hash" },
                   { label: "Boot Architecture", value: "UEFI / Secure-Boot Compliant" },
                 ].map((spec) => (
@@ -445,7 +445,7 @@ const FreezeStateAdvancedPage = memo(() => {
                  </div>
                  <div className="text-left space-y-6">
                     {[
-                       { q: "What is the difference between 'Shallow' and 'Deep' erase in Advanced mode?", a: "Shallow reset clears the redirection pointer (standard restore), while Deep erase performs a full low-level sector wipe on the modified storage area using NIST-certified algorithms." },
+                       { q: "What is the difference between 'Shallow' and 'Deep' erase in Advanced mode?", a: "Shallow reset clears the redirection pointer (standard restore), while Deep erase performs a full low-level sector wipe on the modified storage area using NIST-compliant algorithms." },
                        { q: "Is this compatible with NVMe SSDs?", a: "Yes. Advanced Eraser includes native NVMe Sanitize and Secure Erase command support for modern flash-based architectures." },
                        { q: "How long does a sector-level wipe take during reboot?", a: "For typical session data (5-10 GB), a NIST Clear pass adds only 15-30 seconds to the boot cycle. Deep military-grade multiple passes vary by data volume." }
                     ].map((item) => (

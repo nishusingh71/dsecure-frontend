@@ -147,7 +147,7 @@ export const generateFreezeStateReport = () => {
   // Footer
   doc.setFontSize(8);
   doc.setTextColor(203, 213, 225);
-  doc.text('Certified by D-Secure Global Compliance Engine', pageWidth / 2, 285, { align: 'center' });
+  doc.text('Compliance Verified by D-Secure Global Compliance Engine - Tamper-proof audit report with certificate', pageWidth / 2, 285, { align: 'center' });
 
   // Download
   doc.save(`FS_Advanced_Sanitization_Report_${Date.now()}.pdf`);

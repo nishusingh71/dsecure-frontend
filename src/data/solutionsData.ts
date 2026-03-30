@@ -31,7 +31,7 @@ export const solutionsData: SolutionVertical[] = [
       {
         regulation: "PCI DSS 4.0 (Req. 9.6)",
         requirement: "Physical Media Destruction verify",
-        capability: "Automated verification logs mapping physical drive serials to digital sanitization certificates."
+        capability: "Automated verification logs mapping physical drive serials to Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)."
       },
       {
         regulation: "SOX Section 404",
@@ -48,7 +48,7 @@ export const solutionsData: SolutionVertical[] = [
       "In the financial sector, data resides in diverse states—from high-speed NVMe flash in trading servers to legacy tape backups in cold storage. A singular tool rarely suffices. D-Secure's Financial Solution Bundle provides a unified control plane for multi-architecture environments, allowing for the simultaneous management of disparate storage types. This is particularly crucial during data center consolidation or migration to the cloud, where 'zombie data' on abandoned arrays represents a dormant liability.",
       "Implementation begins with 'The Discovery Phase', where our SDK scans for unmapped storage nodes across the network, identifying shadow IT and orphaned volumes often missed by standard enterprise asset management tools. Once mapped, the 'Policy Enforcement' phase applies NIST 800-88 Purge or Clear relative to the data classification level. For high-volume SSD decommissioning, D-Secure utilizes proprietary firmware-level commands to reset cells without unnecessary cell-wear, ensuring hardware circularity and increasing the resale value of sanitized assets.",
       "The architectural complexity of modern fintech—utilizing microservices and distributed databases—means that 'destruction' must also happen at the logical level. D-Secure's logical sanitization agents can be injected into CI/CD pipelines to ensure that development and staging environments are purged of production-clone data according to a strict schedule, preventing 'data leakage' into less secure non-production zones.",
-      "The final and most critical stage for financial auditors is 'Verification'. D-Secure generates a 2048-bit RSA-signed certificate for every erasure event. These certificates include metadata on sector-level verification (10% or 100% checks), hardware health metrics, and the identity of the triggering agent, creating an undeniable chain of custody that withstands the scrutiny of the OCC, SEC, and global regulatory bodies."
+      "The final and most critical stage for financial auditors is 'Verification'. D-Secure generates a 2048-bit RSA-signed Tamper-proof audit report with certificate (Page 1: Certificate, Page 2+: Summary/Annexure) for every erasure event. These reports include metadata on sector-level verification (10% or 100% checks), hardware health metrics, and the identity of the triggering agent, creating an undeniable chain of custody that withstands the scrutiny of the OCC, SEC, and global regulatory bodies."
     ],
     technicalSpecs: [
       "Support for 24+ global standards including NIST, DoD, and HMG.",
@@ -69,7 +69,7 @@ export const solutionsData: SolutionVertical[] = [
       {
         regulation: "HIPAA 164.310(d)(2)(i)",
         requirement: "Disposal of ePHI",
-        capability: "Certified software-based erasure that meets HHS requirements for making ePHI unrecoverable."
+        capability: "Compliance software-based erasure that meets HHS requirements for making ePHI unrecoverable."
       },
       {
         regulation: "HITECH Act",
@@ -86,7 +86,7 @@ export const solutionsData: SolutionVertical[] = [
       "Healthcare data ecosystems are characterized by 'data sprawl'—where PHI drifts from core Electronic Health Record (EHR) systems into peripheral medical imaging devices, nurse stations, and mobile diagnostic tablets. D-Secure's Healthcare vertical is optimized for this sprawl, providing endpoint-specific agents that can be deployed remotely to sanitize decentralized assets before they leave the hospital's secure perimeter.",
       "Our 'Diagnostic Sanitization' module is specifically built to handle the unique storage controllers found in MRI, CT, and Ultrasound equipment. Often, these devices use proprietary Linux or VxWorks kernels that standard tools fail to address. D-Secure provides the low-level drivers necessary to execute NIST-grade purging on medical-specific hardware, ensuring that even deep-seated metadata in the diagnostic buffer is permanently destroyed.",
       "Beyond physical hardware, healthcare providers must manage the 'Digital Right to be Forgotten'. For telemedicine platforms and HIEs (Health Information Exchanges), the platform offers 'Cloud Discovery'—identifying orphaned data volumes in AWS or Azure that still contain patient identifiers. Programmatic cleanup ensures that 'deleting' a record in the UI translates to a structural zeroing of the underlying storage block across multi-region clusters.",
-      "The result of a D-Secure healthcare deployment is an 'Audit-Ready EHR Decommissioning' report. This document, signed and encrypted, serves as proof of HIPAA compliance during regulatory reviews, demonstrating that the organizational 'Chain of Hygiene' remained unbroken from asset usage to final sanitization."
+      "The result of a D-Secure healthcare deployment is an 'Audit-Ready EHR Decommissioning' Tamper-proof audit report with certificate (Page 1: Certificate, Page 2+: Summary/Annexure). This document, signed and encrypted, serves as proof of HIPAA compliance during regulatory reviews, demonstrating that the organizational 'Chain of Hygiene' remained unbroken from asset usage to final sanitization."
     ],
     technicalSpecs: [
       "DICOM-compatible metadata handling for asset tracking.",
@@ -157,12 +157,12 @@ export const solutionsData: SolutionVertical[] = [
       {
         regulation: "ADISA Standard",
         requirement: "Product Claims Guarantee",
-        capability: "Certified erasure software tested against forensic-level recovery tools."
+        capability: "Compliance erasure software tested against forensic-level recovery tools (Includes Page 1: Certificate, Page 2+: Summary)."
       }
     ],
     proceduralContent: [
       "In a high-intensity ITAD environment, manual drive interaction is the enemy of profitability. D-Secure's 'Mass Parallel' architecture allows a single technician to manage hundreds of simultaneous erasure tasks from a centralized dashboard. The platform automatically detects the drive type (SSD vs HDD vs NVMe) and recommends the most efficient compliant standard (e.g., Cryptographic Erasure for SEDs vs Multi-pass Overwrite for legacy HDDs).",
-      "The integration layer is where D-Secure provides the most value to recyclers. VIA our RESTful API, D-Secure pushes sanitization certificates directly into ERP systems like IQity or RazorERP. This eliminates manual data entry and ensures that an asset cannot be 'cleared for resale' unless a successful, signed D-Secure certificate is present, preventing accidental leak of customer data through the resale channel.",
+      "The integration layer is where D-Secure provides the most value to recyclers. VIA our RESTful API, D-Secure pushes Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure) directly into ERP systems like IQity or RazorERP. This eliminates manual data entry and ensures that an asset cannot be 'cleared for resale' unless a successful, signed report is present, preventing accidental leak of customer data through the resale channel.",
       "Beyond just 'erasing', we provide 'Value Recovery' metrics. During the sanitization process, D-Secure extracts SMART health data, capacity, and model info. This data is exported alongside the certificate, allowing ITAD providers to automatically grade and price their inventory for secondary markets while the drive is still on the wipe-bench, effectively turning sanitization from a cost-center into a data-entry hub.",
       "For global ITAD players, the D-Secure platform supports 'Centralized Chain of Custody'. No matter where in the world an asset is sanitized—at a client site or a central processing facility—the record is synced to a global tenant, giving the enterprise client a unified view of their entire global decommissioning footprint."
     ],

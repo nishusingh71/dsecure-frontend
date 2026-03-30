@@ -11,7 +11,7 @@ import { blogFaqs } from "@/data/blogFaqs";
 import CommentSection from "./CommentSection";
 import EnquiryForm from "./EnquiryForm";
 
-const CommonCriteriaCertifiedDataWipingBlog: React.FC = () => {
+const CommonCriteriaComplianceVerifiedDataWipingBlog: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-cyan-50">
       <SEOHead seo={getSEOForPage("common-criteria-certified-data-wiping")} />
@@ -24,7 +24,7 @@ const CommonCriteriaCertifiedDataWipingBlog: React.FC = () => {
               Security Certification
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
-              Common Criteria Certified Data Erasure Software
+              Common Criteria Compliance-Verified Data Erasure Software
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
               Why enterprises and service providers rely on independently validated, globally
@@ -181,7 +181,7 @@ const CommonCriteriaCertifiedDataWipingBlog: React.FC = () => {
                 to="/#products"
                 className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-emerald-700 transition"
               >
-                Explore D-Secure Certified Erasure Solutions
+                Explore D-Secure Compliance-Verified Erasure Solutions
               </Link>
             </div>
 
@@ -208,4 +208,4 @@ const CommonCriteriaCertifiedDataWipingBlog: React.FC = () => {
   );
 };
 
-export default CommonCriteriaCertifiedDataWipingBlog;
+export default CommonCriteriaComplianceVerifiedDataWipingBlog;

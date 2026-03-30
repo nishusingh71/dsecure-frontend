@@ -39,6 +39,7 @@ const FreezeStatePage = memo(() => {
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [isDemoActive, setIsDemoActive] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [activeDemoTab, setActiveDemoTab] = useState<"admin" | "endpoint">("admin"); // Demo tab manage karne ke liye state
 
   const adminDemoRef = useRef<HTMLDivElement>(null);
   const endpointDemoRef = useRef<HTMLDivElement>(null);
@@ -742,7 +743,10 @@ const FreezeStatePage = memo(() => {
                     className="group relative w-full rounded-[2.5rem] overflow-hidden shadow-xl border border-emerald-100 cursor-pointer bg-white min-h-[500px] flex flex-col md:flex-row transition-all duration-500 hover:shadow-2xl hover:border-emerald-200"
                   >
                     {/* Left: Admin Preview */}
-                    <div className="flex-1 relative flex flex-col items-center justify-center p-12 border-b md:border-b-0 md:border-r border-emerald-50 group/admin transition-all duration-500 hover:bg-emerald-50/50">
+                    <div 
+                      onClick={(e) => { e.stopPropagation(); setIsDemoActive(true); setActiveDemoTab("admin"); }}
+                      className="flex-1 relative flex flex-col items-center justify-center p-12 border-b md:border-b-0 md:border-r border-emerald-50 group/admin transition-all duration-500 hover:bg-emerald-50/50"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover/admin:opacity-100 transition-opacity"></div>
                       <div className="relative z-10 flex flex-col items-center text-center space-y-4">
                         <div className="w-20 h-20 rounded-2xl bg-slate-50 text-emerald-600 flex items-center justify-center shadow-sm border border-emerald-100 group-hover/admin:scale-110 group-hover/admin:bg-emerald-600 group-hover/admin:text-white transition-all duration-500">
@@ -756,7 +760,10 @@ const FreezeStatePage = memo(() => {
                     </div>
 
                     {/* Right: Endpoint Preview */}
-                    <div className="flex-1 relative flex flex-col items-center justify-center p-12 group/endpoint transition-all duration-500 hover:bg-blue-50/50">
+                    <div 
+                      onClick={(e) => { e.stopPropagation(); setIsDemoActive(true); setActiveDemoTab("endpoint"); }}
+                      className="flex-1 relative flex flex-col items-center justify-center p-12 group/endpoint transition-all duration-500 hover:bg-blue-50/50"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover/endpoint:opacity-100 transition-opacity"></div>
                       <div className="relative z-10 flex flex-col items-center text-center space-y-4">
                         <div className="w-20 h-20 rounded-2xl bg-slate-50 text-blue-600 flex items-center justify-center shadow-sm border border-blue-100 group-hover/endpoint:scale-110 group-hover/endpoint:bg-blue-600 group-hover/endpoint:text-white transition-all duration-500">
@@ -796,97 +803,154 @@ const FreezeStatePage = memo(() => {
                   </div>
                 </Reveal>
               ) : (
-                <>
-                  {/* Admin Console Section */}
-                  <Reveal>
-                    <div className="space-y-6">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                            <Layout className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-slate-900">Admin Console</h3>
-                            <p className="text-slate-500 font-medium">Manage fleet groups, approve changes, and monitor live health stats.</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => toggleFullscreen(adminDemoRef)}
-                            className="flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 shadow-sm transition-all"
-                          >
-                            <Maximize2 className="w-3.5 h-3.5" />
-                            View Full Mode
-                          </button>
-                          <div className="flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-200">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                            Sandbox
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div 
-                        ref={adminDemoRef}
-                        className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 h-[650px] group transition-all duration-500 hover:shadow-emerald-500/5"
+                <div className="space-y-10">
+                  {/* Premium Toggle Switch - Demo switch karne ke liye */}
+                  <div className="flex justify-center">
+                    <div className="bg-white p-1.5 rounded-2xl shadow-lg border border-emerald-100 flex gap-2 relative z-30">
+                      <button
+                        onClick={() => setActiveDemoTab("admin")}
+                        className={`relative z-10 flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
+                          activeDemoTab === "admin"
+                            ? "text-white"
+                            : "text-slate-600 hover:bg-emerald-50"
+                        }`}
                       >
-                        <iframe
-                          src="https://admin-web-silk-delta.vercel.app/"
-                          className="w-full h-full border-0"
-                          title="D-Secure Freeze Admin Console"
-                          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                          loading="lazy"
-                          allow="clipboard-read; clipboard-write; fullscreen"
-                          allowFullScreen
-                        />
-                      </div>
+                        {activeDemoTab === "admin" && (
+                          <motion.div
+                            layoutId="activeTabGlow"
+                            className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl shadow-md"
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                        <Layout className="w-4 h-4 relative z-10" />
+                        <span className="relative z-10">Admin Console</span>
+                      </button>
+                      <button
+                        onClick={() => setActiveDemoTab("endpoint")}
+                        className={`relative z-10 flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
+                          activeDemoTab === "endpoint"
+                            ? "text-white"
+                            : "text-slate-600 hover:bg-blue-50"
+                        }`}
+                      >
+                        {activeDemoTab === "endpoint" && (
+                          <motion.div
+                            layoutId="activeTabGlow"
+                            className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-md"
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                        <Monitor className="w-4 h-4 relative z-10" />
+                        <span className="relative z-10">Endpoint Sandbox</span>
+                      </button>
                     </div>
-                  </Reveal>
+                  </div>
 
-                  {/* Endpoint Section */}
-                  <Reveal delayMs={100}>
-                    <div className="space-y-6">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <Monitor className="w-6 h-6" />
+                  {/* Demo Display Area with AnimatePresence - Smooth switching ke liye */}
+                  <div className="relative min-h-[700px]">
+                    <AnimatePresence mode="wait">
+                      {activeDemoTab === "admin" ? (
+                        <motion.div
+                          key="admin"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: 20 }}
+                          transition={{ duration: 0.4 }}
+                          className="space-y-6"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                                <Layout className="w-6 h-6" />
+                              </div>
+                              <div>
+                                <h3 className="text-2xl font-bold text-slate-900">Admin Console</h3>
+                                <p className="text-slate-500 font-medium">Manage fleet groups, approve changes, and monitor live health stats.</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <button
+                                onClick={() => toggleFullscreen(adminDemoRef)}
+                                className="flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 shadow-sm transition-all"
+                              >
+                                <Maximize2 className="w-3.5 h-3.5" />
+                                View Full Mode
+                              </button>
+                              <div className="flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-200">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                Sandbox
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-slate-900">Endpoint</h3>
-                            <p className="text-slate-500 font-medium">Real-time protection stats and local override request experience.</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => toggleFullscreen(endpointDemoRef)}
-                            className="flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 shadow-sm transition-all"
+                          
+                          <div 
+                            ref={adminDemoRef}
+                            className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-emerald-100 h-[650px] group transition-all duration-500 hover:shadow-emerald-500/5"
                           >
-                            <Maximize2 className="w-3.5 h-3.5" />
-                            View Full Mode
-                          </button>
-                          <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-blue-100">
-                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                            Sandbox
+                            <iframe
+                              src="https://admin-web-silk-delta.vercel.app/"
+                              className="w-full h-full border-0"
+                              title="D-Secure Freeze Admin Console"
+                              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                              loading="lazy"
+                              allow="clipboard-read; clipboard-write; fullscreen"
+                              allowFullScreen
+                            />
                           </div>
-                        </div>
-                      </div>
-                      
-                      <div 
-                        ref={endpointDemoRef}
-                        className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 h-[650px] group transition-all duration-500 hover:shadow-blue-500/5"
-                      >
-                        <iframe
-                          src="https://endpoint-webapp.vercel.app/"
-                          className="w-full h-full border-0"
-                          title="D-Secure Freeze Endpoint Sandbox"
-                          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                          loading="lazy"
-                          allow="clipboard-read; clipboard-write; fullscreen"
-                          allowFullScreen
-                        />
-                      </div>
-                    </div>
-                  </Reveal>
-                </>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="endpoint"
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.4 }}
+                          className="space-y-6"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-2xl bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                <Monitor className="w-6 h-6" />
+                              </div>
+                              <div>
+                                <h3 className="text-2xl font-bold text-slate-900">Endpoint</h3>
+                                <p className="text-slate-500 font-medium">Real-time protection stats and local override request experience.</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <button
+                                onClick={() => toggleFullscreen(endpointDemoRef)}
+                                className="flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-full text-xs font-bold border border-slate-200 shadow-sm transition-all"
+                              >
+                                <Maximize2 className="w-3.5 h-3.5" />
+                                View Full Mode
+                              </button>
+                              <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-blue-100">
+                                <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                                Sandbox
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div 
+                            ref={endpointDemoRef}
+                            className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-blue-100 h-[650px] group transition-all duration-500 hover:shadow-blue-500/5"
+                          >
+                            <iframe
+                              src="https://endpoint-webapp.vercel.app/"
+                              className="w-full h-full border-0"
+                              title="D-Secure Freeze Endpoint Sandbox"
+                              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                              loading="lazy"
+                              allow="clipboard-read; clipboard-write; fullscreen"
+                              allowFullScreen
+                            />
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
               )}
             </div>
 

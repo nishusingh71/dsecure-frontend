@@ -113,7 +113,7 @@ const BrandReputationESGBlog: React.FC = () => {
                     <ul className="space-y-3 text-slate-700">
                         <li className="flex gap-3 items-start">
                             <span className="text-amber-500 font-bold text-xl">E</span>
-                            <span><strong>Environmental:</strong> Certified erasure enables device reuse, reducing e-waste and manufacturing emissions. Track and report sustainability metrics.</span>
+                            <span><strong>Environmental:</strong> Compliance-verified erasure enables device reuse, reducing e-waste and manufacturing emissions. Track and report sustainability metrics.</span>
                         </li>
                         <li className="flex gap-3 items-start">
                             <span className="text-amber-500 font-bold text-xl">S</span>
@@ -121,7 +121,7 @@ const BrandReputationESGBlog: React.FC = () => {
                         </li>
                         <li className="flex gap-3 items-start">
                              <span className="text-amber-500 font-bold text-xl">G</span>
-                             <span><strong>Governance:</strong> Implement documented policies, maintain audit trails, and ensure regulatory compliance with certified processes.</span>
+                             <span><strong>Governance:</strong> Implement documented policies, maintain audit trails, and ensure regulatory compliance with compliance-verified processes.</span>
                         </li>
                     </ul>
                 </div>
@@ -135,7 +135,7 @@ const BrandReputationESGBlog: React.FC = () => {
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">D-Secure Brand Protection Features</h2>
                 
                 <p className="text-slate-700 leading-relaxed mb-6">
-                    D-Secure helps organizations protect their brand through certified data disposal practices and ESG-aligned reporting.
+                    D-Secure helps organizations protect their brand through compliance-verified data disposal practices and ESG-aligned reporting.
                 </p>
 
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -145,7 +145,7 @@ const BrandReputationESGBlog: React.FC = () => {
                             <h4 className="font-bold text-slate-900">Breach Prevention</h4>
                         </div>
                         <p className="text-sm text-slate-600">
-                            Certified erasure with verification ensures no data remnants reach secondary markets. Protect your brand from disposal-related breaches.
+                            Compliance-verified erasure with verification ensures no data remnants reach secondary markets. Protect your brand from disposal-related breaches.
                         </p>
                     </div>
                     <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-xl border border-amber-100">
@@ -172,7 +172,7 @@ const BrandReputationESGBlog: React.FC = () => {
                             <h4 className="font-bold text-slate-900">Competitive Differentiation</h4>
                         </div>
                         <p className="text-sm text-slate-600">
-                            Use your certified disposal practices as a competitive advantage—customers and partners increasingly value responsible data handling.
+                            Use your compliance-verified disposal practices as a competitive advantage—customers and partners increasingly value responsible data handling.
                         </p>
                     </div>
                 </div>
@@ -214,7 +214,7 @@ const BrandReputationESGBlog: React.FC = () => {
              <div className="bg-gradient-to-br from-amber-600 via-orange-600 to-red-600 rounded-xl shadow-lg p-8 mt-8 text-white">
                 <h2 className="text-2xl font-bold mb-4">Final Thoughts</h2>
                 <p className="leading-relaxed mb-6">
-                    Brand reputation takes years to build and moments to destroy. In an era of heightened stakeholder expectations around data privacy and sustainability, certified data disposal is no longer just an IT concern—it's a brand protection imperative.
+                    Brand reputation takes years to build and moments to destroy. In an era of heightened stakeholder expectations around data privacy and sustainability, compliance-verified data disposal is no longer just an IT concern—it's a brand protection imperative.
                 </p>
                 <Link
                     to="/#products"
@@ -258,7 +258,7 @@ const BrandReputationESGBlog: React.FC = () => {
                         Strengthen Your Brand Trust
                     </h2>
                     <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                        Implement certified data disposal practices that protect your reputation and demonstrate ESG commitment.
+                        Implement compliance-verified data disposal practices that protect your reputation and demonstrate ESG commitment.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link

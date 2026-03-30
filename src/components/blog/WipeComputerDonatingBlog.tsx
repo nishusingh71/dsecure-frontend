@@ -79,9 +79,9 @@ const WipeComputerDonatingBlog: React.FC = () => {
                                 <div className="flex items-start gap-4">
                                     <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">2</span>
                                     <div>
-                                        <h3 className="text-xl font-bold mb-3">Use Certified Data Wiping Solution</h3>
+                                        <h3 className="text-xl font-bold mb-3">Use Compliance-Verified Data Wiping Solution</h3>
                                         <p className="text-white/90 leading-relaxed">
-                                            Always use a certified data wiping solution like D-Secure to get rid of personal data on storage media and ensure information is erased beyond recovery.
+                                            Always use a compliance-verified data wiping solution like D-Secure to get rid of personal data on storage media and ensure information is erased beyond recovery.
                                         </p>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@ const WipeComputerDonatingBlog: React.FC = () => {
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Verify Third-Party Recycler Credentials</h3>
                                         <p className="text-white/90 leading-relaxed">
-                                            If hiring a third-party IT asset recycler, ensure they offer secure data wiping using reliable and certified solutions. Check their certifications and compliance with laws and regulations.
+                                            If hiring a third-party IT asset recycler, ensure they offer secure data wiping using reliable and compliance-verified solutions. Check their certifications and compliance with laws and regulations.
                                         </p>
                                     </div>
                                 </div>
@@ -192,7 +192,7 @@ const WipeComputerDonatingBlog: React.FC = () => {
                         </p>
                         <ul className="space-y-4 text-slate-700 text-lg leading-loose mt-4">
                             <li className="border-l-4 border-emerald-500 pl-8 py-2">Delete and Format only hide data — they don't destroy it</li>
-                            <li className="border-l-4 border-emerald-500 pl-8 py-2">Use certified data wiping software for permanent erasure</li>
+                            <li className="border-l-4 border-emerald-500 pl-8 py-2">Use compliance-verified data wiping software for permanent erasure</li>
                             <li className="border-l-4 border-emerald-500 pl-8 py-2">Establish organization-wide data destruction policies</li>
                             <li className="border-l-4 border-emerald-500 pl-8 py-2">Train employees on data security and leakage risks</li>
                             <li className="border-l-4 border-emerald-500 pl-8 py-2">Verify third-party recycler credentials and compliance</li>
@@ -208,7 +208,7 @@ const WipeComputerDonatingBlog: React.FC = () => {
                             Securely Wipe Your Devices with D-Secure
                         </h2>
                         <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                            D-Secure provides professional data erasure solutions that permanently wipe all storage media — ensuring safe donation of devices with tamper-proof compliance certificates.
+                            D-Secure provides professional data erasure solutions that permanently wipe all storage media — ensuring safe donation of devices with tamper-proof compliance reports and certificates.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link to="/contact" className="inline-block bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all text-lg">

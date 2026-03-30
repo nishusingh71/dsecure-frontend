@@ -50,7 +50,7 @@ const AutomatedErasureBlog: React.FC = () => {
                                 <li>• Operator mistakes and inconsistency</li>
                                 <li>• Time-intensive setup per device</li>
                                 <li>• Difficulty tracking 100s of devices</li>
-                                <li>• Certificate generation delays</li>
+                                <li>• Compliance report/certificate generation delays</li>
                                 <li>• No real-time visibility</li>
                             </ul>
                         </div>
@@ -60,7 +60,7 @@ const AutomatedErasureBlog: React.FC = () => {
                                 <li>• Consistent, repeatable results</li>
                                 <li>• Hands-off operation after setup</li>
                                 <li>• Centralized dashboard for all devices</li>
-                                <li>• Instant certificate generation</li>
+                                <li>• Instant compliance report generation</li>
                                 <li>• Live status updates and alerts</li>
                             </ul>
                         </div>
@@ -125,14 +125,14 @@ const AutomatedErasureBlog: React.FC = () => {
                         </div>
 
                         <div className="bg-teal-50 border border-teal-200 p-6 rounded-lg">
-                            <h3 className="text-xl font-bold text-teal-900 mb-3">4. Automated Verification & Certification</h3>
+                            <h3 className="text-xl font-bold text-teal-900 mb-3">4. Automated Verification & Compliance Reporting</h3>
                             <p className="text-slate-700 mb-3">
-                                Automatically verify erasure success and generate compliance certificates without manual review.
+                                Automatically verify erasure success and generate Tamper-proof audit reports with certificate without manual review.
                             </p>
                             <ul className="space-y-1 text-sm text-slate-700 ml-4">
                                 <li>• Real-time verification during erasure</li>
                                 <li>• Automatic retry on verification failure</li>
-                                <li>• Instant certificate generation upon success</li>
+                                <li>• Instant compliance report generation upon success</li>
                                 <li>• Automated email delivery to stakeholders</li>
                                 <li>• Integration with asset management systems</li>
                             </ul>
@@ -169,8 +169,8 @@ const AutomatedErasureBlog: React.FC = () => {
                             <div className="flex items-start gap-4">
                                 <div className="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
                                 <div>
-                                    <h4 className="font-bold text-slate-900">Verification & Certification</h4>
-                                    <p className="text-sm text-slate-600">Auto-verify success → Generate certificate → Update asset inventory → Send notifications</p>
+                                    <h4 className="font-bold text-slate-900">Verification & Compliance Reporting</h4>
+                                    <p className="text-sm text-slate-600">Auto-verify success → Generate Tamper-proof audit report with certificate → Update asset inventory → Send notifications</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">

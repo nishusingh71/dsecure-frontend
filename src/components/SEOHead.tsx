@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SEOMetadata, formatStructuredData } from '@/utils/seo';
+import { SEOMetadata, formatStructuredData, generateBreadcrumbSchema } from '@/utils/seo';
 
 interface SEOHeadProps {
   seo?: SEOMetadata;
@@ -17,9 +17,17 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
   const effectiveSeo: SEOMetadata = seo || {
     title: title || '',
     description: description || '',
-    canonicalUrl: canonicalUrl || '',
+    canonicalUrl: canonicalUrl || 'https://dsecuretech.com',
     keywords: '', // Default fallbacks handled or empty
   };
+
+  // Step-by-step canonical normalization
+  let normalizedPath = effectiveSeo.canonicalUrl;
+  if (!normalizedPath.startsWith('http')) {
+    const prefix = normalizedPath.startsWith('/') ? '' : '/';
+    normalizedPath = `https://dsecuretech.com${prefix}${normalizedPath}`;
+  }
+  const finalCanonical = normalizedPath.toLowerCase().replace(/\/$/, ""); // Canonical should be lowercase and without trailing slash for consistency
 
   return (
     <Helmet>
@@ -29,7 +37,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
       <meta name="keywords" content={effectiveSeo.keywords} />
 
       {/* Canonical URL */}
-      <link rel="canonical" href={effectiveSeo.canonicalUrl} />
+      <link rel="canonical" href={finalCanonical} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={effectiveSeo.ogType || "website"} />
@@ -42,7 +50,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
         content={effectiveSeo.ogDescription || effectiveSeo.description}
       />
       <meta property="og:image" content={effectiveSeo.ogImage} />
-      <meta property="og:url" content={effectiveSeo.canonicalUrl} />
+      <meta property="og:url" content={finalCanonical} />
       <meta property="og:site_name" content="D-Secure Tech" />
       <meta property="og:locale" content="en_US" />
 
@@ -80,7 +88,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
       {effectiveSeo.structuredData && (
         Array.isArray(effectiveSeo.structuredData) 
           ? effectiveSeo.structuredData.map((schema, index) => (
-              <script key={index} type="application/ld+json">
+              <script key={`schema-${index}`} type="application/ld+json">
                 {formatStructuredData(schema)}
               </script>
             ))
@@ -89,6 +97,13 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
               {formatStructuredData(effectiveSeo.structuredData)}
             </script>
           )
+      )}
+
+      {/* Breadcrumb Structured Data */}
+      {effectiveSeo.breadcrumbs && effectiveSeo.breadcrumbs.length > 0 && (
+        <script type="application/ld+json">
+          {formatStructuredData(generateBreadcrumbSchema(effectiveSeo.breadcrumbs))}
+        </script>
       )}
 
       {/* Additional Head Elements for Performance & SEO */}

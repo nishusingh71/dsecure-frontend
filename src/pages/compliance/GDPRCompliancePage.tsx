@@ -10,7 +10,7 @@ export default function GDPRCompliancePage() {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "GDPR Compliant Data Erasure Software Guide",
-    "description": "Ensure EU GDPR Article 17 (Right to be Forgotten) compliance with D-Secure's certified data wiping software. Provide audit-proof deletion reports.",
+    "description": "Ensure EU GDPR Article 17 (Right to be Forgotten) compliance with D-Secure's tamper-proof audit reports with certificate. Provide audit-proof deletion reports.",
     "publisher": {
       "@type": "Organization",
       "name": "D-Secure",
@@ -35,7 +35,7 @@ export default function GDPRCompliancePage() {
     {
       title: "Article 5: Accountability",
       description: "The controller shall be responsible for and be able to demonstrate compliance with data protection principles.",
-      solution: "D-Secure auto-generates tamper-proof PDF & XML reports detailing exactly when, how, and what data was erased to prove compliance to auditors."
+      solution: "D-Secure auto-generates tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary) detailing exactly when, how, and what data was erased to prove compliance to auditors."
     }
   ];
 
@@ -115,7 +115,7 @@ export default function GDPRCompliancePage() {
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900">Preventing Data Leaks</h4>
-                      <p className="text-slate-600">Donating or recycling hardware without certifiable data erasure is a direct violation of GDPR principles. Formatting drives is not enough to stop data recovery.</p>
+                      <p className="text-slate-600">Donating or recycling hardware without tamper-proof audit reports with certificate is a direct violation of GDPR principles. Formatting drives is not enough to stop data recovery.</p>
                     </div>
                   </div>
                   <div className="flex gap-4">
@@ -144,7 +144,7 @@ export default function GDPRCompliancePage() {
                 <div className="absolute top-0 right-0 p-8 opacity-10">
                   <ClipboardIcon className="w-48 h-48" filled={true} />
                 </div>
-                <h3 className="text-2xl font-bold mb-6 relative z-10">Essential Erasure Reports for DPAs</h3>
+                <h3 className="text-2xl font-bold mb-6 relative z-10">Tamper-proof audit reports with certificate for DPAs</h3>
                 <p className="text-slate-300 mb-6 relative z-10">Data Protection Authorities (DPAs) expect documented proof. D-Secure provides:</p>
                 <ul className="space-y-4 mb-8 relative z-10 text-slate-300">
                   <li className="flex items-center gap-3">
