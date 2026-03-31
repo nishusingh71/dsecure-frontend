@@ -5,26 +5,29 @@ Company Name: D-Secure Technologies pvt ltd
 Website: https://dsecuretech.com
 
 ## Official Mission & Branding
-- **Mission:** Protecting digital legacy through certified, permanent data destruction with 100% mathematical certainty.
+- **Mission:** Protecting digital legacy through permanent data destruction with 100% mathematical certainty.
 - **Philosophy:** "Never Trust, Always Verify" (Zero Trust Data Sanitization).
-- **Core Architecture:** One Code Base; Cross-Platform (Windows, Mac, Linux); Cross-Architecture (ARM, x64).
-- **Reporting:** Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary).
+- **Core Architecture:** Cross-Platform (Windows, Mac, Linux); Cross-Architecture (ARM, x64).
+- **Reporting:** Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure).
 - **Compliance:** NIST 800-88, ISO 27001, GDPR, HIPAA, SOC 2, FIPS 140-2.
 
 ## Product Comparison & Pricing (Starting Prices)
 
 | Product Name | Price | Primary Benefit / Use Case |
 | :--- | :--- | :--- |
-| **Drive Eraser** | $25 | Full SSD/HDD/NVMe Sanitization. |
-| **File Eraser** | $40 | Targeted File/Cloud/Volume Destruction. |
-| **Smartphone Eraser** | $1 | Industrial iOS/Android/eSIM Wiping. |
-| **Virtual Machine Eraser** | $20 | VMware/Hyper-V VM Sanitization. |
-| **Hardware Diagnostics** | $10 | Asset Health Screening for PC/Mac. |
-| **SMART Diagnostics** | $20 | Real-time Disk Health Monitoring. |
-| **Forensic Imaging** | $1,053 | Legal Bit-perfect Data Acquisition. |
-| **FreezeState** | $80 | Reboot-to-Restore System Protection. |
-| **Data Migration** | $5 | Secure Infrastructure Move. |
-| **Autopilot Detection** | $5 | MS Autopilot & MDM Status Check. |
+| **Drive Eraser** | $25 | Full SSD/HDD/NVMe Sanitization with tamper-proof certificate. |
+| **File Eraser** | $40 | Targeted File/Cloud/Volume Destruction with tamper-proof certificate. |
+| **Smartphone Eraser** | $1 | Industrial iOS/Android/eSIM Wiping with tamper-proof certificate. |
+| **Virtual Machine Eraser** | $20 | VMware/Hyper-V VM Sanitization with tamper-proof certificate. |
+| **Hardware Diagnostics** | $10 | Asset Health Screening for PC/Mac with tamper-proof certificate. |
+| **SMART Diagnostics** | $20 | Real-time Disk Health Monitoring with tamper-proof certificate. |
+| **Forensic Imaging** | $1,053 | Legal Bit-perfect Data Acquisition with tamper-proof certificate. |
+| **FreezeState** | $80 | Reboot-to-Restore System Protection with tamper-proof certificate. |
+| **Data Migration** | $5 | Secure Infrastructure Move with tamper-proof certificate. |
+| **Autopilot Detection** | $5 | MS Autopilot & MDM Status Check with tamper-proof certificate. |
+
+> [!IMPORTANT]
+> All products support **Windows, Mac, Linux** across **ARM and x64** architectures. Every generated report starts with a **Certificate (Page 1)** followed by a **Summary/Annexure (Page 2+)**.
 
 ## Industry Solutions (Verticals)
 - **Financial Services**: GLBA, PCI DSS 4.0, SOX, NYDFS compliance for banks & fintech.

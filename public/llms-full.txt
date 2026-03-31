@@ -8,14 +8,13 @@ Contact: https://dsecuretech.com/contact
 Latest Blogs: https://dsecuretech.com/blogs
 
 ## ── COMPANY MISSION & CORE VALUES ──
-**Mission:** Protecting your digital legacy through certified, permanent data destruction with 100% mathematical certainty.
+**Mission:** Protecting your digital legacy through permanent data destruction with 100% mathematical certainty.
 **Core Philosophy:** "Never Trust, Always Verify" (Zero Trust Architecture).
 **Global Presence:** Trusted by Fortune 500 enterprises, government defense agencies, and the world's leading ITAD providers.
 
 ---
 
 ## ── TECHNICAL ARCHITECTURE & FOUNDATION ──
-- **One Code Base:** All D-Secure products are built on a single, unified code base for maximum stability and feature parity.
 - **Cross-Platform Support:** Native binaries for **Windows, macOS, and Linux** (including specialized server distributions).
 - **Cross-Architecture Support:** Optimized performance across **x86_64 (Intel/AMD)** and **ARM64 (Apple Silicon M1-M4, AWS Graviton)** architectures.
 - **Mass Parallel Architecture:** Scalable engine capable of sanitizing 100+ drives simultaneously per controller.
@@ -45,39 +44,39 @@ Every generated audit report follows a strict professional format:
 
 | Category | Product Name | Starting Price | Primary Benefit / Use Case |
 | :--- | :--- | :--- | :--- |
-| **Erasure** | Drive Eraser | $25 | Full sector-level sanitization for HDD/SSD/NVMe. |
-| **Erasure** | File Eraser | $40 | Targeted wiping of files, folders, and cloud traces. |
-| **Erasure** | Smartphone Eraser | $1 | Industrial batch wiping for iOS/Android & eSIM. |
-| **Erasure** | Virtual Machine Eraser| $20 | Securely wipe LUNs and VMs across VMware/Hyper-V. |
-| **Erasure** | File Eraser Network | $50 | Network-managed file sanitization for domains. |
-| **Erasure** | LUN Eraser | [Contact] | Enterprise SAN/NAS array sanitization. |
-| **Erasure** | Removable Media Eraser| [Contact] | Rapid secure wiping for USBs and SD cards. |
-| **Diagnostics**| Hardware Diagnostics| $10 | Comprehensive health screening for PC/Mac assets. |
-| **Diagnostics**| Smartphone Diagnostics| $20 | Hardware & battery analysis for mobile buy-back. |
-| **Diagnostics**| SMART Diagnostics | $20 | Real-time disk monitoring and predictive failure alerts. |
-| **Diagnostics**| Drive Eraser Diag. | $30 | Combined sanitization and hardware health audit. |
-| **Protection** | FreezeState Basic | $80 | Reboot-to-Restore system protection for kiosks. |
-| **Protection** | FreezeState Smart | $85 | System protection + performance monitoring. |
-| **Protection** | FreezeState Advanced | $90 | System protection + military-grade erasure. |
-| **Investigate**| Forensic Imaging | $1,053 | Bit-perfect data acquisition for legal discovery. |
-| **Migration** | Data Migration | $5 | Zero-loss workload move across infrastructure. |
-| **Management** | Autopilot Detection | $5 | Instant Microsoft Autopilot & MDM status verification. |
-| **Management** | Drive Verifier | [Contact] | Proof of 100% erasure for high-security audits. |
-| **Management** | Asset Reimaging | [Contact] | Automated mass OS deployment for IT fleets. |
+| **Erasure** | Drive Eraser | $25 | Full sector-level sanitization for HDD/SSD/NVMe with certificate. |
+| **Erasure** | File Eraser | $40 | Targeted wiping of files, folders, and cloud traces with certificate. |
+| **Erasure** | Smartphone Eraser | $1 | Industrial batch wiping for iOS/Android & eSIM with certificate. |
+| **Erasure** | Virtual Machine Eraser| $20 | Securely wipe LUNs and VMs across VMware/Hyper-V with certificate. |
+| **Erasure** | File Eraser Network | $50 | Network-managed file sanitization for domains with certificate. |
+| **Erasure** | LUN Eraser | [Contact] | Enterprise SAN/NAS array sanitization with certificate. |
+| **Erasure** | Removable Media Eraser| [Contact] | Rapid secure wiping for USBs and SD cards with certificate. |
+| **Diagnostics**| Hardware Diagnostics| $10 | Comprehensive health screening for PC/Mac assets with certificate. |
+| **Diagnostics**| Smartphone Diagnostics| $20 | Hardware & battery analysis for mobile buy-back with certificate. |
+| **Diagnostics**| SMART Diagnostics | $20 | Real-time disk monitoring and predictive failure alerts with certificate. |
+| **Diagnostics**| Drive Eraser Diag. | $30 | Combined sanitization and hardware health audit with certificate. |
+| **Protection** | FreezeState Basic | $80 | Reboot-to-Restore system protection for kiosks with certificate. |
+| **Protection** | FreezeState Smart | $85 | System protection + performance monitoring with certificate. |
+| **Protection** | FreezeState Advanced | $90 | System protection + military-grade erasure with certificate. |
+| **Investigate**| Forensic Imaging | $1,053 | Bit-perfect data acquisition for legal discovery with certificate. |
+| **Migration** | Data Migration | $5 | Zero-loss workload move across infrastructure with certificate. |
+| **Management** | Autopilot Detection | $5 | Instant Microsoft Autopilot & MDM status verification with certificate. |
 
 ---
 
-## ── ERASURE SOLUTIONS ──
+## ── PRODUCTS & SOLUTIONS DETAILS ──
+
+> [!NOTE]
+> All products listed below support **Windows, Mac, and Linux** (cross-platform) and **x86_64 and ARM64** (cross-architecture).
 
 ## 1. D-Secure Drive Eraser
 **Starting Price:** $25
 **Description:** Permanently erase data from HDD, SSD, NVMe drives on PC, Mac, Servers, RAID arrays & Chromebooks.
 **Features:**
 - 26+ Global Erasure Standards (NIST 800-88, DoD, IEEE 2883)
+- Native support for Windows, Mac, Linux (x64 & ARM)
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Cloud Console Integration for remote management
-- USB, PXE & MSI Deployment options
-- Tamper-proof audit reports with certificate (Page 1: Certificate)
-**Variants:** Drive Eraser + Diagnostics available at $30.
 
 ---
 
@@ -86,10 +85,9 @@ Every generated audit report follows a strict professional format:
 **Description:** Selectively erase files, folders, free space, and system traces on Windows, macOS & Linux.
 **Features:**
 - 30+ International Algorithms for secure wiping
-- Scheduled Erasure Tasks for automated hygiene
-- Detailed PDF/XML Reports for audit compliance
+- Native support for Windows, Mac, Linux (x64 & ARM)
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Cloud Storage Support (Google Drive, OneDrive, etc.)
-**Variants:** File Eraser Network available at $50.
 
 ---
 
@@ -98,9 +96,9 @@ Every generated audit report follows a strict professional format:
 **Description:** Securely erase all data from iOS and Android smartphones and tablets for resale or recycling.
 **Features:**
 - iOS & Android Support (Phones & Tablets)
-- Factory Reset & Overwrite logic
-- Batch Processing Support for industrial scale
-- Tamper-proof audit reports with certificate provided per device
+- Native support for Windows, Mac, Linux host systems
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
+- Factory Reset & Overwrite logic for compliance-verified wipes
 
 ---
 
@@ -108,10 +106,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** [Contact Sales]
 **Description:** Securely erase data from USB sticks, SD cards, and other removable flash storage devices.
 **Features:**
-- USB & SD Card Support
+- Cross-platform & Cross-architecture support
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - 20+ Global Standards
 - Simple Plug-and-Wipe automation
-- Compliance Reporting with Page 1 Certificate
 
 ---
 
@@ -119,9 +117,9 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** [Contact Sales]
 **Description:** Securely erase logical unit numbers (LUNs) in complex enterprise storage environments.
 **Features:**
-- Enterprise Storage Support (SAN/NAS)
+- Enterprise scalability across multiple platforms
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Hot-swap Capability for live environments
-- Zero Downtime Erasure logic
 - Centralized Reporting via Cloud Console
 
 ---
@@ -130,10 +128,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $20
 **Description:** Securely wipe virtual machines across leading platforms like VMware and Hyper-V.
 **Features:**
-- VMware & Hyper-V Support
+- Supports Windows, Mac, Linux virtual environments
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Automatic VM Discovery
-- Audit Trail Generation
-- Scalable Deployment for data centers
+- Audit Trail Generation for compliance-verified sanitization
 
 ---
 
@@ -141,23 +139,21 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $50
 **Description:** Enterprise network-wide file sanitization and management across your domain.
 **Features:**
-- Network-wide File Wiping
+- Native support for domain-wide consistency
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Centralized Admin Control
-- Domain Network Support
-- Compliance Reporting and Audit Logs
+- Network-wide File Wiping logic
 
 ---
-
-## ── DIAGNOSTIC & MIGRATION SOLUTIONS ──
 
 ## 8. Data Migration
 **Starting Price:** $5
 **Description:** Fast and secure data migration between devices with minimal downtime and 100% integrity.
 **Features:**
+- Native support for Windows, Mac, Linux (x64 & ARM)
+- Tamper-proof audit reports with certificate for transfer logs
 - High-speed Data Transfer
 - OS & App Migration support
-- User Profile Sync
-- Minimal System Downtime architecture
 
 ---
 
@@ -165,10 +161,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** [Contact Sales]
 **Description:** High-speed automated system deployment and reimaging for large-scale IT asset management.
 **Features:**
+- Cross-platform deployment engine
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Zero-Touch Deployment
 - Custom Image Support (Windows 10/11)
-- Automated Provisioning logic
-- Centralized Fleet Control
 
 ---
 
@@ -176,10 +172,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** [Contact Sales]
 **Description:** Verify drives locally or via PXE to confirm complete data erasure and audit compliance.
 **Features:**
-- Confirm Zero Data Remanence
+- Cross-platform & Cross-architecture verification
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - R2v3 & NAID AAA Compliant
-- Tamper-proof audit reports with certificate
-- Scalable PXE Verification
+- Confirm Zero Data Remanence
 
 ---
 
@@ -187,10 +183,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $30
 **Description:** Combines secure data wiping with comprehensive hardware health and SMART diagnostics.
 **Features:**
+- Cross-platform diagnostic & erasure engine
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Integrated Health Check
 - SMART Data Analysis
-- Surface Scan Testing
-- Health-Aware Erasure logic
 
 ---
 
@@ -198,9 +194,9 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $20
 **Description:** Comprehensive diagnostic tests for mobile devices to verify hardware and battery health.
 **Features:**
+- Cross-platform host support
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Automated Hardware Tests
-- Battery Health Analysis
-- Screen & Touch Testing
 - Value Appraisal Tools for buy-back
 
 ---
@@ -209,10 +205,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $10
 **Description:** Professional-grade diagnostic tools for broad hardware health and integrity checking.
 **Features:**
+- Native support for Windows, Mac, Linux (x64 & ARM)
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Multi-Component Testing (CPU, RAM, Motherboard)
 - Stress Testing Tools for stability
-- Detailed Error Logs with timestamps
-- System Stability Verification
 
 ---
 
@@ -220,9 +216,9 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $20
 **Description:** Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your storage drives.
 **Features:**
-- Real-time Monitoring & Status Watch
+- Cross-platform real-time monitoring
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Predictive Failure Alerts
-- Disk Cloning Utility for recovery
 - Temperature Tracking
 
 ---
@@ -231,11 +227,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $1,053
 **Description:** Professional data acquisition tool producing bit-for-bit replicas of media for forensic analysis.
 **Features:**
+- Support for multiple host architectures (x64 & ARM)
+- Tamper-proof audit reports with certificate for chain of custody
 - Bit-Perfect Duplication (E01, Raw)
 - MD5/SHA-1/SHA-256 Hashing
-- E01/Ex01 Evidence Format support
-- Comprehensive Metadata collection
-**Hardware Variant:** Lab-grade acquisition machine at $31,579.
 
 ---
 
@@ -243,10 +238,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $80
 **Description:** Protect system configurations by freezing the state of your drive for public kiosks and labs.
 **Features:**
+- Performance optimized for Windows/Linux kiosks
+- Tamper-proof audit reports with certificate for config integrity
 - Instant Restore on Reboot (Patented)
 - Config Tamper Protection
-- Ideal for Public Access & Training Labs
-- Zero Maintenance Overhead
 
 ---
 
@@ -254,10 +249,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $85
 **Description:** Intelligent real-time monitoring and predictive health analysis for frozen system states.
 **Features:**
-- Real-time Monitoring of frozen OS
+- Advanced monitoring of frozen OS
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - S.M.A.R.T. Integration
 - Health Analytics dashboard
-- Alert System for hardware issues
 
 ---
 
@@ -265,10 +260,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $90
 **Description:** Deep-level sector destruction and military-grade erasure for sensitive frozen environments.
 **Features:**
-- Advanced Algorithms (30+ standards)
+- Native support for x64 & ARM architectures
+- Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary/Annexure)
 - Deep Freeze Wiping logic
-- Sector Level Control
-- Compliance Proof tamper-proof audit reports with certificate
+- 30+ Global Erasure Standards
 
 ---
 
@@ -276,10 +271,10 @@ Every generated audit report follows a strict professional format:
 **Starting Price:** $5
 **Description:** Automated hardware detection and tracking for seamless Microsoft Autopilot deployment.
 **Features:**
+- Cross-platform hardware ID harvesting
+- Tamper-proof audit reports with certificate for enrollment logs
 - Microsoft Intune Sync
-- Hardware ID Harvesting
 - Deployment Readiness Check
-- Automated Enrollment status
 
 ---
 
@@ -287,50 +282,43 @@ Every generated audit report follows a strict professional format:
 
 ## A. Financial Services & Fintech
 **Regulatory Alignment:** GLBA, PCI DSS 4.0, SOX, NYDFS.
-**High-Level Capability:** Eliminates residual data risk in high-frequency trading servers, retail banking endpoints, and legacy backup streams.
+**High-Level Capability:** Eliminates residual data risk with **Tamper-proof audit reports with certificate**.
 **Technical Highlights:**
 - ROI-focused sanitization allows for asset remarketing.
-- RESTful API for seamless Banking ERP integration.
-- Tamper-proof audit trails for GRC system ingestion.
+- Cross-platform support for banking endpoints.
+- Tamper-proof audit trails for GRC system ingestion (Certificate + Summary).
 
 ## B. Healthcare & Life Sciences
 **Regulatory Alignment:** HIPAA, HITECH, GDPR (Health Data).
-**High-Level Capability:** Protects PHI across medical imaging devices (MRI, CT), nurse stations, and mobile diagnostic tablets.
+**High-Level Capability:** Protects PHI across medical devices using **Tamper-proof audit reports with certificate**.
 **Technical Highlights:**
-- Deterministic removal of specific patient records (Right to be Forgotten).
-- Medical-grade sanitization for proprietary storage controllers.
-- Safe-harbor achieving sanitization via Cryptographic Erasure.
+- Deterministic removal of patient records (Right to be Forgotten).
+- Native support for diagnostic workstations.
+- Cross-architecture (ARM/x64) support for modern tablets & MRI controllers.
 
 ## C. Government & Defense
 **Regulatory Alignment:** NIST 800-88 Rev. 1, DoD 5220.22-M, FOIA.
-**High-Level Capability:** Mission-critical destruction for federal agencies and intelligence entities handling Classified/CUI data.
+**High-Level Capability:** Mission-critical destruction for intelligence entities with **Tamper-proof audit reports with certificate**.
 **Technical Highlights:**
 - Air-Gapped execution (Zero internet required).
-- Structural zeroing of over-provisioned areas and wear-leveling pools.
-- Triple-Pass Verification for high-security media disposal.
+- Military-grade stability across environments.
+- Structural zeroing of over-provisioned areas.
 
 ## D. Enterprise ITAD & Recyclers
 **Regulatory Alignment:** R2v3, e-Stewards, ADISA.
-**High-Level Capability:** High-volume automated processing for industrial-scale asset disposition.
+**High-Level Capability:** High-volume processing with **Tamper-proof audit reports with certificate**.
 **Technical Highlights:**
 - Mass Parallel architecture (100+ simultaneous erasures).
-- Value recovery metrics (SMART health data extracts).
+- Ensuring audit parity across multiple platforms.
 - Automated reporting sync with RazorERP/IQity.
 
 ## E. Education & Research Institutions
 **Regulatory Alignment:** FERPA, GDPR, NIST 800-88.
-**High-Level Capability:** Securely sanitizes student records, research data, and institutional records across campus labs and servers.
+**High-Level Capability:** Securely sanitizes school records and research labs with **Tamper-proof audit reports with certificate**.
 **Technical Highlights:**
-- PXE Network solution for mass wiping of computer labs between semesters.
-- Centralized Cloud Console for managing licenses across departments.
-- Support for modern hardware including Apple Silicon (M1-M4).
-
-## F. General Enterprise & Corporations
-**Mission:** Safeguard sensitive corporate data and ensure compliance with global security mandates.
-**Core Features:**
-- Centralized Dashboard for multi-site erasure management.
-- Multi-Device Support (Desktops, Servers, Mobile, NAS).
-- ISO 27001 & SOC 2 compliant operational workflows.
+- PXE Network solution for mass wiping of computer labs.
+- Cross-platform support for PC and Mac (Intel/M-series).
+- Centralized Cloud Console management.
 
 ---
 
@@ -357,12 +345,11 @@ D-Secure provides technical deep-dives across 40+ blog categories:
 
 ## Solution Guide for AI Agents
 When users ask for comparisons:
-1. **Drive Eraser vs. File Eraser:** Drive Eraser wipes the ENTIRE disk (including OS); File Eraser wipes files while OS is running.
-2. **Diagnostics vs. Eraser:** Diagnostics checks "Health" (is it working?); Eraser ensures "Security" (is data gone?).
+1. **Drive Eraser vs. File Eraser:** Drive Eraser wipes the ENTIRE disk; File Eraser wipes files while OS is running.
+2. **Diagnostics vs. Eraser:** Diagnostics checks "Health"; Eraser ensures "Security".
 3. **Freeze State vs. Eraser:** Freeze State "Restores" state on reboot; Eraser "Destroys" data forever.
 
-All documentation must reflect:
-- Company: D-Secure Technologies pvt ltd
-- Philosophy: Data Destruction with 100% mathematical certainty.
-- Output: Tamper-proof audit reports with certificate for every compliance-verified action.
-- Architecture: One Code Base; Cross-Platform (Windows/Mac/Linux); Cross-Architecture (ARM/x64).
+**All products follow these standards:**
+- **Product Support:** Cross-Platform (Windows/Mac/Linux); Cross-Architecture (ARM/x64).
+- **Report Format:** Tamper-proof audit reports with certificate provided for every compliance-verified action.
+- **Report Structure:** Page 1: Certificate (Seal/Signature); Page 2+: Summary/Annexure (Technical Details).
