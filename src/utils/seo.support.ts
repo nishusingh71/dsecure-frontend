@@ -131,4 +131,40 @@ export const SUPPORT_SEO: Record<string, Partial<SEOMetadata>> = {
       { name: "Cryptographic Erasure", item: "/support/manual/cryptographic-erasure" },
     ],
   },
+  "support/manual/performance-optimization": {
+    title: "Performance Optimization | D-Secure Speed & Efficiency Guide",
+    description: "Comprehensive guide to optimizing D-Secure performance. Maximize erasure speed, system efficiency, and throughput with expert techniques.",
+    keywords: generateKeywords(["D-Secure performance", "erasure speed", "system tuning", "hardware acceleration"]),
+    canonicalUrl: getCanonicalUrl("/support/manual/performance-optimization"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Manual", item: "/support/manual" },
+      { name: "Performance Optimization", item: "/support/manual/performance-optimization" },
+    ],
+  },
+  "support/manual/user-interface": {
+    title: "User Interface Guide | D-Secure Interface Masterclass",
+    description: "Complete guide to D-Secure's user interface. Learn to navigate dashboards, manage operations, and generate reports efficiently.",
+    keywords: generateKeywords(["D-Secure interface", "UI guide", "dashboard navigation", "erasure operations"]),
+    canonicalUrl: getCanonicalUrl("/support/manual/user-interface"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Manual", item: "/support/manual" },
+      { name: "User Interface", item: "/support/manual/user-interface" },
+    ],
+  },
+  "support/manual/quickstart": {
+    title: "Quick Start Guide | Start Data Erasure in 10 Minutes",
+    description: "Get up and running with D-Secure quickly. Your first data erasure operation explained step-by-step for rapid deployment.",
+    keywords: generateKeywords(["quick start", "D-Secure setup", "fast track erasure", "getting started"]),
+    canonicalUrl: getCanonicalUrl("/support/manual/quickstart"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Manual", item: "/support/manual" },
+      { name: "Quick Start", item: "/support/manual/quickstart" },
+    ],
+  },
 };

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
 import { blogPosts } from "@/data/blogPosts";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { 
   ShieldIcon, 
   ServerIcon, 
@@ -197,6 +199,7 @@ const BlogPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+      <SEOHead seo={getSEOForPage("blog")} />
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 border-b border-slate-100">
         <Reveal>

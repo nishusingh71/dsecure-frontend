@@ -1810,23 +1810,7 @@ export default function AdminDashboard() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-dashboard")} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin" />
-        <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
-        </title>
-        <meta
-          name="description"
-          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
@@ -7623,6 +7607,12 @@ export default function AdminDashboard() {
                         </p>
                         <Link
                           to="/download?product=file-eraser"
+                          onClick={(e) => {
+                            if (isDemo) {
+                              e.preventDefault();
+                              showInfo("Demo Restricted", "Software downloads are not available in demo accounts. Please create a real account.");
+                            }
+                          }}
                           className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-lg transition-all"
                         >
                           <svg
@@ -7674,6 +7664,12 @@ export default function AdminDashboard() {
                         </p>
                         <Link
                           to="/download?product=drive-eraser"
+                          onClick={(e) => {
+                            if (isDemo) {
+                              e.preventDefault();
+                              showInfo("Demo Restricted", "Software downloads are not available in demo accounts. Please create a real account.");
+                            }
+                          }}
                           className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg transition-all"
                         >
                           <svg

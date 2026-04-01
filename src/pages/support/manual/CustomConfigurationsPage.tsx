@@ -6,7 +6,12 @@ import Reveal from "@/components/Reveal";
 const CustomConfigurationsPage: React.FC = memo(() => {
     return (
         <>
-            <SEOHead seo={getSEOForPage('help-manual')} />
+            <SEOHead 
+        seo={getSEOForPage("help-manual", { 
+          title: "Custom Configurations | D-Secure Manual", 
+          canonicalUrl: "/support/manual/custom-configurations" 
+        })} 
+      />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}

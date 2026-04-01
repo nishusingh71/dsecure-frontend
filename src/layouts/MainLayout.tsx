@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
+import PageLoadingSkeleton from "@/components/PageLoadingSkeleton";
 import {
   Zap,
   Smartphone,
@@ -14,8 +15,6 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
-import SEOHead from "@/components/SEOHead";
-import { getSEOForPage } from "@/utils/seo";
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
 import ScrollToTopComponent from "@/components/ScrollToTop";
 import { useTranslation } from "react-i18next";
@@ -121,7 +120,6 @@ export default function MainLayout() {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage("home")} />
       <div className="min-h-dvh flex flex-col">
         <header
           className={`border-b sticky top-0 z-50 transition-all duration-300 ${
@@ -964,8 +962,8 @@ export default function MainLayout() {
                               </Link>
 
                               {/* Banking & Finance */}
-                              <Link
-                                to="/solutions/financial"
+                                <Link
+                                  to="/solutions/data-erasure-banking-finance"
                                 className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
                                 onClick={() => setSolutionsDropdownOpen(false)}
                               >
@@ -1545,7 +1543,7 @@ export default function MainLayout() {
                   <div className="ml-8 space-y-1 border-l-2 border-emerald-200 pl-4">
                     {[
                       { to: "/solutions/enterprise", title: "Enterprise", desc: "Corporate Security", color: "from-brand to-emerald-600" },
-                      { to: "/solutions/financial", title: "Banking & Finance", desc: "Compliance First", color: "from-emerald-500 to-teal-600" },
+                      { to: "/solutions/data-erasure-banking-finance", title: "Banking & Finance", desc: "Compliance First", color: "from-emerald-500 to-teal-600" },
                       { to: "/solutions/government", title: "Government", desc: "Public Sector", color: "from-blue-500 to-indigo-600" },
                       { to: "/solutions/healthcare", title: "Healthcare", desc: "HIPAA & GDPR", color: "from-cyan-500 to-blue-600" },
                       { to: "/solutions/education", title: "Education", desc: "Academic Privacy", color: "from-emerald-400 to-teal-500" },
@@ -1737,7 +1735,10 @@ export default function MainLayout() {
           )}
         </header>
         <main className="flex-1">
-          <Outlet />
+          {/* Suspense wrapper sirf Outlet ke around — navbar/footer visible rahenge navigation ke time */}
+          <Suspense fallback={<PageLoadingSkeleton />}>
+            <Outlet />
+          </Suspense>
         </main>
         <footer className="mt-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
           {/* Background Pattern */}
@@ -1951,10 +1952,10 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/solutions/financial-services"
+                          to="/solutions/data-erasure-banking-finance"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Financial Services
+                          Banking & Finance
                         </Link>
                       </li>
                       <li>
@@ -1984,7 +1985,7 @@ export default function MainLayout() {
                     <ul className="space-y-4 text-slate-300">
                       <li>
                         <Link
-                          to="resources/documentation?type=documentation"
+                          to="/resources/documentation?type=documentation"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Documentation

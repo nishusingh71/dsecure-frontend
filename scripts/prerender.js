@@ -179,33 +179,135 @@ async function prerender() {
       appHtml = result.html;
       const { helmet } = result;
       
+      // SEO data extract karo — pehle Helmet context se, agar nahi mila toh body HTML ke data-seo-bridge se
+      let seoTitle = '';
+      let seoDescription = '';
+      let seoCanonical = '';
+      let seoOgTitle = '';
+      let seoOgDescription = '';
+      let seoOgImage = '';
+      let seoOgType = 'website';
+      let seoKeywords = '';
+      let helmetContent = '';
+      
       if (helmet) {
-        const helmetContent = [
-          helmet.title.toString(),
-          helmet.meta.toString(),
-          helmet.link.toString(),
-          helmet.script.toString(),
-          helmet.noscript.toString(),
-        ].filter(t => t && t.toString().length > 0).join('\n');
+        // Helmet context available hai — seedha use karo (ideal path)
+        const helmetTitle = helmet.title.toString();
+        const helmetMeta = helmet.meta.toString();
+        const helmetLink = helmet.link.toString();
+        const helmetScript = helmet.script.toString();
+        const helmetNoscript = helmet.noscript.toString();
         
-        // Robustly remove existing title using string indexing (regex can be flaky with large files/new-lines)
+        helmetContent = [helmetTitle, helmetMeta, helmetLink, helmetScript, helmetNoscript]
+          .filter(t => t && t.toString().length > 0).join('\n');
+        seoTitle = helmetTitle.replace(/<[^>]*>?/gm, '');
+      }
+      
+      // Agar Helmet empty hai ya nahi mila — body HTML se data-seo-bridge extract karo
+      // IMPORTANT: Multiple bridge divs ho sakte hain (MainLayout ka + page-specific ka)
+      // LAST bridge div page-specific hota hai, pehla MainLayout ka homepage default hota hai
+      if (!helmetContent || helmetContent.trim().length === 0) {
+        const allBridges = [...appHtml.matchAll(/<div\s+data-seo-bridge=""[^>]*\/?>/g)];
+        const lastBridge = allBridges.length > 0 ? allBridges[allBridges.length - 1][0] : null;
+        
+        if (lastBridge) {
+          // Last bridge div se saare data-seo-* attributes extract karo
+          const extractAttr = (attr) => {
+            const match = lastBridge.match(new RegExp(`${attr}="([^"]*)"`));
+            return match ? match[1] : '';
+          };
+          
+          seoTitle = extractAttr('data-seo-title');
+          seoDescription = extractAttr('data-seo-description');
+          seoCanonical = extractAttr('data-seo-canonical');
+          seoOgTitle = extractAttr('data-seo-og-title');
+          seoOgDescription = extractAttr('data-seo-og-description');
+          seoOgImage = extractAttr('data-seo-og-image');
+          seoOgType = extractAttr('data-seo-og-type') || 'website';
+          seoKeywords = extractAttr('data-seo-keywords');
+          
+          // Page-specific head tags manually build karo
+          const headTags = [];
+          if (seoTitle) headTags.push(`<title data-rh="true">${seoTitle}</title>`);
+          if (seoDescription) headTags.push(`<meta data-rh="true" name="description" content="${seoDescription}" />`);
+          if (seoKeywords) headTags.push(`<meta data-rh="true" name="keywords" content="${seoKeywords}" />`);
+          if (seoCanonical) headTags.push(`<link data-rh="true" rel="canonical" href="${seoCanonical}" />`);
+          if (seoOgType) headTags.push(`<meta data-rh="true" property="og:type" content="${seoOgType}" />`);
+          if (seoOgTitle) headTags.push(`<meta data-rh="true" property="og:title" content="${seoOgTitle}" />`);
+          if (seoOgDescription) headTags.push(`<meta data-rh="true" property="og:description" content="${seoOgDescription}" />`);
+          if (seoOgImage) headTags.push(`<meta data-rh="true" property="og:image" content="${seoOgImage}" />`);
+          if (seoCanonical) headTags.push(`<meta data-rh="true" property="og:url" content="${seoCanonical}" />`);
+          headTags.push(`<meta data-rh="true" property="og:site_name" content="D-Secure Tech" />`);
+          headTags.push(`<meta data-rh="true" property="og:locale" content="en_US" />`);
+          // Twitter tags
+          headTags.push(`<meta data-rh="true" name="twitter:card" content="summary_large_image" />`);
+          if (seoOgTitle) headTags.push(`<meta data-rh="true" name="twitter:title" content="${seoOgTitle}" />`);
+          if (seoOgDescription) headTags.push(`<meta data-rh="true" name="twitter:description" content="${seoOgDescription}" />`);
+          if (seoOgImage) headTags.push(`<meta data-rh="true" name="twitter:image" content="${seoOgImage}" />`);
+          if (seoCanonical) headTags.push(`<meta data-rh="true" name="twitter:url" content="${seoCanonical}" />`);
+          
+          helmetContent = headTags.join('\n    ');
+        }
+      }
+      
+      // Template ke default head tags hatao — page-specific se replace honge
+      if (helmetContent && helmetContent.trim().length > 0) {
+        // Title hatao
         const tStart = html.indexOf('<title>');
         const tEnd = html.indexOf('</title>', tStart);
         if (tStart !== -1 && tEnd !== -1) {
           html = html.substring(0, tStart) + html.substring(tEnd + 8);
         }
-
-        // Remove default meta tags
+        // Default meta tags hatao
         html = html.replace(/<meta\s+name=["']description["'][^>]*?\/?>/gi, '');
         html = html.replace(/<meta\s+name=["']keywords["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<link\s+rel=["']canonical["'][^>]*?\/?>/gi, '');
+        // Default OG tags hatao
+        html = html.replace(/<meta\s+property=["']og:title["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+property=["']og:description["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+property=["']og:url["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+property=["']og:image["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+property=["']og:type["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+property=["']og:site_name["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+property=["']og:locale["'][^>]*?\/?>/gi, '');
+        // Default Twitter tags hatao
+        html = html.replace(/<meta\s+name=["']twitter:title["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+name=["']twitter:description["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+name=["']twitter:url["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+name=["']twitter:image["'][^>]*?\/?>/gi, '');
+        html = html.replace(/<meta\s+name=["']twitter:card["'][^>]*?\/?>/gi, '');
         
-        // Inject helmet content before </head>
-        html = html.replace('</head>', `${helmetContent}\n</head>`);
-        
-        // Log title for verification (will show in terminal)
-        if (url.includes('freeze-state') && !url.includes('smart') && !url.includes('advanced')) {
-          console.log(`✅ [SEO] Frozen State Title: ${helmet.title.toString().replace(/<[^>]*>?/gm, '')}`);
+        // Page-specific tags inject karo </head> se pehle
+        html = html.replace('</head>', `    ${helmetContent}\n</head>`);
+      }
+      
+      // JSON-LD scripts ko body se extract karo aur head mein move karo
+      const jsonLdScripts = [...appHtml.matchAll(/<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)];
+      if (jsonLdScripts.length > 0) {
+        // Duplicate JSON-LD hatao (MainLayout + page dono se aa sakte hain) — unique by content
+        const uniqueJsonLd = new Set();
+        const jsonLdTags = [];
+        for (const match of jsonLdScripts) {
+          const content = match[1].trim();
+          if (content && !uniqueJsonLd.has(content)) {
+            uniqueJsonLd.add(content);
+            jsonLdTags.push(`<script type="application/ld+json">${content}</script>`);
+          }
         }
+        if (jsonLdTags.length > 0) {
+          html = html.replace('</head>', `    ${jsonLdTags.join('\n    ')}\n</head>`);
+        }
+        // Body se JSON-LD scripts hatao (ab head mein hain)
+        appHtml = appHtml.replace(/<script\s+type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g, '');
+      }
+      
+      // data-seo-bridge div ko final HTML se hatao — production mein zaroorat nahi
+      appHtml = appHtml.replace(/<div\s+data-seo-bridge=""[^>]*\/?>/g, '');
+      
+      // Verification log — har 50th route + homepage par dikhao
+      if (successCount % 50 === 0 || url === '/') {
+        const logTitle = seoTitle || '(no title)';
+        console.log(`✅ [SEO] ${url} → ${logTitle}`);
       }
       
       successCount++;
@@ -216,12 +318,23 @@ async function prerender() {
     }
 
     // Inject page content into the template's root div
-    html = html.replace(
-      /(<div id="root"[^>]*>)([\s\S]*?)(<\/div>)(?=\s*?<footer)/,
-      (_, p1, _p2, p3) => `${p1}${appHtml}${p3}`
-    );
+    // Simple approach: root div ke opening tag ke baad sab kuch replace karo
+    // closing </div> tak jo <footer se pehle ho
+    const rootDivStart = html.indexOf('<div id="root">');
+    if (rootDivStart !== -1) {
+      const contentStart = html.indexOf('>', rootDivStart) + 1;
+      // Footer element dhundho jo root div ke baad hai
+      const footerPos = html.indexOf('<footer', contentStart);
+      if (footerPos !== -1) {
+        // Footer se pehle wala </div> dhundho — woh root ka closing tag hai
+        const closingDivPos = html.lastIndexOf('</div>', footerPos);
+        if (closingDivPos > contentStart) {
+          html = html.substring(0, contentStart) + appHtml + html.substring(closingDivPos);
+        }
+      }
+    }
 
-    const filePath = url === '/' ? 'index.html' : `${url}/index.html`;
+    const filePath = url === '/' ? 'index.html' : (url.startsWith('/') ? `${url.substring(1)}.html` : `${url}.html`);
     const absoluteFilePath = toAbsolute(`dist/${filePath}`);
     const dir = path.dirname(absoluteFilePath);
     

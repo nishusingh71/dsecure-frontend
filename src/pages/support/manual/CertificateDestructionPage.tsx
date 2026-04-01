@@ -7,7 +7,12 @@ import { Link } from "react-router-dom";
 const CertificateDestructionPage: React.FC = memo(() => {
   return (
     <>
-      <SEOHead seo={getSEOForPage('help-manual')} />
+      <SEOHead 
+        seo={getSEOForPage("help-manual", { 
+          title: "Certificate Destruction | D-Secure Manual", 
+          canonicalUrl: "/support/manual/certificate-destruction" 
+        })} 
+      />
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
           <div className="container mx-auto px-4 max-w-7xl">

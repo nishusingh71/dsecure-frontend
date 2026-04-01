@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const PreInstallationPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-pre-installation")} />
-      <Helmet>
-        <title>Pre-Installation Checklist | D-Secure System Requirements</title>
-        <meta name="description" content="System requirements and preparation steps before installing D-Secure data erasure software." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-pre-installation", { 
+          title: "Pre Installation | D-Secure Manual", 
+          canonicalUrl: "/support/manual/pre-installation" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">

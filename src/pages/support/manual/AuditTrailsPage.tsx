@@ -1,21 +1,19 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 
 const AuditTrailsPage: React.FC = memo(() => {
  return (
  <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-audit-trails")} />
- <Helmet>
- <title>Audit Trails | D-Secure Manual</title>
- <meta
- name="description"
- content="D-Secure audit trails guide for maintaining detailed logs for compliance and forensic purposes."
- />
- </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-audit-trails", { 
+          title: "Audit Trails | D-Secure Manual", 
+          canonicalUrl: "/support/manual/audit-trails" 
+        })} 
+      />
+ 
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">

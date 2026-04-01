@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import OptimizedImage from '@/components/OptimizedImage';
@@ -268,23 +267,13 @@ const FirstTimeSetupPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-first-time-setup")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/first-time-setup"
-        />
-        <title>First Time Setup | D-Secure Activation & Configuration</title>
-        <meta
-          name="description"
-          content="Complete first-time setup guide for D-Secure. Learn how to activate, configure, and optimize your security system for maximum protection."
-        />
-        <meta
-          name="keywords"
-          content="D-Secure first time setup, activation guide, initial configuration, security setup"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-first-time-setup", { 
+          title: "First Time Setup | D-Secure Manual", 
+          canonicalUrl: "/support/manual/first-time-setup" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

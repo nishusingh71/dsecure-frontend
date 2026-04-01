@@ -1,5 +1,4 @@
 import React, { useState, memo } from "react";
-import { Helmet } from 'react-helmet-async';
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -271,25 +270,13 @@ const PhysicalDestructionPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-physical-destruction")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/physical-destruction"
-        />
-        <title>
-          Physical Destruction Methods | Ultimate Data Disposal Security
-        </title>
-        <meta
-          name="description"
-          content="Physical destruction methods for ultimate data security. Degaussing, shredding, crushing, and incineration for irreversible data disposal. NIST and DoD compliant."
-        />
-        <meta
-          name="keywords"
-          content="physical destruction, data destruction, degaussing, shredding, crushing, incineration, data disposal"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-physical-destruction", { 
+          title: "Physical Destruction | D-Secure Manual", 
+          canonicalUrl: "/support/manual/physical-destruction" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

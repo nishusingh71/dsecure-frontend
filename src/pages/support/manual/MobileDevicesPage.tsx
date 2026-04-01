@@ -120,12 +120,13 @@ const MobileDevicesPage: React.FC = memo(() => {
  return (
  <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("mobile-devices")} />
-      {/* <Helmet>
-        <title>D-Secure Mobile Devices | iOS & Android Erasure Guide</title>
-        <meta name="description" content="Complete guide to secure data erasure on mobile devices with D-Secure. Procedures for iOS, Android, and enterprise mobile management." />
-        <meta name="keywords" content="  D-Secure Multiple device Management – Securing Your Data Lifecycle, Android secure delete, mobile device management, enterprise mobile security" />
-      </Helmet> */}
+      <SEOHead 
+        seo={getSEOForPage("mobile-devices", { 
+          title: "Mobile Devices | D-Secure Manual", 
+          canonicalUrl: "/support/manual/mobile-devices" 
+        })} 
+      />
+      {/*  */}
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-8 sm:py-12 md:py-16 lg:py-24">

@@ -244,15 +244,12 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
 
   return (
     <>
-      {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-performance-optimization")} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/manual/performance-optimization" />
-        <title>Performance Optimization | D-Secure Speed & Efficiency Guide</title>
-        <meta name="description" content="Comprehensive guide to optimizing D-Secure performance. Maximize erasure speed, system efficiency, and throughput with expert optimization techniques." />
-        <meta name="keywords" content="D-Secure performance, erasure speed optimization, system tuning, hardware acceleration, throughput optimization" />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-performance-optimization", { 
+          title: "Performance Optimization | D-Secure Manual", 
+          canonicalUrl: "/support/manual/performance-optimization" 
+        })} 
+      />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

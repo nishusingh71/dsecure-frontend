@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const KeyActivationPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-key-activation")} />
-      <Helmet>
-        <title>Key Activation | D-Secure License Activation Process</title>
-        <meta name="description" content="Enter 25-digit activation key to unlock premium D-Secure features and complete license activation." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-key-activation", { 
+          title: "Key Activation | D-Secure Manual", 
+          canonicalUrl: "/support/manual/key-activation" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">

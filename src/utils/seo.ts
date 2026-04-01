@@ -41,6 +41,46 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl("/"),
     breadcrumbs: [{ name: "Home", item: "/" }],
   },
+  // About page — company ke baare mein
+  about: {
+    title: "D-Secure - Best Data Erasure Software | Secure Tech for Enterprise Data Sanitization",
+    description: "D-Secure is the best data erasure software trusted globally. Industry-leading secure data sanitization for enterprises, ITADs, and government organizations.",
+    canonicalUrl: getCanonicalUrl("/about"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "About", item: "/about" },
+    ],
+  },
+  // Contact page
+  contact: {
+    title: "Contact D-Secure | Get Data Erasure Quote & Support",
+    description: "Contact D-Secure for enterprise data erasure solutions. Get pricing quotes, technical support, and deployment assistance for NIST 800-88 compliant data sanitization.",
+    canonicalUrl: getCanonicalUrl("/contact"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Contact", item: "/contact" },
+    ],
+  },
+  // Pricing page — PricingAndPlanPage.tsx mein 'pricing-and-plan' key use hota hai
+  "pricing-and-plan": {
+    title: "D-Secure Pricing & Plans | Enterprise Data Erasure Software",
+    description: "View D-Secure pricing and plans for data erasure software. Flexible licensing for Drive Eraser, File Eraser, and Smartphone Eraser with volume discounts.",
+    canonicalUrl: getCanonicalUrl("/pricing-and-plan"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Pricing", item: "/pricing-and-plan" },
+    ],
+  },
+  // Legacy PricingPage.tsx bhi 'pricing' key use karta hai
+  pricing: {
+    title: "D-Secure Pricing & Plans | Enterprise Data Erasure Software",
+    description: "View D-Secure pricing and plans for data erasure software. Flexible licensing for Drive Eraser, File Eraser, and Smartphone Eraser with volume discounts.",
+    canonicalUrl: getCanonicalUrl("/pricing-and-plan"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Pricing", item: "/pricing-and-plan" },
+    ],
+  },
   nist80088: {
     title: "NIST 800-88 Compliant Data Erasure Tool | Compliance Software India | D-Secure",
     description: "Secure your enterprise with the leading NIST 800-88 data erasure tool. D-Secure provides tamper-proof audit reports with certificate for permanently wiping data from HDDs, SSDs, and mobiles in India.",
@@ -72,6 +112,17 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ],
   },
   itad: {
+    title: "ITAD Data Wiping Solution | Secure IT Asset Disposal Software | D-Secure",
+    description: "The best ITAD data wiping solution for secure IT asset disposal. Compliance software with tamper-proof audit reports with certificate and automation for processing loose drives.",
+    canonicalUrl: getCanonicalUrl("/solutions/itad"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "ITAD", item: "/solutions/itad" },
+    ],
+  },
+  // ITADSolution page ke liye alias — component mein 'itadsolution' key use hota hai
+  itadsolution: {
     title: "ITAD Data Wiping Solution | Secure IT Asset Disposal Software | D-Secure",
     description: "The best ITAD data wiping solution for secure IT asset disposal. Compliance software with tamper-proof audit reports with certificate and automation for processing loose drives.",
     canonicalUrl: getCanonicalUrl("/solutions/itad"),
@@ -122,7 +173,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   "financial-services": {
     title: "Financial Data Destruction & Compliance | PCI-DSS & SOX | D-Secure",
     description: "Data destruction solutions for banking and finance. Meet PCI-DSS, SOX, and GLBA standards with secure, certified erasure.",
-    canonicalUrl: getCanonicalUrl("/financial-services"),
+    canonicalUrl: getCanonicalUrl("/solutions/financial-services"),
     breadcrumbs: [
       { name: "Home", item: "/" },
       { name: "Solutions", item: "/solutions" },
@@ -154,6 +205,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     breadcrumbs: [
       { name: "Home", item: "/" },
       { name: "Products", item: "/products" },
+    ],
+  },
+  "terms-of-service": {
+    title: "Terms of Service | D-Secure Tech",
+    description: "Read the Terms of Service for D-Secure data erasure software and services. Understand your rights and responsibilities when using our secure tech.",
+    canonicalUrl: getCanonicalUrl("/terms-of-service"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Terms of Service", item: "/terms-of-service" },
+    ],
+  },
+  "privacy-policy": {
+    title: "Privacy Policy | D-Secure Tech",
+    description: "D-Secure Privacy Policy. Learn how we handle your data and ensure privacy while using our data erasure and sanitization solutions.",
+    canonicalUrl: getCanonicalUrl("/privacy-policy"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Privacy Policy", item: "/privacy-policy" },
     ],
   },
 };

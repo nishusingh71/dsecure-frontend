@@ -1,7 +1,7 @@
 import { SEOMetadata, generateKeywords, getCanonicalUrl } from "./seo.core";
 
 export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
-  "solutions/financial-services": {
+  "solutions/data-erasure-banking-finance": {
     title: "Banking & Financial Data Erasure - PCI-DSS & SOX Compliant | D-Secure Tech",
     description:
       "Secure data erasure solutions for banks and financial institutions. Achieve 100% compliance with PCI-DSS, SOX, GLBA, and FACTA with tamper-proof audit trails.",
@@ -14,11 +14,11 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
       "FACTA disposal rule",
       "banking ITAD",
     ]),
-    canonicalUrl: getCanonicalUrl("/solutions/financial"),
+    canonicalUrl: getCanonicalUrl("/solutions/data-erasure-banking-finance"),
     breadcrumbs: [
       { name: "Home", item: "/" },
       { name: "Solutions", item: "/solutions" },
-      { name: "Financial Services", item: "/solutions/financial" },
+      { name: "Financial Services", item: "/solutions/data-erasure-banking-finance" },
     ],
   },
   "solutions/healthcare": {

@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const WindowsTroubleshootingPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-windows-troubleshooting")} />
-      <Helmet>
-        <title>Windows Troubleshooting | D-Secure Manual</title>
-        <meta name="description" content="Common Windows erasure issues and solutions for D-Secure operations." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-windows-troubleshooting", { 
+          title: "Windows Troubleshooting | D-Secure Manual", 
+          canonicalUrl: "/support/manual/windows-troubleshooting" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -66,7 +67,7 @@ const WindowsTroubleshootingPage: React.FC = memo(() => {
                         solution: "Check ATA security status, use manufacturer tool, try hdparm"
                       }
                     ].map((item, index) => (
-                      <div key={index} className="border border-slate-200 rounded-lg p-6">
+                       <div key={index} className="border border-slate-200 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-red-600 mb-2">❌ {item.issue}</h3>
                         <p className="text-slate-600 text-sm mb-3"><strong>Cause:</strong> {item.cause}</p>
                         <p className="text-emerald-800 text-sm"><strong>Solution:</strong> {item.solution}</p>

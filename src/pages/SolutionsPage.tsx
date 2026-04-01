@@ -425,7 +425,7 @@ function SolutionsPageContent() {
       case "healthcare":
         return "/solutions/healthcare";
       case "financial":
-        return "/solutions/financial";
+        return "/solutions/data-erasure-banking-finance";
       case "itad":
         return "/solutions/itad";
       case "government":

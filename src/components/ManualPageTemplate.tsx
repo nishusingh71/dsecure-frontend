@@ -1,5 +1,6 @@
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -26,6 +27,7 @@ interface ManualPageTemplateProps {
   canonicalUrl: string;
   keywords: string;
   sections: ManualSection[];
+  seoKey?: string;
   heroContent?: React.ReactNode;
   quickAccessItems?: Array<{
     title: string;
@@ -50,6 +52,7 @@ const ManualPageTemplate: React.FC<ManualPageTemplateProps> = memo(({
   canonicalUrl,
   keywords,
   sections,
+  seoKey,
   heroContent,
   quickAccessItems,
   ctaTitle,
@@ -58,6 +61,10 @@ const ManualPageTemplate: React.FC<ManualPageTemplateProps> = memo(({
 }) => {
   const [activeSection, setActiveSection] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const seoData = seoKey 
+    ? getSEOForPage(seoKey as any, { title, description, canonicalUrl, keywords })
+    : { title, description, canonicalUrl, keywords };
 
   const filteredSections = sections.filter((section) => {
     if (!searchQuery) return true;
@@ -83,13 +90,7 @@ const ManualPageTemplate: React.FC<ManualPageTemplateProps> = memo(({
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href={canonicalUrl} />
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={seoData} />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

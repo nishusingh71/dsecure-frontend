@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const WindowsStoragePage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-windows-storage")} />
-      <Helmet>
-        <title>Windows Storage Architecture | D-Secure Manual</title>
-        <meta name="description" content="Understanding Windows storage architecture for effective D-Secure data erasure." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-windows-storage", { 
+          title: "Windows Storage | D-Secure Manual", 
+          canonicalUrl: "/support/manual/windows-storage" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">

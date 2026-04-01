@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '../../utils/enhancedApiClient';
+import { useNotification } from "@/contexts/NotificationContext";
 import { isDemoMode } from '@/data/demoData';
 import { indexedDBService } from "@/services/indexedDBService";
 import { authService } from "@/utils/authService";
@@ -20,6 +21,7 @@ interface DownloadStats {
 
 export default function AdminDownloads() {
   const isDemo = isDemoMode();
+  const { showInfo } = useNotification();
 
   // Aggregated product stats
   const [products, setProducts] = useState<any[]>([]);
@@ -252,7 +254,16 @@ export default function AdminDownloads() {
               Software downloads overview and statistics
             </p>
           </div>
-          <Link to="/download" className="btn-primary flex items-center gap-2">
+          <Link 
+            to="/download" 
+            onClick={(e) => {
+              if (isDemo) {
+                e.preventDefault();
+                showInfo("Demo Restricted", "Software downloads are not available in demo accounts. Please create a real account.");
+              }
+            }}
+            className="btn-primary flex items-center gap-2"
+          >
             <svg
               className="w-4 h-4"
               fill="none"
@@ -519,6 +530,12 @@ export default function AdminDownloads() {
                     </span>
                     <Link
                       to={`/download?product=${product.name.toLowerCase().replace(" ", "-")}`}
+                      onClick={(e) => {
+                        if (isDemo) {
+                          e.preventDefault();
+                          showInfo("Demo Restricted", "Software downloads are not available in demo accounts. Please create a real account.");
+                        }
+                      }}
                       className="text-sm text-emerald-800 hover:text-emerald-700 font-medium"
                     >
                       View Details →

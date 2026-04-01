@@ -1,21 +1,19 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 
 const ChainCustodyPage: React.FC = memo(() => {
  return (
  <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-chain-custody")} />
- <Helmet>
- <title>Chain of Custody | D-Secure Manual</title>
- <meta
- name="description"
- content="D-Secure chain of custody guide for documenting device handling throughout the erasure process."
- />
- </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-chain-custody", { 
+          title: "Chain Custody | D-Secure Manual", 
+          canonicalUrl: "/support/manual/chain-custody" 
+        })} 
+      />
+ 
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">

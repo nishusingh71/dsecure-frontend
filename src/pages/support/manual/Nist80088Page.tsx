@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,10 +8,13 @@ const Nist80088Page: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("nist80088")} />
-      <Helmet>
-        <title>Nist 800 88 | D-Secure</title>
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("nist80088", { 
+          title: "Nist80088 | D-Secure Manual", 
+          canonicalUrl: "/support/manual/nist80088" 
+        })} 
+      />
+      
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
           <div className="container mx-auto px-4 max-w-7xl">

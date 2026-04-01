@@ -6,7 +6,12 @@ import Reveal from "@/components/Reveal";
 const ComplianceStandardsPage: React.FC = memo(() => {
     return (
         <>
-            <SEOHead seo={getSEOForPage('help-manual')} />
+            <SEOHead 
+        seo={getSEOForPage("help-manual", { 
+          title: "Compliance Standards | D-Secure Manual", 
+          canonicalUrl: "/support/manual/compliance-standards" 
+        })} 
+      />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}

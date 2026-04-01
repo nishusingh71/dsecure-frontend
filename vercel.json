@@ -1,4 +1,7 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "framework": "vite",
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -53,7 +56,5 @@
         }
       ]
     }
-  ],
-  "trailingSlash": false,
-  "framework": "vite"
+  ]
 }

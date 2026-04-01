@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import OptimizedImage from '@/components/OptimizedImage';
@@ -323,25 +322,13 @@ const VerificationMethodsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-verification-methods")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/verification-methods"
-        />
-        <title>
-          Verification Methods | Data Erasure Confirmation & Assurance
-        </title>
-        <meta
-          name="description"
-          content="Complete guide to data erasure verification methods: software, physical, cryptographic, and sampling techniques. NIST-compliant assurance."
-        />
-        <meta
-          name="keywords"
-          content="data erasure verification, software verification, physical inspection, cryptographic verification, NIST verification"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-verification-methods", { 
+          title: "Verification Methods | D-Secure Manual", 
+          canonicalUrl: "/support/manual/verification-methods" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

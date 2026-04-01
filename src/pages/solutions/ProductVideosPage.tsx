@@ -201,19 +201,7 @@ const ProductVideosPage: React.FC = memo(() => {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-product-videos")} />
 
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/product-videos" />
-        <title>Product Videos | D-Secure Tutorials & Walkthroughs</title>
-        <meta
-          name="description"
-          content="Watch comprehensive video tutorials and walkthroughs for D-Secure data erasure solutions. Learn through visual guides and step-by-step demonstrations."
-        />
-        <meta
-          name="keywords"
-          content="D-Secure videos, tutorials, walkthroughs, video guides, data erasure tutorials, product demonstrations"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

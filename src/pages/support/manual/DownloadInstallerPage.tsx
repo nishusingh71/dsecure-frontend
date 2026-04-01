@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const DownloadInstallerPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-download-installer")} />
-      <Helmet>
-        <title>Download & Run Installer | D-Secure Installation Guide</title>
-        <meta name="description" content="Step-by-step guide to downloading and running the D-Secure installer safely and securely." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-download-installer", { 
+          title: "Download Installer | D-Secure Manual", 
+          canonicalUrl: "/support/manual/download-installer" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">

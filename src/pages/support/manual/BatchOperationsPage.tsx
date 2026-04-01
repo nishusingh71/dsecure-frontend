@@ -1,21 +1,19 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 
 const BatchOperationsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-batch-operations")} />
-      <Helmet>
-        <title>Batch Operations | D-Secure Manual</title>
-        <meta
-          name="description"
-          content="D-Secure batch operations guide for automating erasure across multiple devices simultaneously with enterprise-grade efficiency."
-        />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-batch-operations", { 
+          title: "Batch Operations | D-Secure Manual", 
+          canonicalUrl: "/support/manual/batch-operations" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header */}

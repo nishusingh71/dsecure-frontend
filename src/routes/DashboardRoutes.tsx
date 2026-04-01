@@ -23,6 +23,7 @@ const DownloadAgentPage = lazy(() => import("../pages/dashboards/DownloadAgentPa
 const PrivateCloudSetup = lazy(() => import("../pages/dashboards/PrivateCloudSetup"));
 const EnhancedUserDashboard = lazy(() => import("../pages/dashboards/EnhancedUserDashboard"));
 const PaymentSetupPage = lazy(() => import("../pages/PaymentSetupPage"));
+const DownloadPage = lazy(() => import("../pages/DownloadPage"));
 
 // Admin Pages (Deep)
 const AdminUsers = lazy(() => import("../pages/admin/AdminUsers"));
@@ -44,6 +45,14 @@ export const DashboardRoutes = () => (
       element={
         <ProtectedRoute>
           <PaymentSetupPage />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="download"
+      element={
+        <ProtectedRoute>
+          <DownloadPage />
         </ProtectedRoute>
       }
     />

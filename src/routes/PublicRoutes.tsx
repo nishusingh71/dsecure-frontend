@@ -29,7 +29,7 @@ const DataEraserSoftwarePage = lazy(() => import("../pages/DataEraserSoftwarePag
 const ContactPage = lazy(() => import("../pages/ContactPage"));
 const About = lazy(() => import("../pages/About"));
 const PricingAndPlanPage = lazy(() => import("../pages/PricingAndPlanPage"));
-const DownloadPage = lazy(() => import("../pages/DownloadPage"));
+
 const DriveEraserPage = lazy(() => import("../pages/DriveEraserPage"));
 const DriveEraserDiagnosticPage = lazy(() => import("../pages/DriveEraserDiagnosticPage"));
 const FileEraserPage = lazy(() => import("../pages/FileEraserPage"));
@@ -63,17 +63,32 @@ const HealthcareServices = lazy(() => import("../pages/HealthcareServices"));
 const ITADSolution = lazy(() => import("../pages/ITADSolution"));
 const ApiTestPage = lazy(() => import("../pages/ApiTestPage"));
 const BlogPage = lazy(() => import("../components/blog/BlogPage"));
+const BlogPostDetail = lazy(() => import("../pages/blog/BlogPostDetail"));
 const CloneGuidePage = lazy(() => import("../pages/CloneGuidePage"));
-const AutopilotDetectionPage = lazy(() => import("../pages/AutopilotDetectionPage"));
-const SmartphoneEraserPage = lazy(() => import("../pages/SmartphoneEraserPage"));
-const SmartphoneDiagnosticPage = lazy(() => import("../pages/SmartphoneDiagnosticPage"));
+const AutopilotDetectionPage = lazy(
+  () => import("../pages/AutopilotDetectionPage"),
+);
+const SmartphoneEraserPage = lazy(
+  () => import("../pages/SmartphoneEraserPage"),
+);
+const SmartphoneDiagnosticPage = lazy(
+  () => import("../pages/SmartphoneDiagnosticPage"),
+);
 const ForensicImagingPage = lazy(() => import("../pages/ForensicImagingPage"));
 const FreezeStatePage = lazy(() => import("../pages/FreezeStatePage"));
-const FreezeStateSmartPage = lazy(() => import("../pages/FreezeStateSmartPage"));
-const FreezeStateAdvancedPage = lazy(() => import("../pages/FreezeStateAdvancedPage"));
+const FreezeStateSmartPage = lazy(
+  () => import("../pages/FreezeStateSmartPage"),
+);
+const FreezeStateAdvancedPage = lazy(
+  () => import("../pages/FreezeStateAdvancedPage"),
+);
 const AssetReimagingPage = lazy(() => import("../pages/AssetReimagingPage"));
-const VirtualMachineEraserPage = lazy(() => import("../pages/VirtualMachineEraserPage"));
-const RemovableMediaEraserPage = lazy(() => import("../pages/RemovableMediaEraserPage"));
+const VirtualMachineEraserPage = lazy(
+  () => import("../pages/VirtualMachineEraserPage"),
+);
+const RemovableMediaEraserPage = lazy(
+  () => import("../pages/RemovableMediaEraserPage"),
+);
 const LUNEraserPage = lazy(() => import("../pages/LUNEraserPage"));
 const DriveVerifierPage = lazy(() => import("../pages/DriveVerifierPage"));
 const EarlyAccessPage = lazy(() => import("../pages/EarlyAccessPage"));
@@ -81,24 +96,39 @@ const FileEraserNetworkPage = lazy(() => import("../pages/FileEraserNetwork"));
 
 // SEO Competitive Strategy Pages
 const NIST80088Page = lazy(() => import("../pages/compliance/NIST80088Page"));
-const GDPRCompliancePage = lazy(() => import("../pages/compliance/GDPRCompliancePage"));
+const GDPRCompliancePage = lazy(
+  () => import("../pages/compliance/GDPRCompliancePage"),
+);
 const MacErasurePage = lazy(() => import("../pages/solutions/MacErasurePage"));
-const BlanccoAlternativePage = lazy(() => import("../pages/solutions/BlanccoAlternativePage"));
+const BlanccoAlternativePage = lazy(
+  () => import("../pages/solutions/BlanccoAlternativePage"),
+);
 
 export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
     <Route index element={<HomePage />} />
     <Route path="services" element={<ServicesPage />} />
-    <Route path="products" element={<Navigate to="/" replace />} />
+    <Route path="products" element={<Navigate to="/all-products" replace />} />
     <Route path="services/cloud-erasure" element={<CloudErasurePage />} />
     <Route path="solutions" element={<SolutionsPage />} />
     <Route path="solutions/enterprise" element={<EnterpriseSolutionsPage />} />
     <Route path="solutions/itad" element={<ITADSolution />} />
     <Route path="solutions/education" element={<EducationPage />} />
-    <Route path="solutions/financial" element={<FinancialSolutionsPage />} />
+    <Route
+      path="solutions/data-erasure-banking-finance"
+      element={<FinancialSolutionsPage />}
+    />
+    <Route
+      path="solutions/financial"
+      element={
+        <Navigate to="/solutions/data-erasure-banking-finance" replace />
+      }
+    />
     <Route
       path="solutions/financial-services"
-      element={<FinancialServices />}
+      element={
+        <Navigate to="/solutions/data-erasure-banking-finance" replace />
+      }
     />
     <Route path="solutions/government" element={<GovernmentPage />} />
     <Route path="solutions/healthcare" element={<HealthcareSolutionsPage />} />
@@ -140,18 +170,24 @@ export const PublicRoutes = () => (
       element={<Navigate to="/pricing-and-plan" replace />}
     />
     <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
-    <Route path="download" element={<DownloadPage />} />
+
     <Route path="compliance/nist-800-88" element={<NIST80088Page />} />
     <Route path="compliance/gdpr" element={<GDPRCompliancePage />} />
     <Route path="solutions/mac-erasure" element={<MacErasurePage />} />
-    <Route path="solutions/blancco-alternative" element={<BlanccoAlternativePage />} />
+    <Route
+      path="solutions/blancco-alternative"
+      element={<BlanccoAlternativePage />}
+    />
     <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
     <Route
       path="/products/drive-eraser-diagnostic"
       element={<DriveEraserDiagnosticPage />}
     />
     <Route path="/products/file-eraser" element={<FileEraserPage />} />
-    <Route path="/products/file-eraser-network" element={<FileEraserNetworkPage />} />
+    <Route
+      path="/products/file-eraser-network"
+      element={<FileEraserNetworkPage />}
+    />
     <Route
       path="/products/hardware-diagnostics"
       element={<HardwareDiagnosticsPage />}
@@ -177,8 +213,14 @@ export const PublicRoutes = () => (
       element={<ForensicImagingPage />}
     />
     <Route path="/products/freeze-state" element={<FreezeStatePage />} />
-    <Route path="/products/freeze-state-smart" element={<FreezeStateSmartPage />} />
-    <Route path="/products/freeze-state-advanced" element={<FreezeStateAdvancedPage />} />
+    <Route
+      path="/products/freeze-state-smart"
+      element={<FreezeStateSmartPage />}
+    />
+    <Route
+      path="/products/freeze-state-advanced"
+      element={<FreezeStateAdvancedPage />}
+    />
     <Route path="/products/data-migration" element={<DataMigrationPage />} />
     <Route path="/products/asset-reimaging" element={<AssetReimagingPage />} />
     <Route
@@ -217,11 +259,21 @@ export const PublicRoutes = () => (
     <Route path="glossary" element={<GlossaryPage />} />
     <Route path="partners" element={<PartnersPage />} />
     <Route path="support" element={<SupportPage />} />
-    <Route path="enterprise" element={<EnterprisePage />} />
-    <Route path="healthcare-services" element={<HealthcareServices />} />
-    <Route path="itad-solution" element={<ITADSolution />} />
+    <Route
+      path="enterprise"
+      element={<Navigate to="/solutions/enterprise" replace />}
+    />
+    <Route
+      path="healthcare-services"
+      element={<Navigate to="/solutions/healthcare" replace />}
+    />
+    <Route
+      path="itad-solution"
+      element={<Navigate to="/solutions/itad" replace />}
+    />
     <Route path="api-test" element={<ApiTestPage />} />
     <Route path="blog" element={<BlogPage />} />
+    <Route path="blog/:slug" element={<BlogPostDetail />} />
     <Route path="resources/clone-guide" element={<CloneGuidePage />} />
   </Route>
 );

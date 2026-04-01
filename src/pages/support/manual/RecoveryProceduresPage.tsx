@@ -1,21 +1,19 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 
 const RecoveryProceduresPage: React.FC = memo(() => {
  return (
  <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("recovery-procedures")} />
- <Helmet>
- <title>Recovery Procedures | D-Secure Manual</title>
- <meta
- name="description"
- content="D-Secure recovery procedures guide for handling failed or interrupted erasure operations."
- />
- </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("recovery-procedures", { 
+          title: "Recovery Procedures | D-Secure Manual", 
+          canonicalUrl: "/support/manual/recovery-procedures" 
+        })} 
+      />
+ 
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">

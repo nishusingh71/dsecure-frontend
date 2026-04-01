@@ -8,12 +8,14 @@ import i18n from './utils/internationalization';
 import { I18nextProvider } from 'react-i18next';
 import { Writable } from 'node:stream';
 
-export function render(url: string): Promise<{ html: string; helmet: HelmetServerState }> {
+// renderToPipeableStream use karo — React.lazy + Suspense ko support karta hai
+// Note: react-helmet-async ka context React 19 streaming mein populate nahi hota,
+// isliye prerender.js mein body HTML se SEO metadata extract kiya jaata hai
+export function render(url: string): Promise<{ html: string; helmet: HelmetServerState | undefined }> {
   return new Promise((resolve, reject) => {
     let html = '';
     const helmetContext: { helmet?: HelmetServerState } = {};
     
-    // Custom writable to capture the stream content
     const writable = new Writable({
       write(chunk, _encoding, callback) {
         html += chunk.toString();
@@ -22,7 +24,7 @@ export function render(url: string): Promise<{ html: string; helmet: HelmetServe
     });
 
     writable.on('finish', () => {
-      resolve({ html, helmet: helmetContext.helmet! });
+      resolve({ html, helmet: helmetContext.helmet });
     });
 
     const { pipe } = renderToPipeableStream(
@@ -41,7 +43,7 @@ export function render(url: string): Promise<{ html: string; helmet: HelmetServe
       onAllReady() {
         pipe(writable);
       },
-      onError(error) {
+      onError(error: unknown) {
         console.error('SSG Render Error:', error);
         reject(error);
       }

@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const ProgressMonitoringPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-progress-monitoring")} />
-      <Helmet>
-        <title>Real-Time Progress Monitoring | D-Secure</title>
-        <meta name="description" content="Track erasure progress, performance metrics, and estimated completion times." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-progress-monitoring", { 
+          title: "Progress Monitoring | D-Secure Manual", 
+          canonicalUrl: "/support/manual/progress-monitoring" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">

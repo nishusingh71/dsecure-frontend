@@ -1,5 +1,4 @@
 import React, { useState, memo } from "react";
-import { Helmet } from 'react-helmet-async';
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -283,14 +282,13 @@ const ErrorCodesPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-error-codes")} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/manual/error-codes" />
-        <title>D-Secure Error Codes | Complete Reference Guide & Solutions</title>
-        <meta name="description" content="Complete reference guide for D-Secure error codes with detailed explanations, step-by-step solutions, and prevention tips for all error conditions." />
-        <meta name="keywords" content="D-Secure error codes, error messages, troubleshooting, support reference, error solutions, DSE codes" />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-error-codes", { 
+          title: "Error Codes | D-Secure Manual", 
+          canonicalUrl: "/support/manual/error-codes" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 sm:py-12 md:py-16 lg:py-24">

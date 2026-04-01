@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,11 +8,13 @@ const WindowsIntroductionPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-windows-introduction")} />
-      <Helmet>
-        <title>Windows Data Erasure Introduction | D-Secure Manual</title>
-        <meta name="description" content="Introduction to secure data erasure in Windows environments with D-Secure solutions." />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-windows-introduction", { 
+          title: "Windows Introduction | D-Secure Manual", 
+          canonicalUrl: "/support/manual/windows-introduction" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">

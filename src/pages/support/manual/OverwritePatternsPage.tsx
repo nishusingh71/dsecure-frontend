@@ -1,5 +1,4 @@
 import React, { useState, memo } from "react";
-import { Helmet } from 'react-helmet-async';
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -251,25 +250,13 @@ const OverwritePatternsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-overwrite-patterns")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/overwrite-patterns"
-        />
-        <title>
-          Overwrite Patterns & Data Sanitization | D-Secure Technical Guide
-        </title>
-        <meta
-          name="description"
-          content="Comprehensive guide to overwrite patterns, data sanitization algorithms, DoD and NIST standards, and secure data erasure techniques."
-        />
-        <meta
-          name="keywords"
-          content="overwrite patterns, data sanitization, DoD 5220.22-M, NIST SP 800-88, secure erasure, data destruction"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-overwrite-patterns", { 
+          title: "Overwrite Patterns | D-Secure Manual", 
+          canonicalUrl: "/support/manual/overwrite-patterns" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

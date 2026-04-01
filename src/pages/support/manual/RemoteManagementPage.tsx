@@ -6,7 +6,12 @@ import Reveal from "@/components/Reveal";
 const RemoteManagementPage: React.FC = memo(() => {
     return (
         <>
-            <SEOHead seo={getSEOForPage('help-manual')} />
+            <SEOHead 
+        seo={getSEOForPage("help-manual", { 
+          title: "Remote Management | D-Secure Manual", 
+          canonicalUrl: "/support/manual/remote-management" 
+        })} 
+      />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}

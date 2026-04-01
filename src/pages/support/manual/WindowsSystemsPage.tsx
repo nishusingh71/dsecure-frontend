@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import OptimizedImage from '@/components/OptimizedImage';
@@ -309,25 +308,13 @@ const WindowsSystemsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("windows-systems")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/windows-systems"
-        />
-        <title>
-          Windows Systems Data Erasure | Windows 10/11 Secure Wipe Guide
-        </title>
-        <meta
-          name="description"
-          content="Complete guide to secure data erasure on Windows systems. Procedures for HDDs, SSDs, BitLocker drives, and enterprise deployment."
-        />
-        <meta
-          name="keywords"
-          content="Windows data erasure, BitLocker erasure, Windows SSD wipe, secure delete Windows, Windows enterprise erasure"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("windows-systems", { 
+          title: "Windows Systems | D-Secure Manual", 
+          canonicalUrl: "/support/manual/windows-systems" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -9,10 +8,13 @@ const MacosEncryptionPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("support-manual-macos-encryption")} />
-      <Helmet>
-        <title>Macos Encryption | D-Secure</title>
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("support-manual-macos-encryption", { 
+          title: "Macos Encryption | D-Secure Manual", 
+          canonicalUrl: "/support/manual/macos-encryption" 
+        })} 
+      />
+      
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
           <div className="container mx-auto px-4 max-w-7xl">

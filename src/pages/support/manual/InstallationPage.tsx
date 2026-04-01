@@ -1,5 +1,4 @@
 import React, { useState, memo } from "react";
-import { Helmet } from 'react-helmet-async';
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -210,23 +209,13 @@ const InstallationPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("installation")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/installation"
-        />
-        <title>Installation Guide | D-Secure Setup & Configuration</title>
-        <meta
-          name="description"
-          content="Complete D-Secure installation manual with step-by-step setup instructions, troubleshooting, and post-installation optimization guide."
-        />
-        <meta
-          name="keywords"
-          content="D-Secure installation, setup guide, security software installation, D-Secure manual"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("installation", { 
+          title: "Installation | D-Secure Manual", 
+          canonicalUrl: "/support/manual/installation" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

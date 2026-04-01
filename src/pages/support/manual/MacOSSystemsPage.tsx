@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import OptimizedImage from '@/components/OptimizedImage';
@@ -319,25 +318,13 @@ const MacOSSystemsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("mac-ossystems")} />
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/macos-systems"
-        />
-        <title>
-          macOS Systems Data Erasure | Intel & Apple Silicon Procedures
-        </title>
-        <meta
-          name="description"
-          content="Complete guide to secure data erasure on macOS systems. Procedures for Intel and Apple Silicon Macs, FileVault encryption, and enterprise deployment."
-        />
-        <meta
-          name="keywords"
-          content="macOS data erasure, Apple Silicon erasure, M1 Mac secure delete, FileVault erasure, macOS SSD erasure"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead 
+        seo={getSEOForPage("mac-ossystems", { 
+          title: "Mac OSSystems | D-Secure Manual", 
+          canonicalUrl: "/support/manual/mac-ossystems" 
+        })} 
+      />
+      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
