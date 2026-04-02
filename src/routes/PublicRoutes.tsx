@@ -14,6 +14,7 @@ const FinancialServices = lazy(() => import("../pages/FinancialServices"));
 const GovernmentPage = lazy(() => import("../pages/GovernmentPage"));
 const HealthcareSolutionsPage = lazy(() => import("../pages/solutions/HealthcareSolutionsPage"));
 const ServiceProvidersSolutionsPage = lazy(() => import("../pages/solutions/ServiceProvidersSolutionsPage"));
+const NonProfitSolutionsPage = lazy(() => import("../pages/solutions/NonProfitSolutionsPage"));
 const DataMigrationPage = lazy(() => import("../pages/DataMigrationPage"));
 const ProgrammaticSolutionPage = lazy(() => import("../pages/ProgrammaticSolutionPage"));
 const SearchDemoPage = lazy(() => import("../pages/SearchDemoPage"));
@@ -136,6 +137,7 @@ export const PublicRoutes = () => (
       path="solutions/service-providers"
       element={<ServiceProvidersSolutionsPage />}
     />
+    <Route path="solutions/non-profit" element={<NonProfitSolutionsPage />} />
     <Route
       path="solutions/industry/:slug"
       element={<ProgrammaticSolutionPage />}

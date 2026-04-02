@@ -8,6 +8,7 @@ import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import { LicenseForm } from "@/components/forms";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
+import SolutionContactSection from "@/components/SolutionContactSection";
 
 /**
  * BankBuildingIcon Component
@@ -219,6 +220,7 @@ const FinancialSolutionsPage: React.FC = () => {
     { id: "assets", label: "Assets" },
     { id: "solutions", label: "Solutions" },
     { id: "faq", label: "FAQ" },
+    { id: "contact", label: "Contact" },
   ];
 
   // Scroll handle karne ke liye useEffect
@@ -370,12 +372,15 @@ const FinancialSolutionsPage: React.FC = () => {
                       Request Free License
                       <ArrowRightIcon className="w-4 h-4" />
                     </button>
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-emerald-100/50"
+                    <a
+                      href=""
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg pointer-events-none opacity-50 cursor-not-allowed"
                     >
-                      Connect with Experts
-                    </Link>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
+                      Solution Overview
+                    </a>
                   </div>
 
                   {/* Compliance Badges at bottom of left content */}
@@ -920,6 +925,9 @@ const FinancialSolutionsPage: React.FC = () => {
             </div>
           </div>
         </section>
+
+        {/* ================= CONTACT SECTION ================= */}
+        <SolutionContactSection source="Financial Solutions Page" subjectPrefix="New Inquiry - Financial Solutions" />
       </div>
 
       {/* License Request Modal */}

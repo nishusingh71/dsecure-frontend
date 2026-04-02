@@ -7,21 +7,22 @@ import { getSEOForPage } from "@/utils/seo";
 import SolutionContactSection from "@/components/SolutionContactSection";
 
 /**
- * EducationPage Component
- * Is page mein Educational Institutions (Schools, Universities) ke liye data erasure solutions dikhaye gaye hain.
- * Yeh HealthcareSolutionsPage ke Emerald Green theme aur BitRaser data par based hai.
+ * NonProfitSolutionsPage Component
+ * Non-Profit Organizations (NGOs/Charities) ke liye data erasure solutions.
+ * HealthcareSolutionsPage ke theme par based hai.
+ * Content bitraser non-profit page se inspired hai — bina unke naam ya claims use kiye.
  */
-const EducationPage: React.FC = () => {
+const NonProfitSolutionsPage: React.FC = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
 
-  // Secondary navbar items
+  // Secondary navbar ke items
   const sectionNavItems = [
     { id: "overview", label: "Overview" },
-    { id: "compliance", label: "Compliance" },
+    { id: "use-cases", label: "Use Cases" },
     { id: "assets", label: "Assets" },
-    { id: "solutions", label: "Solutions" },
+    { id: "compliance", label: "Compliance" },
     { id: "faq", label: "FAQ" },
     { id: "contact", label: "Contact" },
   ];
@@ -29,11 +30,11 @@ const EducationPage: React.FC = () => {
   // Scroll handle karne ke liye useEffect
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = typeof window !== "undefined" ? window.scrollY : 0;
+      const scrollPosition = window.scrollY;
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
-      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+      const isDesktop = window.innerWidth >= 768;
       if (isDesktop) {
         window.dispatchEvent(
           new CustomEvent("stickyNavVisible", {
@@ -57,7 +58,7 @@ const EducationPage: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+      const isDesktop = window.innerWidth >= 768;
       if (isDesktop) {
         window.dispatchEvent(
           new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
@@ -72,7 +73,7 @@ const EducationPage: React.FC = () => {
     if (element) {
       const offset = 100;
       const elementPosition =
-        element.getBoundingClientRect().top + (typeof window !== "undefined" ? window.scrollY : 0);
+        element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
@@ -82,7 +83,7 @@ const EducationPage: React.FC = () => {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage("solutions/education")} />
+      <SEOHead seo={getSEOForPage("solutions/non-profit")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -148,24 +149,29 @@ const EducationPage: React.FC = () => {
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
-                      <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-6.75 3.524z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clipRule="evenodd"
+                      />
                     </svg>
-                    <span>Secure Privacy-Compliant Education</span>
+                    <span>Secure Data Disposal for Social Impact</span>
                   </div>
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
-                    Solutions for{" "}
+                    Solutions for
                     <span className="block bg-gradient-to-r from-emerald-700 to-teal-600 bg-clip-text text-transparent pb-1">
-                      Educational Institutions
+                      Non-Profit Organizations
                     </span>
                   </h1>
                 </div>
 
                 <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
-                  Securely erase student and staff sensitive data permanently
-                  from Chromebooks, PCs, laptops, and lab servers. Ensure 100%
-                  compliance with FERPA and COPPA standards for student data
-                  privacy while decommissioning old IT assets.
+                  Comply with data privacy laws by securely erasing sensitive
+                  donor, beneficiary, and financial records from drives and
+                  devices before reuse, donation, or disposal. D-Secure helps
+                  NGOs and charities protect community trust through
+                  cost-effective, audit-ready data sanitization.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -173,7 +179,7 @@ const EducationPage: React.FC = () => {
                     onClick={() => setShowLicenseModal(true)}
                     className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-xl shadow-xl hover:shadow-emerald-200/50 transition-all duration-300 transform hover:-translate-y-1"
                   >
-                    Get Free Campus License
+                    Request Free License
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -194,42 +200,33 @@ const EducationPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg pointer-events-none opacity-50 cursor-not-allowed"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-                      />
-                    </svg>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
                     Solution Overview
                   </a>
                 </div>
 
                 {/* Compliance Badges */}
                 <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-emerald-100/50">
-                  {["FERPA", "COPPA", "NIST 800-88", "GDPR"].map((badge) => (
-                    <div
-                      key={badge}
-                      className="flex items-center gap-2 bg-white/80 px-2.5 py-1.5 rounded-full shadow-sm border border-emerald-50"
-                    >
-                      <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                      <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest leading-none">
-                        {badge}
-                      </span>
-                    </div>
-                  ))}
+                  {["NIST 800-88", "GDPR", "HIPAA", "ISO 27001"].map(
+                    (badge) => (
+                      <div
+                        key={badge}
+                        className="flex items-center gap-2 bg-white/80 px-2.5 py-1.5 rounded-full shadow-sm border border-emerald-50"
+                      >
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                        <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest leading-none">
+                          {badge}
+                        </span>
+                      </div>
+                    ),
+                  )}
                 </div>
               </div>
 
-              {/* Right Column: Education Ecosystem Graphic */}
+              {/* Right Column: Non-Profit Ecosystem Graphic */}
               <div className="relative w-full max-w-lg mx-auto overflow-visible">
                 <div className="bg-white/40 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-visible p-1 lg:p-2">
+                  {/* Illustration canvas */}
                   <div
                     className="relative bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-2xl overflow-visible shadow-inner"
                     style={{ height: "340px" }}
@@ -240,94 +237,29 @@ const EducationPage: React.FC = () => {
                       viewBox="0 0 400 340"
                       preserveAspectRatio="xMidYMid meet"
                     >
-                      <line
-                        x1="200"
-                        y1="125"
-                        x2="200"
-                        y2="60"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.5s"
-                          repeatCount="indefinite"
-                        />
+                      {/* TOP CENTER */}
+                      <line x1="200" y1="125" x2="200" y2="60" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.5s" repeatCount="indefinite" />
                       </line>
-                      <line
-                        x1="148"
-                        y1="170"
-                        x2="55"
-                        y2="170"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.8s"
-                          repeatCount="indefinite"
-                        />
+                      {/* MIDDLE LEFT */}
+                      <line x1="148" y1="170" x2="55" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.8s" repeatCount="indefinite" />
                       </line>
-                      <line
-                        x1="252"
-                        y1="170"
-                        x2="345"
-                        y2="170"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.6s"
-                          repeatCount="indefinite"
-                        />
+                      {/* MIDDLE RIGHT */}
+                      <line x1="252" y1="170" x2="345" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.6s" repeatCount="indefinite" />
                       </line>
-                      <line
-                        x1="165"
-                        y1="205"
-                        x2="60"
-                        y2="280"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="2s"
-                          repeatCount="indefinite"
-                        />
+                      {/* BOTTOM LEFT */}
+                      <line x1="165" y1="205" x2="60" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="2s" repeatCount="indefinite" />
                       </line>
-                      <line
-                        x1="235"
-                        y1="205"
-                        x2="340"
-                        y2="280"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.7s"
-                          repeatCount="indefinite"
-                        />
+                      {/* BOTTOM RIGHT */}
+                      <line x1="235" y1="205" x2="340" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.7s" repeatCount="indefinite" />
                       </line>
                     </svg>
 
-                    {/* CENTER: Campus Hub */}
+                    {/* CENTER: Community/NGO Hub with Heart + Shield */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] z-10 transition-transform hover:scale-105 duration-500">
                       <svg
                         width="90"
@@ -336,151 +268,64 @@ const EducationPage: React.FC = () => {
                         fill="none"
                         className="drop-shadow-[0_12px_24px_rgba(16,185,129,0.35)]"
                       >
-                        <rect
-                          x="16"
-                          y="18"
-                          width="40"
-                          height="38"
+                        {/* Shield shape */}
+                        <path
+                          d="M36 6 L58 16 L58 38 C58 50 48 60 36 66 C24 60 14 50 14 38 L14 16 Z"
                           fill="#10b981"
-                          rx="3"
                         />
-                        <rect
-                          x="18"
-                          y="20"
-                          width="36"
-                          height="34"
+                        <path
+                          d="M36 10 L54 18 L54 38 C54 48 46 56 36 62 C26 56 18 48 18 38 L18 18 Z"
                           fill="#059669"
-                          rx="2"
                         />
-                        <rect
-                          x="33"
-                          y="8"
-                          width="6"
-                          height="12"
-                          fill="#059669"
-                          rx="1"
+                        {/* Heart inside shield */}
+                        <path
+                          d="M36 28 C36 24 30 20 26 24 C22 28 26 34 36 42 C46 34 50 28 46 24 C42 20 36 24 36 28Z"
+                          fill="#d1fae5"
                         />
-                        <polygon points="36,5 42,11 36,11" fill="#10b981" />
-                        {[22, 32, 42].map((x) =>
-                          [24, 34].map((y) => (
-                            <rect
-                              key={`${x}-${y}`}
-                              x={x}
-                              y={y}
-                              width="8"
-                              height="6"
-                              fill="#d1fae5"
-                              rx="0.5"
-                            />
-                          )),
-                        )}
-                        <rect
-                          x="30"
-                          y="42"
-                          width="12"
-                          height="14"
-                          fill="#047857"
-                          rx="2"
-                        />
-                        <circle cx="39" cy="50" r="1" fill="#6ee7b7" />
-                        <rect
-                          x="12"
-                          y="56"
-                          width="48"
-                          height="4"
-                          fill="#10b981"
-                          rx="1"
-                        />
-                        <rect
-                          x="10"
-                          y="60"
-                          width="52"
-                          height="3"
-                          fill="#047857"
-                          rx="1"
-                        />
+                        {/* Text label */}
                         <text
                           x="36"
-                          y="68"
+                          y="54"
                           textAnchor="middle"
                           fill="white"
                           fontSize="4.5"
                           fontWeight="900"
                           fontFamily="sans-serif"
                         >
-                          CAMPUS
+                          NGO
                         </text>
                       </svg>
                     </div>
 
-                    {/* TOP CENTER: Chromebook */}
+                    {/* TOP CENTER: PC/Mac */}
                     <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-[10px] left-1/2 -translate-x-1/2">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="4" width="20" height="13" rx="2" />
-                        <path d="M2 19h20" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        CHROMEBOOK
-                      </span>
-                    </div>
-
-                    {/* MIDDLE LEFT: Lab PC */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 left-[5px] -translate-y-1/2">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#0d9488"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="2" y="3" width="20" height="14" rx="2" />
                         <path d="M8 21h8M12 17v4" />
                       </svg>
                       <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        LAB PC
+                        PC/MAC
+                      </span>
+                    </div>
+
+                    {/* MIDDLE LEFT: Laptop */}
+                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 left-[5px] -translate-y-1/2">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="4" width="20" height="13" rx="2" />
+                        <path d="M2 19h20" />
+                      </svg>
+                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
+                        LAPTOP
                       </span>
                     </div>
 
                     {/* MIDDLE RIGHT: Server */}
                     <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 right-[5px] -translate-y-1/2">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="2" y="2" width="20" height="8" rx="2" />
                         <rect x="2" y="14" width="20" height="8" rx="2" />
-                        <circle
-                          cx="7"
-                          cy="6"
-                          r="1"
-                          fill="#16a34a"
-                          stroke="none"
-                        />
-                        <circle
-                          cx="7"
-                          cy="18"
-                          r="1"
-                          fill="#16a34a"
-                          stroke="none"
-                        />
+                        <circle cx="7" cy="6" r="1" fill="#16a34a" stroke="none" />
+                        <circle cx="7" cy="18" r="1" fill="#16a34a" stroke="none" />
                         <line x1="11" y1="6" x2="17" y2="6" />
                         <line x1="11" y1="18" x2="17" y2="18" />
                       </svg>
@@ -489,46 +334,22 @@ const EducationPage: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* BOTTOM LEFT: Tablet */}
+                    {/* BOTTOM LEFT: Mobile */}
                     <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] left-[5px]">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#0d9488"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="4" y="2" width="16" height="20" rx="2" />
-                        <line x1="10" y1="18" x2="14" y2="18" />
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" />
+                        <circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" />
                       </svg>
                       <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        TABLET
+                        MOBILE
                       </span>
                     </div>
 
-                    {/* BOTTOM RIGHT: Storage */}
+                    {/* BOTTOM RIGHT: Storage/HDD */}
                     <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] right-[5px]">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="2" y="7" width="20" height="10" rx="2" />
-                        <circle
-                          cx="17"
-                          cy="12"
-                          r="1.5"
-                          fill="#16a34a"
-                          stroke="none"
-                        />
+                        <circle cx="17" cy="12" r="1.5" fill="#16a34a" stroke="none" />
                         <line x1="5" y1="10" x2="12" y2="10" />
                         <line x1="5" y1="14" x2="9" y2="14" />
                       </svg>
@@ -543,9 +364,9 @@ const EducationPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Compliance Section */}
+        {/* ================= USE CASES SECTION ================= */}
         <section
-          id="compliance"
+          id="use-cases"
           className="py-20"
           style={{ backgroundColor: "#ffffff" }}
         >
@@ -555,63 +376,76 @@ const EducationPage: React.FC = () => {
                 className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4"
                 style={{ backgroundColor: "#e8f5e9", color: "#059669" }}
               >
-                Education Privacy & Standards
+                Use Cases
               </div>
               <h2
                 className="text-4xl md:text-5xl font-bold mb-4"
                 style={{ color: "#1f2937" }}
               >
-                Strict Compliance for Institutions
+                Reliable, Efficient & Cost-Effective Data Wiping
               </h2>
               <p
-                className="text-lg max-w-2xl mx-auto"
+                className="text-lg max-w-3xl mx-auto"
                 style={{ color: "#6b7280" }}
               >
-                Meet student data protection laws with our auditable
-                sanitization solutions for schools and universities.
+                Whether you are donating devices, retiring legacy systems, or
+                managing beneficiary records, D-Secure ensures your
+                organization's data never falls into the wrong hands.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "FERPA Compliance",
-                  desc: "Protect student educational records during equipment disposal to ensure Family Educational Rights and Privacy Act adherence.",
-                  icon: "🎓",
+                  title: "Device Donation & Reuse",
+                  desc: "Securely wipe drives and devices using globally recognized erasure standards before donating them for a noble cause. Permanently remove donor, beneficiary, and financial records before reuse.",
+                  icon: "🎁",
                 },
                 {
-                  title: "COPPA Readiness",
-                  desc: "Comply with Children's Online Privacy Protection Act by permanently deleting kids' personal data from school-issued devices.",
-                  icon: "🛡️",
+                  title: "Bulk Erasure at Remote Locations",
+                  desc: "Wipe 100 drives in a chassis or up to 65,000 over a network using PXE boot. Deploy erasure at facilities without internet through offline USB boot.",
+                  icon: "🌍",
                 },
                 {
-                  title: "NIST 800-88",
-                  desc: "Follow the latest U.S. federal media sanitization guidelines to render data completely unrecoverable by forensic tools.",
-                  icon: "📜",
+                  title: "Automated File-Level Erasure",
+                  desc: "Schedule erasure of sensitive files, funding details, and PII at regular intervals. Erase specific records without affecting the operating system or other applications.",
+                  icon: "📄",
                 },
                 {
-                  title: "Tamper-proof Reports",
-                  desc: "Automated compliance-verified certificates generated for every asset wiped, providing a clear audit trail for regulators.",
-                  icon: "✅",
+                  title: "Mobile Device Management",
+                  desc: "Simultaneously erase and diagnose up to 40 iOS and Android devices. Safely reuse donated phones for field staff and volunteers after certified data erasure.",
+                  icon: "📱",
                 },
-              ].map((comp, idx) => (
+                {
+                  title: "Cloud Console Management",
+                  desc: "Centralized admin console for managing users, licenses, and reports. Customize ISO to standardize erasure across all branch locations worldwide.",
+                  icon: "☁️",
+                },
+                {
+                  title: "Remote Endpoint Wiping",
+                  desc: "Remotely wipe data from Windows endpoint devices via MSI package. Deploy locally or through management tools without physical access to computers.",
+                  icon: "🔗",
+                },
+              ].map((item) => (
                 <div
-                  key={idx}
-                  className="p-8 rounded-2xl border bg-slate-50 hover:shadow-lg transition-all"
+                  key={item.title}
+                  className="p-8 rounded-2xl border bg-slate-50 hover:shadow-lg transition-all group"
                   style={{ borderColor: "#e5e7eb" }}
                 >
-                  <div className="text-4xl mb-4">{comp.icon}</div>
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                    {item.icon}
+                  </div>
                   <h3
                     className="text-xl font-bold mb-3"
                     style={{ color: "#1f2937" }}
                   >
-                    {comp.title}
+                    {item.title}
                   </h3>
                   <p
                     className="text-sm leading-relaxed"
                     style={{ color: "#6b7280" }}
                   >
-                    {comp.desc}
+                    {item.desc}
                   </p>
                 </div>
               ))}
@@ -619,7 +453,7 @@ const EducationPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Supported Assets Section */}
+        {/* ================= SUPPORTED ASSETS SECTION ================= */}
         <section id="assets" className="py-20 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -627,48 +461,48 @@ const EducationPage: React.FC = () => {
                 className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4"
                 style={{ backgroundColor: "#e8f5e9", color: "#059669" }}
               >
-                Hardware Support
+                Device Support
               </div>
               <h2
                 className="text-4xl md:text-5xl font-bold mb-4"
                 style={{ color: "#1f2937" }}
               >
-                Erase Campus IT Assets
+                One Solution for All Device Types
               </h2>
               <p
                 className="text-lg max-w-2xl mx-auto"
                 style={{ color: "#6b7280" }}
               >
-                Supporting a wide range of devices found in modern educational
-                environments.
+                Sanitize donor records and beneficiary data from any device —
+                whether at your main office or remote field locations.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
-                  icon: "🎓",
-                  title: "Chromebooks",
-                  desc: "Bulk wiping for student laptops and education-grade devices.",
+                  icon: "💻",
+                  title: "PCs, Laptops & Macs",
+                  desc: "Securely wipe Windows, Mac, and Chromebooks. Support for Apple Silicon (M1–M4) and Intel-based Macs.",
                 },
                 {
-                  icon: "🔬",
-                  title: "Lab PCs & Macs",
-                  desc: "Sanitize high-performance workstations in research and computer labs.",
+                  icon: "💾",
+                  title: "Drives of All Types",
+                  desc: "Erase SATA, PATA, HDD, SSD, NVMe, and M.2 drives. Wipes user-inaccessible areas like HPA & DCO.",
                 },
                 {
-                  icon: "🏫",
-                  title: "School Servers",
-                  desc: "Securely erase server-side student information and admin records.",
+                  icon: "🗄️",
+                  title: "Servers & Data Centers",
+                  desc: "Centralized wiping of up to 65,000 server drives simultaneously over a network using PXE boot.",
                 },
                 {
                   icon: "📱",
-                  title: "Staff Tablets",
-                  desc: "Sanitize iOS and Android devices used by faculty and staff.",
+                  title: "Mobile Devices",
+                  desc: "Certified erasure for iOS and Android phones and tablets. 50+ diagnostic tests for device health assessment.",
                 },
-              ].map((asset, idx) => (
+              ].map((asset) => (
                 <div
-                  key={idx}
+                  key={asset.title}
                   className="text-center p-8 rounded-2xl bg-white shadow-sm hover:shadow-md transition-all"
                 >
                   <div className="text-5xl mb-4">{asset.icon}</div>
@@ -687,9 +521,9 @@ const EducationPage: React.FC = () => {
           </div>
         </section>
 
-        {/* School Solutions Section */}
+        {/* ================= COMPLIANCE SECTION ================= */}
         <section
-          id="solutions"
+          id="compliance"
           className="py-20"
           style={{ backgroundColor: "#ffffff" }}
         >
@@ -700,22 +534,23 @@ const EducationPage: React.FC = () => {
                   className="text-3xl md:text-4xl font-bold mb-6"
                   style={{ color: "#1f2937" }}
                 >
-                  Institutional Grade Data Disposal
+                  Audit-Ready Compliance for Non-Profits
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "#4b5563" }}>
-                  Educational institutions frequently upgrade technology. We
-                  help IT departments manage large-scale data destruction
-                  efficiently without physical disk destruction, promoting green
-                  campus initiatives.
+                  Generate verifiable, tamper-proof audit trails for every
+                  sanitized asset. Meet data privacy laws that mandate secure
+                  disposal — whether for funding organizations, board reporting,
+                  or partner transparency requirements.
                 </p>
                 <ul className="space-y-4">
                   {[
-                    "Network PXE booting for mass wiping of entire computer labs",
-                    "USB sanitization for hybrid work laptops and off-site staff",
-                    "Cloud-based management for central tracking across multiple campuses",
-                    "Sustainability-focused disposal through high-grade reusable wiping",
-                  ].map((item, idx) => (
-                    <li key={idx} className="flex items-start space-x-3">
+                    "Tamper-proof erasure certificates for audit purposes",
+                    "Compliance with EU-GDPR, HIPAA, PCI-DSS, CCPA & DPDPA",
+                    "Software-based certificates as proof of secure sanitization",
+                    "Centralized cloud repository for all reports & certificates",
+                    "ISO customization to standardize erasure across locations",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start space-x-3">
                       <svg
                         className="w-5 h-5 text-emerald-500 mt-1"
                         fill="currentColor"
@@ -737,34 +572,45 @@ const EducationPage: React.FC = () => {
                   className="text-2xl font-bold mb-6"
                   style={{ color: "#065f46" }}
                 >
-                  Why Education Leaders Trust D-Secure?
+                  Why Choose D-Secure?
                 </h3>
                 <div className="space-y-6">
                   <div>
                     <h4 className="font-bold text-emerald-900 mb-1">
-                      Compliance Verification
+                      Sustainable Data Disposal
                     </h4>
                     <p className="text-sm text-emerald-800">
-                      Generate auditable proofs for State and Federal privacy
-                      auditors.
+                      Securely sanitize devices for donation and reuse instead of
+                      physical destruction — reducing e-waste and extending
+                      device lifecycles.
                     </p>
                   </div>
                   <div>
                     <h4 className="font-bold text-emerald-900 mb-1">
-                      Asset Lifetime Value
+                      Cost-Effective for NGOs
                     </h4>
                     <p className="text-sm text-emerald-800">
-                      Erase data while keeping the hardware intact for resale or
-                      donations.
+                      Licenses never expire. Use them whenever required for
+                      projects without worrying about deadlines or recurring
+                      costs.
                     </p>
                   </div>
                   <div>
                     <h4 className="font-bold text-emerald-900 mb-1">
-                      Campus-Wide Centralization
+                      Global Scalability
                     </h4>
                     <p className="text-sm text-emerald-800">
-                      Manage all student data sanitization from a single web
-                      dashboard.
+                      From a single office workstation to 65,000 distributed
+                      servers — D-Secure scales with your organization's mission.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-emerald-900 mb-1">
+                      Offline & Remote Support
+                    </h4>
+                    <p className="text-sm text-emerald-800">
+                      Perform erasure at facilities without internet using USB
+                      boot. Reports are saved locally and can be synced later.
                     </p>
                   </div>
                 </div>
@@ -773,7 +619,7 @@ const EducationPage: React.FC = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
+        {/* ================= FAQ SECTION ================= */}
         <section id="faq" className="py-20 bg-slate-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -784,31 +630,40 @@ const EducationPage: React.FC = () => {
                 Frequently Asked Questions
               </h2>
               <p style={{ color: "#6b7280" }}>
-                Common queries for institutional IT teams
+                Common queries about data sanitization for Non-Profit
+                Organizations
               </p>
             </div>
 
             <div className="space-y-4">
               {[
                 {
-                  q: "How does D-Secure ensure FERPA compliance?",
-                  a: "D-Secure uses NIST-level wiping to ensure all personally identifiable information (PII) of students is non-recoverable, and then creates a compliance-verified audit report as proof for regulators.",
+                  q: "How many drives can we wipe simultaneously?",
+                  a: "You can wipe up to 100 drives at a time on a single machine using USB boot. For network-based erasure, you can simultaneously wipe up to 65,000 drives over PXE boot, making it ideal for large-scale operations across multiple offices.",
                 },
                 {
-                  q: "Can we wipe devices across different campus buildings?",
-                  a: "Yes, our cloud console allows you to manage erasure tasks across geographically dispersed campus sites, providing real-time visibility into every asset being sanitized.",
+                  q: "Do D-Secure licenses expire?",
+                  a: "No, D-Secure licenses do not expire. You have the freedom to use purchased licenses whenever required for your projects without worrying about a deadline or recurring subscription costs.",
                 },
                 {
-                  q: "Is it possible to donate old school computers securely?",
-                  a: "Absolutely. D-Secure wipes the storage data but keeps the device working perfectly. You can donate sanitized PCs with a Compliance Certificate to ensure the school's data never leaves the campus.",
+                  q: "Can we perform erasure at locations without internet access?",
+                  a: "Yes, our standalone USB boot solution enables secure drive wiping at facilities without internet connectivity. Reports are saved locally and can be synced to the cloud console when connectivity is available.",
                 },
                 {
-                  q: "What standards are used for institutional wiping?",
-                  a: "We support NIST 800-88, US Department of Defense (DoD), and other international sanitization standards to ensure the highest level of information security.",
+                  q: "Does D-Secure help with regulatory compliance?",
+                  a: "Yes. D-Secure performs secure erasure on devices and generates verifiable audit trails that help comply with global data protection laws like EU-GDPR, HIPAA, CCPA, GLBA, and DPDPA. Every erasure produces a tamper-proof certificate.",
                 },
-              ].map((faq, idx) => (
+                {
+                  q: "Can we customize the erasure reports with our organization's branding?",
+                  a: "Yes, you can customize the ISO and erasure reports through the cloud console. This standardizes erasure at all locations, and you can add your organization's logo and watermarking to the generated reports.",
+                },
+                {
+                  q: "Is there support for mobile device erasure and diagnostics?",
+                  a: "Yes, D-Secure supports simultaneous erasure and diagnostics of up to 40 iOS and Android devices. You can run 50+ health-check tests to assess device condition before deciding on reuse or disposal.",
+                },
+              ].map((faq) => (
                 <details
-                  key={idx}
+                  key={faq.q}
                   className="group rounded-xl p-6 bg-white shadow-sm hover:shadow-md transition-all border"
                   style={{ borderColor: "#e5e7eb" }}
                 >
@@ -847,21 +702,18 @@ const EducationPage: React.FC = () => {
         </section>
 
         {/* ================= CONTACT SECTION ================= */}
-        <SolutionContactSection
-          source="Education Solutions Page"
-          subjectPrefix="New Inquiry - Education Solutions"
-        />
+        <SolutionContactSection source="Non-Profit Solutions Page" subjectPrefix="New Inquiry - Non-Profit Solutions" />
       </div>
 
       {/* License Request Modal */}
       {showLicenseModal && (
         <LicenseForm
           onClose={() => setShowLicenseModal(false)}
-          title="Request Free Campus License - Education"
+          title="Request Free License - Non-Profit"
         />
       )}
     </>
   );
 };
 
-export default EducationPage;
+export default NonProfitSolutionsPage;

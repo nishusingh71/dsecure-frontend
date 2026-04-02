@@ -96,4 +96,24 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
       { name: "Education", item: "/solutions/education" },
     ],
   },
+  "solutions/non-profit": {
+    title: "Non-Profit Data Erasure Solutions | Secure Device Donation & Reuse | D-Secure",
+    description:
+      "Comply with data privacy laws by securely erasing sensitive donor, beneficiary, and financial records from drives and devices. Cost-effective, audit-ready data sanitization for NGOs and charities.",
+    keywords: generateKeywords([
+      "non-profit data erasure",
+      "NGO data security",
+      "charity device donation",
+      "secure data disposal for NGOs",
+      "NIST 800-88 non-profit",
+      "sustainable IT asset disposal",
+      "non-profit GDPR compliance",
+    ]),
+    canonicalUrl: getCanonicalUrl("/solutions/non-profit"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Non-Profit Organizations", item: "/solutions/non-profit" },
+    ],
+  },
 };

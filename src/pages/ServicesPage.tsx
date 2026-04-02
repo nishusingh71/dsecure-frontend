@@ -198,28 +198,169 @@ function ServicesPageContent() {
   return (
     <>
       <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
-        {/* Hero Section */}
-        <section>
-          <div className="container-app py-16 md:py-24">
-            <div className="text-center max-w-4xl mx-auto">
-              <Reveal>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
-                  Comprehensive Data Erasure Services
-                </h1>
-              </Reveal>
-              <Reveal delayMs={10}>
-                <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                  Military-grade data sanitization for devices, servers, and cloud platforms.
-                  Trusted by enterprises worldwide for secure, compliant data destruction.
-                </p>
-              </Reveal>
-              <Reveal delayMs={20}>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link to="/contact" className="btn-primary">
-                    Request Demo
-                  </Link>
+        {/* ================= HERO SECTION ================= */}
+        <section className="min-h-[600px] flex items-start pt-8 lg:pt-12 pb-8 lg:pb-12 relative overflow-hidden">
+          {/* Background pattern */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-100/40 rounded-full blur-3xl opacity-20 -mr-64 -mt-64"></div>
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-teal-100/40 rounded-full blur-3xl opacity-20 -ml-64 -mb-64"></div>
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
+              
+              {/* Left Column: Content */}
+              <div className="space-y-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold mb-4 shadow-sm border border-emerald-200">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Military-Grade Compliant Trusted</span>
+                  </div>
+                  
+                  <Reveal>
+                    <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
+                      Comprehensive Data{" "}
+                      <span className="block bg-gradient-to-r from-emerald-700 to-teal-600 bg-clip-text text-transparent pb-1">
+                        Erasure Services
+                      </span>
+                    </h1>
+                  </Reveal>
                 </div>
-              </Reveal>
+
+                <Reveal delayMs={10}>
+                  <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
+                    Military-grade data sanitization for devices, servers, and cloud platforms.
+                    Trusted by enterprises worldwide for secure, compliant data destruction.
+                  </p>
+                </Reveal>
+
+                <Reveal delayMs={20}>
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-xl shadow-xl hover:shadow-emerald-200/50 transition-all duration-300 transform hover:-translate-y-1"
+                    >
+                      Request Demo
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </Link>
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-emerald-100/50"
+                    >
+                      Contact Sales
+                    </Link>
+                  </div>
+                </Reveal>
+
+                {/* Compliance Badges */}
+                <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-emerald-100/50">
+                  {["DOD 5220.22-M", "NIST 800-88", "GDPR", "ISO 27001"].map((badge) => (
+                    <div
+                      key={badge}
+                      className="flex items-center gap-2 bg-white/80 px-2.5 py-1.5 rounded-full shadow-sm border border-emerald-50"
+                    >
+                      <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                      <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest leading-none">
+                        {badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Services Ecosystem Graphic */}
+              <div className="relative w-full max-w-lg mx-auto overflow-visible">
+                <div className="bg-white/40 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-visible p-1 lg:p-2">
+                  <div
+                    className="relative bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-2xl overflow-visible shadow-inner"
+                    style={{ height: "340px" }}
+                  >
+                    {/* Animated dotted connection lines */}
+                    <svg
+                      className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
+                      viewBox="0 0 400 340"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <line x1="200" y1="125" x2="200" y2="60" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.5s" repeatCount="indefinite" />
+                      </line>
+                      <line x1="148" y1="170" x2="55" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.8s" repeatCount="indefinite" />
+                      </line>
+                      <line x1="252" y1="170" x2="345" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.6s" repeatCount="indefinite" />
+                      </line>
+                      <line x1="165" y1="205" x2="60" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="2s" repeatCount="indefinite" />
+                      </line>
+                      <line x1="235" y1="205" x2="340" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
+                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.7s" repeatCount="indefinite" />
+                      </line>
+                    </svg>
+
+                    {/* CENTER: Shield/Service Hub */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] z-10 transition-transform hover:scale-105 duration-500">
+                      <svg width="90" height="90" viewBox="0 0 72 72" fill="none"
+                           className="drop-shadow-[0_12px_24px_rgba(16,185,129,0.35)]">
+                        {/* Shield shape */}
+                        <path d="M36 6 L60 18 L60 38 C60 52 48 62 36 66 C24 62 12 52 12 38 L12 18 Z" fill="#10b981" />
+                        <path d="M36 10 L56 20 L56 37 C56 49 46 58 36 62 C26 58 16 49 16 37 L16 20 Z" fill="#059669" />
+                        {/* Checkmark inside */}
+                        <path d="M26 36 L33 43 L46 28" stroke="#d1fae5" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        <text x="36" y="56" textAnchor="middle" fill="#d1fae5" fontSize="5" fontWeight="900" fontFamily="sans-serif">D-SECURE</text>
+                      </svg>
+                    </div>
+
+                    {/* TOP CENTER: Device */}
+                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-[10px] left-1/2 -translate-x-1/2">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
+                      </svg>
+                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">DEVICE</span>
+                    </div>
+
+                    {/* MIDDLE LEFT: Server */}
+                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 left-[5px] -translate-y-1/2">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" />
+                        <circle cx="7" cy="6" r="1" fill="#0d9488" stroke="none" /><circle cx="7" cy="18" r="1" fill="#0d9488" stroke="none" />
+                        <line x1="11" y1="6" x2="17" y2="6" /><line x1="11" y1="18" x2="17" y2="18" />
+                      </svg>
+                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">SERVER</span>
+                    </div>
+
+                    {/* MIDDLE RIGHT: Cloud */}
+                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 right-[5px] -translate-y-1/2">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" />
+                      </svg>
+                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">CLOUD</span>
+                    </div>
+
+                    {/* BOTTOM LEFT: Mobile */}
+                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] left-[5px]">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" /><circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" />
+                      </svg>
+                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">MOBILE</span>
+                    </div>
+
+                    {/* BOTTOM RIGHT: Storage */}
+                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] right-[5px]">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="7" width="20" height="10" rx="2" />
+                        <circle cx="17" cy="12" r="1.5" fill="#16a34a" stroke="none" />
+                        <line x1="5" y1="10" x2="12" y2="10" /><line x1="5" y1="14" x2="9" y2="14" />
+                      </svg>
+                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">STORAGE</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

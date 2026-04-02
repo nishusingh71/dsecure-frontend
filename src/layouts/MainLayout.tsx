@@ -10,6 +10,7 @@ import {
   RefreshCcw,
   Shield,
   Monitor,
+  Heart,
   Server,
   X,
   CheckCircle2,
@@ -1032,6 +1033,24 @@ export default function MainLayout() {
                                   Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                                 </span>
                               </Link>
+
+                              {/* Non-Profit Organizations */}
+                              <Link
+                                to="/solutions/non-profit"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setSolutionsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Heart className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Non-Profit</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Secure data disposal for NGOs & charities.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
                             </>
                           )}
 
@@ -1549,6 +1568,7 @@ export default function MainLayout() {
                       { to: "/solutions/education", title: "Education", desc: "Academic Privacy", color: "from-emerald-400 to-teal-500" },
                       { to: "/solutions/service-providers", title: "Service Providers", desc: "MSP & MSSP", color: "from-teal-500 to-emerald-600" },
                       { to: "/solutions/itad", title: "ITAD", desc: "Asset Disposition", color: "from-cyan-400 to-blue-500" },
+                      { to: "/solutions/non-profit", title: "Non-Profit", desc: "NGO & Charity", color: "from-emerald-400 to-cyan-500" },
                     ].map((item) => (
                       <Link
                         key={item.to}
@@ -1972,6 +1992,14 @@ export default function MainLayout() {
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Education
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/solutions/non-profit"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Non-Profit
                         </Link>
                       </li>
                     </ul>
