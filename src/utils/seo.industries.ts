@@ -116,4 +116,46 @@ export const INDUSTRY_SEO: Record<string, Partial<SEOMetadata>> = {
       { name: "Non-Profit Organizations", item: "/solutions/non-profit" },
     ],
   },
+  // Enterprise Solutions Page — SEO key "enterprise-solutions" se match hota hai
+  "enterprise-solutions": {
+    title: "Enterprise Data Erasure Solutions | Scalable Secure Wiping | D-Secure",
+    description:
+      "Enterprise-grade data erasure for large organizations. Wipe up to 65,000 drives simultaneously with PXE boot, RAID support, and tamper-proof audit trails. NIST 800-88, GDPR, HIPAA compliant.",
+    keywords: generateKeywords([
+      "enterprise data erasure",
+      "enterprise data sanitization",
+      "large scale data wiping",
+      "PXE boot erasure",
+      "network server wiping",
+      "NIST 800-88 enterprise",
+      "corporate data destruction",
+    ]),
+    canonicalUrl: getCanonicalUrl("/solutions/enterprise"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Enterprise", item: "/solutions/enterprise" },
+    ],
+  },
+  // Service Providers Page — SEO key "solutions/service-providers" se match hota hai
+  "solutions/service-providers": {
+    title: "MSP & Service Provider Data Erasure Solutions | D-Secure Tech",
+    description:
+      "Data erasure solutions for Managed Service Providers and System Integrators. Offer certified data sanitization as a service with centralized audit trails, white-label reporting, and scalable licensing.",
+    keywords: generateKeywords([
+      "MSP data erasure",
+      "service provider data wiping",
+      "managed service provider security",
+      "erasure as a service",
+      "ITAD service provider",
+      "white label data erasure",
+      "MSP compliance tools",
+    ]),
+    canonicalUrl: getCanonicalUrl("/solutions/service-providers"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Solutions", item: "/solutions" },
+      { name: "Service Providers", item: "/solutions/service-providers" },
+    ],
+  },
 };

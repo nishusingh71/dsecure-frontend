@@ -5,6 +5,7 @@ import { LicenseForm } from "@/components/forms";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import SolutionContactSection from "@/components/SolutionContactSection";
+import SolutionHeroGraphic from "@/components/SolutionHeroGraphic";
 
 /**
  * NonProfitSolutionsPage Component
@@ -195,10 +196,10 @@ const NonProfitSolutionsPage: React.FC = () => {
                     </svg>
                   </button>
                   <a
-                    href=""
+                    href="https://assets.dsecuretech.com/pdf/DSECURE_NPO%20SOLN.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg pointer-events-none opacity-50 cursor-not-allowed"
+                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
                     Solution Overview
@@ -223,146 +224,43 @@ const NonProfitSolutionsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Column: Non-Profit Ecosystem Graphic */}
-              <div className="relative w-full max-w-lg mx-auto overflow-visible">
-                <div className="bg-white/40 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-visible p-1 lg:p-2">
-                  {/* Illustration canvas */}
-                  <div
-                    className="relative bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-2xl overflow-visible shadow-inner"
-                    style={{ height: "340px" }}
-                  >
-                    {/* Animated dotted connection lines */}
-                    <svg
-                      className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-                      viewBox="0 0 400 340"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      {/* TOP CENTER */}
-                      <line x1="200" y1="125" x2="200" y2="60" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.5s" repeatCount="indefinite" />
-                      </line>
-                      {/* MIDDLE LEFT */}
-                      <line x1="148" y1="170" x2="55" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.8s" repeatCount="indefinite" />
-                      </line>
-                      {/* MIDDLE RIGHT */}
-                      <line x1="252" y1="170" x2="345" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.6s" repeatCount="indefinite" />
-                      </line>
-                      {/* BOTTOM LEFT */}
-                      <line x1="165" y1="205" x2="60" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="2s" repeatCount="indefinite" />
-                      </line>
-                      {/* BOTTOM RIGHT */}
-                      <line x1="235" y1="205" x2="340" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.7s" repeatCount="indefinite" />
-                      </line>
-                    </svg>
-
-                    {/* CENTER: Community/NGO Hub with Heart + Shield */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] z-10 transition-transform hover:scale-105 duration-500">
-                      <svg
-                        width="90"
-                        height="90"
-                        viewBox="0 0 72 72"
-                        fill="none"
-                        className="drop-shadow-[0_12px_24px_rgba(16,185,129,0.35)]"
-                      >
-                        {/* Shield shape */}
-                        <path
-                          d="M36 6 L58 16 L58 38 C58 50 48 60 36 66 C24 60 14 50 14 38 L14 16 Z"
-                          fill="#10b981"
-                        />
-                        <path
-                          d="M36 10 L54 18 L54 38 C54 48 46 56 36 62 C26 56 18 48 18 38 L18 18 Z"
-                          fill="#059669"
-                        />
-                        {/* Heart inside shield */}
-                        <path
-                          d="M36 28 C36 24 30 20 26 24 C22 28 26 34 36 42 C46 34 50 28 46 24 C42 20 36 24 36 28Z"
-                          fill="#d1fae5"
-                        />
-                        {/* Text label */}
-                        <text
-                          x="36"
-                          y="54"
-                          textAnchor="middle"
-                          fill="white"
-                          fontSize="4.5"
-                          fontWeight="900"
-                          fontFamily="sans-serif"
-                        >
-                          NGO
-                        </text>
-                      </svg>
-                    </div>
-
-                    {/* TOP CENTER: PC/Mac */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-[10px] left-1/2 -translate-x-1/2">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" />
-                        <path d="M8 21h8M12 17v4" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        PC/MAC
-                      </span>
-                    </div>
-
-                    {/* MIDDLE LEFT: Laptop */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 left-[5px] -translate-y-1/2">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="4" width="20" height="13" rx="2" />
-                        <path d="M2 19h20" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        LAPTOP
-                      </span>
-                    </div>
-
-                    {/* MIDDLE RIGHT: Server */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 right-[5px] -translate-y-1/2">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="2" width="20" height="8" rx="2" />
-                        <rect x="2" y="14" width="20" height="8" rx="2" />
-                        <circle cx="7" cy="6" r="1" fill="#16a34a" stroke="none" />
-                        <circle cx="7" cy="18" r="1" fill="#16a34a" stroke="none" />
-                        <line x1="11" y1="6" x2="17" y2="6" />
-                        <line x1="11" y1="18" x2="17" y2="18" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        SERVER
-                      </span>
-                    </div>
-
-                    {/* BOTTOM LEFT: Mobile */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] left-[5px]">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="5" y="2" width="14" height="20" rx="2" />
-                        <circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        MOBILE
-                      </span>
-                    </div>
-
-                    {/* BOTTOM RIGHT: Storage/HDD */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] right-[5px]">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="7" width="20" height="10" rx="2" />
-                        <circle cx="17" cy="12" r="1.5" fill="#16a34a" stroke="none" />
-                        <line x1="5" y1="10" x2="12" y2="10" />
-                        <line x1="5" y1="14" x2="9" y2="14" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        STORAGE
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Right Column: Interactive Non-Profit Ecosystem */}
+              <SolutionHeroGraphic
+                centerIcon={
+                  <svg width="80" height="80" viewBox="0 0 72 72" fill="none" className="drop-shadow-[0_8px_16px_rgba(16,185,129,0.3)]">
+                    <path d="M36 6 L58 16 L58 38 C58 50 48 60 36 66 C24 60 14 50 14 38 L14 16 Z" fill="#10b981" />
+                    <path d="M36 10 L54 18 L54 38 C54 48 46 56 36 62 C26 56 18 48 18 38 L18 18 Z" fill="#059669" />
+                    <path d="M36 28 C36 24 30 20 26 24 C22 28 26 34 36 42 C46 34 50 28 46 24 C42 20 36 24 36 28Z" fill="#d1fae5" />
+                  </svg>
+                }
+                centerLabel="NON-PROFIT"
+                devices={[
+                  {
+                    label: "PC/MAC",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>,
+                  },
+                  {
+                    label: "LAPTOP",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="13" rx="2" /><path d="M2 19h20" /></svg>,
+                  },
+                  {
+                    label: "SERVER",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" /><circle cx="7" cy="6" r="1" fill="#16a34a" stroke="none" /><circle cx="7" cy="18" r="1" fill="#16a34a" stroke="none" /><line x1="11" y1="6" x2="17" y2="6" /><line x1="11" y1="18" x2="17" y2="18" /></svg>,
+                  },
+                  {
+                    label: "MOBILE",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" /></svg>,
+                  },
+                  {
+                    label: "STORAGE",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="10" rx="2" /><circle cx="17" cy="12" r="1.5" fill="#16a34a" stroke="none" /><line x1="5" y1="10" x2="12" y2="10" /><line x1="5" y1="14" x2="9" y2="14" /></svg>,
+                  },
+                ]}
+              />
             </div>
           </div>
         </section>
+
 
         {/* ================= USE CASES SECTION ================= */}
         <section

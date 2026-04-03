@@ -42,12 +42,13 @@ const BlogPostDetail: React.FC = () => {
   }
 
   // Generate dynamic SEO if it's not explicitly in the registry
-  const seoData = getSEOForPage(`blog/${post.slug}`) || {
+  const seoData = getSEOForPage(`blog/${post.slug}`, {
     title: `${post.title} | D-Secure Blog`,
     description: post.excerpt,
-    keywords: post.keywords,
-    canonicalUrl: `https://dsecuretech.com/blog/${post.slug}`
-  };
+    keywords: post.keywords || `data erasure, ${post.tag}`,
+    canonicalUrl: `https://dsecuretech.com/blog/${post.slug}`,
+    ogType: 'article'
+  });
 
   return (
     <div className="min-h-screen bg-white">

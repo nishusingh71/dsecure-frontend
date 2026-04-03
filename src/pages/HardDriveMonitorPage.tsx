@@ -22,6 +22,7 @@ import {
   Cpu,
   BarChart3,
   RefreshCw,
+  Gauge,
 } from "lucide-react";
 import { getSEOForPage } from "@/utils/seo";
 
@@ -296,7 +297,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
 
                         {/* Main Icon */}
                         <div className="w-20 h-20 lg:w-28 lg:h-28 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 lg:mb-6 border border-white/20 shadow-inner">
-                          <Activity className="w-12 h-12 lg:w-16 lg:h-16 text-white drop-shadow-lg" />
+                          <Gauge className="w-12 h-12 lg:w-16 lg:h-16 text-white drop-shadow-lg" />
                         </div>
 
                         {/* Product Name */}

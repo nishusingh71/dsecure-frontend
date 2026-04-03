@@ -5,6 +5,7 @@ import { LicenseForm, PartnershipForm } from "@/components/forms";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import SolutionContactSection from "@/components/SolutionContactSection";
+import SolutionHeroGraphic from "@/components/SolutionHeroGraphic";
 
 /**
  * ServiceProvidersSolutionsPage Component
@@ -173,12 +174,15 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </button>
-                  <button
-                    onClick={() => setShowPartnerModal(true)}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-emerald-100/50"
+                  <a
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg pointer-events-none opacity-50 cursor-not-allowed"
                   >
-                    Become a Partner
-                  </button>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
+                    Solution Overview
+                  </a>
                 </div>
 
                 {/* Compliance Badges */}
@@ -197,104 +201,45 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Column: MSP Ecosystem Graphic */}
-              <div className="relative w-full max-w-lg mx-auto overflow-visible">
-                <div className="bg-white/40 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-visible p-1 lg:p-2">
-                  <div
-                    className="relative bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-2xl overflow-visible shadow-inner"
-                    style={{ height: "340px" }}
-                  >
-                    {/* Animated dotted connection lines */}
-                    <svg
-                      className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-                      viewBox="0 0 400 340"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <line x1="200" y1="125" x2="200" y2="60" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.5s" repeatCount="indefinite" />
-                      </line>
-                      <line x1="148" y1="170" x2="55" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.8s" repeatCount="indefinite" />
-                      </line>
-                      <line x1="252" y1="170" x2="345" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.6s" repeatCount="indefinite" />
-                      </line>
-                      <line x1="165" y1="205" x2="60" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="2s" repeatCount="indefinite" />
-                      </line>
-                      <line x1="235" y1="205" x2="340" y2="280" stroke="#10b981" strokeWidth="2" strokeDasharray="6,5" strokeOpacity="0.7">
-                        <animate attributeName="stroke-dashoffset" values="0;-11" dur="1.7s" repeatCount="indefinite" />
-                      </line>
-                    </svg>
-
-                    {/* CENTER: MSP Network Hub */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] z-10 transition-transform hover:scale-105 duration-500">
-                      <svg width="90" height="90" viewBox="0 0 72 72" fill="none"
-                           className="drop-shadow-[0_12px_24px_rgba(16,185,129,0.35)]">
-                        {/* Hexagonal hub shape */}
-                        <polygon points="36,6 60,20 60,48 36,62 12,48 12,20" fill="#10b981" />
-                        <polygon points="36,10 56,22 56,46 36,58 16,46 16,22" fill="#059669" />
-                        {/* Network nodes inside */}
-                        <circle cx="36" cy="28" r="5" fill="#d1fae5" />
-                        <circle cx="26" cy="42" r="4" fill="#d1fae5" opacity="0.8" />
-                        <circle cx="46" cy="42" r="4" fill="#d1fae5" opacity="0.8" />
-                        {/* Connection lines */}
-                        <line x1="36" y1="33" x2="28" y2="39" stroke="#6ee7b7" strokeWidth="1.5" />
-                        <line x1="36" y1="33" x2="44" y2="39" stroke="#6ee7b7" strokeWidth="1.5" />
-                        <line x1="30" y1="42" x2="42" y2="42" stroke="#6ee7b7" strokeWidth="1.5" />
-                        <text x="36" y="54" textAnchor="middle" fill="white" fontSize="4.5" fontWeight="900" fontFamily="sans-serif">MSP</text>
-                      </svg>
-                    </div>
-
-                    {/* TOP CENTER: Endpoint */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-[10px] left-1/2 -translate-x-1/2">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">ENDPOINT</span>
-                    </div>
-
-                    {/* MIDDLE LEFT: Server */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 left-[5px] -translate-y-1/2">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" />
-                        <circle cx="7" cy="6" r="1" fill="#0d9488" stroke="none" /><circle cx="7" cy="18" r="1" fill="#0d9488" stroke="none" />
-                        <line x1="11" y1="6" x2="17" y2="6" /><line x1="11" y1="18" x2="17" y2="18" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">SERVER</span>
-                    </div>
-
-                    {/* MIDDLE RIGHT: Cloud */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 right-[5px] -translate-y-1/2">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">CLOUD</span>
-                    </div>
-
-                    {/* BOTTOM LEFT: Mobile */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] left-[5px]">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="5" y="2" width="14" height="20" rx="2" /><circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">MOBILE</span>
-                    </div>
-
-                    {/* BOTTOM RIGHT: Storage */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] right-[5px]">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="7" width="20" height="10" rx="2" />
-                        <circle cx="17" cy="12" r="1.5" fill="#16a34a" stroke="none" />
-                        <line x1="5" y1="10" x2="12" y2="10" /><line x1="5" y1="14" x2="9" y2="14" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">STORAGE</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Right Column: Interactive MSP Ecosystem */}
+              <SolutionHeroGraphic
+                centerIcon={
+                  <svg width="80" height="80" viewBox="0 0 72 72" fill="none" className="drop-shadow-[0_8px_16px_rgba(16,185,129,0.3)]">
+                    <circle cx="36" cy="36" r="28" fill="#10b981" />
+                    <circle cx="36" cy="36" r="22" fill="#059669" />
+                    <path d="M24 30 L36 22 L48 30 L48 42 L36 50 L24 42 Z" fill="#d1fae5" stroke="#6ee7b7" strokeWidth="0.5" />
+                    <circle cx="36" cy="36" r="6" fill="#047857" />
+                    <circle cx="36" cy="36" r="3" fill="#10b981" />
+                  </svg>
+                }
+                centerLabel="MSP HUB"
+                devices={[
+                  {
+                    label: "ENDPOINT",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>,
+                  },
+                  {
+                    label: "LAPTOP",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="13" rx="2" /><path d="M2 19h20" /></svg>,
+                  },
+                  {
+                    label: "SERVER",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" /><circle cx="7" cy="6" r="1" fill="#16a34a" stroke="none" /><circle cx="7" cy="18" r="1" fill="#16a34a" stroke="none" /><line x1="11" y1="6" x2="17" y2="6" /><line x1="11" y1="18" x2="17" y2="18" /></svg>,
+                  },
+                  {
+                    label: "MOBILE",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" /></svg>,
+                  },
+                  {
+                    label: "CLOUD",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" /></svg>,
+                  },
+                ]}
+              />
             </div>
           </div>
         </section>
+
 
         {/* Capabilities Section */}
         <section

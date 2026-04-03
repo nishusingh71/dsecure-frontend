@@ -9,16 +9,13 @@ import {
   Monitor, 
   RefreshCcw, 
   CheckCircle, 
-  Bell, 
   Layout, 
   Shield, 
   ShieldCheck,
   Users,
   Smartphone,
   Gauge,
-  Settings,
-  Zap,
-  BookOpen
+  Zap
 } from "lucide-react";
 import { ArrowRightIcon } from "@/components/FlatIcons";
 import Reveal from "@/components/Reveal";
@@ -141,27 +138,30 @@ const FreezeStateSmartPage = memo(() => {
           <div className="container mx-auto px-4 max-w-7xl relative z-10">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <Reveal>
-                <div className="space-y-4">
-                  <Reveal>
-                    <UpcomingBadge className="mb-4" />
-                  </Reveal>
-                  <div className="flex flex-wrap items-center gap-4 mb-4">
-                    <div className="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-emerald-700 border border-emerald-200 shadow-sm h-10">
-                      <Activity className="w-4 h-4 animate-pulse" />
-                      Live Intelligent Monitoring
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <UpcomingBadge />
                     </div>
-                    
-                    <Link 
-                      to="/products/freeze-state-advanced"
-                      className="inline-flex items-center gap-2 bg-slate-100/80 backdrop-blur-sm text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-full text-[10px] font-bold border border-slate-200 transition-all group shadow-sm h-10"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Switch to Advanced Eraser Edition</span>
-                      <ArrowRightIcon className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 lg:pb-0 flex-nowrap text-left">
+                      <div className="flex-shrink-0 inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-emerald-700 border border-emerald-200 shadow-sm h-10">
+                        <Activity className="w-4 h-4 animate-pulse" />
+                        Live Intelligent Monitoring
+                      </div>
+                      
+                      <Link 
+                        to="/products/freeze-state-advanced"
+                        className="flex-shrink-0 inline-flex items-center gap-2 bg-slate-100/80 backdrop-blur-sm text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-full text-[10px] font-bold border border-slate-200 transition-all group shadow-sm h-10"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        <span>Switch to Advanced Eraser Edition</span>
+                        <ArrowRightIcon className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
                   <h1 className="text-5xl lg:text-7xl font-black text-slate-900 leading-[1.1] tracking-tight">
-                    FreezeState <span className="text-emerald-600">Smart Diagnostic</span>
+                    FreezeState <br />
+                    <span className="text-emerald-600">Smart Diagnostic</span>
                   </h1>
                   <p className="text-xl text-slate-600 leading-relaxed font-medium max-w-xl">
                     Full visibility into your workstation fleet. The Smart edition pairs robust reboot-to-restore protection with real-time performance telemetry and centralized command.
@@ -179,72 +179,122 @@ const FreezeStateSmartPage = memo(() => {
                     >
                       View Features
                     </button>
-                    <Link 
-                      to="/support/help-manual/complete-freeze-state-manual"
-                      className="bg-slate-900 text-white px-6 py-3 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-600 transition-all duration-500 shadow-xl shadow-slate-900/20 hover:scale-105 active:scale-95 text-xs flex items-center gap-2"
-                    >
-                      <BookOpen className="w-4 h-4" />
-                      View Help Manual
-                    </Link>
                   </div>
                 </div>
               </Reveal>
 
-              <Reveal delayMs={200}>
-                 <div className="relative group">
-                    <div className="absolute inset-0 bg-emerald-500 rounded-3xl blur-[60px] opacity-10 group-hover:opacity-20 transition-opacity"></div>
-                    <div className="relative bg-white border border-slate-100 rounded-3xl p-6 shadow-2xl overflow-hidden">
-                       <div className="flex items-center justify-between mb-6 border-b border-slate-50 pb-4">
-                          <div className="flex items-center gap-4">
-                             <div className="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center text-white shadow-lg">
-                                <Activity className="w-6 h-6" />
-                             </div>
-                             <div>
-                                <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm leading-none mb-1">Live Telemetry</h4>
-                                <p className="text-emerald-600 text-[10px] font-bold uppercase tracking-widest">Connected: 1,248 Nodes</p>
-                             </div>
-                          </div>
-                          <div className="flex gap-2">
-                             <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
-                                <Settings className="w-4 h-4" />
-                             </div>
-                          </div>
-                       </div>
-                       
-                       <div className="space-y-5 px-2">
-                          {[
-                            { label: "CPU Utilization", value: "34%", color: "bg-emerald-500" },
-                            { label: "Memory Pressure", value: "62%", color: "bg-emerald-500" },
-                            { label: "Disk I/O Write", value: "12 Mbps", color: "bg-amber-400" },
-                          ].map((stat) => (
-                            <div key={stat.label}>
-                               <div className="flex justify-between items-center mb-2">
-                                  <span className="text-xs font-black uppercase tracking-widest text-slate-500">{stat.label}</span>
-                                  <span className="text-sm font-black text-slate-900">{stat.value}</span>
-                               </div>
-                               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                                  <div className={`h-full ${stat.color} transition-all duration-1000`} style={{ width: stat.value.includes("Mbps") ? "45%" : stat.value }}></div>
-                               </div>
-                            </div>
-                          ))}
-                       </div>
+              {/* Right: Floating Monitor with D-Secure Dashboard */}
+              <Reveal delayMs={100}>
+                <div
+                  className="relative flex items-center justify-center min-h-[300px] sm:min-h-[360px] lg:min-h-[440px]"
+                  style={{ perspective: "1000px" }}
+                >
+                  {/* Background Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/20 via-transparent to-teal-200/20 blur-3xl"></div>
 
-                       <div className="mt-12 p-6 bg-slate-50 rounded-3xl border border-slate-100 relative overflow-hidden group/alert hover:border-emerald-200 transition-all">
-                          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover/alert:opacity-10 transition-opacity">
-                             <Bell className="w-12 h-12 text-slate-900" />
+                  {/* Orbiting Device Icons */}
+                  <div className="absolute inset-0 hidden sm:block">
+                    {[
+                      { top: "8%", left: "12%", label: "Secure Boot", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", delay: "0s" },
+                      { top: "10%", right: "8%", label: "BIOS Config", icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z", delay: "0.6s" },
+                      { bottom: "18%", right: "8%", label: "System RAM", icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z", delay: "0.3s" },
+                      { bottom: "8%", left: "38%", label: "Network Nodes", icon: "M4 6h16M4 12h16M4 18h16", delay: "1.5s" },
+                      { bottom: "25%", left: "5%", label: "Registry", icon: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4", delay: "1.2s" },
+                      { top: "45%", left: "2%", label: "Workstation", icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", delay: "0.9s" },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="absolute group"
+                        style={{ top: item.top, left: item.left, right: item.right, bottom: item.bottom }}
+                      >
+                        <div
+                          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-xl shadow-lg border border-emerald-100 flex items-center justify-center transition-all hover:scale-110 hover:shadow-xl hover:border-emerald-400"
+                          style={{ animation: `deviceBob 3s ease-in-out infinite ${item.delay}` }}
+                        >
+                          <svg className="w-4.5 h-4.5 lg:w-5 lg:h-5 text-emerald-800" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] lg:text-[8px] font-medium text-slate-500 whitespace-nowrap">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Main Monitor */}
+                  <div className="relative z-10" style={{ animation: "monitorFloat 6s ease-in-out infinite" }}>
+                    <div className="absolute -inset-6 lg:-inset-8 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 blur-3xl rounded-full"></div>
+                    <div className="relative w-[230px] sm:w-[270px] lg:w-[330px]">
+                      <div className="bg-slate-900 rounded-t-xl sm:rounded-t-2xl p-1 sm:p-1.5 lg:p-2 shadow-2xl border border-slate-700/50">
+                        <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg sm:rounded-xl overflow-hidden">
+                          <div className="flex items-center justify-between px-3 py-1 bg-slate-800/80 border-b border-slate-700/50">
+                            <div className="flex items-center gap-1">
+                              <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-red-400 rounded-full"></div>
+                              <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-yellow-400 rounded-full"></div>
+                              <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-400 rounded-full"></div>
+                            </div>
+                            <span className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 font-medium">FreezeState Smart Console</span>
+                            <div className="w-6"></div>
                           </div>
-                          <div className="flex items-center gap-4 mb-4">
-                             <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600">System Alert</span>
+                          <div className="p-2 sm:p-3 lg:p-3.5 space-y-2 sm:space-y-2.5">
+                            <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
+                              <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-1 sm:p-1.5 text-center">
+                                <div className="text-emerald-400 font-bold text-[10px] sm:text-xs lg:text-base">1,240</div>
+                                <div className="text-[5px] sm:text-[6px] lg:text-[7px] text-slate-500 uppercase">Systems Frozen</div>
+                              </div>
+                              <div className="bg-teal-500/10 border border-teal-500/20 rounded-lg p-1 sm:p-1.5 text-center">
+                                <div className="text-teal-400 font-bold text-[10px] sm:text-xs lg:text-base">100%</div>
+                                <div className="text-[5px] sm:text-[6px] lg:text-[7px] text-slate-500 uppercase">Rollback Rate</div>
+                              </div>
+                              <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-1 sm:p-1.5 text-center">
+                                <div className="text-cyan-400 font-bold text-[10px] sm:text-xs lg:text-base">99.9%</div>
+                                <div className="text-[5px] sm:text-[6px] lg:text-[7px] text-slate-500 uppercase">Zero Persistence</div>
+                              </div>
+                            </div>
+                            <div className="bg-slate-800/60 rounded-lg p-1.5 sm:p-2 border border-slate-700/40">
+                              <div className="flex items-center justify-between mb-1">
+                                <div className="flex items-center gap-1">
+                                  <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                                    <Activity className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white" />
+                                  </div>
+                                  <span className="text-[7px] sm:text-[8px] lg:text-[9px] text-white font-medium">System Scan — Lab 4A</span>
+                                </div>
+                                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+                              </div>
+                              <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style={{ width: "85%", animation: "progressGrow 3s ease-in-out infinite" }}></div>
+                              </div>
+                              <div className="flex justify-between mt-0.5">
+                                <span className="text-[5px] sm:text-[6px] text-slate-500">Sync: Real-time (Node #481)</span>
+                                <span className="text-[5px] sm:text-[6px] text-emerald-400 font-bold">85%</span>
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              {[{ name: "Workstation_01", status: "frozen", time: "Active" }, { name: "Lab_Console_Alpha", status: "frozen", time: "Synced" }].map((item) => (
+                                <div key={item.name} className="flex items-center justify-between px-2 py-0.5 rounded bg-slate-800/40">
+                                  <div className="flex items-center gap-1">
+                                    <div className={`w-1 h-1 rounded-full ${item.status === "frozen" ? "bg-emerald-400" : "bg-amber-400 animate-pulse"}`}></div>
+                                    <span className="text-[6px] sm:text-[7px] text-slate-400">{item.name}</span>
+                                  </div>
+                                  <span className="text-[5px] sm:text-[6px] text-slate-600">{item.time}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                          <p className="font-bold text-sm pr-8 text-slate-700">User Requested: 'Keep Project_Folder_A for 48 hours'</p>
-                          <div className="mt-6 flex gap-3">
-                             <div className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/20">Grant</div>
-                             <div className="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-slate-300 transition-colors">Reject</div>
-                          </div>
-                       </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <div className="w-14 sm:w-16 lg:w-20 h-3 sm:h-4 lg:h-5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-sm"></div>
+                        <div className="w-20 sm:w-24 lg:w-28 h-1.5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-lg shadow-lg"></div>
+                      </div>
                     </div>
-                 </div>
+                  </div>
+
+                  <style>{`
+                    @keyframes monitorFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+                    @keyframes deviceBob { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
+                    @keyframes progressGrow { 0%, 100% { width: 85%; } 50% { width: 90%; } }
+                  `}</style>
+                </div>
               </Reveal>
             </div>
           </div>

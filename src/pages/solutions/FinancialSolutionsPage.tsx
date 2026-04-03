@@ -9,6 +9,7 @@ import { LicenseForm } from "@/components/forms";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import SolutionContactSection from "@/components/SolutionContactSection";
+import SolutionHeroGraphic from "@/components/SolutionHeroGraphic";
 
 /**
  * BankBuildingIcon Component
@@ -373,10 +374,10 @@ const FinancialSolutionsPage: React.FC = () => {
                       <ArrowRightIcon className="w-4 h-4" />
                     </button>
                     <a
-                      href=""
+                      href="https://assets.dsecuretech.com/pdf/DSECURE_F%26B%20SOLN.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg pointer-events-none opacity-50 cursor-not-allowed"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
                       Solution Overview
@@ -400,10 +401,46 @@ const FinancialSolutionsPage: React.FC = () => {
                 </div>
               </Reveal>
 
-              {/* Right Column: Animated Graphic */}
-              <Reveal delayMs={200}>
-                <BankEcosystemGraphic />
-              </Reveal>
+              {/* Right Column: Interactive Banking Ecosystem */}
+              <SolutionHeroGraphic
+                centerIcon={
+                  <svg width="80" height="80" viewBox="0 0 72 72" fill="none" className="drop-shadow-[0_8px_16px_rgba(16,185,129,0.3)]">
+                    <polygon points="36,7 62,24 10,24" fill="#10b981" />
+                    <polygon points="36,7 62,24 10,24" fill="none" stroke="#047857" strokeWidth="1.2" />
+                    <text x="36" y="21" textAnchor="middle" fill="white" fontSize="6.5" fontWeight="900" letterSpacing="1.2" fontFamily="sans-serif">BANK</text>
+                    <rect x="10" y="24" width="52" height="3" fill="#6ee7b7" rx="1" />
+                    {[13,23,33,43,53].map(x => (
+                      <rect key={x} x={x} y="27" width="6" height="24" fill="#d1fae5" stroke="#6ee7b7" strokeWidth="0.8" rx="1" />
+                    ))}
+                    <rect x="31" y="39" width="10" height="13" fill="#047857" rx="1.5" />
+                    <rect x="8" y="51" width="56" height="5" fill="#10b981" rx="1" />
+                    <rect x="6" y="56" width="60" height="4" fill="#047857" rx="1" />
+                  </svg>
+                }
+                centerLabel="BANKING"
+                devices={[
+                  {
+                    label: "SMARTPHONE",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><circle cx="12" cy="17" r="1" fill="#16a34a" stroke="none" /></svg>,
+                  },
+                  {
+                    label: "LAPTOP",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="13" rx="2" /><path d="M2 19h20" /></svg>,
+                  },
+                  {
+                    label: "SERVER RACK",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" /><circle cx="7" cy="6" r="1" fill="#16a34a" stroke="none" /><circle cx="7" cy="18" r="1" fill="#16a34a" stroke="none" /><line x1="11" y1="6" x2="17" y2="6" /><line x1="11" y1="18" x2="17" y2="18" /></svg>,
+                  },
+                  {
+                    label: "STORAGE/HDD",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="10" rx="2" /><circle cx="17" cy="12" r="1.5" fill="#0d9488" stroke="none" /><line x1="5" y1="10" x2="12" y2="10" /><line x1="5" y1="14" x2="9" y2="14" /></svg>,
+                  },
+                  {
+                    label: "RAID/NAS",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M21 5v5c0 1.66-4.03 3-9 3S3 11.66 3 10V5" /><path d="M21 10v5c0 1.66-4.03 3-9 3S3 16.66 3 15v-5" /></svg>,
+                  },
+                ]}
+              />
             </div>
           </div>
         </section>

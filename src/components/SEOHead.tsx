@@ -17,17 +17,29 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
   const effectiveSeo: SEOMetadata = seo || {
     title: title || '',
     description: description || '',
-    canonicalUrl: canonicalUrl || 'https://dsecuretech.com',
-    keywords: '', // Default fallbacks handled or empty
+    canonicalUrl: canonicalUrl || '', // No default to homepage! Force provide or handled below
+    keywords: '', 
   };
 
   // Step-by-step canonical normalization
-  let normalizedPath = effectiveSeo.canonicalUrl;
-  if (!normalizedPath.startsWith('http')) {
+  let normalizedPath = effectiveSeo.canonicalUrl || '';
+  if (normalizedPath && !normalizedPath.startsWith('http')) {
     const prefix = normalizedPath.startsWith('/') ? '' : '/';
     normalizedPath = `https://dsecuretech.com${prefix}${normalizedPath}`;
   }
-  const finalCanonical = normalizedPath.toLowerCase().replace(/\/$/, ""); // Canonical should be lowercase and without trailing slash for consistency
+  
+  // Rule: Homepage should have a trailing slash for sitemap consistency, internal pages should not.
+  // First, normalize by stripping any trailing slash
+  let finalCanonical = normalizedPath.toLowerCase().replace(/\/$/, "");
+  
+  if (finalCanonical === 'https://dsecuretech.com' || finalCanonical === 'https://www.dsecuretech.com') {
+    // Force trailing slash for the root domain (with or without www)
+    finalCanonical = finalCanonical + '/';
+  } else if (!finalCanonical) {
+    // If absolutely no canonical is provided, default to the homepage with slash
+    finalCanonical = 'https://dsecuretech.com/';
+  }
+  // Otherwise, finalCanonical remains slash-less (e.g. https://dsecuretech.com/about)
 
   // Helper to ensure URLs are absolute for social media crawlers
   const ensureAbsoluteUrl = (url?: string): string => {

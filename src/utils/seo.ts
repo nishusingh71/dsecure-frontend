@@ -355,6 +355,66 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     description: "Find answers to common questions about D-SecureTech products and features.",
     canonicalUrl: getCanonicalUrl("/manual/faq"),
   },
+  "support": {
+    title: "Support & Manuals | D-Secure Tech",
+    description: "Get technical support and product manuals for D-Secure data erasure software. Find solutions to common problems and learn how to use our platform.",
+    canonicalUrl: getCanonicalUrl("/support"),
+  },
+  "product-videos": {
+    title: "Product Training Videos | D-Secure Tech",
+    description: "Watch step-by-step training videos on how to deploy and operate D-Secure data erasure software in enterprise environments.",
+    canonicalUrl: getCanonicalUrl("/support/product-videos"),
+  },
+  "blog": {
+    title: "Data Security Blog | ITAD & Sanitization Insights | D-Secure",
+    description: "Read the latest news, research, and insights on data sanitization, compliance, and IT asset disposition.",
+    canonicalUrl: getCanonicalUrl("/blog"),
+  },
+  "compare": {
+    title: "Compare Data Erasure Software | D-Secure vs Competitors",
+    description: "See how D-Secure compares against other data erasure solutions in the market. Check our detailed technical breakdowns.",
+    canonicalUrl: getCanonicalUrl("/compare"),
+  },
+  "comparison": {
+    title: "Software Comparison | D-Secure Data Erasure",
+    description: "Detailed comparisons of D-Secure data destruction algorithms against Blancco, BitRaser, and WhiteCanyon.",
+    canonicalUrl: getCanonicalUrl("/comparison"),
+  },
+  "community": {
+    title: "Security Community Forum | D-Secure Tech",
+    description: "Join the D-Secure community forum to discuss data security best practices and software implementations with industry experts.",
+    canonicalUrl: getCanonicalUrl("/community"),
+  },
+  "diagnostics": {
+    title: "Hardware Diagnostics Software | D-Secure",
+    description: "Comprehensive hardware diagnostic tools for servers, laptops, and mobile devices to maximize IT asset value recovery.",
+    canonicalUrl: getCanonicalUrl("/diagnostics"),
+  },
+  "founder": {
+    title: "Our Founder | D-Secure Tech",
+    description: "Meet the founder behind D-Secure Technologies and our mission to secure the world's end-of-life data.",
+    canonicalUrl: getCanonicalUrl("/founder"),
+  },
+  "glossary": {
+    title: "Data Erasure Glossary | D-Secure Tech",
+    description: "Learn the terminology behind data sanitization, cryptography, and compliance standards like NIST 800-88.",
+    canonicalUrl: getCanonicalUrl("/glossary"),
+  },
+  "ai-overview": {
+    title: "AI Overview & Entity Profile | D-Secure Tech",
+    description: "Structured entity definitions and technical capabilities profile of D-Secure Technologies, optimized for LLMs.",
+    canonicalUrl: getCanonicalUrl("/ai-overview"),
+  },
+  "data-hygiene-framework": {
+    title: "Data Hygiene Framework | Secure Sanitization | D-Secure",
+    description: "Implement a robust operational data hygiene framework using D-Secure's compliance-aligned protocols.",
+    canonicalUrl: getCanonicalUrl("/data-hygiene-framework"),
+  },
+  "cookie-policy": {
+    title: "Cookie Policy | D-Secure Tech",
+    description: "Read our Cookie Policy to understand how D-Secure utilizes cookies across our platform and services.",
+    canonicalUrl: getCanonicalUrl("/cookie-policy"),
+  },
   whitepaper: {
     title: "Resource Center - Whitepapers & Technical briefs | D-Secure",
     description: "Download technical whitepapers and research on data sanitization, NIST 800-88 compliance, and secure data erasure.",
@@ -368,7 +428,24 @@ export const getSEOForPage = (
   overrides?: Partial<SEOMetadata>
 ): SEOMetadata => {
   const defaultSEO = getDefaultSEO();
-  const pageSEO = PAGE_SEO[pageName] || {};
+  
+  // If the page is not in the registry, attempt to dynamically deduce a title to prevent Homepage Leaks
+  let pageSEO = PAGE_SEO[pageName as keyof typeof PAGE_SEO];
+  if (!pageSEO) {
+      const generatedTitle = pageName
+        .split('-')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ') + ' | D-Secure Tech';
+        
+      pageSEO = {
+        title: generatedTitle,
+        description: `Explore ${generatedTitle.replace(' | D-Secure Tech', '')} solutions and documentation from D-Secure.`,
+        canonicalUrl: getCanonicalUrl(`/${pageName}`)
+      };
+      
+      // We log this so developers can optionally add it to the registry later
+      console.warn(`[SEO Fallback] Dynamically generated SEO for unmapped key: ${pageName}`);
+  }
 
   // Combine structuredData instead of overwriting
   const combinedStructuredData = [];

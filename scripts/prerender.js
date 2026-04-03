@@ -190,8 +190,86 @@ async function prerender() {
       let seoKeywords = '';
       let helmetContent = '';
       
-      if (helmet) {
-        // Helmet context available hai — seedha use karo (ideal path)
+      // React 19 streaming + Lazy Routes ki wajah se Helmet context incomplete reh sakta hai.
+      // Jabki last data-seo-bridge div (jo HTML body mein seedha render hota hai) hamesha accurate page SEO deta hai.
+      // Isliye, ALWAYS try extracting from data-seo-bridge FIRST.
+      let allBridges = [];
+      try {
+        allBridges = [...appHtml.matchAll(/<div\s+data-seo-bridge(?:="")?[^>]*\/?>/g)];
+      } catch(e) {}
+      
+      const lastBridge = allBridges.length > 0 ? allBridges[allBridges.length - 1][0] : null;
+
+      // React 19 SSR Stream drops lazy-loaded chunks
+      // So blog posts metadata must be extracted manually if bridge is missing or default
+      if (!lastBridge || String(lastBridge).includes("D-Secure - #1 Data Erasure Software")) {
+         if (url.startsWith('/blog/') && url !== '/blog/') {
+             try {
+                const slug = url.replace('/blog/', '');
+                const blogSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/data/blogPosts.ts'), 'utf-8');
+                
+                // Read from block looking for title
+                const titleMatch = blogSrc.match(new RegExp(`slug:\\s*['"\`]${slug}['"\`][\\s\\S]*?title:\\s*['"\`](.*?)['"\]`));
+                if (titleMatch) {
+                    const extractedTitle = titleMatch[1];
+                    seoTitle = `${extractedTitle} | D-Secure Blog`;
+                    seoCanonical = `https://dsecuretech.com${url}`;
+                    helmetContent = `<title data-rh="true">${seoTitle}</title>
+    <link data-rh="true" rel="canonical" href="${seoCanonical}" />`;
+                }
+             } catch(e) {
+                 console.log("Failed to manually extract blog SEO: ", e);
+             }
+         }
+      }
+      
+      if (lastBridge && !helmetContent) {
+        // Last bridge div se saare data-seo-* attributes extract karo
+        const extractAttr = (attr) => {
+          // Flexible regex that handles attributes without quotes, with single quotes, or with double quotes,
+          // and stops at the next attribute or tag end. We also decode HTML entities to avoid issues.
+          const match = lastBridge.match(new RegExp(`${attr}=(?:(["'])(.*?)\\1|([^\\s>]+))`));
+          const val = match ? (match[2] !== undefined ? match[2] : match[3]) : '';
+          return val.replace(/&amp;/g, '&');
+        };
+        
+        seoTitle = extractAttr('data-seo-title');
+        seoDescription = extractAttr('data-seo-description');
+        seoCanonical = extractAttr('data-seo-canonical');
+        seoOgTitle = extractAttr('data-seo-og-title');
+        seoOgDescription = extractAttr('data-seo-og-description');
+        seoOgImage = extractAttr('data-seo-og-image');
+        seoOgType = extractAttr('data-seo-og-type') || 'website';
+        const seoTwitterImage = extractAttr('data-seo-twitter-image');
+        seoKeywords = extractAttr('data-seo-keywords');
+        
+        // Page-specific head tags manually build karo
+        const headTags = [];
+        
+        if (seoTitle) headTags.push(`<title data-rh="true">${seoTitle}</title>`);
+        if (seoDescription) headTags.push(`<meta data-rh="true" name="description" content="${seoDescription}" />`);
+        if (seoKeywords) headTags.push(`<meta data-rh="true" name="keywords" content="${seoKeywords}" />`);
+        if (seoCanonical) headTags.push(`<link data-rh="true" rel="canonical" href="${seoCanonical}" />`);
+        
+        if (seoOgType) headTags.push(`<meta data-rh="true" property="og:type" content="${seoOgType}" />`);
+        if (seoOgTitle) headTags.push(`<meta data-rh="true" property="og:title" content="${seoOgTitle}" />`);
+        if (seoOgDescription) headTags.push(`<meta data-rh="true" property="og:description" content="${seoOgDescription}" />`);
+        if (seoOgImage) headTags.push(`<meta data-rh="true" property="og:image" content="${seoOgImage}" />`);
+        if (seoCanonical) headTags.push(`<meta data-rh="true" property="og:url" content="${seoCanonical}" />`);
+        headTags.push(`<meta data-rh="true" property="og:site_name" content="D-Secure Tech" />`);
+        headTags.push(`<meta data-rh="true" property="og:locale" content="en_US" />`);
+        
+        headTags.push(`<meta data-rh="true" name="twitter:card" content="summary_large_image" />`);
+        if (seoOgTitle) headTags.push(`<meta data-rh="true" name="twitter:title" content="${seoOgTitle}" />`);
+        if (seoOgDescription) headTags.push(`<meta data-rh="true" name="twitter:description" content="${seoOgDescription}" />`);
+        if (seoTwitterImage || seoOgImage) headTags.push(`<meta data-rh="true" name="twitter:image" content="${seoTwitterImage || seoOgImage}" />`);
+        if (seoCanonical) headTags.push(`<meta data-rh="true" name="twitter:url" content="${seoCanonical}" />`);
+        headTags.push(`<meta data-rh="true" name="twitter:site" content="@D-Securetech" />`);
+        headTags.push(`<meta data-rh="true" name="twitter:creator" content="@D-Securetech" />`);
+        
+        helmetContent = headTags.join(String.fromCharCode(10) + '    ');
+      } else if (helmet) {
+        // Fallback to Helmet context if no bridge is found
         const helmetTitle = helmet.title.toString();
         const helmetMeta = helmet.meta.toString();
         const helmetLink = helmet.link.toString();
@@ -199,63 +277,14 @@ async function prerender() {
         const helmetNoscript = helmet.noscript.toString();
         
         helmetContent = [helmetTitle, helmetMeta, helmetLink, helmetScript, helmetNoscript]
-          .filter(t => t && t.toString().length > 0).join('\n');
+          .filter(t => t && t.toString().length > 0).join(String.fromCharCode(10));
         seoTitle = helmetTitle.replace(/<[^>]*>?/gm, '');
       }
       
-      // Agar Helmet empty hai ya nahi mila — body HTML se data-seo-bridge extract karo
-      // IMPORTANT: Multiple bridge divs ho sakte hain (MainLayout ka + page-specific ka)
-      // LAST bridge div page-specific hota hai, pehla MainLayout ka homepage default hota hai
-      if (!helmetContent || helmetContent.trim().length === 0) {
-        const allBridges = [...appHtml.matchAll(/<div\s+data-seo-bridge=""[^>]*\/?>/g)];
-        const lastBridge = allBridges.length > 0 ? allBridges[allBridges.length - 1][0] : null;
-        
-        if (lastBridge) {
-          // Last bridge div se saare data-seo-* attributes extract karo
-          const extractAttr = (attr) => {
-            const match = lastBridge.match(new RegExp(`${attr}="([^"]*)"`));
-            return match ? match[1] : '';
-          };
-          
-          seoTitle = extractAttr('data-seo-title');
-          seoDescription = extractAttr('data-seo-description');
-          seoCanonical = extractAttr('data-seo-canonical');
-          seoOgTitle = extractAttr('data-seo-og-title');
-          seoOgDescription = extractAttr('data-seo-og-description');
-          seoOgImage = extractAttr('data-seo-og-image');
-          seoOgType = extractAttr('data-seo-og-type') || 'website';
-          const seoTwitterImage = extractAttr('data-seo-twitter-image');
-          seoKeywords = extractAttr('data-seo-keywords');
-          
-          // Page-specific head tags manually build karo
-          const headTags = [];
-          
-          // Primary Tags
-          if (seoTitle) headTags.push(`<title data-rh="true">${seoTitle}</title>`);
-          if (seoDescription) headTags.push(`<meta data-rh="true" name="description" content="${seoDescription}" />`);
-          if (seoKeywords) headTags.push(`<meta data-rh="true" name="keywords" content="${seoKeywords}" />`);
-          if (seoCanonical) headTags.push(`<link data-rh="true" rel="canonical" href="${seoCanonical}" />`);
-          
-          // Open Graph
-          if (seoOgType) headTags.push(`<meta data-rh="true" property="og:type" content="${seoOgType}" />`);
-          if (seoOgTitle) headTags.push(`<meta data-rh="true" property="og:title" content="${seoOgTitle}" />`);
-          if (seoOgDescription) headTags.push(`<meta data-rh="true" property="og:description" content="${seoOgDescription}" />`);
-          if (seoOgImage) headTags.push(`<meta data-rh="true" property="og:image" content="${seoOgImage}" />`);
-          if (seoCanonical) headTags.push(`<meta data-rh="true" property="og:url" content="${seoCanonical}" />`);
-          headTags.push(`<meta data-rh="true" property="og:site_name" content="D-Secure Tech" />`);
-          headTags.push(`<meta data-rh="true" property="og:locale" content="en_US" />`);
-          
-          // Twitter
-          headTags.push(`<meta data-rh="true" name="twitter:card" content="summary_large_image" />`);
-          if (seoOgTitle) headTags.push(`<meta data-rh="true" name="twitter:title" content="${seoOgTitle}" />`);
-          if (seoOgDescription) headTags.push(`<meta data-rh="true" name="twitter:description" content="${seoOgDescription}" />`);
-          if (seoTwitterImage || seoOgImage) headTags.push(`<meta data-rh="true" name="twitter:image" content="${seoTwitterImage || seoOgImage}" />`);
-          if (seoCanonical) headTags.push(`<meta data-rh="true" name="twitter:url" content="${seoCanonical}" />`);
-          headTags.push(`<meta data-rh="true" name="twitter:site" content="@D-Securetech" />`);
-          headTags.push(`<meta data-rh="true" name="twitter:creator" content="@D-Securetech" />`);
-          
-          helmetContent = headTags.join('\n    ');
-        }
+      // Safety: Convert any literal \n characters to actual newlines
+      if (helmetContent) {
+        helmetContent = helmetContent.replace(/\\n/g, String.fromCharCode(10));
+        helmetContent = helmetContent.replace(/\\r/g, '');
       }
       
       // Template ke default head tags hatao — page-specific se replace honge
@@ -277,7 +306,7 @@ async function prerender() {
           .replace(/<[^>]*data-rh=["']true["'][^>]*\/?>/gi, '');
         
         // Inject page-specific tags right after the opening <head> tag to ensure priority
-        html = html.replace(/<head>/i, `<head>\n    ${helmetContent}`);
+        html = html.replace(/<head>/i, `<head>` + String.fromCharCode(10) + `    ${helmetContent}`);
       }
       
       // JSON-LD scripts ko body se extract karo aur head mein move karo
@@ -317,16 +346,27 @@ async function prerender() {
     }
 
     // Inject page content into the template's root div
-    // Simple approach: root div ke opening tag ke baad sab kuch replace karo
-    // closing </div> tak jo <footer se pehle ho
+    // In production, Vite moves scrips to the head, so we use our unique AI-discovery footer as anchor
     const rootDivStart = html.indexOf('<div id="root">');
     if (rootDivStart !== -1) {
       const contentStart = html.indexOf('>', rootDivStart) + 1;
-      // Footer element dhundho jo root div ke baad hai
-      const footerPos = html.indexOf('<footer', contentStart);
-      if (footerPos !== -1) {
-        // Footer se pehle wala </div> dhundho — woh root ka closing tag hai
-        const closingDivPos = html.lastIndexOf('</div>', footerPos);
+      
+      // Look for the unique AI discovery footer which is always AFTER the root div in our template
+      const footerAnchor = html.indexOf('<footer style="position:absolute');
+      
+      if (footerAnchor !== -1) {
+        // Find the last closing div BEFORE the footer anchor
+        const closingDivPos = html.lastIndexOf('</div>', footerAnchor);
+        
+        if (closingDivPos > contentStart) {
+          html = html.substring(0, contentStart) + appHtml + html.substring(closingDivPos);
+        }
+      } else {
+        // Fallback for dev mode where footer might be different: try finding last div before script
+        const scriptAnchor = html.indexOf('<script type="module"', contentStart);
+        const fallbackAnchor = scriptAnchor !== -1 ? scriptAnchor : html.lastIndexOf('</body>');
+        const closingDivPos = html.lastIndexOf('</div>', fallbackAnchor);
+        
         if (closingDivPos > contentStart) {
           html = html.substring(0, contentStart) + appHtml + html.substring(closingDivPos);
         }

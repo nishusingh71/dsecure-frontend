@@ -17,6 +17,7 @@ import {
   Database,
   Monitor,
   RefreshCcw,
+  HardDriveDownload,
 } from "lucide-react";
 import { ProductContactForm } from "@/components/forms/ProductContactForm";
 import { getSEOForPage } from "@/utils/seo";
@@ -259,7 +260,7 @@ const AssetReimagingPage: React.FC = memo(function AssetReimagingPage() {
 
                         {/* Main Icon */}
                         <div className="w-20 h-20 lg:w-28 lg:h-28 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 lg:mb-6 border border-white/20 shadow-inner">
-                          <RefreshCcw className="w-10 h-10 lg:w-14 lg:h-14 text-white drop-shadow-lg" />
+                          <HardDriveDownload className="w-10 h-10 lg:w-14 lg:h-14 text-white drop-shadow-lg" />
                         </div>
 
                         {/* Product Name */}

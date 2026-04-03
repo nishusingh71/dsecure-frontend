@@ -21,6 +21,7 @@ import {
   FileSearch,
   BarChart3,
   RefreshCcw,
+  ArrowLeftRight,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
@@ -254,7 +255,7 @@ const DataMigrationPage = memo(() => {
 
                         {/* Main Icon - Transfer/Sync Icon */}
                         <div className="w-20 h-20 lg:w-28 lg:h-28 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 lg:mb-6 border border-white/20 shadow-inner">
-                          <Zap className="w-12 h-12 lg:w-16 lg:h-16 text-white drop-shadow-lg" />
+                          <ArrowLeftRight className="w-12 h-12 lg:w-16 lg:h-16 text-white drop-shadow-lg" />
                         </div>
 
                         <h3 className="text-white text-xl lg:text-3xl font-bold tracking-tight text-center mb-1 lg:mb-2">

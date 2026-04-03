@@ -15,7 +15,7 @@ import { ProductContactForm } from "@/components/forms";
 import UpcomingBadge from "../components/ui/UpcomingBadge";
 import {
   FileCheck,
-  ShieldCheck,
+  ShieldCheck as ShieldCheckIcon,
   Workflow,
   Activity,
   Cpu,
@@ -174,7 +174,7 @@ const ForensicImagingPage = memo(() => {
     { 
       title: "Real-Time Hashing", 
       desc: "Simultaneous calculation of multiple hash signatures (MD5, SHA-1, SHA-256) during the entire acquisition process.", 
-      icon: <ShieldCheck className="w-10 h-10" /> 
+      icon: <ShieldCheckIcon className="w-10 h-10" /> 
     },
     { 
       title: "Write-Blocking Support", 
@@ -231,7 +231,7 @@ const ForensicImagingPage = memo(() => {
     {
       title: "Secure Verification",
       desc: "Automated block-by-block verification after imaging to ensure 100% mathematical certainty of the replicate.",
-      icon: <ShieldCheck className="w-5 h-5" />,
+      icon: <ShieldCheckIcon className="w-5 h-5" />,
     }
   ];
 
@@ -280,12 +280,16 @@ const ForensicImagingPage = memo(() => {
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
               <Reveal>
                 <div className="space-y-8 text-left">
-                  <Reveal>
-                    <UpcomingBadge className="mb-4" />
-                  </Reveal>
-                  <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold border border-emerald-200 shadow-sm">
-                    <ShieldIcon className="w-4 h-4" />
-                    Forensic-Grade Acquisition
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <UpcomingBadge />
+                    </div>
+                    <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 lg:pb-0 flex-nowrap">
+                      <div className="flex-shrink-0 inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold border border-emerald-200 shadow-sm h-10">
+                        <ShieldIcon className="w-4 h-4" />
+                        Forensic-Grade Acquisition
+                      </div>
+                    </div>
                   </div>
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
@@ -330,62 +334,261 @@ const ForensicImagingPage = memo(() => {
                 </div>
               </Reveal>
 
+              {/* Right: Floating Monitor with D-Secure Dashboard */}
               <Reveal delayMs={100}>
                 <div
-                  className="relative flex items-center justify-center min-h-[400px] lg:min-h-[500px]"
+                  className="relative flex items-center justify-center min-h-[300px] sm:min-h-[360px] lg:min-h-[440px]"
                   style={{ perspective: "1000px" }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-200/30 blur-3xl rounded-full"></div>
+                  {/* Background Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/20 via-transparent to-teal-200/20 blur-3xl"></div>
 
-                  <div className="absolute top-[10%] left-[15%] w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-40"></div>
-                  <div className="absolute bottom-[15%] right-[10%] w-2 h-2 bg-teal-400 rounded-full animate-ping opacity-40"></div>
-
-                  <div className="relative group transition-transform duration-700 hover:rotate-y-12">
-                     <div className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border border-emerald-50 overflow-hidden w-[280px] xs:w-[340px] lg:w-[380px] mx-auto transform hover:-translate-y-2 transition-all duration-500">
-                        <div className="space-y-8">
-                           <div className="flex items-center justify-between border-b pb-6 border-emerald-50">
-                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg">
-                                   <DatabaseIcon className="w-5 h-5" />
-                                </div>
-                                <div className="text-left">
-                                   <h4 className="font-bold text-slate-900 line-clamp-1">Source: SAS Drive 2TB</h4>
-                                   <p className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase">Write-Blocking Active</p>
-                                </div>
-                             </div>
-                             <LockIcon className="w-5 h-5 text-emerald-500" />
-                           </div>
-
-                           <div className="space-y-3">
-                              <div className="flex justify-between text-[11px] font-bold text-slate-500">
-                                 <span>IMAGING PROGRESS</span>
-                                 <span>82%</span>
-                              </div>
-                              <div className="relative h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                                <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-400 to-teal-500 w-[82%] rounded-full shadow-lg h-full"></div>
-                              </div>
-                           </div>
-
-                           <div className="grid grid-cols-2 gap-4">
-                              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left">
-                                 <p className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Avg Speed</p>
-                                 <p className="text-xl font-black text-slate-900">1.4 GB/s</p>
-                              </div>
-                              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left">
-                                 <p className="text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-widest">Time left</p>
-                                 <p className="text-xl font-black text-slate-900">04:12</p>
-                              </div>
-                           </div>
-
-                           <div className="p-5 bg-emerald-600 rounded-2xl shadow-xl shadow-emerald-200 text-left">
-                              <p className="text-[10px] text-emerald-200 font-bold mb-2 uppercase tracking-widest">Hash Fingerprint (SHA-256)</p>
-                              <p className="text-[10px] font-mono text-white break-all leading-tight opacity-90">
-                                 7F83B12787B6BC1B498A190BA...
-                              </p>
-                           </div>
+                  {/* Orbiting Device Icons */}
+                  <div className="absolute inset-0 hidden sm:block">
+                    {[
+                      {
+                        top: "8%",
+                        left: "12%",
+                        label: "SAS Drive",
+                        icon: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4",
+                        delay: "0s",
+                      },
+                      {
+                        top: "10%",
+                        right: "8%",
+                        label: "NVMe SSD",
+                        icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z",
+                        delay: "0.6s",
+                      },
+                      {
+                        bottom: "25%",
+                        left: "5%",
+                        label: "Evidence USB",
+                        icon: "M10 20l4-16m-4 0l4 16M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
+                        delay: "1.2s",
+                      },
+                      {
+                        bottom: "18%",
+                        right: "6%",
+                        label: "Cloud Storage",
+                        icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z",
+                        delay: "0.3s",
+                      },
+                      {
+                        top: "45%",
+                        left: "2%",
+                        label: "RAM Dump",
+                        icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z",
+                        delay: "0.9s",
+                      },
+                      {
+                        bottom: "8%",
+                        left: "38%",
+                        label: "Raid Array",
+                        icon: "M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2",
+                        delay: "1.5s",
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="absolute group"
+                        style={{
+                          top: item.top,
+                          left: item.left,
+                          right: item.right,
+                          bottom: item.bottom,
+                        }}
+                      >
+                        <div
+                          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-xl shadow-lg border border-emerald-100 flex items-center justify-center transition-all hover:scale-110 hover:shadow-xl hover:border-emerald-400"
+                          style={{
+                            animation: `deviceBob 3s ease-in-out infinite ${item.delay}`,
+                          }}
+                        >
+                          <svg
+                            className="w-4.5 h-4.5 lg:w-5 lg:h-5 text-emerald-800"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d={item.icon}
+                            />
+                          </svg>
                         </div>
-                     </div>
+                        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] lg:text-[8px] font-medium text-slate-500 whitespace-nowrap">
+                          {item.label}
+                        </span>
+                        {/* Connection line to center */}
+                        <div
+                          className="absolute top-1/2 left-1/2 w-6 lg:w-8 h-px bg-gradient-to-r from-emerald-300/40 to-transparent origin-left"
+                          style={{
+                            transform: `rotate(${item.right ? "180deg" : "0deg"})`,
+                          }}
+                        ></div>
+                      </div>
+                    ))}
                   </div>
+
+                  {/* Main Monitor */}
+                  <div
+                    className="relative z-10"
+                    style={{
+                      animation: "monitorFloat 6s ease-in-out infinite",
+                    }}
+                  >
+                    {/* Glow behind monitor */}
+                    <div className="absolute -inset-6 lg:-inset-8 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 blur-3xl rounded-full"></div>
+
+                    {/* Monitor frame */}
+                    <div className="relative w-[230px] sm:w-[270px] lg:w-[330px]">
+                      {/* Screen bezel */}
+                      <div
+                        className="bg-slate-900 rounded-t-xl sm:rounded-t-2xl p-1 sm:p-1.5 lg:p-2 shadow-2xl border border-slate-700/50"
+                        style={{
+                          boxShadow:
+                            "0 15px 50px -10px rgba(0,0,0,0.4), 0 0 30px rgba(16,185,129,0.12)",
+                        }}
+                      >
+                        {/* Screen content */}
+                        <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg sm:rounded-xl overflow-hidden">
+                          {/* Title bar */}
+                          <div className="flex items-center justify-between px-3 py-1 bg-slate-800/80 border-b border-slate-700/50">
+                            <div className="flex items-center gap-1">
+                              <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-red-400 rounded-full"></div>
+                              <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-yellow-400 rounded-full"></div>
+                              <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-400 rounded-full"></div>
+                            </div>
+                            <span className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 font-medium">
+                              D-Secure Forensic Console
+                            </span>
+                            <div className="w-6"></div>
+                          </div>
+
+                          {/* Dashboard content */}
+                          <div className="p-2 sm:p-3 lg:p-3.5 space-y-2 sm:space-y-2.5">
+                            {/* Top stats row */}
+                            <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
+                              <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-1 sm:p-1.5 text-center">
+                                <div className="text-emerald-400 font-bold text-[10px] sm:text-xs lg:text-base">
+                                  1,450
+                                </div>
+                                <div className="text-[5px] sm:text-[6px] lg:text-[7px] text-slate-500 uppercase">
+                                  Drives Imaged
+                                </div>
+                              </div>
+                              <div className="bg-teal-500/10 border border-teal-500/20 rounded-lg p-1 sm:p-1.5 text-center">
+                                <div className="text-teal-400 font-bold text-[10px] sm:text-xs lg:text-base">
+                                  100%
+                                </div>
+                                <div className="text-[5px] sm:text-[6px] lg:text-[7px] text-slate-500 uppercase">
+                                  Integrity
+                                </div>
+                              </div>
+                              <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-1 sm:p-1.5 text-center">
+                                <div className="text-cyan-400 font-bold text-[10px] sm:text-xs lg:text-base">
+                                  26+
+                                </div>
+                                <div className="text-[5px] sm:text-[6px] lg:text-[7px] text-slate-500 uppercase">
+                                  Algorithms
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Active task */}
+                            <div className="bg-slate-800/60 rounded-lg p-1.5 sm:p-2 border border-slate-700/40">
+                              <div className="flex items-center justify-between mb-1">
+                                <div className="flex items-center gap-1">
+                                  <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                                    <DatabaseIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white" />
+                                  </div>
+                                  <span className="text-[7px] sm:text-[8px] lg:text-[9px] text-white font-medium">
+                                    Imaging — SAS Drive 2TB
+                                  </span>
+                                </div>
+                                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+                              </div>
+                              <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
+                                  style={{
+                                    width: "82%",
+                                    animation:
+                                      "progressGrow 3s ease-in-out infinite",
+                                  }}
+                                ></div>
+                              </div>
+                              <div className="flex justify-between mt-0.5">
+                                <span className="text-[5px] sm:text-[6px] text-slate-500">
+                                  Speed: 1.4 GB/s
+                                </span>
+                                <span className="text-[5px] sm:text-[6px] text-emerald-400 font-bold">
+                                  82%
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Recent list */}
+                            <div className="space-y-1">
+                              {[
+                                {
+                                  name: "Case_#2024_081",
+                                  status: "verified",
+                                  time: "2m ago",
+                                },
+                                {
+                                  name: "Evidence_NVMe_01",
+                                  status: "verified",
+                                  time: "5m ago",
+                                },
+                              ].map((item) => (
+                                <div
+                                  key={item.name}
+                                  className="flex items-center justify-between px-2 py-0.5 rounded bg-slate-800/40"
+                                >
+                                  <div className="flex items-center gap-1">
+                                    <div
+                                      className={`w-1 h-1 rounded-full ${item.status === "verified" ? "bg-emerald-400" : "bg-amber-400 animate-pulse"}`}
+                                    ></div>
+                                    <span className="text-[6px] sm:text-[7px] text-slate-400">
+                                      {item.name}
+                                    </span>
+                                  </div>
+                                  <span className="text-[5px] sm:text-[6px] text-slate-600">
+                                    {item.time}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Monitor stand */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-14 sm:w-16 lg:w-20 h-3 sm:h-4 lg:h-5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-sm"></div>
+                        <div className="w-20 sm:w-24 lg:w-28 h-1.5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-lg shadow-lg"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <style>{`
+                    @keyframes monitorFloat {
+                      0%, 100% { transform: translateY(0px); }
+                      50% { transform: translateY(-8px); }
+                    }
+                    @keyframes deviceBob {
+                      0%, 100% { transform: translateY(0px); }
+                      50% { transform: translateY(-5px); }
+                    }
+                    @keyframes progressGrow {
+                      0%, 100% { width: 82%; }
+                      50% { width: 88%; }
+                    }
+                  `}</style>
                 </div>
               </Reveal>
             </div>
@@ -409,7 +612,7 @@ const ForensicImagingPage = memo(() => {
                 { step: "01", title: "Connect", desc: "Plug in evidence media via physical write-blocker or secure network protocol.", icon: <HardDriveIcon className="w-6 h-6" /> },
                 { step: "02", title: "Setup", desc: "Configure hash algorithms (MD5/SHA) and select output format (E01/dd).", icon: <GearIcon className="w-6 h-6" /> },
                 { step: "03", title: "Acquire", desc: "Run bit-for-bit imaging at speeds up to 3.5 GB/s with real-time logging.", icon: <Zap className="w-6 h-6" /> },
-                { step: "04", title: "Verify", desc: "Automated block-level hash verification and court-ready report generation.", icon: <ShieldCheck className="w-6 h-6" /> },
+                { step: "04", title: "Verify", desc: "Automated block-level hash verification and court-ready report generation.", icon: <ShieldCheckIcon className="w-6 h-6" /> },
               ].map((item) => (
                 <Reveal key={item.title} delayMs={Number.parseInt(item.step) * 100}>
                   <div className="relative p-10 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-emerald-200 hover:shadow-xl transition-all group">

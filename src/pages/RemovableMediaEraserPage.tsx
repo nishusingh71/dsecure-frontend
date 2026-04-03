@@ -9,7 +9,7 @@ import {
   ArrowRightIcon,
   GearIcon,
 } from "@/components/FlatIcons";
-import { FileTextIcon, Download, Zap, Database, HardDrive, Server, RefreshCcw, Activity } from "lucide-react";
+import { FileTextIcon, Download, Zap, Database, HardDrive, Server, RefreshCcw, Activity, Usb } from "lucide-react";
 import { getSEOForPage } from "@/utils/seo";
 import { ProductContactForm } from "@/components/forms/ProductContactForm";
 
@@ -232,7 +232,7 @@ const RemovableMediaEraserPage: React.FC = memo(function RemovableMediaEraserPag
 
                           {/* Main Icon - USB/External Drive */}
                           <div className="w-28 h-28 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 border border-white/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                             <Database className="w-16 h-16 text-white drop-shadow-xl" />
+                             <Usb className="w-16 h-16 text-white drop-shadow-xl" />
                           </div>
 
                           <h3 className="text-white text-3xl font-bold tracking-tight text-center mb-2">

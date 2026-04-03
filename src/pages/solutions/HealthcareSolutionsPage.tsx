@@ -5,6 +5,7 @@ import { LicenseForm } from "@/components/forms";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import SolutionContactSection from "@/components/SolutionContactSection";
+import SolutionHeroGraphic from "@/components/SolutionHeroGraphic";
 
 /**
  * HealthcareSolutionsPage Component
@@ -193,10 +194,12 @@ const HealthcareSolutionsPage: React.FC = () => {
                     </svg>
                   </button>
                   <a
-                    href=""
+                    href="https://assets.dsecuretech.com/pdf/DSECURE_HEALTH.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg pointer-events-none opacity-50 cursor-not-allowed"
+
+
+                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-8 py-4 rounded-xl font-bold bg-white transition-all duration-300 shadow-lg"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
                     Solution Overview
@@ -219,344 +222,45 @@ const HealthcareSolutionsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Column: Healthcare Ecosystem Graphic */}
-              <div className="relative w-full max-w-lg mx-auto overflow-visible">
-                <div className="bg-white/40 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-visible p-1 lg:p-2">
-                  {/* Illustration canvas */}
-                  <div
-                    className="relative bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-2xl overflow-visible shadow-inner"
-                    style={{ height: "340px" }}
-                  >
-                    {/* Animated dotted connection lines */}
-                    <svg
-                      className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-                      viewBox="0 0 400 340"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      {/* TOP CENTER: Hospital → Desktop */}
-                      <line
-                        x1="200"
-                        y1="125"
-                        x2="200"
-                        y2="60"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.5s"
-                          repeatCount="indefinite"
-                        />
-                      </line>
-                      {/* MIDDLE LEFT: Hospital → Laptop */}
-                      <line
-                        x1="148"
-                        y1="170"
-                        x2="55"
-                        y2="170"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.8s"
-                          repeatCount="indefinite"
-                        />
-                      </line>
-                      {/* MIDDLE RIGHT: Hospital → Server */}
-                      <line
-                        x1="252"
-                        y1="170"
-                        x2="345"
-                        y2="170"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.6s"
-                          repeatCount="indefinite"
-                        />
-                      </line>
-                      {/* BOTTOM LEFT: Hospital → Mobile */}
-                      <line
-                        x1="165"
-                        y1="205"
-                        x2="60"
-                        y2="280"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="2s"
-                          repeatCount="indefinite"
-                        />
-                      </line>
-                      {/* BOTTOM RIGHT: Hospital → Storage */}
-                      <line
-                        x1="235"
-                        y1="205"
-                        x2="340"
-                        y2="280"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="6,5"
-                        strokeOpacity="0.7"
-                      >
-                        <animate
-                          attributeName="stroke-dashoffset"
-                          values="0;-11"
-                          dur="1.7s"
-                          repeatCount="indefinite"
-                        />
-                      </line>
-                    </svg>
-
-                    {/* CENTER: Hospital Building Hub */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] z-10 transition-transform hover:scale-105 duration-500">
-                      <svg
-                        width="90"
-                        height="90"
-                        viewBox="0 0 72 72"
-                        fill="none"
-                        className="drop-shadow-[0_12px_24px_rgba(16,185,129,0.35)]"
-                      >
-                        {/* Main Building */}
-                        <rect
-                          x="18"
-                          y="14"
-                          width="36"
-                          height="42"
-                          fill="#10b981"
-                          rx="3"
-                        />
-                        <rect
-                          x="20"
-                          y="16"
-                          width="32"
-                          height="38"
-                          fill="#059669"
-                          rx="2"
-                        />
-                        {/* Cross Symbol */}
-                        <rect
-                          x="32"
-                          y="22"
-                          width="8"
-                          height="20"
-                          fill="#d1fae5"
-                          rx="1"
-                        />
-                        <rect
-                          x="26"
-                          y="28"
-                          width="20"
-                          height="8"
-                          fill="#d1fae5"
-                          rx="1"
-                        />
-                        {/* Windows */}
-                        <rect
-                          x="22"
-                          y="44"
-                          width="6"
-                          height="4"
-                          fill="#d1fae5"
-                          rx="0.5"
-                        />
-                        <rect
-                          x="44"
-                          y="44"
-                          width="6"
-                          height="4"
-                          fill="#d1fae5"
-                          rx="0.5"
-                        />
-                        {/* Door */}
-                        <rect
-                          x="31"
-                          y="46"
-                          width="10"
-                          height="10"
-                          fill="#047857"
-                          rx="1.5"
-                        />
-                        {/* Foundation */}
-                        <rect
-                          x="14"
-                          y="56"
-                          width="44"
-                          height="4"
-                          fill="#10b981"
-                          rx="1"
-                        />
-                        <rect
-                          x="12"
-                          y="60"
-                          width="48"
-                          height="3"
-                          fill="#047857"
-                          rx="1"
-                        />
-                        <text
-                          x="36"
-                          y="67"
-                          textAnchor="middle"
-                          fill="white"
-                          fontSize="4.5"
-                          fontWeight="900"
-                          fontFamily="sans-serif"
-                        >
-                          HEALTH
-                        </text>
-                      </svg>
-                    </div>
-
-                    {/* TOP CENTER: Desktop PC */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-[10px] left-1/2 -translate-x-1/2">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="3" width="20" height="14" rx="2" />
-                        <path d="M8 21h8M12 17v4" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        PC/MAC
-                      </span>
-                    </div>
-
-                    {/* MIDDLE LEFT: Laptop */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 left-[5px] -translate-y-1/2">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#0d9488"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="4" width="20" height="13" rx="2" />
-                        <path d="M2 19h20" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        LAPTOP
-                      </span>
-                    </div>
-
-                    {/* MIDDLE RIGHT: Server */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 top-1/2 right-[5px] -translate-y-1/2">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="2" width="20" height="8" rx="2" />
-                        <rect x="2" y="14" width="20" height="8" rx="2" />
-                        <circle
-                          cx="7"
-                          cy="6"
-                          r="1"
-                          fill="#16a34a"
-                          stroke="none"
-                        />
-                        <circle
-                          cx="7"
-                          cy="18"
-                          r="1"
-                          fill="#16a34a"
-                          stroke="none"
-                        />
-                        <line x1="11" y1="6" x2="17" y2="6" />
-                        <line x1="11" y1="18" x2="17" y2="18" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        SERVER
-                      </span>
-                    </div>
-
-                    {/* BOTTOM LEFT: Mobile */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] left-[5px]">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#0d9488"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="5" y="2" width="14" height="20" rx="2" />
-                        <circle
-                          cx="12"
-                          cy="17"
-                          r="1"
-                          fill="#0d9488"
-                          stroke="none"
-                        />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        MOBILE
-                      </span>
-                    </div>
-
-                    {/* BOTTOM RIGHT: Storage/HDD */}
-                    <div className="absolute bg-white rounded-xl border border-slate-100 shadow-md w-[86px] flex flex-col items-center justify-center gap-[5px] py-[10px] px-[6px] pb-[8px] hover:shadow-lg transition-transform hover:scale-105 duration-200 z-20 bottom-[10px] right-[5px]">
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="7" width="20" height="10" rx="2" />
-                        <circle
-                          cx="17"
-                          cy="12"
-                          r="1.5"
-                          fill="#16a34a"
-                          stroke="none"
-                        />
-                        <line x1="5" y1="10" x2="12" y2="10" />
-                        <line x1="5" y1="14" x2="9" y2="14" />
-                      </svg>
-                      <span className="text-[8.5px] font-semibold text-slate-700 tracking-wide text-center leading-tight">
-                        STORAGE
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Right Column: Interactive Healthcare Ecosystem */}
+              <SolutionHeroGraphic
+                centerIcon={
+                  <svg width="80" height="80" viewBox="0 0 72 72" fill="none" className="drop-shadow-[0_8px_16px_rgba(16,185,129,0.3)]">
+                    <rect x="18" y="14" width="36" height="42" fill="#10b981" rx="3" />
+                    <rect x="20" y="16" width="32" height="38" fill="#059669" rx="2" />
+                    <rect x="32" y="22" width="8" height="20" fill="#d1fae5" rx="1" />
+                    <rect x="26" y="28" width="20" height="8" fill="#d1fae5" rx="1" />
+                    <rect x="22" y="44" width="6" height="4" fill="#d1fae5" rx="0.5" />
+                    <rect x="44" y="44" width="6" height="4" fill="#d1fae5" rx="0.5" />
+                    <rect x="31" y="46" width="10" height="10" fill="#047857" rx="1.5" />
+                    <rect x="14" y="56" width="44" height="4" fill="#10b981" rx="1" />
+                    <rect x="12" y="60" width="48" height="3" fill="#047857" rx="1" />
+                  </svg>
+                }
+                centerLabel="HEALTH"
+                devices={[
+                  {
+                    label: "PC/MAC",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>,
+                  },
+                  {
+                    label: "LAPTOP",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="13" rx="2" /><path d="M2 19h20" /></svg>,
+                  },
+                  {
+                    label: "SERVER",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" /><circle cx="7" cy="6" r="1" fill="#16a34a" stroke="none" /><circle cx="7" cy="18" r="1" fill="#16a34a" stroke="none" /><line x1="11" y1="6" x2="17" y2="6" /><line x1="11" y1="18" x2="17" y2="18" /></svg>,
+                  },
+                  {
+                    label: "MOBILE",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><circle cx="12" cy="17" r="1" fill="#0d9488" stroke="none" /></svg>,
+                  },
+                  {
+                    label: "STORAGE",
+                    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="10" rx="2" /><circle cx="17" cy="12" r="1.5" fill="#16a34a" stroke="none" /><line x1="5" y1="10" x2="12" y2="10" /><line x1="5" y1="14" x2="9" y2="14" /></svg>,
+                  },
+                ]}
+              />
             </div>
           </div>
         </section>

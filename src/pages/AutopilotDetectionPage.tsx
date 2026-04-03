@@ -14,7 +14,7 @@ import {
   ClipboardIcon,
   ServerIcon,
 } from "@/components/FlatIcons";
-import { Monitor, Download, X, Search, Zap } from "lucide-react";
+import { Monitor, Download, X, Search, Zap, ScanSearch } from "lucide-react";
 import { getSEOForPage } from "@/utils/seo";
 import { getReadTime } from "@/utils/readTime";
 import { ProductContactForm } from "@/components/forms";
@@ -281,7 +281,7 @@ const AutopilotDetectionPage: React.FC = memo(function AutopilotDetectionPage() 
                         </div>
                         
                         <div className="w-24 h-24 lg:w-32 lg:h-32 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-white/20 shadow-inner">
-                          <Zap className="w-12 h-12 lg:w-16 lg:h-16 text-white" />
+                          <ScanSearch className="w-12 h-12 lg:w-16 lg:h-16 text-white" />
                         </div>
 
                         <h3 className="text-white text-2xl lg:text-4xl font-bold text-center mb-2">
