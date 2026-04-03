@@ -131,6 +131,10 @@ const PricingAndPlanPage: React.FC = memo(() => {
       productFromUrl === "freeze-state" ||
       productFromUrl === "forensic-imaging"
     ) {
+      // DEFAULT: Agar data-migration ya forensic-imaging (hidden) URL mein ho toh Freeze State dikhao
+      if (productFromUrl === "data-migration" || productFromUrl === "forensic-imaging") {
+        setSelectedCategory("freeze-state");
+      }
       setActiveTab("migration");
     } else if (
       productFromUrl === "drive-eraser" ||
@@ -363,23 +367,24 @@ const PricingAndPlanPage: React.FC = memo(() => {
       if (activeTab === "eraser") {
         return (
           cat.id === "drive-eraser" ||
-          cat.id === "file-eraser" ||
-          cat.id === "virtual-machine-eraser" ||
-          cat.id === "smartphone-eraser"
+          cat.id === "file-eraser"
+          // cat.id === "virtual-machine-eraser" ||
+          // cat.id === "smartphone-eraser"
         );
       }
       if (activeTab === "migration") {
         return (
-          cat.id === "data-migration" ||
-          cat.id === "freeze-state" ||
-          cat.id === "forensic-imaging"
+          cat.id === "freeze-state"
+          // cat.id === "data-migration" ||
+          // cat.id === "forensic-imaging"
         );
       }
+      // Diagnostic (Hardware + Smart)
       return (
         cat.id === "hardware-diagnostics" ||
-        cat.id === "smart-diagnostic" ||
-        cat.id === "smartphone-diagnostic" ||
-        cat.id === "autopilot-mdm"
+        cat.id === "smart-diagnostic"
+        // cat.id === "smartphone-diagnostic" ||
+        // cat.id === "autopilot-mdm"
       );
     });
 
@@ -1498,10 +1503,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 <button
                   onClick={() => {
                     setActiveTab("migration");
-                    setSelectedCategory("data-migration");
-                    navigate(`/pricing-and-plan?product=data-migration`, {
+                    // Data Migration is now hidden, defaulting to Freeze State
+                    setSelectedCategory("freeze-state");
+                    navigate(`/pricing-and-plan?product=freeze-state`, {
                       replace: true,
                     });
+                    // Old default:
+                    // setSelectedCategory("data-migration");
+                    // navigate(`/pricing-and-plan?product=data-migration`, { ... });
                   }}
                   className={`flex-1 py-2.5 px-6 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
                     activeTab === "migration"
@@ -1545,11 +1554,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     // Explicitly set activeTab based on selected category type
                     if (
                       category.id === "hardware-diagnostics" ||
-                      category.id === "smart-diagnostic" ||
-                      category.id === "smartphone-diagnostic" ||
-                      category.id === "autopilot-mdm"
+                      category.id === "smart-diagnostic"
                     ) {
                       setActiveTab("diagnostics");
+                    } else if (category.id === "freeze-state") {
+                      setActiveTab("migration");
                     } else {
                       setActiveTab("eraser");
                     }
