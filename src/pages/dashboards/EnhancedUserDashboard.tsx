@@ -6,7 +6,6 @@ import { authService } from '@/utils/authService'
 import { apiClient } from '@/utils/enhancedApiClient'
 import { useState, useEffect } from 'react'
 import Reveal from '@/components/Reveal'
-import { Helmet } from 'react-helmet-async'
 import { ENV } from '@/config/env'
 interface DashboardStats {
   monthlyErasures: number
@@ -94,21 +93,7 @@ export default function EnhancedUserDashboard() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("enhanced-user-dashboard")} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/user/dashboard" />
-        <title>User Dashboard - D-Secure Tech | Data Erasure Management</title>
-        <meta
-          name="description"
-          content="Access your D-Secure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
-        />
-        <meta
-          name="keywords"
-          content="user dashboard, data erasure management, erasure certificates, user portal"
-        />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
       <div className="container-app py-12">
         {/* Header with JWT-based user info */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">

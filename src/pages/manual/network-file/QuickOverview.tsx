@@ -1,7 +1,7 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
+
 import { BookOpen, ChevronRight, Search, FileText } from "lucide-react";
 
 const QuickOverview: React.FC = () => {
@@ -9,13 +9,7 @@ const QuickOverview: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("quick-overview")} />
-      <Helmet>
-        <title>Quick Overview - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Learn how to navigate and use the D-Secure File Eraser Network documentation effectively."
-        />
-      </Helmet>
+
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '../../utils/enhancedApiClient';
 import { useNotification } from "@/contexts/NotificationContext";
@@ -239,11 +238,7 @@ export default function AdminDownloads() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-downloads")} />
-      <Helmet>
-        <title>Downloads - Admin Dashboard | D-Secure</title>
-      </Helmet>
 
       <div className="space-y-6">
         {/* Header */}

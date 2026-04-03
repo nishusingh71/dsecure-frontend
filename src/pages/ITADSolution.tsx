@@ -898,25 +898,13 @@
 //                 </summary>
 //                 <p className="mt-4 leading-relaxed" style={{ color: '#6b7280' }}>{faq.a}</p>
 //               </details>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default ITADSolution;
-
-
-
-
 import React, { useState, useEffect } from 'react';
-import SEOHead from "../components/SEOHead";
-import { getSEOForPage } from "../utils/seo";
 import { Link, useNavigate } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import SolutionContactSection from "@/components/SolutionContactSection";
+
 const ITADSolution: React.FC = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("overview");
@@ -984,11 +972,10 @@ const ITADSolution: React.FC = () => {
   };
 
   return (
-    <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased" style={{ backgroundColor: '#ffffff', color: '#1f2937' }}>
-      {/* SEO Meta Tags */}
+    <>
       <SEOHead seo={getSEOForPage("itadsolution")} />
-
-      {/* ================= STICKY SECTION NAV ================= */}
+      <div className="min-h-screen bg-slate-50">
+        {/* ================= STICKY SECTION NAV ================= */}
       <div
         className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isNavVisible
@@ -1379,7 +1366,8 @@ const ITADSolution: React.FC = () => {
 
       {/* ================= CONTACT SECTION ================= */}
       <SolutionContactSection source="ITAD Solutions Page" subjectPrefix="New Inquiry - ITAD Solutions" />
-    </div>
+      </div>
+    </>
   );
 };
 

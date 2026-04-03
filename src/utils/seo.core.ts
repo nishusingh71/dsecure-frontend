@@ -18,6 +18,7 @@ export interface SEOMetadata {
   fragment?: string;
   structuredData?: Record<string, any> | Record<string, any>[];
   breadcrumbs?: { name: string; item: string }[];
+  noindex?: boolean;
 }
 
 export const SEO_CONFIG = {
@@ -63,12 +64,15 @@ export const generateSoftwareProductSchema = (
   description: string,
   options: {
     category?: string;
+    subCategory?: string;
     os?: string;
     price?: string;
     currency?: string;
     image?: string;
     ratingValue?: number;
     reviewCount?: number;
+    features?: string[];
+    screenshots?: string[];
   } = {}
 ) => {
   const schema: any = {
@@ -77,6 +81,7 @@ export const generateSoftwareProductSchema = (
     name: productName,
     description: description,
     applicationCategory: options.category || "SecurityApplication",
+    applicationSubCategory: options.subCategory || "Data Erasure, IT Asset Disposition",
     operatingSystem: options.os || "Windows, macOS, Linux, Android, iOS",
     offers: {
       "@type": "Offer",
@@ -87,11 +92,32 @@ export const generateSoftwareProductSchema = (
     publisher: {
       "@type": "Organization",
       name: "D-Secure Tech",
+      url: SEO_CONFIG.baseUrl,
+      logo: `${SEO_CONFIG.baseUrl}/logo-white.svg`,
     },
+    author: {
+      "@type": "Organization",
+      name: "D-Secure Tech",
+    },
+    softwareVersion: "2025.1.0",
+    featureList: options.features || [
+      "NIST 800-88 Compliance",
+      "Tamper-proof audit reports with certificate",
+      "Native Apple Silicon Support",
+      "Cloud-Managed Console",
+      "REST API Integration"
+    ],
   };
 
   if (options.image) {
     schema.image = options.image;
+  }
+
+  if (options.screenshots && options.screenshots.length > 0) {
+    schema.screenshot = options.screenshots.map(s => ({
+      "@type": "ImageObject",
+      "url": s
+    }));
   }
 
   if (options.ratingValue && options.reviewCount) {
@@ -99,6 +125,8 @@ export const generateSoftwareProductSchema = (
       "@type": "AggregateRating",
       ratingValue: options.ratingValue.toString(),
       reviewCount: options.reviewCount.toString(),
+      bestRating: "5",
+      worstRating: "1",
     };
   }
 
@@ -132,21 +160,21 @@ export const generateBreadcrumbSchema = (
 
 export const getDefaultSEO = (): SEOMetadata => ({
   title:
-    "D-Secure - Best Data Erasure Software | Secure Tech for Enterprise Data Wiping",
+    "D-Secure - #1 Data Erasure Software | NIST 800-88 Compliance | Secure Tech",
   description:
-    "D-Secure is the best data erasure software trusted globally. Secure data wiping for HDD, SSD, mobile devices. NIST 800-88, GDPR, HIPAA compliance with Tamper-proof audit reports with certificate (Page 1: Certificate, Page 2+: Summary). Free trial available. Secure tech for enterprise.",
+    "Looking for the best data erasure software? D-Secure is #1 for NIST 800-88 Compliance, GDPR & HIPAA compliant wiping. Securely erase HDD, SSD, and mobile devices with tamper-proof audit reports with certificate.",
   keywords: generateKeywords(),
   canonicalUrl: SEO_CONFIG.baseUrl,
-  ogTitle: "D-Secure Tech - Secure Data Erasure Solutions",
+  ogTitle: "D-Secure Tech - #1 Data Erasure Software",
   ogDescription:
-    "Professional data erasure and sanitization software for enterprise compliance and security.",
+    "Looking for the best data erasure software? D-Secure is #1 for NIST 800-88 Compliance, GDPR & HIPAA compliant wiping.",
   ogImage: SEO_CONFIG.defaultImage,
   ogType: "website",
   fragment: "!",
   twitterCard: "summary_large_image",
-  twitterTitle: "D-Secure Tech - Data Erasure Solutions",
+  twitterTitle: "D-Secure Tech - #1 Data Erasure Software",
   twitterDescription:
-    "Secure data destruction and sanitization for enterprise compliance.",
+    "Best Data Erasure Software for enterprise compliance and security.",
   twitterImage: SEO_CONFIG.defaultImage,
   structuredData: generateOrganizationSchema(),
 });

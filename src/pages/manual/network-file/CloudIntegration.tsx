@@ -1,21 +1,12 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import { Cloud, Upload, Download, CheckCircle, Globe, Lock, AlertCircle } from "lucide-react";
 
 const CloudIntegration: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("cloud-integration")} />
-      <Helmet>
-        <title>Cloud Integration - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Connect to D-Secure Cloud to centrally store and manage erasure reports, access them from anywhere, and ensure data compliance."
-        />
-      </Helmet>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

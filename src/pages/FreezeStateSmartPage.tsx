@@ -17,7 +17,8 @@ import {
   Smartphone,
   Gauge,
   Settings,
-  Zap
+  Zap,
+  BookOpen
 } from "lucide-react";
 import { ArrowRightIcon } from "@/components/FlatIcons";
 import Reveal from "@/components/Reveal";
@@ -178,6 +179,13 @@ const FreezeStateSmartPage = memo(() => {
                     >
                       View Features
                     </button>
+                    <Link 
+                      to="/support/help-manual/complete-freeze-state-manual"
+                      className="bg-slate-900 text-white px-6 py-3 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-600 transition-all duration-500 shadow-xl shadow-slate-900/20 hover:scale-105 active:scale-95 text-xs flex items-center gap-2"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      View Help Manual
+                    </Link>
                   </div>
                 </div>
               </Reveal>

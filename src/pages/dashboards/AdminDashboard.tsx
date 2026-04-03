@@ -2,8 +2,6 @@ import { useAuth } from "@/auth/AuthContext";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useNotification } from "@/contexts/NotificationContext";
-import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { Helmet } from "react-helmet-async";
 // ✅ NAYA CODE: Added startTransition to allow navigation to interrupt data-sync updates
 import { useState, useMemo, useEffect, startTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";

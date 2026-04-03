@@ -1,8 +1,6 @@
-// src/pages/CompleteDSecureManual.tsx
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React, { useMemo, useRef, useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import {
   BookOpen,
   Layers,
@@ -68,8 +66,6 @@ const BlockView: React.FC<{ block: Block }> = ({ block }) => {
       // Extract leading number if present; otherwise auto dot
       return (
         <div className="flex items-start gap-3">
-      {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("complete-dsecure-network-file")} />
           <div className="mt-1 shrink-0 w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold flex items-center justify-center">
             ✓
           </div>
@@ -989,13 +985,7 @@ const CompleteDSecureNetworkFile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Helmet>
-        <title>Complete D-Secure Manual</title>
-        <meta
-          name="description"
-          content="All D-Secure File Eraser Network help content consolidated on a single page with navigation, search, and printable sections."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage("complete-dsecure-network-file")} />
 
       {/* Custom Scrollbar Styles */}
       <style>{`

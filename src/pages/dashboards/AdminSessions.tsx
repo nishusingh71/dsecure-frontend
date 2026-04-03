@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
@@ -652,21 +651,6 @@ export default function AdminSessions() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-sessions")} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/sessions" />
-        <title>
-          DSecureTech Admin Logs | System Activity & Security Monitoring
-        </title>
-        <meta
-          name="description"
-          content="Monitor system activity, commands, and user sessions with comprehensive logging and filtering capabilities."
-        />
-        <meta
-          name="keywords"
-          content="system logs, activity monitoring, commands, sessions, security monitoring, admin dashboard"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
       <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
         {/* Header */}
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">

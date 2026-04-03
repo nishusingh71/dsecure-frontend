@@ -1,11 +1,10 @@
-﻿import { ENV } from "@/config/env";
+import { ENV } from "@/config/env";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
-import { Helmet } from "react-helmet-async";
 import { isDemoMode } from "@/data/demoData";
 
 export default function PrivateCloudSetup() {
@@ -412,13 +411,6 @@ export default function PrivateCloudSetup() {
   return (
     <>
       <SEOHead seo={getSEOForPage("private-cloud-setup")} />
-      <Helmet>
-        <title>Private Cloud Setup - D-SecureTech</title>
-        <meta
-          name="description"
-          content="Configure your private cloud database connection"
-        />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 py-8 px-4">
         <div className="max-w-4xl mx-auto">

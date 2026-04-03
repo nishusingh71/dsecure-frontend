@@ -1,7 +1,7 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
+
 import { Settings as SettingsIcon, AlertCircle, CheckCircle, Shield, Zap, FileX, Sliders } from "lucide-react";
 
 const Settings: React.FC = () => {
@@ -9,13 +9,7 @@ const Settings: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("settings")} />
-      <Helmet>
-        <title>Settings and Customization - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Configure D-Secure File Eraser Network settings including general preferences, erasure algorithms, trace settings, and ignore file lists."
-        />
-      </Helmet>
+
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

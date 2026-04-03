@@ -6,7 +6,6 @@ import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 let abortControllerRef: AbortController | null = null;
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
-import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
 import { useAuth } from "@/auth/AuthContext";
 
@@ -2733,21 +2732,7 @@ export default function AdminReports() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-reports")} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/reports" />
-        <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
-        </title>
-        <meta
-          name="description"
-          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+
       <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
           <div>

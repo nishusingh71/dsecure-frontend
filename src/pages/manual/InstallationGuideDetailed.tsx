@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -10,13 +9,6 @@ const InstallationGuideDetailed: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("installation-guide-detailed")} />
-      <Helmet>
-        <title>D-Secure Installation Guide - Complete Visual Tutorial</title>
-        <meta 
-          name="description" 
-          content="Step-by-step visual installation guide for D-Secure File Eraser with detailed screenshots and system requirements."
-        />
-      </Helmet>
 
       {/* Header */}
       <section className="bg-gradient-to-r from-slate-900 via-emerald-800 to-emerald-900 py-20">

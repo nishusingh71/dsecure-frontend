@@ -1,7 +1,7 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
+
 import { Network, AlertCircle, CheckCircle, Shield, Users, Server, Key } from "lucide-react";
 
 const ConnectingDomain: React.FC = () => {
@@ -9,13 +9,7 @@ const ConnectingDomain: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("connecting-domain")} />
-      <Helmet>
-        <title>Connect to Domain - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Learn how to connect D-Secure File Eraser Network to your Active Directory domain and manage networked computers."
-        />
-      </Helmet>
+
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

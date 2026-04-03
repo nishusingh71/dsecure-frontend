@@ -1,7 +1,7 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from "@/auth/AuthContext";
-import { Helmet } from 'react-helmet-async';
+
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import React from "react";
@@ -370,13 +370,7 @@ export default function GenerateReport() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("generate-report")} />
-      <Helmet>
-        <title>Generate Report - Admin Dashboard | DSecureTech</title>
-        <meta
-          name="description"
-          content="Generate custom reports for data erasure activities in DSecureTech admin dashboard."
-        />
-      </Helmet>
+
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

@@ -224,14 +224,19 @@ async function prerender() {
           seoOgDescription = extractAttr('data-seo-og-description');
           seoOgImage = extractAttr('data-seo-og-image');
           seoOgType = extractAttr('data-seo-og-type') || 'website';
+          const seoTwitterImage = extractAttr('data-seo-twitter-image');
           seoKeywords = extractAttr('data-seo-keywords');
           
           // Page-specific head tags manually build karo
           const headTags = [];
+          
+          // Primary Tags
           if (seoTitle) headTags.push(`<title data-rh="true">${seoTitle}</title>`);
           if (seoDescription) headTags.push(`<meta data-rh="true" name="description" content="${seoDescription}" />`);
           if (seoKeywords) headTags.push(`<meta data-rh="true" name="keywords" content="${seoKeywords}" />`);
           if (seoCanonical) headTags.push(`<link data-rh="true" rel="canonical" href="${seoCanonical}" />`);
+          
+          // Open Graph
           if (seoOgType) headTags.push(`<meta data-rh="true" property="og:type" content="${seoOgType}" />`);
           if (seoOgTitle) headTags.push(`<meta data-rh="true" property="og:title" content="${seoOgTitle}" />`);
           if (seoOgDescription) headTags.push(`<meta data-rh="true" property="og:description" content="${seoOgDescription}" />`);
@@ -239,12 +244,15 @@ async function prerender() {
           if (seoCanonical) headTags.push(`<meta data-rh="true" property="og:url" content="${seoCanonical}" />`);
           headTags.push(`<meta data-rh="true" property="og:site_name" content="D-Secure Tech" />`);
           headTags.push(`<meta data-rh="true" property="og:locale" content="en_US" />`);
-          // Twitter tags
+          
+          // Twitter
           headTags.push(`<meta data-rh="true" name="twitter:card" content="summary_large_image" />`);
           if (seoOgTitle) headTags.push(`<meta data-rh="true" name="twitter:title" content="${seoOgTitle}" />`);
           if (seoOgDescription) headTags.push(`<meta data-rh="true" name="twitter:description" content="${seoOgDescription}" />`);
-          if (seoOgImage) headTags.push(`<meta data-rh="true" name="twitter:image" content="${seoOgImage}" />`);
+          if (seoTwitterImage || seoOgImage) headTags.push(`<meta data-rh="true" name="twitter:image" content="${seoTwitterImage || seoOgImage}" />`);
           if (seoCanonical) headTags.push(`<meta data-rh="true" name="twitter:url" content="${seoCanonical}" />`);
+          headTags.push(`<meta data-rh="true" name="twitter:site" content="@D-Securetech" />`);
+          headTags.push(`<meta data-rh="true" name="twitter:creator" content="@D-Securetech" />`);
           
           helmetContent = headTags.join('\n    ');
         }
@@ -252,33 +260,24 @@ async function prerender() {
       
       // Template ke default head tags hatao — page-specific se replace honge
       if (helmetContent && helmetContent.trim().length > 0) {
-        // Title hatao
-        const tStart = html.indexOf('<title>');
-        const tEnd = html.indexOf('</title>', tStart);
-        if (tStart !== -1 && tEnd !== -1) {
-          html = html.substring(0, tStart) + html.substring(tEnd + 8);
-        }
-        // Default meta tags hatao
-        html = html.replace(/<meta\s+name=["']description["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+name=["']keywords["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<link\s+rel=["']canonical["'][^>]*?\/?>/gi, '');
-        // Default OG tags hatao
-        html = html.replace(/<meta\s+property=["']og:title["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+property=["']og:description["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+property=["']og:url["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+property=["']og:image["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+property=["']og:type["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+property=["']og:site_name["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+property=["']og:locale["'][^>]*?\/?>/gi, '');
-        // Default Twitter tags hatao
-        html = html.replace(/<meta\s+name=["']twitter:title["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+name=["']twitter:description["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+name=["']twitter:url["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+name=["']twitter:image["'][^>]*?\/?>/gi, '');
-        html = html.replace(/<meta\s+name=["']twitter:card["'][^>]*?\/?>/gi, '');
+        // ROBUST STRIP: Remove all existing SEO-related tags from the template
+        // We use [^>]* to handle attributes in any order (e.g. data-rh before name)
+        html = html
+          // Strip all <title> tags
+          .replace(/<title[^>]*>[\s\S]*?<\/title>/gi, '')
+          // Strip description, keywords, author, robots, etc.
+          .replace(/<meta[^>]*name=["'](description|keywords|author|robots|googlebot|bingbot|theme-color)["'][^>]*\/?>/gi, '')
+          // Strip OG tags (property="og:...")
+          .replace(/<meta[^>]*property=["']og:[^"']+["'][^>]*\/?>/gi, '')
+          // Strip Twitter tags (name="twitter:...")
+          .replace(/<meta[^>]*name=["']twitter:[^"']+["'][^>]*\/?>/gi, '')
+          // Strip canonical and other SEO links
+          .replace(/<link[^>]*rel=["'](canonical|icon|manifest|alternate|help|index|llms-txt)["'][^>]*\/?>/gi, '')
+          // Strip any remaining tags with data-rh="true" to be safe
+          .replace(/<[^>]*data-rh=["']true["'][^>]*\/?>/gi, '');
         
-        // Page-specific tags inject karo </head> se pehle
-        html = html.replace('</head>', `    ${helmetContent}\n</head>`);
+        // Inject page-specific tags right after the opening <head> tag to ensure priority
+        html = html.replace(/<head>/i, `<head>\n    ${helmetContent}`);
       }
       
       // JSON-LD scripts ko body se extract karo aur head mein move karo

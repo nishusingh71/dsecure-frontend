@@ -29,6 +29,17 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
   }
   const finalCanonical = normalizedPath.toLowerCase().replace(/\/$/, ""); // Canonical should be lowercase and without trailing slash for consistency
 
+  // Helper to ensure URLs are absolute for social media crawlers
+  const ensureAbsoluteUrl = (url?: string): string => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    const prefix = url.startsWith('/') ? '' : '/';
+    return `https://dsecuretech.com${prefix}${url}`;
+  };
+
+  const finalOgImage = ensureAbsoluteUrl(effectiveSeo.ogImage || 'https://dsecuretech.com/logo-white.svg');
+  const finalTwitterImage = ensureAbsoluteUrl(effectiveSeo.twitterImage || effectiveSeo.ogImage || 'https://dsecuretech.com/logo-white.svg');
+
   return (
     <>
       <Helmet>
@@ -50,7 +61,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
           property="og:description"
           content={effectiveSeo.ogDescription || effectiveSeo.description}
         />
-        <meta property="og:image" content={effectiveSeo.ogImage} />
+        <meta property="og:image" content={finalOgImage} />
         <meta property="og:url" content={finalCanonical} />
         <meta property="og:site_name" content="D-Secure Tech" />
         <meta property="og:locale" content="en_US" />
@@ -70,7 +81,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
         />
         <meta
           name="twitter:image"
-          content={effectiveSeo.twitterImage || effectiveSeo.ogImage}
+          content={finalTwitterImage}
         />
         <meta name="twitter:creator" content="@D-Securetech" />
         <meta name="twitter:site" content="@D-Securetech" />
@@ -78,7 +89,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
         {/* Additional SEO Meta Tags */}
         <meta
           name="robots"
-          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          content={effectiveSeo.noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
         />
         <meta name="author" content="D-Secure Tech" />
         <meta name="language" content="English" />
@@ -114,15 +125,16 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
       </Helmet>
       {/* SSR SEO Data Bridge — React 19 streaming mein Helmet context populate nahi hota,
           isliye ye hidden div prerender.js ko page-specific SEO data deta hai */}
-      <div
+        <div
         data-seo-bridge=""
         data-seo-title={effectiveSeo.title}
         data-seo-description={effectiveSeo.description}
         data-seo-canonical={finalCanonical}
         data-seo-og-title={effectiveSeo.ogTitle || effectiveSeo.title}
         data-seo-og-description={effectiveSeo.ogDescription || effectiveSeo.description}
-        data-seo-og-image={effectiveSeo.ogImage || ''}
+        data-seo-og-image={finalOgImage}
         data-seo-og-type={effectiveSeo.ogType || 'website'}
+        data-seo-twitter-image={finalTwitterImage}
         data-seo-keywords={effectiveSeo.keywords || ''}
         style={{ display: 'none' }}
         aria-hidden="true"

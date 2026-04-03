@@ -321,41 +321,41 @@ const PricingAndPlanPage: React.FC = memo(() => {
       name: "File Eraser",
       subtitle: "Erase Files, Folders & Volumes",
     },
-    {
-      id: "virtual-machine-eraser",
-      name: "VM Eraser",
-      subtitle: "Erase Virtual Machines in VMware & Hyper-V",
-    },
-    {
-      id: "smartphone-eraser",
-      name: "Smartphone Eraser",
-      subtitle: "Erase iOS & Android Devices",
-    },
-    {
-      id: "smartphone-diagnostic",
-      name: "Smartphone",
-      subtitle: "iOS & Android Diagnostics",
-    },
-    {
-      id: "autopilot-mdm",
-      name: "Autopilot+MDM",
-      subtitle: "Autopilot & MDM Enrollment Detection",
-    },
-    {
-      id: "data-migration",
-      name: "Data Migration",
-      subtitle: "Fast & Secure Data Migration Solution",
-    },
+    // {
+    //   id: "virtual-machine-eraser",
+    //   name: "VM Eraser",
+    //   subtitle: "Erase Virtual Machines in VMware & Hyper-V",
+    // },
+    // {
+    //   id: "smartphone-eraser",
+    //   name: "Smartphone Eraser",
+    //   subtitle: "Erase iOS & Android Devices",
+    // },
+    // {
+    //   id: "smartphone-diagnostic",
+    //   name: "Smartphone",
+    //   subtitle: "iOS & Android Diagnostics",
+    // },
+    // {
+    //   id: "autopilot-mdm",
+    //   name: "Autopilot+MDM",
+    //   subtitle: "Autopilot & MDM Enrollment Detection",
+    // },
+    // {
+    //   id: "data-migration",
+    //   name: "Data Migration",
+    //   subtitle: "Fast & Secure Data Migration Solution",
+    // },
     {
       id: "freeze-state",
       name: "Freeze State",
       subtitle: "System restore and protection solution",
     },
-    {
-      id: "forensic-imaging",
-      name: "Forensic Imaging",
-      subtitle: "Professional data acquisition and analysis",
-    },
+    // {
+    //   id: "forensic-imaging",
+    //   name: "Forensic Imaging",
+    //   subtitle: "Professional data acquisition and analysis",
+    // },
   ];
 
   // Tab categorization
@@ -2218,7 +2218,10 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 <button
                   onClick={handleBuyNow}
                   disabled={
-                    true || // All products are now Coming Soon as requested
+                    (!((selectedCategory === "drive-eraser" && driveEraserVariant === "standard") || 
+                       (selectedCategory === "file-eraser" && fileEraserVariant === "standard")) && 
+                     selectedLicenses !== "custom" && 
+                     selectedPlan !== "custom") ||
                     isBuyNowLoading
                   }
                   onMouseEnter={() => {
@@ -2233,12 +2236,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     }
                   }}
                   className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 ${
-                    true // All products are now Coming Soon
+                    !((selectedCategory === "drive-eraser" && driveEraserVariant === "standard") || 
+                      (selectedCategory === "file-eraser" && fileEraserVariant === "standard")) && 
+                    selectedLicenses !== "custom" && 
+                    selectedPlan !== "custom"
                       ? "bg-gradient-to-r from-slate-300 to-slate-400 text-white cursor-not-allowed opacity-70"
                       : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
                   }`}
                 >
-                  {true // All products show Coming Soon as requested
+                  {!((selectedCategory === "drive-eraser" && driveEraserVariant === "standard") || 
+                     (selectedCategory === "file-eraser" && fileEraserVariant === "standard")) && 
+                   selectedLicenses !== "custom" && 
+                   selectedPlan !== "custom"
                     ? "Coming Soon"
                     : selectedLicenses === "custom" || selectedPlan === "custom"
                       ? "Request Custom Quote"

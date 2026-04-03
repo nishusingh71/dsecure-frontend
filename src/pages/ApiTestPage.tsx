@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { checkApiAvailability } from '@/utils/api'
 import { useUsers, useMachines, useReports } from '@/utils/dataService'
-import { Helmet } from 'react-helmet-async'
+
 import SEOHead from '../components/SEOHead'
 import { getSEOForPage } from '../utils/seo'
 import { ENV } from '../config/env'
@@ -34,11 +34,7 @@ export default function ApiTestPage() {
     <>
       <SEOHead seo={getSEOForPage('api-test')} />
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
-        <Helmet>
-          <title>API Integration Test | D-Secure Tech - Development Tools</title>
-          <meta name="description" content="D-Secure Tech API integration testing page for developers and system administrators." />
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
+
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-2xl font-bold text-slate-900">API Integration Test</h1>
 

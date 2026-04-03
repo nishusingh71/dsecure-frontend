@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -12,13 +11,6 @@ const WorkingWithDSecurePage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("working-with-dsecure")} />
-      <Helmet>
-        <title>Working with D-Secure File Eraser - Complete User Guide</title>
-        <meta 
-          name="description" 
-          content="Complete guide to working with D-Secure File Eraser including file erasure, free space cleaning, traces cleanup, and software activation."
-        />
-      </Helmet>
 
       {/* Header */}
       <section className="bg-gradient-to-r from-slate-900 via-emerald-800 to-emerald-900 py-20">

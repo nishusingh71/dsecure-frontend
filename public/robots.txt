@@ -3,6 +3,37 @@ Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 
+# AI Crawlers — explicitly allow for Generative Engine Optimization
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
 # Block admin and auth pages from search engines
 Disallow: /admin
 Disallow: /dashboard
@@ -27,4 +58,4 @@ Disallow: /api/
 # Sitemap location for search engines
 Sitemap: https://dsecuretech.com/sitemap.xml
 
-# Last updated: 2026-04-02
+# Last updated: 2026-04-03

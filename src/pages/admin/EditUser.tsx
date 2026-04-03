@@ -1,9 +1,8 @@
-﻿import { useAuth } from '@/auth/AuthContext'
+import { useAuth } from '@/auth/AuthContext'
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
 
 interface UserFormData {
   name: string
@@ -139,10 +138,6 @@ export default function EditUser() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("edit-user")} />
-      <Helmet>
-        <title>Edit User - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="Edit user details in the DSecureTech admin dashboard." />
-      </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

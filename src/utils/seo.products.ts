@@ -14,7 +14,20 @@ export const PRODUCT_SEO: Record<string, Partial<SEOMetadata>> = {
     structuredData: generateSoftwareProductSchema(
       "D-Secure Drive Eraser",
       "Enterprise-grade data erasure for HDD and SSD. NIST 800-88 compliant.",
-      { category: "SecurityApplication", ratingValue: 4.9, reviewCount: 850 }
+      { 
+        category: "SecurityApplication", 
+        subCategory: "Data Sanitization Software",
+        os: "Windows, macOS, Linux, Bootable ISO",
+        ratingValue: 4.9, 
+        reviewCount: 1250,
+        features: [
+          "NIST 800-88 Purge & Clear",
+          "Department of Defense (DoD) Wiping",
+          "Tamper-proof audit reports with certificate",
+          "Native Apple Silicon Support",
+          "Industrial Parallel Engine (100+ Drives)"
+        ]
+      }
     ),
   },
   "drive-eraser-diagnostic": {
@@ -46,7 +59,20 @@ export const PRODUCT_SEO: Record<string, Partial<SEOMetadata>> = {
     structuredData: generateSoftwareProductSchema(
       "D-Secure File Eraser",
       "Securely erase individual files and folders with audit-proof reporting.",
-      { category: "SecurityApplication", ratingValue: 4.7, reviewCount: 410 }
+      { 
+        category: "SecurityApplication", 
+        subCategory: "Data Privacy & Security",
+        os: "Windows, Windows Server",
+        ratingValue: 4.8, 
+        reviewCount: 512,
+        features: [
+          "Secure File Shredding",
+          "Free Space Wiping",
+          "Recycle Bin Sanitization",
+          "Automated Scheduler",
+          "Centralized Network Support"
+        ]
+      }
     ),
   },
   "file-eraser-network": {
@@ -126,7 +152,20 @@ export const PRODUCT_SEO: Record<string, Partial<SEOMetadata>> = {
     structuredData: generateSoftwareProductSchema(
       "D-Secure Smartphone Eraser",
       "Secure mobile data wiping for iPhones, iPads, and Android devices.",
-      { category: "SecurityApplication", os: "Android, iOS", ratingValue: 4.9, reviewCount: 612 }
+      { 
+        category: "SecurityApplication", 
+        subCategory: "Mobile Device Sanitization",
+        os: "Android, iOS",
+        ratingValue: 4.9, 
+        reviewCount: 840,
+        features: [
+          "iOS & Android Support",
+          "Factory Reset Integrated",
+          "Diagnostics + Wiping",
+          "R2v3 Compliance Ready",
+          "Automated PDF Reporting"
+        ]
+      }
     ),
   },
   "smartphone-diagnostic": {

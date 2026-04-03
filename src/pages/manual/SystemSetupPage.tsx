@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -10,13 +9,6 @@ const SystemSetupPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("system-setup")} />
-      <Helmet>
-        <title>D-Secure System Setup & Configuration - Visual Guide</title>
-        <meta 
-          name="description" 
-          content="Complete system configuration guide for D-Secure with visual examples for disk access, user interface, and settings."
-        />
-      </Helmet>
 
       {/* Header */}
       <section className="bg-gradient-to-r from-slate-900 via-blue-800 to-blue-900 py-20">

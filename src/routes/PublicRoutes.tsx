@@ -104,6 +104,11 @@ const MacErasurePage = lazy(() => import("../pages/solutions/MacErasurePage"));
 const BlanccoAlternativePage = lazy(
   () => import("../pages/solutions/BlanccoAlternativePage"),
 );
+const VsBlanccoPage = lazy(() => import("../pages/solutions/VsBlancco"));
+const VsBitRaserPage = lazy(() => import("../pages/solutions/VsBitRaser"));
+const VsWhiteCanyonPage = lazy(() => import("../pages/solutions/VsWhiteCanyon"));
+const WhatIsITADPage = lazy(() => import("../pages/solutions/WhatIsITAD"));
+const WhatIsNist80088Page = lazy(() => import("../pages/solutions/WhatIsNist80088"));
 
 export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
@@ -180,6 +185,12 @@ export const PublicRoutes = () => (
       path="solutions/blancco-alternative"
       element={<BlanccoAlternativePage />}
     />
+    <Route path="vs/blancco" element={<VsBlanccoPage />} />
+    <Route path="vs/bitraser" element={<VsBitRaserPage />} />
+    <Route path="vs/whitecanyon" element={<VsWhiteCanyonPage />} />
+    <Route path="what-is-itad" element={<WhatIsITADPage />} />
+    <Route path="what-is-nist-800-88" element={<WhatIsNist80088Page />} />
+
     <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
     <Route
       path="/products/drive-eraser-diagnostic"

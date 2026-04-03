@@ -1,4 +1,4 @@
-﻿import Sparkline from "@/components/Sparkline";
+import Sparkline from "@/components/Sparkline";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import BarChart from "@/components/BarChart";
@@ -26,7 +26,6 @@ import {
   DEMO_PERFORMANCE_DATA,
   DEMO_SUBUSERS,
 } from "@/data/demoData";
-import { Helmet } from "react-helmet-async";
 
 const EMPTY_METHOD_METRICS: MethodMetric[] = [];
 
@@ -293,9 +292,6 @@ export default function AdminPerformance() {
     return (
       <>
         <SEOHead seo={getSEOForPage("admin-performance")} />
-        <Helmet>
-          <title>DSecureTech Performance | System Performance</title>
-        </Helmet>
         <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
           {/* Header & Filters (Still visible to allow changing filters) */}
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
@@ -455,9 +451,6 @@ export default function AdminPerformance() {
   return (
     <>
       <SEOHead seo={getSEOForPage("admin-performance")} />
-      <Helmet>
-        <title>DSecureTech Performance | System Performance</title>
-      </Helmet>
 
       <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
         {/* Header & Filters */}

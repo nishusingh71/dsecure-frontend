@@ -26,6 +26,7 @@ import { INDUSTRY_SEO } from "./seo.industries";
 import { SUPPORT_SEO } from "./seo.support";
 import { BLOG_SEO } from "./seo.blog";
 import { PRODUCT_SEO } from "./seo.products";
+import { MANUAL_SEO } from "./seo.manual";
 
 // Saare SEO modules ko ek jagah combine karo
 export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
@@ -33,6 +34,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   ...SUPPORT_SEO,
   ...BLOG_SEO,
   ...PRODUCT_SEO,
+  ...MANUAL_SEO,
   // Home page SEO - "D-Secure" branding use karo, "Eraser" nahi
   home: {
     title: "D-Secure - #1 Data Erasure Software | NIST 800-88 Compliance | Secure Tech",
@@ -132,15 +134,41 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       { name: "ITAD", item: "/solutions/itad" },
     ],
   },
-  alternative: {
-    title: "Blancco Alternative Data Erasure | Compliance Data Eraser Software | D-Secure",
-    description: "Looking for a Blancco alternative for data erasure? D-Secure is the #1 compliance data eraser software providing tamper-proof audit reports with certificate at a better price point.",
-    canonicalUrl: getCanonicalUrl("/solutions/blancco-alternative"),
-    breadcrumbs: [
-      { name: "Home", item: "/" },
-      { name: "Solutions", item: "/solutions" },
-      { name: "Alternative", item: "/solutions/blancco-alternative" },
-    ],
+  "alternative": {
+    title: "Smarter Blancco & BitRaser Alternative | D-Secure Data Erasure",
+    description: "Looking for a Blancco alternative? D-Secure offers enterprise-grade data erasure with better ARM support, 40% lower costs, and zero-touch automation.",
+    keywords: "blancco alternative, bitraser alternative, data erasure software comparison, enterprise data sanitization",
+    canonicalUrl: "https://dsecuretech.com/solutions/blancco-alternative"
+  },
+  "vs-blancco": {
+    title: "D-Secure vs Blancco | Modern Data Erasure Comparison 2025",
+    description: "Compare D-Secure vs Blancco. See why enterprises choose D-Secure for native ARM support, faster PXE deployment, and 40% more cost-effective licensing.",
+    keywords: "d-secure vs blancco, blancco vs d-secure, blancco alternatives, enterprise data erasure comparison",
+    canonicalUrl: "https://dsecuretech.com/vs/blancco"
+  },
+  "vs-bitraser": {
+    title: "D-Secure vs BitRaser | Industrial Data Sanitization Comparison",
+    description: "D-Secure vs BitRaser comparison. D-Secure's industrial engine supports 100+ parallel erasures with superior tamper-proof reporting for high-volume ITADs.",
+    keywords: "d-secure vs bitraser, bitraser vs d-secure, bitraser alternatives, high volume data erasure",
+    canonicalUrl: "https://dsecuretech.com/vs/bitraser"
+  },
+  "vs-whitecanyon": {
+    title: "D-Secure vs WhiteCanyon (WipeDrive) | SaaS vs Legacy Erasure",
+    description: "Compare D-Secure vs WhiteCanyon WipeDrive. D-Secure offers a modern SaaS-based data erasure platform with native Mac M1-M4 support and REST API.",
+    keywords: "d-secure vs whitecanyon, wipedrive alternative, whitecanyon vs d-secure, saas data erasure",
+    canonicalUrl: "https://dsecuretech.com/vs/whitecanyon"
+  },
+  "what-is-itad": {
+    title: "What is ITAD? | IT Asset Disposition & Data Security Guide",
+    description: "Learn what ITAD (IT Asset Disposition) is and why it's critical for enterprise data security, value recovery, and environmental compliance.",
+    keywords: "what is itad, it asset disposition guide, itad best practices, secure asset disposal",
+    canonicalUrl: "https://dsecuretech.com/what-is-itad"
+  },
+  "what-is-nist-800-88": {
+    title: "What is NIST 800-88? | Media Sanitization Standards Explained",
+    description: "Understand the NIST 800-88 standard for media sanitization. Learn the differences between Clear, Purge, and Destroy for certified data destruction.",
+    keywords: "what is nist 800-88, nist 800-88 rev 1 summary, nist clear vs purge, media sanitization standards",
+    canonicalUrl: "https://dsecuretech.com/what-is-nist-800-88"
   },
   download: {
     title: "Download Data Erasure Software & Trial | D-Secure Tech",
@@ -224,6 +252,113 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       { name: "Home", item: "/" },
       { name: "Privacy Policy", item: "/privacy-policy" },
     ],
+  },
+  "network-file-manual-layout": {
+    title: "D-Secure Network File Eraser Manual | Corporate Data Sanitization",
+    description: "Complete guide for D-Secure Network File Eraser. Centrally manage data erasure across your network, servers, and remote workstations.",
+    canonicalUrl: getCanonicalUrl("/support/help-manual/network-file"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Manual", item: "/support/help-manual" },
+      { name: "Network File Eraser", item: "/support/help-manual/network-file" },
+    ],
+  },
+  "working-with-dsecure": {
+    title: "Working with D-Secure File Eraser | User Guide & Tutorials",
+    description: "Learn how to use D-Secure File Eraser effectively. Guide for file wiping, free space cleaning, and automated erasure tasks.",
+    canonicalUrl: getCanonicalUrl("/support/manual/working-with-dsecure"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Manual", item: "/support/manual" },
+      { name: "Working with D-Secure", item: "/support/manual/working-with-dsecure" },
+    ],
+  },
+  "overwrite-guide": {
+    title: "Overwrite Guide | Data Erasure Standards & Pass Count | D-Secure",
+    description: "How many overwrite passes are enough? Comprehensive guide to data erasure standards like NIST 800-88 and DoD 5220.22-M.",
+    canonicalUrl: getCanonicalUrl("/support/overwrite-guide"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Overwrite Guide", item: "/support/overwrite-guide" },
+    ],
+  },
+  "installation-guide-detailed": {
+    title: "Installation Guide - Detailed Step-by-Step | D-Secure Tech",
+    description: "Detailed visual installation guide for D-Secure software. System requirements, setup wizard, and license activation instructions.",
+    canonicalUrl: getCanonicalUrl("/support/manual/installation-guide-detailed"),
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Support", item: "/support" },
+      { name: "Manual", item: "/support/manual" },
+      { name: "Installation Guide", item: "/support/manual/installation-guide-detailed" },
+    ],
+  },
+  // Dashboards - Hidden from search engines
+  "admin-dashboard": { title: "Admin Dashboard | D-Secure", noindex: true },
+  "user-dashboard": { title: "User Dashboard | D-Secure", noindex: true },
+  "admin-downloads": { title: "Downloads | Admin | D-Secure", noindex: true },
+  "admin-groups": { title: "Group Management | D-SecureTech Admin", noindex: true },
+  "admin-licenses": { title: "Manage Licenses | D-SecureTech Admin", noindex: true },
+  "admin-machines": { title: "Machine Management | Admin | D-Secure", noindex: true },
+  "admin-performance": { title: "Performance Stats | Admin | D-Secure", noindex: true },
+  "admin-reports": { title: "Reports | Admin | D-Secure", noindex: true },
+  "admin-subusers": { title: "Subusers Management | Admin | D-Secure", noindex: true },
+  "admin-sessions": { title: "Sessions Management | Admin | D-Secure", noindex: true },
+  "admin-shell": { title: "Admin Shell | D-Secure", noindex: true },
+  "edit-subuser": { title: "Edit Subuser | Admin | D-Secure", noindex: true },
+  "private-cloud-setup": { title: "Private Cloud Setup | Admin | D-Secure", noindex: true },
+  "enhanced-user-dashboard": {
+    title: "User Dashboard | Data Erasure Management | D-Secure",
+    description: "Access your D-Secure user dashboard to manage data erasure tasks and view certificates.",
+    noindex: true,
+  },
+  "admin-users": { title: "User Management | D-SecureTech Admin", noindex: true },
+  "admin-settings": { title: "System Settings | D-SecureTech Admin", noindex: true },
+  "add-user": { title: "Add New User | D-SecureTech Admin", noindex: true },
+  "add-group": { title: "Add New Group | D-SecureTech Admin", noindex: true },
+  "edit-user": { title: "Edit User | D-SecureTech Admin", noindex: true },
+  "edit-group": { title: "Edit Group | D-SecureTech Admin", noindex: true },
+  "group-detail": { title: "Group Details | D-SecureTech Admin", noindex: true },
+  "admin-profile-edit": { title: "Edit Profile | D-SecureTech Admin", noindex: true },
+  "generate-report": {
+    title: "Generate Compliance Report | D-SecureTech",
+    description: "Create official data erasure certificates and compliance reports.",
+    noindex: true,
+  },
+
+  // Resources & Support
+  "trust-center": {
+    title: "Trust Center | Security & Compliance | D-Secure",
+    description: "Our commitment to security, privacy, and compliance. Access SOC 2 reports, GDPR info, and security whitepapers.",
+    canonicalUrl: getCanonicalUrl("/trust-center"),
+  },
+  "api-test": {
+    title: "API Connection Test | D-SecureTech",
+    description: "Test your connection to the D-SecureTech API endpoints.",
+    noindex: true,
+  },
+  "manual-performance": {
+    title: "Performance Optimization Guide | D-SecureTech Support",
+    description: "Learn how to optimize D-SecureTech for maximum data erasure speed and efficiency.",
+    canonicalUrl: getCanonicalUrl("/support/manual/performance"),
+  },
+  "manual-network-file": {
+    title: "Network File Manual | D-SecureTech Support",
+    description: "Comprehensive guide to using D-SecureTech Network File erasure solutions.",
+    canonicalUrl: getCanonicalUrl("/manual/network-file"),
+  },
+  "manual-faq": {
+    title: "Frequently Asked Questions | D-SecureTech Support",
+    description: "Find answers to common questions about D-SecureTech products and features.",
+    canonicalUrl: getCanonicalUrl("/manual/faq"),
+  },
+  whitepaper: {
+    title: "Resource Center - Whitepapers & Technical briefs | D-Secure",
+    description: "Download technical whitepapers and research on data sanitization, NIST 800-88 compliance, and secure data erasure.",
+    canonicalUrl: getCanonicalUrl("/whitepaper"),
   },
 };
 

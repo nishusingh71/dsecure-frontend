@@ -1,7 +1,7 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+
 import { useParams, useNavigate } from 'react-router-dom';
 // import { usePermissions } from '@/hooks/usePermissions';
 // import {
@@ -121,10 +121,7 @@ export default function GroupDetailPage() {
     return (
         <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("group-detail")} />
-            <Helmet>
-                <title>{resources?.groupName || 'Group'} Resources - Admin Dashboard | DSecureTech</title>
-            </Helmet>
+      <SEOHead seo={getSEOForPage("group-detail", { title: `${resources?.groupName || 'Group'} Resources - Admin Dashboard | DSecureTech` })} />
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
                 <div className="container-app py-8">

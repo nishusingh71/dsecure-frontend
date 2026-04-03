@@ -3,7 +3,7 @@ import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+
 import { apiClient } from "@/utils/enhancedApiClient";
 import { isDemoMode } from "@/data/demoData";
 import { useNotification } from "@/contexts/NotificationContext";
@@ -185,13 +185,7 @@ export default function AddUser() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("add-user")} />
-      <Helmet>
-        <title>Add New User - Admin Dashboard | DSecureTech</title>
-        <meta
-          name="description"
-          content="Add a new user to the DSecureTech admin dashboard."
-        />
-      </Helmet>
+
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
 import { useAuth } from '@/auth/AuthContext'
 import { Link } from 'react-router-dom'
@@ -143,12 +142,7 @@ const ReportsPage: React.FC = () => {
   if (loading) {
     return (
       <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("reports")} />
-        <Helmet>
-          <title>Reports | D-Secure Dashboard</title>
-          <meta name="description" content="View and manage erasure reports and regulatory documents" />
-        </Helmet>
 
         <div className="min-h-screen bg-slate-50">
           <div className="container-app py-8">
@@ -195,11 +189,7 @@ const ReportsPage: React.FC = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Reports | D-Secure Dashboard</title>
-        <meta name="description" content="View and manage erasure reports and regulatory documents" />
-      </Helmet>
-
+      <SEOHead seo={getSEOForPage("reports")} />
       <div className="min-h-screen bg-slate-50">
         <div className="container-app py-8">
           {/* Header */}

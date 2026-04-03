@@ -1,21 +1,12 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import { Trash2, Globe, Smartphone, HardDrive, CheckCircle, AlertCircle, Search, Mail, MessageSquare, FileText } from "lucide-react";
 
 const ErasingTraces: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("erasing-traces")} />
-      <Helmet>
-        <title>Erasing Traces - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Learn how to erase internet activity, application, and system traces using D-Secure File Eraser Network for complete privacy protection."
-        />
-      </Helmet>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

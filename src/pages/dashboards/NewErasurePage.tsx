@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
 import { useAuth } from '@/auth/AuthContext'
 import { Link } from 'react-router-dom'
@@ -89,12 +88,7 @@ const NewErasurePage: React.FC = () => {
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("new-erasure")} />
-      <Helmet>
-        <title>New Erasure Process | D-Secure Dashboard</title>
-        <meta name="description" content="Start a new secure data erasure process" />
-      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <div className="container-app py-8">

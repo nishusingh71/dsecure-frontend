@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
-import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
 import Reveal from '@/components/Reveal'
 import { useState, useEffect, useRef } from 'react'

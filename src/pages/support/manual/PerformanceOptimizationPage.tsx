@@ -1,7 +1,7 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
+
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import OptimizedImage from '@/components/OptimizedImage';

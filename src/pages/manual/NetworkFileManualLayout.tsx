@@ -1,8 +1,7 @@
 // src/pages/manual/NetworkFileManualLayout.tsx
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
+import React, { useState, useRef } from "react";
 import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
 import {
   BookOpen,
@@ -17,7 +16,6 @@ import {
   HelpCircle,
   Phone,
   Info,
-  ChevronRight,
   Menu,
   X,
   Shield,
@@ -168,13 +166,6 @@ const NetworkFileManualLayout: React.FC = () => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("network-file-manual-layout")} />
-      <Helmet>
-        <title>D-Secure Network File Manual - Complete Guide</title>
-        <meta
-          name="description"
-          content="Complete user manual for D-Secure File Eraser Network - Installation, configuration, and usage guide"
-        />
-      </Helmet>
 
       <style>{`
         .sidebar-scroll::-webkit-scrollbar {

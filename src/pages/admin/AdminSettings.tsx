@@ -1,7 +1,7 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
-import { Helmet } from 'react-helmet-async'
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useNotification } from "@/contexts/NotificationContext";
@@ -74,13 +74,7 @@ export default function AdminSettings() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-settings")} />
-      <Helmet>
-        <title>System Settings - Admin Dashboard | DSecureTech</title>
-        <meta
-          name="description"
-          content="Configure system settings and preferences for DSecureTech admin dashboard."
-        />
-      </Helmet>
+
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

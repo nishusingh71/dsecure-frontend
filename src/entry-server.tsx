@@ -27,26 +27,45 @@ export function render(url: string): Promise<{ html: string; helmet: HelmetServe
       resolve({ html, helmet: helmetContext.helmet });
     });
 
-    const { pipe } = renderToPipeableStream(
-      <React.StrictMode>
-        <HelmetProvider context={helmetContext}>
-          <I18nextProvider i18n={i18n}>
-            <StaticRouter location={url}>
-              <ToastProvider>
-                <App />
-              </ToastProvider>
-            </StaticRouter>
-          </I18nextProvider>
-        </HelmetProvider>
-      </React.StrictMode>
+    let didError = false;
+    let piped = false;
+    const { pipe, abort } = renderToPipeableStream(
+      <HelmetProvider context={helmetContext}>
+        <I18nextProvider i18n={i18n}>
+          <StaticRouter location={url}>
+            <ToastProvider>
+              <App />
+            </ToastProvider>
+          </StaticRouter>
+        </I18nextProvider>
+      </HelmetProvider>
     , {
       onAllReady() {
-        pipe(writable);
+        if (!didError && !piped) {
+          piped = true;
+          pipe(writable);
+        }
+      },
+      onShellError(error: unknown) {
+        didError = true;
+        abort();
+        reject(error);
       },
       onError(error: unknown) {
+        didError = true;
         console.error('SSG Render Error:', error);
+        abort();
         reject(error);
       }
     });
+
+    // Promise timeout to prevent hanging build process
+    setTimeout(() => {
+      if (!didError && !piped) {
+        didError = true;
+        abort();
+        reject(new Error(`Rendering timeout for ${url}`));
+      }
+    }, 30000);
   });
 }

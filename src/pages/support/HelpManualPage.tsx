@@ -302,14 +302,14 @@ const HelpManualPage: React.FC = memo(() => {
           url: "/support/help-manual/complete-manual",
           pageCount: 1,
         },
-        // {
-        //   id: 79,
-        //   title: "D-Secure File Eraser Network Manual",
-        //   description:
-        //     "Comprehensive single-page manual with all D-Secure network features and functionality",
-        //   url: "/support/help-manual/complete-network-manual",
-        //   pageCount: 1,
-        // },
+        {
+          id: 721,
+          title: "D-Secure FreezeState Manual",
+          description:
+            "Complete guide to Reboot-to-Restore technology and workstation protection",
+          url: "/support/help-manual/complete-freeze-state-manual",
+          pageCount: 1,
+        },
         {
           id: 72,
           title: "Working with Reports",

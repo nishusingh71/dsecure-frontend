@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
 import { useAuth } from '@/auth/AuthContext'
 import { Link } from 'react-router-dom'
@@ -138,12 +137,7 @@ const DownloadAgentPage: React.FC = () => {
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("download-agent")} />
-      <Helmet>
-        <title>Download Agent | D-Secure Dashboard</title>
-        <meta name="description" content="Download D-Secure agents for various platforms" />
-      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <div className="container-app py-8">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Helmet } from 'react-helmet-async';
+
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { HelpCircle, ChevronRight } from "lucide-react";
@@ -92,13 +92,7 @@ const FAQ: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("faq")} />
-      <Helmet>
-        <title>Frequently Asked Questions - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Find answers to commonly asked questions about D-Secure File Eraser Network."
-        />
-      </Helmet>
+
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

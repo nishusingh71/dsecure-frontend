@@ -1,7 +1,6 @@
 import SEOHead from "../../../components/SEOHead";
 import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import { FileText, Download, Eye, Filter, Calendar, CheckCircle, AlertCircle, BarChart } from "lucide-react";
 
 const ReportManagement: React.FC = () => {
@@ -9,13 +8,6 @@ const ReportManagement: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("report-management")} />
-      <Helmet>
-        <title>Report Management - D-Secure Network File Manual</title>
-        <meta
-          name="description"
-          content="Learn how to view, filter, export, and manage erasure reports in D-Secure File Eraser Network for compliance and audit trails."
-        />
-      </Helmet>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

@@ -56,7 +56,19 @@ const assets = [
     local: './public/images/products/drive-monitor-cloning-fixed.png',
     publicId: 'dsecure/products/drive-monitor-cloning',
     description: 'Hard Drive Monitor Cloning Process'
-  }
+  },
+  { local: 'public/images/manual/freeze-state/admin-dashboard.png', publicId: 'dsecure/manual/freeze-state/admin-dashboard', description: 'FreezeState Admin Dashboard' },
+  { local: 'public/images/manual/freeze-state/systems-directory.png', publicId: 'dsecure/manual/freeze-state/systems-directory', description: 'FreezeState Systems Directory' },
+  { local: 'public/images/manual/freeze-state/system-details.png', publicId: 'dsecure/manual/freeze-state/system-details', description: 'FreezeState System Details' },
+  { local: 'public/images/manual/freeze-state/admin-settings.png', publicId: 'dsecure/manual/freeze-state/admin-settings', description: 'FreezeState Admin Settings' },
+  { local: 'public/images/manual/freeze-state/endpoint-main.png', publicId: 'dsecure/manual/freeze-state/endpoint-main', description: 'FreezeState Endpoint Main' },
+  { local: 'public/images/manual/freeze-state/endpoint-activation.png', publicId: 'dsecure/manual/freeze-state/endpoint-activation', description: 'FreezeState Endpoint Activation' },
+  { local: 'public/images/manual/freeze-state/admin-sidebar-header.png', publicId: 'dsecure/manual/freeze-state/admin-sidebar-header', description: 'FreezeState Admin Sidebar & Header' },
+  { local: 'public/images/manual/freeze-state/admin-systems-view.png', publicId: 'dsecure/manual/freeze-state/admin-systems-view', description: 'FreezeState Systems Group View' },
+  { local: 'public/images/manual/freeze-state/admin-policy-modes.png', publicId: 'dsecure/manual/freeze-state/admin-policy-modes', description: 'FreezeState Detailed Policy Modes' },
+  { local: 'public/images/manual/freeze-state/admin-reports-logs.png', publicId: 'dsecure/manual/freeze-state/admin-reports-logs', description: 'FreezeState Reports & Logs' },
+  { local: 'public/images/manual/freeze-state/endpoint-header-status.png', publicId: 'dsecure/manual/freeze-state/endpoint-header-status', description: 'FreezeState Endpoint Header & Status' },
+  { local: 'public/images/manual/freeze-state/endpoint-health-metrics.png', publicId: 'dsecure/manual/freeze-state/endpoint-health-metrics', description: 'FreezeState Endpoint Health Metrics' }
   // Add more assets here as needed
 ]
 
@@ -64,7 +76,7 @@ async function uploadAsset({ local, publicId, description }) {
   try {
     // Check if local file exists
     if (!fs.existsSync(local)) {
-      //console.log(`⚠️  File not found: ${local}`)
+      console.log(`⚠️  File not found: ${local}`)
       return false
     }
 
@@ -77,10 +89,10 @@ async function uploadAsset({ local, publicId, description }) {
       unique_filename: false
     })
 
-    //console.log(`✅ Success: ${result.secure_url}`)
-    //console.log(`   Size: ${(result.bytes / 1024).toFixed(2)}KB`)
-    //console.log(`   Format: ${result.format}`)
-    //console.log('')
+    console.log(`✅ Success: ${result.secure_url}`)
+    console.log(`   Size: ${(result.bytes / 1024).toFixed(2)}KB`)
+    console.log(`   Format: ${result.format}`)
+    console.log('')
 
     return true
   } catch (error) {
@@ -124,19 +136,19 @@ async function main() {
     }
   }
 
-  //console.log('📊 Upload Summary')
-  //console.log('================')
-  //console.log(`✅ Successful: ${successCount}`)
-  //console.log(`❌ Failed: ${failCount}`)
-  //console.log(`📁 Total: ${assets.length}`)
+  console.log('📊 Upload Summary')
+  console.log('================')
+  console.log(`✅ Successful: ${successCount}`)
+  console.log(`❌ Failed: ${failCount}`)
+  console.log(`📁 Total: ${assets.length}`)
 
   if (successCount > 0) {
-    //console.log('')
-    //console.log('🎉 Assets uploaded successfully!')
-    //console.log('💡 Next steps:')
-    //console.log('   1. Set VITE_CLOUDINARY_CLOUD_NAME in your Vercel environment variables')
-    //console.log('   2. Deploy your app')
-    //console.log('   3. Verify images load from Cloudinary')
+    console.log('')
+    console.log('🎉 Assets uploaded successfully!')
+    console.log('💡 Next steps:')
+    console.log('   1. Set VITE_CLOUDINARY_CLOUD_NAME in your Vercel environment variables')
+    console.log('   2. Deploy your app')
+    console.log('   3. Verify images load from Cloudinary')
   }
 
   if (failCount > 0) {

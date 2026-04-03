@@ -1,7 +1,6 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import {
   ArrowLeft,
   ChevronRight,
@@ -21,19 +20,6 @@ const ScheduleSettingsPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("schedule-settings")} />
-      <Helmet>
-        <title>
-          D-Secure Scheduling & Settings - Complete Configuration Guide
-        </title>
-        <meta
-          name="description"
-          content="Master D-Secure scheduling and settings - configure erasure tasks, customize themes, manage general settings, and set up automated operations."
-        />
-        <meta
-          name="keywords"
-          content="D-Secure schedule, erasure scheduling, settings configuration, themes, general settings, automation"
-        />
-      </Helmet>
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">

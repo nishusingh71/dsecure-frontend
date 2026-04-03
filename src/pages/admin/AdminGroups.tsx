@@ -1,7 +1,7 @@
 import { useAuth } from "@/auth/AuthContext";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { Helmet } from "react-helmet-async";
+
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -342,13 +342,7 @@ export default function AdminGroups() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-groups")} />
-      <Helmet>
-        <title>Manage Groups - Admin Dashboard | DSecureTech</title>
-        <meta
-          name="description"
-          content="Manage user groups and permissions in the DSecureTech admin dashboard."
-        />
-      </Helmet>
+
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

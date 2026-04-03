@@ -1,6 +1,5 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { Helmet } from "react-helmet-async";
 import { useState, useEffect, useRef, useCallback } from "react";
 // ✅ AbortController ref — stale API requests cancel karne ke liye
 let abortControllerRefGroups: AbortController | null = null;
@@ -1157,11 +1156,7 @@ export default function AdminGroups() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-groups")} />
-      <Helmet>
-        <title>Groups - Admin Dashboard | D-Secure</title>
-      </Helmet>
 
       <div className="space-y-6">
         {/* Header */}

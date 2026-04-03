@@ -4,7 +4,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+
 import {
   AdminDashboardAPI,
   type ProfileData,
@@ -151,13 +151,7 @@ export default function AdminProfileEdit() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-profile-edit")} />
-      <Helmet>
-        <title>Edit Profile - Admin Dashboard | DSecureTech</title>
-        <meta
-          name="description"
-          content="Edit admin profile information and settings."
-        />
-      </Helmet>
+
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

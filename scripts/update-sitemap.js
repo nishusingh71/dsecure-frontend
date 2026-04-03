@@ -11,7 +11,7 @@ const currentDate = new Date().toISOString().split("T")[0];
 const appTsxPath = path.join(__dirname, "..", "src", "App.tsx");
 const routesDir = path.join(__dirname, "..", "src", "routes");
 
-// Routes to explicitly exclude from the sitemap
+// Sitemap se exclude karne wale routes — admin, dashboard, aur protected routes
 const EXCLUDED_ROUTES = [
   "/admin",
   "/dashboard",
@@ -25,6 +25,9 @@ const EXCLUDED_ROUTES = [
   "/search-demo",
   "/unauthorized",
   "/404",
+  "/download",
+  "/private-cloud-setup",
+  "/profile",
   "*",
 ];
 
@@ -35,17 +38,124 @@ const PRIORITY_ROUTES = {
   "/solutions": { changefreq: "weekly", priority: "0.9" },
   "/products": { changefreq: "weekly", priority: "0.9" },
   "/download": { changefreq: "weekly", priority: "0.8" },
+  "/support/faq": { changefreq: "weekly", priority: "0.8" },
+  "/blogs": { changefreq: "weekly", priority: "0.8" },
   "/contact": { changefreq: "monthly", priority: "0.7" },
   "/about": { changefreq: "monthly", priority: "0.6" },
   "/llms.txt": { changefreq: "daily", priority: "0.8" },
   "/llms-full.txt": { changefreq: "daily", priority: "0.8" },
 };
 
+/**
+ * JSX-aware Route tag parser — {curly braces} ke andar ke /> ko ignore karta hai
+ * Ye zaroori hai kyunki element={<Component />} ka /> galat match ho jaata hai
+ */
+function parseRouteTags(content) {
+  const tags = [];
+  let pos = 0;
+  
+  while (pos < content.length) {
+    const routeStart = content.indexOf('<Route', pos);
+    if (routeStart === -1) break;
+    
+    // Tag ke end tak scan karo, brace depth track karte hue
+    let i = routeStart + 6;
+    let braceDepth = 0;
+    let inString = false;
+    let stringChar = '';
+    let tagEnd = -1;
+    let isSelfClosing = false;
+    
+    while (i < content.length) {
+      const ch = content[i];
+      
+      // String ke andar ho toh skip karo
+      if (inString) {
+        if (ch === stringChar && content[i - 1] !== '\\') inString = false;
+        i++;
+        continue;
+      }
+      
+      if (ch === '"' || ch === "'" || ch === '`') {
+        inString = true;
+        stringChar = ch;
+        i++;
+        continue;
+      }
+      
+      if (ch === '{') { braceDepth++; i++; continue; }
+      if (ch === '}') { braceDepth--; i++; continue; }
+      
+      // Sirf braceDepth 0 pe tag boundary detect karo
+      if (braceDepth === 0 && ch === '>') {
+        if (i > 0 && content[i - 1] === '/') {
+          isSelfClosing = true;
+        }
+        tagEnd = i + 1;
+        break;
+      }
+      
+      i++;
+    }
+    
+    if (tagEnd === -1) { pos = routeStart + 6; continue; }
+    
+    const tagContent = content.substring(routeStart, tagEnd);
+    const pathMatch = tagContent.match(/path=["']([^"']+)["']/);
+    
+    tags.push({
+      index: routeStart,
+      end: tagEnd,
+      path: pathMatch ? pathMatch[1] : null,
+      isSelfClosing,
+      hasNavigate: tagContent.includes('Navigate'),
+    });
+    
+    pos = tagEnd;
+  }
+  
+  return tags;
+}
+
+/**
+ * Nested Route ke liye matching closing tag dhundho
+ * Depth tracking se sahi </Route> milti hai
+ */
+function findMatchingClose(content, startPos) {
+  let depth = 1;
+  let pos = startPos;
+  
+  while (pos < content.length && depth > 0) {
+    const nextOpen = content.indexOf('<Route', pos);
+    const nextClose = content.indexOf('</Route>', pos);
+    
+    if (nextClose === -1) return -1; // Koi closing tag nahi mila
+    
+    if (nextOpen !== -1 && nextOpen < nextClose) {
+      // Check karo ki ye self-closing hai ya nahi
+      const tagEnd = content.indexOf('>', nextOpen);
+      if (tagEnd !== -1 && content[tagEnd - 1] === '/') {
+        // Self-closing tag — depth change nahi hogi
+        pos = tagEnd + 1;
+      } else {
+        depth++;
+        pos = tagEnd + 1;
+      }
+    } else {
+      depth--;
+      if (depth === 0) return nextClose;
+      pos = nextClose + 8; // '</Route>'.length
+    }
+  }
+  
+  return -1;
+}
+
 function extractRoutesFromFiles() {
   const allRoutes = new Set();
   const filesToScan = [appTsxPath];
 
-  // Bacho, hum saari files scan karenge jo routes define karti hain
+  // Saari route files scan karo
   if (fs.existsSync(routesDir)) {
     const routeFiles = fs
       .readdirSync(routesDir)
@@ -58,40 +168,68 @@ function extractRoutesFromFiles() {
     try {
       const content = fs.readFileSync(filePath, "utf8");
 
-      // Remove comments to prevent extracting commented out routes
+      // Comments hata do taaki commented routes na mil jaayein
       const cleanContent = content.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "");
 
-      // Regex for <Route path="..." />
-      const pathRegex = /<Route[\s\S]*?path=["']([^"']+)["']/g;
-      let match;
-      while ((match = pathRegex.exec(cleanContent)) !== null) {
-        let routePath = match[1];
-
-        // Normalizing path
-        if (!routePath.startsWith("/") && !routePath.startsWith("http")) {
-          routePath = "/" + routePath;
-        }
-
-        // Exclude dynamic and wildcards
-        if (routePath.includes(":") || routePath.includes("*")) continue;
-
-        // Element check for Navigate (Redirects should not be in sitemap)
-        // Find the tag and check if it contains <Navigate
-        const tagMatch = cleanContent
-          .slice(match.index, match.index + 300)
-          .match(/<Route[\s\S]*?>/);
-        if (tagMatch && tagMatch[0].includes("Navigate")) continue;
-
-        allRoutes.add(normalizePath(routePath));
+      // ProtectedRoute wali route files skip karo — admin/dashboard routes public sitemap mein nahi chahiye
+      // App.tsx ko skip nahi karna hai kyunki usme public routes bhi import hote hain
+      const fileName = path.basename(filePath);
+      if (fileName !== "App.tsx" && (filePath.includes("DashboardRoutes") || filePath.includes("AuthRoutes"))) {
+        console.log(`⏭️  Skipping protected routes file: ${fileName}`);
+        return;
       }
 
-      // Special case: index routes
-      if (cleanContent.includes("index")) {
-        // If we find an index route, we'll try to determine its base path
-        // For simplicity, we'll just ensure '/' is present, or try to infer from the file context
-        if (filePath.includes("PublicRoutes") || filePath.includes("App.tsx")) {
-          allRoutes.add("/");
+      // Nested route resolution — proper JSX parser jo {curly braces} handle kare
+      // Regex se ye kaam nahi hota kyunki element={<Component />} ka /> galat match hota hai
+      const routeTags = parseRouteTags(cleanContent);
+
+      // Nesting track karo — stack based approach
+      const parentStack = []; // [{path, closeIndex}]
+
+      for (const tag of routeTags) {
+        // Pehle check karo ki koi parent close hua hai
+        while (parentStack.length > 0 && parentStack[parentStack.length - 1].closeIndex <= tag.index) {
+          parentStack.pop();
         }
+
+        if (tag.path) {
+          // Dynamic aur wildcard routes skip karo
+          if (tag.path.includes(":") || tag.path.includes("*")) {
+            if (!tag.isSelfClosing) {
+              const closePos = findMatchingClose(cleanContent, tag.end);
+              if (closePos !== -1) parentStack.push({ path: tag.path, closeIndex: closePos });
+            }
+            continue;
+          }
+
+          // Navigate wale routes skip karo
+          if (tag.hasNavigate) continue;
+
+          let fullPath = tag.path;
+
+          // Agar relative path hai (/ se start nahi hota) toh parent path prefix lagao
+          if (!fullPath.startsWith("/")) {
+            const parentPath = parentStack.length > 0 ? parentStack[parentStack.length - 1].path : "";
+            const normalizedParent = parentPath.startsWith("/") ? parentPath : "/" + parentPath;
+            fullPath = normalizedParent.replace(/\/$/, "") + "/" + fullPath;
+          }
+
+          allRoutes.add(normalizePath(fullPath));
+        }
+
+        // Agar self-closing nahi hai toh ye parent ban sakta hai
+        if (!tag.isSelfClosing && tag.path) {
+          const closePos = findMatchingClose(cleanContent, tag.end);
+          if (closePos !== -1) {
+            const resolvedPath = tag.path.startsWith("/") ? tag.path : (parentStack.length > 0 ? (parentStack[parentStack.length - 1].path.replace(/\/$/, "") + "/" + tag.path) : "/" + tag.path);
+            parentStack.push({ path: resolvedPath, closeIndex: closePos });
+          }
+        }
+      }
+
+      // Homepage ensure karo
+      if (filePath.includes("PublicRoutes") || filePath.includes("App.tsx")) {
+        allRoutes.add("/");
       }
     } catch (error) {
       console.error(`Error reading ${filePath}:`, error.message);

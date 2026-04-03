@@ -2,7 +2,7 @@ import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
+
 import { useNavigate } from "react-router-dom";
 import {
   Roles,
@@ -237,13 +237,7 @@ export default function AdminReports() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-reports")} />
-      <Helmet>
-        <title>Data Erasure Reports - Admin Dashboard | DSecureTech</title>
-        <meta
-          name="description"
-          content="View and manage all data erasure reports in DSecureTech admin dashboard."
-        />
-      </Helmet>
+
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}

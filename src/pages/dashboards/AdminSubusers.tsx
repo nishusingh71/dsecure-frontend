@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv, openPrintView } from "@/utils/csv";
-import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
 import { apiClient, Subuser, Session } from "@/utils/enhancedApiClient";
 import { useAuth } from "@/auth/AuthContext";
@@ -1163,21 +1162,7 @@ export default function AdminSubusers() {
           </div>
         </div>
       )}
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/subusers" />
-        <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
-        </title>
-        <meta
-          name="description"
-          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage("admin-subusers")} />
       <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-slate-900">Manage Subusers</h1>
