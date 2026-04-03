@@ -125,7 +125,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
       productFromUrl === "smartphone-diagnostic" ||
       productFromUrl === "autopilot-mdm"
     ) {
-      setActiveTab("diagnostics");
+      // Diagnostic is now hidden, defaulting to Drive Eraser (Eraser Tab)
+      setSelectedCategory("drive-eraser");
+      setActiveTab("eraser");
     } else if (
       productFromUrl === "data-migration" ||
       productFromUrl === "freeze-state" ||
@@ -379,13 +381,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
           // cat.id === "forensic-imaging"
         );
       }
-      // Diagnostic (Hardware + Smart)
+      // Diagnostic is now hidden
+      return false;
+      /* 
       return (
         cat.id === "hardware-diagnostics" ||
         cat.id === "smart-diagnostic"
         // cat.id === "smartphone-diagnostic" ||
         // cat.id === "autopilot-mdm"
       );
+      */
     });
 
   // Plans configuration with their features and pricing based on D-Secure feature matrix
@@ -1481,6 +1486,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   ></div>
                   Eraser
                 </button>
+                {/* 
                 <button
                   onClick={() => {
                     setActiveTab("diagnostics");
@@ -1499,7 +1505,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     className={`w-1.5 h-1.5 rounded-full ${activeTab === "diagnostics" ? "bg-white animate-pulse" : "bg-gray-300"}`}
                   ></div>
                   Diagnostic
-                </button>
+                </button> 
+                */}
                 <button
                   onClick={() => {
                     setActiveTab("migration");
@@ -1552,12 +1559,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   onClick={() => {
                     setSelectedCategory(category.id);
                     // Explicitly set activeTab based on selected category type
-                    if (
-                      category.id === "hardware-diagnostics" ||
-                      category.id === "smart-diagnostic"
-                    ) {
-                      setActiveTab("diagnostics");
-                    } else if (category.id === "freeze-state") {
+                    if (category.id === "freeze-state") {
                       setActiveTab("migration");
                     } else {
                       setActiveTab("eraser");
