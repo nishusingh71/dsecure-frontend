@@ -21,25 +21,43 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
     keywords: '', 
   };
 
-  // Step-by-step canonical normalization
-  let normalizedPath = effectiveSeo.canonicalUrl || '';
-  if (normalizedPath && !normalizedPath.startsWith('http')) {
-    const prefix = normalizedPath.startsWith('/') ? '' : '/';
-    normalizedPath = `https://dsecuretech.com${prefix}${normalizedPath}`;
-  }
-  
-  // Rule: Homepage should have a trailing slash for sitemap consistency, internal pages should not.
-  // First, normalize by stripping any trailing slash
-  let finalCanonical = normalizedPath.toLowerCase().replace(/\/$/, "");
-  
-  if (finalCanonical === 'https://dsecuretech.com' || finalCanonical === 'https://www.dsecuretech.com') {
-    // Force trailing slash for the root domain (with or without www)
-    finalCanonical = finalCanonical + '/';
-  } else if (!finalCanonical) {
-    // If absolutely no canonical is provided, default to the homepage with slash
-    finalCanonical = 'https://dsecuretech.com/';
-  }
-  // Otherwise, finalCanonical remains slash-less (e.g. https://dsecuretech.com/about)
+  // Strict canonical URL normalization — duplicate page errors rokne ke liye
+  const normalizeCanonical = (rawUrl: string): string => {
+    let url = rawUrl.trim();
+
+    // Agar relative path hai to absolute banao
+    if (url && !url.startsWith('http')) {
+      const prefix = url.startsWith('/') ? '' : '/';
+      url = `https://dsecuretech.com${prefix}${url}`;
+    }
+
+    // Agar koi URL nahi mila to homepage default do
+    if (!url) return 'https://dsecuretech.com/';
+
+    // Lowercase karo (domain + path dono)
+    url = url.toLowerCase();
+
+    // www hata do — hamesha non-www canonical use karo
+    url = url.replace('://www.dsecuretech.com', '://dsecuretech.com');
+
+    // Double slashes hatao (protocol ke baad waali chhod ke)
+    url = url.replace(/(https?:\/\/)|(\/{2,})/g, (match, protocol) => protocol || '/');
+
+    // Query params aur hash hatao — canonical mein nahi chahiye
+    const queryIndex = url.indexOf('?');
+    if (queryIndex !== -1) url = url.substring(0, queryIndex);
+    const hashIndex = url.indexOf('#');
+    if (hashIndex !== -1) url = url.substring(0, hashIndex);
+
+    // Homepage ke liye trailing slash force karo, baaki sabse hatao
+    const stripped = url.replace(/\/$/, '');
+    if (stripped === 'https://dsecuretech.com') {
+      return stripped + '/';
+    }
+    return stripped;
+  };
+
+  const finalCanonical = normalizeCanonical(effectiveSeo.canonicalUrl || '');
 
   // Helper to ensure URLs are absolute for social media crawlers
   const ensureAbsoluteUrl = (url?: string): string => {
@@ -136,8 +154,10 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </Helmet>
       {/* SSR SEO Data Bridge — React 19 streaming mein Helmet context populate nahi hota,
-          isliye ye hidden div prerender.js ko page-specific SEO data deta hai */}
-        <div
+          isliye ye hidden div prerender.js ko page-specific SEO data deta hai.
+          JSON-LD bhi data attribute mein serialize karo taaki prerender.js inhe <head> mein inject kare
+          aur body mein duplicate <script> tags na rahe */}
+      <div
         data-seo-bridge=""
         data-seo-title={effectiveSeo.title}
         data-seo-description={effectiveSeo.description}
@@ -148,29 +168,17 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canon
         data-seo-og-type={effectiveSeo.ogType || 'website'}
         data-seo-twitter-image={finalTwitterImage}
         data-seo-keywords={effectiveSeo.keywords || ''}
+        data-seo-schemas={effectiveSeo.structuredData ? JSON.stringify(
+          Array.isArray(effectiveSeo.structuredData)
+            ? effectiveSeo.structuredData
+            : [effectiveSeo.structuredData]
+        ) : ''}
+        data-seo-breadcrumbs={effectiveSeo.breadcrumbs && effectiveSeo.breadcrumbs.length > 0
+          ? JSON.stringify(generateBreadcrumbSchema(effectiveSeo.breadcrumbs))
+          : ''}
         style={{ display: 'none' }}
         aria-hidden="true"
       />
-      {/* JSON-LD Structured Data — body mein render karo kyunki Helmet context SSR mein kaam nahi karta
-          Google body se bhi JSON-LD padh leta hai, aur prerender.js ise head mein move kar dega */}
-      {effectiveSeo.structuredData && (
-        Array.isArray(effectiveSeo.structuredData)
-          ? effectiveSeo.structuredData.map((schema, index) => (
-              <script key={`body-schema-${index}`} type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-              />
-            ))
-          : (
-            <script type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(effectiveSeo.structuredData) }}
-            />
-          )
-      )}
-      {effectiveSeo.breadcrumbs && effectiveSeo.breadcrumbs.length > 0 && (
-        <script type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema(effectiveSeo.breadcrumbs)) }}
-        />
-      )}
     </>
   );
 };

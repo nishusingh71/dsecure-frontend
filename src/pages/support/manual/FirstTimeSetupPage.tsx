@@ -267,13 +267,12 @@ const FirstTimeSetupPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-first-time-setup", { 
-          title: "First Time Setup | D-Secure Manual", 
-          canonicalUrl: "/support/manual/first-time-setup" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("support-manual-first-time-setup", {
+          title: "First Time Setup | D-Secure Manual",
+          canonicalUrl: "/support/manual/first-time-setup",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -352,7 +351,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.setup}
                     alt="D-Secure First Time Setup Interface"
-                    fallback={getFallbackImage('security')}
+                    fallback={getFallbackImage("security")}
                     className="w-full h-full object-cover rounded-2xl"
                     width={1600}
                     height={900}
@@ -482,7 +481,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                         <OptimizedImage
                           src={step.image}
                           alt={`Step ${step.step}: ${step.title}`}
-                          fallback={getFallbackImage('technology')}
+                          fallback={getFallbackImage("technology")}
                           className="w-full h-full object-cover rounded-lg"
                           width={400}
                           height={300}
@@ -560,7 +559,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                       <OptimizedImage
                         src={item.image}
                         alt={item.alt}
-                        fallback={getFallbackImage('security')}
+                        fallback={getFallbackImage("security")}
                         className="w-full h-full object-cover rounded-lg border border-slate-200"
                         width={600}
                         height={450}
@@ -763,7 +762,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                   <Link
-                    to="/support/contact"
+                    to=""
                     className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center text-sm sm:text-base"
                   >
                     Contact Setup Support

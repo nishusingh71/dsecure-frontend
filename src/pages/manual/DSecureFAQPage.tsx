@@ -140,22 +140,24 @@ const DSecureFAQPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <SEOHead seo={getSEOForPage('faqs')} />
+      <SEOHead seo={getSEOForPage("faqs")} />
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
-              <Link 
-                to="/support/help-manual" 
+              <Link
+                to="/support/help-manual"
                 className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Help Manual
               </Link>
               <div className="h-4 w-px bg-gray-300 mx-2 hidden sm:block"></div>
-              <span className="text-gray-900 font-bold hidden sm:block">D-Secure Knowledge Base</span>
+              <span className="text-gray-900 font-bold hidden sm:block">
+                D-Secure Knowledge Base
+              </span>
             </div>
           </div>
         </div>
@@ -168,13 +170,14 @@ const DSecureFAQPage: React.FC = () => {
             How can we help you today?
           </h1>
           <p className="text-blue-100 text-lg mb-8">
-            Explore 20+ specialized FAQs for D-Secure data erasure and compliance.
+            Explore 20+ specialized FAQs for D-Secure data erasure and
+            compliance.
           </p>
           <div className="relative max-w-2xl mx-auto shadow-2xl rounded-xl">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input 
-              type="text" 
-              placeholder="Search for questions, categories, or technical terms..." 
+            <input
+              type="text"
+              placeholder="Search for questions, categories, or technical terms..."
               className="w-full pl-12 pr-4 py-4 rounded-xl text-gray-900 focus:ring-4 focus:ring-blue-500/30 outline-none transition-all border-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -190,9 +193,9 @@ const DSecureFAQPage: React.FC = () => {
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={`flex items-center space-x-2 px-6 py-3 rounded-full text-sm font-bold transition-all shadow-md ${
-                activeCategory === cat.id 
-                ? 'bg-blue-600 text-white transform scale-105' 
-                : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
+                activeCategory === cat.id
+                  ? "bg-blue-600 text-white transform scale-105"
+                  : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-100"
               }`}
             >
               {cat.icon}
@@ -206,24 +209,38 @@ const DSecureFAQPage: React.FC = () => {
           <div className="lg:col-span-8 space-y-4">
             {filteredFaqs.length > 0 ? (
               filteredFaqs.map((faq, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${
-                    openIndex === index ? 'border-blue-500 shadow-xl' : 'border-gray-100 shadow-sm hover:border-gray-200'
+                    openIndex === index
+                      ? "border-blue-500 shadow-xl"
+                      : "border-gray-100 shadow-sm hover:border-gray-200"
                   }`}
                 >
-                  <button 
+                  <button
                     className="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none"
-                    onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                    onClick={() =>
+                      setOpenIndex(openIndex === index ? null : index)
+                    }
                   >
-                    <span className="text-lg font-bold text-gray-900 pr-8">{faq.question}</span>
-                    <div className={`flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}>
-                      {openIndex === index ? <Minus className="w-5 h-5 text-blue-600" /> : <Plus className="w-5 h-5 text-gray-400" />}
+                    <span className="text-lg font-bold text-gray-900 pr-8">
+                      {faq.question}
+                    </span>
+                    <div
+                      className={`flex-shrink-0 transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
+                    >
+                      {openIndex === index ? (
+                        <Minus className="w-5 h-5 text-blue-600" />
+                      ) : (
+                        <Plus className="w-5 h-5 text-gray-400" />
+                      )}
                     </div>
                   </button>
-                  <div 
+                  <div
                     className={`transition-all duration-300 ease-in-out ${
-                      openIndex === index ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                      openIndex === index
+                        ? "max-h-[1000px] opacity-100"
+                        : "max-h-0 opacity-0"
                     }`}
                   >
                     <div className="px-8 pb-8 text-gray-600 leading-relaxed border-t border-gray-50 pt-6">
@@ -237,8 +254,12 @@ const DSecureFAQPage: React.FC = () => {
                 <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-8 h-8 text-gray-300" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No results found</h3>
-                <p className="text-gray-500">Try adjusting your search terms or category filter.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  No results found
+                </h3>
+                <p className="text-gray-500">
+                  Try adjusting your search terms or category filter.
+                </p>
               </div>
             )}
           </div>
@@ -247,20 +268,23 @@ const DSecureFAQPage: React.FC = () => {
           <div className="lg:col-span-4 space-y-6">
             {/* CTA Card */}
             <div className="bg-gradient-to-br from-blue-700 to-indigo-900 rounded-3xl p-8 text-white shadow-2xl sticky top-24">
-              <h3 className="text-2xl font-extrabold mb-4 leading-tight">Ready for Certified Erasure?</h3>
+              <h3 className="text-2xl font-extrabold mb-4 leading-tight">
+                Ready for Certified Erasure?
+              </h3>
               <p className="text-blue-100 mb-8 leading-relaxed">
-                Contact our enterprise team for a demo or volume pricing starting at $1/device.
+                Contact our enterprise team for a demo or volume pricing
+                starting at $1/device.
               </p>
               <div className="space-y-3">
-                <Link 
-                  to="/contact" 
+                <Link
+                  to="/contact"
                   className="w-full bg-white text-blue-900 font-extrabold py-4 px-6 rounded-xl flex items-center justify-center hover:bg-blue-50 transition-all transform hover:-translate-y-1"
                 >
                   Get a Free Quote
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Link>
-                <Link 
-                  to="/pricing-and-plan" 
+                <Link
+                  to="/pricing-and-plan"
                   className="w-full bg-blue-800/50 text-white border border-blue-400/30 font-bold py-4 px-6 rounded-xl flex items-center justify-center hover:bg-blue-800/70 transition-all"
                 >
                   Pricing Plans
@@ -274,7 +298,9 @@ const DSecureFAQPage: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-bold">NIST Certified</h4>
-                    <p className="text-xs text-blue-200">Audit-proof reporting</p>
+                    <p className="text-xs text-blue-200">
+                      Audit-proof reporting
+                    </p>
                   </div>
                 </div>
               </div>
@@ -282,19 +308,36 @@ const DSecureFAQPage: React.FC = () => {
 
             {/* Support Card */}
             <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Authority Guides</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Authority Guides
+              </h3>
               <div className="space-y-4">
-                <Link to="/support/help-manual/installation-guide" className="group flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+                <Link
+                  to=""
+                  className="group flex items-center text-gray-600 hover:text-blue-600 transition-colors"
+                >
                   <FileText className="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
-                  <span className="text-sm font-medium">Installation Protocol</span>
+                  <span className="text-sm font-medium">
+                    Installation Protocol
+                  </span>
                 </Link>
-                <Link to="/support/help-manual/working-guide" className="group flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+                <Link
+                  to="/support/help-manual/working-guide"
+                  className="group flex items-center text-gray-600 hover:text-blue-600 transition-colors"
+                >
                   <Settings className="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
-                  <span className="text-sm font-medium">Working with Core Engine</span>
+                  <span className="text-sm font-medium">
+                    Working with Core Engine
+                  </span>
                 </Link>
-                <Link to="/support/manual/erasing-traces" className="group flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+                <Link
+                  to="/support/manual/erasing-traces"
+                  className="group flex items-center text-gray-600 hover:text-blue-600 transition-colors"
+                >
                   <Shield className="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
-                  <span className="text-sm font-medium">Data Sanitization Standards</span>
+                  <span className="text-sm font-medium">
+                    Data Sanitization Standards
+                  </span>
                 </Link>
               </div>
             </div>

@@ -39,11 +39,10 @@ function ComplianceResourcesContent() {
         'Cross-border data transfer protocols'
       ],
       industries: ['All EU Organizations', 'Global Companies', 'SaaS Providers'],
-      downloadSize: '3.2 MB',
-      pages: 45,
       lastUpdated: 'December 2024',
       icon: <ShieldIcon className="w-6 h-6" filled={true} />,
-      color: 'blue'
+      color: 'blue',
+      link: 'https://gdpr.eu/compliance/'
     },
     {
       title: 'HIPAA Security Rule Compliance',
@@ -57,11 +56,10 @@ function ComplianceResourcesContent() {
         'Business associate agreements'
       ],
       industries: ['Healthcare Providers', 'Medical Devices', 'Health Insurance'],
-      downloadSize: '2.8 MB',
-      pages: 38,
       lastUpdated: 'November 2024',
       icon: <DatabaseIcon className="w-6 h-6" filled={true} />,
-      color: 'green'
+      color: 'green',
+      link: 'https://www.hhs.gov/hipaa/index.html'
     },
     {
       title: 'PCI DSS Data Destruction Guide',
@@ -75,11 +73,10 @@ function ComplianceResourcesContent() {
         'Regular security assessments'
       ],
       industries: ['Financial Services', 'Retailers', 'Payment Processors'],
-      downloadSize: '2.5 MB',
-      pages: 32,
       lastUpdated: 'December 2024',
       icon: <GearIcon className="w-6 h-6" filled={true} />,
-      color: 'purple'
+      color: 'purple',
+      link: 'https://www.pcisecuritystandards.org/document_library/'
     },
     {
       title: 'SOX IT Controls & Data Management',
@@ -93,11 +90,10 @@ function ComplianceResourcesContent() {
         'Audit trail requirements'
       ],
       industries: ['Public Companies', 'Financial Services', 'Auditing Firms'],
-      downloadSize: '2.9 MB',
-      pages: 41,
       lastUpdated: 'October 2024',
       icon: <GearIcon className="w-6 h-6" filled={true} />,
-      color: 'indigo'
+      color: 'indigo',
+      link: 'https://www.soxlaw.com/'
     },
     {
       title: 'NIST 800-88 Implementation Guide',
@@ -111,11 +107,10 @@ function ComplianceResourcesContent() {
         'Government and federal requirements'
       ],
       industries: ['Government', 'Defense Contractors', 'Federal Agencies'],
-      downloadSize: '3.5 MB',
-      pages: 52,
       lastUpdated: 'December 2024',
       icon: <BuildingIcon className="w-6 h-6" filled={true} />,
-      color: 'red'
+      color: 'red',
+      link: 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf'
     },
     {
       title: 'ISO 27001 Information Security',
@@ -129,11 +124,10 @@ function ComplianceResourcesContent() {
         'Continuous improvement processes'
       ],
       industries: ['Enterprise', 'Technology', 'Consulting'],
-      downloadSize: '3.1 MB',
-      pages: 47,
       lastUpdated: 'November 2024',
       icon: <ShieldIcon className="w-6 h-6" filled={true} />,
-      color: 'emerald'
+      color: 'emerald',
+      link: 'https://www.iso.org/isoiec-27001-information-security.html'
     }
   ]
 
@@ -320,25 +314,20 @@ function ComplianceResourcesContent() {
                       </div>
                     </div>
 
-                    <div className="border-t border-slate-200 pt-4">
-                      <div className="flex justify-between items-center text-sm text-slate-600 mb-3">
-                        <span>{standard.pages} pages</span>
-                        <span>{standard.downloadSize}</span>
+                    <div className="border-t border-slate-200 pt-4 mt-auto">
+                      <div className="text-xs text-slate-500 mb-3 flex justify-between items-center">
+                        <span>Last updated: {standard.lastUpdated}</span>
+                        <span className="text-brand font-medium">Official Reference</span>
                       </div>
-                      <div className="text-xs text-slate-500 mb-3">
-                        Last updated: {standard.lastUpdated}
-                      </div>
-                      <button
-                        onClick={() => {
-                          const ok = downloadResource({ title: standard.title, downloadSize: standard.downloadSize, pages: standard.pages, type: 'compliance-guide' })
-                          if (ok) toast.showToast(`Downloaded: ${standard.title}`, 'success')
-                          else toast.showToast('Download failed. Please try again.', 'error')
-                        }}
-                        className="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-800 transition-all duration-200 text-sm"
+                      <a
+                        href={standard.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-flex items-center justify-center px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-all duration-200 text-sm"
                       >
-                        Download Guide
-                        <ArrowDownIcon className="w-4 h-4 ml-1" filled={true} />
-                      </button>
+                        View Official Guidelines
+                        <ArrowRightIcon className="w-4 h-4 ml-1" filled={true} />
+                      </a>
                     </div>
                   </div>
                 </div>

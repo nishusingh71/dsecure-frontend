@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Route } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 
 // Support Pages
@@ -130,6 +130,18 @@ const CustomConfigurationsPage = lazy(
 const ComplianceStandardsPage = lazy(
   () => import("../pages/support/manual/ComplianceStandardsPage"),
 );
+const MacosCompliancePage = lazy(
+  () => import("../pages/support/manual/MacosCompliancePage"),
+);
+const WindowsCompliancePage = lazy(
+  () => import("../pages/support/manual/WindowsCompliancePage"),
+);
+const RegulatoryCompliancePage = lazy(
+  () => import("../pages/support/manual/RegulatoryCompliancePage"),
+);
+const ComplianceExportPage = lazy(
+  () => import("../pages/support/manual/ComplianceExportPage"),
+);
 const CertificateGenerationPage = lazy(
   () => import("../pages/support/manual/CertificateGenerationPage"),
 );
@@ -225,6 +237,27 @@ const MainDashboardPage = lazy(
 );
 const NavigationPage = lazy(
   () => import("../pages/support/manual/NavigationPage"),
+);
+const KeyboardShortcutsPage = lazy(
+  () => import("../pages/support/manual/KeyboardShortcutsPage"),
+);
+const LicenseTroubleshootingPage = lazy(
+  () => import("../pages/support/manual/LicenseTroubleshootingPage"),
+);
+const Nist80088ManualPage = lazy(
+  () => import("../pages/support/manual/Nist80088ManualPage"),
+);
+const PerformanceTroubleshootingPage = lazy(
+  () => import("../pages/support/manual/PerformanceTroubleshootingPage"),
+);
+const RealTimeMonitoringPage = lazy(
+  () => import("../pages/support/manual/RealTimeMonitoringPage"),
+);
+const SanitizationConceptsPage = lazy(
+  () => import("../pages/support/manual/SanitizationConceptsPage"),
+);
+const SecurityAssurancePage = lazy(
+  () => import("../pages/support/manual/SecurityAssurancePage"),
 );
 
 // Legacy Manual Supports
@@ -409,6 +442,22 @@ export const SupportRoutes = () => (
       element={<ComplianceStandardsPage />}
     />
     <Route
+      path="/support/manual/macos-compliance"
+      element={<MacosCompliancePage />}
+    />
+    <Route
+      path="/support/manual/windows-compliance"
+      element={<WindowsCompliancePage />}
+    />
+    <Route
+      path="/support/manual/regulatory-compliance"
+      element={<RegulatoryCompliancePage />}
+    />
+    <Route
+      path="/support/manual/compliance-export"
+      element={<ComplianceExportPage />}
+    />
+    <Route
       path="/support/manual/certificates"
       element={<CertificateGenerationPage />}
     />
@@ -524,5 +573,60 @@ export const SupportRoutes = () => (
       element={<MainDashboardPage />}
     />
     <Route path="/support/manual/navigation" element={<NavigationPage />} />
+    {/* Priority 1 SEO Manual Pages */}
+    <Route path="/support/manual/keyboard-shortcuts" element={<KeyboardShortcutsPage />} />
+    <Route path="/support/manual/license-troubleshooting" element={<LicenseTroubleshootingPage />} />
+    <Route path="/support/manual/nist-800-88" element={<Nist80088ManualPage />} />
+    <Route path="/support/manual/performance-troubleshooting" element={<PerformanceTroubleshootingPage />} />
+    <Route path="/support/manual/real-time-monitoring" element={<RealTimeMonitoringPage />} />
+    <Route path="/support/manual/sanitization-concepts" element={<SanitizationConceptsPage />} />
+    <Route path="/support/manual/security-assurance" element={<SecurityAssurancePage />} />
+
+    {/* Priority 2: 51+ Manual Redirects (No 404 Strategy) */}
+    {/* Windows Group */}
+    <Route path="/support/manual/windows-third-party" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-best-practices" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-resources" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-faq" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-verification" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-bitlocker" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-sed-drives" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-dsecure-eraser" element={<Navigate to="/support/manual/windows" replace />} />
+    <Route path="/support/manual/windows-bootable-usb" element={<Navigate to="/support/manual/windows" replace />} />
+    
+    {/* macOS & Mobile Group */}
+    <Route path="/support/m1-mac-wipe-guide" element={<Navigate to="/support/mac-wipe-guide" replace />} />
+    <Route path="/support/manual/macos-best-practices" element={<Navigate to="/support/manual/macos" replace />} />
+    
+    {/* Installation & Setup Group */}
+    <Route path="/support/manual/first-run" element={<Navigate to="/support/manual/installation" replace />} />
+    <Route path="/support/manual/post-install-optimization" element={<Navigate to="/support/manual/installation" replace />} />
+    <Route path="/support/manual/pre-installation" element={<Navigate to="/support/manual/installation" replace />} />
+    <Route path="/support/manual/system-preparation" element={<Navigate to="/support/manual/installation" replace />} />
+    
+    {/* Monitoring & Operations Group */}
+    <Route path="/support/manual/firewall-config" element={<Navigate to="/support/manual/firewall-setup" replace />} />
+    <Route path="/support/manual/status-indicators" element={<Navigate to="/support/manual/real-time-monitoring" replace />} />
+    <Route path="/support/manual/progress-monitoring" element={<Navigate to="/support/manual/real-time-monitoring" replace />} />
+    <Route path="/support/manual/start-erasure" element={<Navigate to="/support/help-manual" replace />} />
+    <Route path="/support/manual/operation-history" element={<Navigate to="/support/manual/audit-trails" replace />} />
+    <Route path="/support/manual/erasure-reports" element={<Navigate to="/support/manual/compliance-export" replace />} />
+    
+    {/* Compliance & Regulatory Group */}
+    <Route path="/support/manual/compliance-export-results" element={<Navigate to="/support/manual/compliance-export" replace />} />
+    <Route path="/support/manual/audit-log-review" element={<Navigate to="/support/manual/audit-trails" replace />} />
+    <Route path="/support/manual/certificate-generation" element={<Navigate to="/support/manual/certificates" replace />} />
+    <Route path="/support/manual/regulatory-alignment" element={<Navigate to="/support/manual/regulatory-compliance" replace />} />
+    
+    {/* Technical & Infrastructure Group */}
+    <Route path="/support/manual/api-integration" element={<Navigate to="/support/manual/scripting" replace />} />
+    <Route path="/support/manual/network-configuration" element={<Navigate to="/support/manual/firewall-setup" replace />} />
+    <Route path="/support/manual/scheduling-tasks" element={<Navigate to="/support/help-manual/schedule-settings" replace />} />
+    <Route path="/support/manual/offline-activation" element={<Navigate to="/support/manual/license-activation" replace />} />
+    <Route path="/support/manual/troubleshooting-errors" element={<Navigate to="/support/manual/error-codes" replace />} />
+    
+    {/* General Cleanup */}
+    <Route path="/support/manual/glossary-of-terms" element={<Navigate to="/support/manual/sanitization-concepts" replace />} />
+    <Route path="/support/manual/security-best-practices" element={<Navigate to="/support/manual/security-assurance" replace />} />
   </Route>
 );

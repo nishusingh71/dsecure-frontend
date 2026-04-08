@@ -15,27 +15,31 @@ const QuickStartTutorial: React.FC = memo(() => {
     {
       id: 1,
       title: "Installation & Setup (3 minutes)",
-      description: "Install D-Secure and activate your license with step-by-step guidance",
+      description:
+        "Install D-Secure and activate your license with step-by-step guidance",
       icon: "📥",
       subsections: [
         {
           id: 11,
           title: "Download D-Secure Installer",
-          description: "Get the latest regulated installer from our secure download portal",
+          description:
+            "Get the latest regulated installer from our secure download portal",
           url: "/support/manual/installation",
           pageCount: 2,
         },
         {
           id: 12,
           title: "System Requirements Check",
-          description: "Verify your system meets minimum hardware and OS requirements",
+          description:
+            "Verify your system meets minimum hardware and OS requirements",
           url: "/support/manual/system-requirements",
           pageCount: 1,
         },
         {
           id: 13,
           title: "License Key Activation",
-          description: "Enter your 25-digit activation key and verify premium features",
+          description:
+            "Enter your 25-digit activation key and verify premium features",
           url: "/support/manual/first-time-setup",
           pageCount: 2,
         },
@@ -51,20 +55,23 @@ const QuickStartTutorial: React.FC = memo(() => {
     {
       id: 2,
       title: "First Erasure Operation (5 minutes)",
-      description: "Perform your first secure data erasure with confidence and precision",
+      description:
+        "Perform your first secure data erasure with confidence and precision",
       icon: "🔄",
       subsections: [
         {
           id: 21,
           title: "Device Selection & Analysis",
-          description: "Choose target drive and analyze storage type (HDD/SSD/NVMe)",
+          description:
+            "Choose target drive and analyze storage type (HDD/SSD/NVMe)",
           url: "/support/manual/user-interface",
           pageCount: 2,
         },
         {
           id: 22,
           title: "Erasure Method Selection",
-          description: "Select appropriate overwrite pattern based on compliance needs",
+          description:
+            "Select appropriate overwrite pattern based on compliance needs",
           url: "/support/manual/overwrite-patterns",
           pageCount: 2,
         },
@@ -78,7 +85,8 @@ const QuickStartTutorial: React.FC = memo(() => {
         {
           id: 24,
           title: "Execute Erasure Process",
-          description: "Begin secure data destruction with real-time monitoring",
+          description:
+            "Begin secure data destruction with real-time monitoring",
           url: "/support/manual/verification-methods",
           pageCount: 2,
         },
@@ -87,27 +95,31 @@ const QuickStartTutorial: React.FC = memo(() => {
     {
       id: 3,
       title: "Verification & Compliance (2 minutes)",
-      description: "Verify erasure completion and generate compliance regulatory documents",
+      description:
+        "Verify erasure completion and generate compliance regulatory documents",
       icon: "✅",
       subsections: [
         {
           id: 31,
           title: "Erasure Verification Process",
-          description: "Confirm complete data destruction using multiple verification methods",
+          description:
+            "Confirm complete data destruction using multiple verification methods",
           url: "/support/manual/verification-methods",
           pageCount: 2,
         },
         {
           id: 32,
           title: "Regulatory Document Generation",
-          description: "Create tamper-proof erasure regulatory documents for audit compliance",
+          description:
+            "Create tamper-proof erasure regulatory documents for audit compliance",
           url: "/support/manual/certificate-generation",
           pageCount: 2,
         },
         {
           id: 33,
           title: "Audit Trail Documentation",
-          description: "Export detailed logs and reports for regulatory compliance",
+          description:
+            "Export detailed logs and reports for regulatory compliance",
           url: "/support/manual/audit-trails",
           pageCount: 1,
         },
@@ -116,28 +128,32 @@ const QuickStartTutorial: React.FC = memo(() => {
     {
       id: 4,
       title: "Advanced Features & Optimization",
-      description: "Unlock D-Secure's full potential with advanced security features",
+      description:
+        "Unlock D-Secure's full potential with advanced security features",
       icon: "🚀",
       subsections: [
         {
           id: 41,
           title: "Batch Operations Setup",
-          description: "Configure multiple device erasure for enterprise efficiency",
+          description:
+            "Configure multiple device erasure for enterprise efficiency",
           url: "/support/manual/batch-operations",
           pageCount: 2,
         },
         {
           id: 42,
           title: "Custom Erasure Patterns",
-          description: "Create organization-specific overwrite patterns and policies",
-          url: "/support/manual/custom-configurations",
+          description:
+            "Create organization-specific overwrite patterns and policies",
+          url: "",
           pageCount: 2,
         },
         {
           id: 43,
           title: "Automated Scheduling",
-          description: "Set up recurring erasure tasks and maintenance schedules",
-          url: "/support/manual/scripting-automation",
+          description:
+            "Set up recurring erasure tasks and maintenance schedules",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -151,7 +167,8 @@ const QuickStartTutorial: React.FC = memo(() => {
         {
           id: 51,
           title: "Common Issues Resolution",
-          description: "Fix typical installation and operation problems quickly",
+          description:
+            "Fix typical installation and operation problems quickly",
           url: "/support/manual/common-issues",
           pageCount: 3,
         },
@@ -159,13 +176,14 @@ const QuickStartTutorial: React.FC = memo(() => {
           id: 52,
           title: "Performance Optimization",
           description: "Maximize erasure speed and system efficiency",
-          url: "/support/manual/performance-optimization",
+          url: "",
           pageCount: 2,
         },
         {
           id: 53,
           title: "Error Code Reference",
-          description: "Comprehensive guide to D-Secure error codes and solutions",
+          description:
+            "Comprehensive guide to D-Secure error codes and solutions",
           url: "/support/manual/error-codes",
           pageCount: 2,
         },

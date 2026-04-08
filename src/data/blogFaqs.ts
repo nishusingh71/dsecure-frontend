@@ -910,12 +910,30 @@ export const blogFaqs: Record<string, FAQ[]> = {
   ],
   "erase-data-pc-laptop-desktop": [
     {
-      question: "How do I securely erase data from a PC or laptop?",
-      answer: "Use compliance-verified erasure software like D-Secure that boots from USB, overwrites all sectors including hidden areas, and generates tamper-proof certificates proving complete data destruction."
+      question: "Why should I securely erase my PC data before recycling it?",
+      answer: "A standard factory reset leaves data recoverable. Secure erasure uses compliance-verified software to permanently wipe your digital footprint, preventing identity theft and corporate data breaches."
     },
     {
-      question: "Is factory reset enough to erase a laptop securely?",
-      answer: "No, factory reset only reinstalls the OS. The underlying data remains recoverable. Compliance-verified erasure software overwrites every sector with verified patterns for permanent destruction."
+      question: "Can I use D-Secure on a Mac as well as a PC?",
+      answer: "Yes, D-Secure supports both Windows and macOS systems, utilizing specialized commands like ATA Secure Erase for PCs and Cryptographic Erasure for modern Macs."
+    }
+  ],
+  "physical-destruction-vs-data-wiping": [
+    {
+      question: "Is physical destruction more secure than software data wiping?",
+      answer: "Not necessarily. Modern software data wiping that complies with NIST 800-88 'Purge' guidelines renders data completely unrecoverable, matching the security of physical destruction while allowing hardware reuse."
+    },
+    {
+      question: "Can data be recovered from a shredded hard drive?",
+      answer: "If a drive is not shredded finely enough (e.g., above 2mm particles for SSDs), advanced forensic experts can theoretically recover data from intact memory chips. Proper data wiping ensures no software recovery is possible."
+    },
+    {
+      question: "Why is data wiping considered more environmentally friendly?",
+      answer: "Data wiping preserves the hardware, allowing it to be securely repurposed or resold. This extends the device lifecycle, reduces electronic waste (e-waste), and lowers your organization's Scope 3 carbon emissions."
+    },
+    {
+      question: "Which compliance standards require certificates of destruction?",
+      answer: "Global data privacy regulations like GDPR, HIPAA, and the DPDP Act require organizations to provide verifiable proof of data disposal. D-Secure generates these tamper-proof certificates automatically."
     }
   ],
   "erase-mac-data-safely-using-dsecure": [

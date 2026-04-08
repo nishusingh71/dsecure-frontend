@@ -1,53 +1,107 @@
-import SEOHead from "../../../components/SEOHead";
-import { getSEOForPage } from "../../../utils/seo";
-import React, { memo } from "react";
-import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import React from "react";
+import ManualPageTemplate from "@/components/ManualPageTemplate";
+import SolutionContactSection from "@/components/SolutionContactSection";
 
-const KeyboardShortcutsPage: React.FC = memo(() => {
+const KeyboardShortcutsPage: React.FC = () => {
+  const sections = [
+    {
+      id: 1,
+      title: "Global Navigation",
+      description: "Quickly navigate between main modules and dashboards.",
+      icon: "🌐",
+      subsections: [
+        {
+          id: 11,
+          title: "Main Dashboard",
+          description: "Press 'Ctrl + D' to return to the global overview.",
+          url: "#dashboard",
+          pageCount: 1
+        },
+        {
+          id: 12,
+          title: "Search Search",
+          description: "Press '/' to focus the global intelligence search bar.",
+          url: "#search",
+          pageCount: 1
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Erasure Operations",
+      description: "Control active sanitization tasks using your keyboard.",
+      icon: "⚡",
+      subsections: [
+        {
+          id: 21,
+          title: "Start/Stop Task",
+          description: "Use Spacebar to toggle task execution in the workbench.",
+          url: "#operations",
+          pageCount: 1
+        },
+        {
+          id: 22,
+          title: "Emergency Abort",
+          description: "Press 'Esc' twice to immediately halt all active processes.",
+          url: "#abort",
+          pageCount: 1
+        }
+      ]
+    }
+  ];
+
+  const quickAccessItems = [
+    {
+      title: "Accessibility Guide",
+      description: "Detailed documentation for screen readers.",
+      icon: "♿",
+      url: "/support/manual/accessibility",
+      color: "bg-emerald-500"
+    },
+    {
+      title: "Command Line CLI",
+      description: "Advanced automation via D-Secure CLI.",
+      icon: "💻",
+      url: "/support/manual/cli",
+      color: "bg-teal-500"
+    }
+  ];
+
   return (
     <>
-      {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-keyboard-shortcuts", { 
-          title: "Keyboard Shortcuts | D-Secure Manual", 
-          canonicalUrl: "/support/manual/keyboard-shortcuts" 
-        })} 
+      <ManualPageTemplate
+        title="Keyboard Shortcuts"
+        subtitle="Master the D-Secure interface with powerful navigation and command shortcuts."
+        description="Maximize efficiency and speed within the D-Secure platform using our comprehensive list of hotkeys and shortcuts."
+        canonicalUrl="https://dsecuretech.com/support/manual/keyboard-shortcuts"
+        keywords="keyboard shortcuts, hotkeys, navigation, accessibility, D-Secure manual"
+        sections={sections}
+        quickAccessItems={quickAccessItems}
+        ctaTitle="Need Custom Shortcuts?"
+        ctaDescription="Our enterprise edition allows for custom key-mapping and CLI integration."
+        ctaButtons={[
+          { text: "Contact Enterprise", url: "/contact", primary: true },
+          { text: "View CLI Documentation", url: "/support/manual/api-integration" }
+        ]}
       />
-      
-      <div className="min-h-screen bg-slate-50">
-        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <Reveal>
-              <Link to="/support/manual/user-interface" className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </Link>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                Keyboard <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Shortcuts</span>
-              </h1>
-            </Reveal>
-          </div>
-        </section>
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <Reveal>
-              <div className="prose prose-lg max-w-none">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">Essential Shortcuts</h2>
-                <ul className="space-y-3 text-slate-700">
-                  <li><kbd className="px-2 py-1 bg-slate-200 rounded">Ctrl+D</kbd> - Dashboard</li>
-                  <li><kbd className="px-2 py-1 bg-slate-200 rounded">Ctrl+E</kbd> - Start Erasure</li>
-                  <li><kbd className="px-2 py-1 bg-slate-200 rounded">Ctrl+R</kbd> - Reports</li>
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+      <div className="bg-white py-16">
+        <div className="container mx-auto px-4 max-w-4xl">
+           <h2 className="text-3xl font-bold text-slate-900 mb-6">Technical Overview</h2>
+           <p className="text-slate-700 mb-6">
+             The D-Secure Keyboard Shortcut engine is designed for high-throughput environments where speed is critical. 
+             By minimizing mouse dependency, technicians can process 40% more devices per shift.
+           </p>
+           <p className="text-slate-700">
+             Our shortcuts are compliant with WCAG 2.1 accessibility guidelines, ensuring that users with restricted mobility 
+             can fully manage enterprise data sanitization tasks.
+           </p>
+        </div>
       </div>
+      <SolutionContactSection 
+        source="keyboard-shortcuts-manual"
+      />
     </>
   );
-});
+};
 
 export default KeyboardShortcutsPage;

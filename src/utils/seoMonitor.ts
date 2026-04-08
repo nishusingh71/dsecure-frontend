@@ -218,18 +218,68 @@ class SEOMonitor {
     });
   }
 
-  // Track time on page
+  // Page exit hone par time-on-page aur engagement data bhejo
   private trackTimeOnPage(): void {
-    window.addEventListener('beforeunload', () => {
+    // visibilitychange zyada reliable hai, beforeunload fallback ke taur par
+    const sendExitMetrics = (): void => {
       const timeOnPage = Date.now() - this.startTime;
       this.behaviorMetrics.timeOnPage = timeOnPage;
 
-      // Determine if this is a bounce (less than 10 seconds and no interactions)
+      // 10 seconds se kam aur zero interactions = bounce
       this.behaviorMetrics.bounceRate =
         timeOnPage < 10000 && this.interactions === 0;
 
-      // Removed broken /analytics beacon to prevent 404 network calls
+      // GA aur Clarity ko metrics bhejo
+      ga.trackEvent({
+        action: 'page_exit',
+        category: 'engagement',
+        label: window.location.pathname,
+        value: Math.round(timeOnPage / 1000)
+      });
+
+      clarity.trackEvent({
+        name: 'page_exit',
+        properties: {
+          timeOnPage,
+          scrollDepth: this.behaviorMetrics.scrollDepth,
+          interactions: this.interactions,
+          isBounce: this.behaviorMetrics.bounceRate,
+          page: window.location.pathname
+        }
+      });
+
+      // navigator.sendBeacon se metrics reliably bhejo — page unload par bhi kaam karta hai
+      if (typeof navigator.sendBeacon === 'function') {
+        try {
+          const payload = JSON.stringify({
+            page: window.location.pathname,
+            timeOnPage,
+            scrollDepth: this.behaviorMetrics.scrollDepth,
+            interactions: this.interactions,
+            isBounce: this.behaviorMetrics.bounceRate,
+            timestamp: new Date().toISOString()
+          });
+          // Beacon sirf GA/Clarity ke through jaata hai — koi custom endpoint nahi
+          // Ye ensure karta hai ki event queue flush ho jaaye page close hone se pehle
+          navigator.sendBeacon(
+            `https://www.google-analytics.com/collect?v=1&t=event&ec=engagement&ea=page_exit&el=${encodeURIComponent(window.location.pathname)}&ev=${Math.round(timeOnPage / 1000)}`,
+            payload
+          );
+        } catch {
+          // Beacon fail hua to silently ignore karo — GA event already track ho chuka hai
+        }
+      }
+    };
+
+    // Primary: visibilitychange (mobile + desktop dono par kaam karta hai)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        sendExitMetrics();
+      }
     });
+
+    // Fallback: beforeunload desktop browsers ke liye
+    window.addEventListener('beforeunload', sendExitMetrics);
   }
 
   // Track JavaScript errors for SEO health

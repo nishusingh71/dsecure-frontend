@@ -1808,7 +1808,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                     <a
                       href={selectedPartnerForContact.contact.website}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="nofollow noopener noreferrer"
                       className="bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl hover:bg-slate-100 transition-all duration-300 text-sm font-bold flex items-center gap-2 border border-slate-100 hover:border-slate-200 hover:shadow-sm"
                     >
                       <GlobeIcon className="w-4 h-4" />
@@ -1998,7 +1998,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Website</p>
-                            <a href={selectedPartnerForDetails.contact.website} target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-800 hover:text-emerald-800 text-sm underline decoration-emerald-200 underline-offset-2 hover:decoration-emerald-500 transition-all">
+                            <a href={selectedPartnerForDetails.contact.website} target="_blank" rel="nofollow noopener noreferrer" className="font-bold text-emerald-800 hover:text-emerald-800 text-sm underline decoration-emerald-200 underline-offset-2 hover:decoration-emerald-500 transition-all">
                               {selectedPartnerForDetails.contact.website}
                             </a>
                           </div>

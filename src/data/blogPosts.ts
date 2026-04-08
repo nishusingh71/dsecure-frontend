@@ -637,6 +637,19 @@ export const blogPosts: BlogPost[] = [
     publishDate: "Apirl 17, 2025",
     author: "Nitesh Kushwaha"
   },
+  {
+    id: "physical-destruction-vs-data-wiping",
+    slug: "physical-destruction-vs-data-wiping",
+    title: "Physical Destruction vs Data Wiping: A Cost Analysis for IT Leaders",
+    excerpt: "Which data destruction method provides the best ROI? We compare physical shredding vs software data wiping for enterprise IT asset disposition.",
+    image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1600&h=900&fit=crop",
+    link: "/blog/physical-destruction-vs-data-wiping",
+    tag: "Data Erasure",
+    category: "Business Strategy",
+    keywords: "physical destruction vs data wiping, shedding vs wiping, secure data erasure",
+    publishDate: "April 07, 2026",
+    author: "Nitesh Kushwaha"
+  },
   // Newly copied blog posts
   {
     id: "ccpa-violation",

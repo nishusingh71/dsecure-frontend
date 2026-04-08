@@ -51,21 +51,21 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           id: 11,
           title: "Physical Destruction Overview",
           description: "Ultimate data disposal security and irreversibility",
-          url: "/support/manual/physical-destruction-overview",
+          url: "",
           pageCount: 2,
         },
         {
           id: 12,
           title: "Why Choose Physical Destruction",
           description: "Zero recovery possibility and compliance assurance",
-          url: "/support/manual/why-physical-destruction",
+          url: "",
           pageCount: 2,
         },
         {
           id: 13,
           title: "Use Cases & Scenarios",
           description: "When physical destruction is the only option",
-          url: "/support/manual/destruction-use-cases",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -80,28 +80,28 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           id: 21,
           title: "Degaussing",
           description: "Magnetic field disruption for HDDs and tapes",
-          url: "/support/manual/degaussing-method",
+          url: "",
           pageCount: 2,
         },
         {
           id: 22,
           title: "Shredding",
           description: "Industrial shredding into small fragments",
-          url: "/support/manual/shredding-method",
+          url: "",
           pageCount: 2,
         },
         {
           id: 23,
           title: "Crushing & Punching",
           description: "Hydraulic pressing and physical puncture",
-          url: "/support/manual/crushing-method",
+          url: "",
           pageCount: 2,
         },
         {
           id: 24,
           title: "Incineration",
           description: "High-temperature melting and disintegration",
-          url: "/support/manual/incineration-method",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -116,28 +116,28 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           id: 31,
           title: "HDD Destruction",
           description: "Platter destruction and magnetic media considerations",
-          url: "/support/manual/hdd-destruction",
+          url: "",
           pageCount: 2,
         },
         {
           id: 32,
           title: "SSD & Flash Memory",
           description: "NAND chip destruction and wear-leveling challenges",
-          url: "/support/manual/ssd-destruction",
+          url: "",
           pageCount: 2,
         },
         {
           id: 33,
           title: "Mobile Devices",
           description: "Smartphones, tablets, and embedded storage",
-          url: "/support/manual/mobile-destruction",
+          url: "",
           pageCount: 2,
         },
         {
           id: 34,
           title: "Optical Media & Tapes",
           description: "CDs, DVDs, Blu-ray, and magnetic tapes",
-          url: "/support/manual/optical-tape-destruction",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -152,14 +152,14 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           id: 41,
           title: "Regulation Standards",
           description: "NIST, DoD, ISO, and industry compliance",
-          url: "/support/manual/destruction-standards",
+          url: "",
           pageCount: 2,
         },
         {
           id: 42,
           title: "Regulatory Document of Destruction",
           description: "Documentation and audit trail requirements",
-          url: "/support/manual/certificate-destruction",
+          url: "",
           pageCount: 2,
         },
         {
@@ -181,28 +181,28 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           id: 51,
           title: "Service Workflow",
           description: "From pickup to proof of destruction",
-          url: "/support/manual/service-workflow",
+          url: "",
           pageCount: 2,
         },
         {
           id: 52,
           title: "On-site vs Off-site",
           description: "Choosing the right destruction location",
-          url: "/support/manual/onsite-offsite",
+          url: "",
           pageCount: 2,
         },
         {
           id: 53,
           title: "Security Protocols",
           description: "Chain of custody and secure logistics",
-          url: "/support/manual/security-protocols",
+          url: "",
           pageCount: 2,
         },
         {
           id: 54,
           title: "Environmental Considerations",
           description: "E-waste management and recycling",
-          url: "/support/manual/environmental-considerations",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -217,28 +217,28 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           id: 61,
           title: "Government & Defense",
           description: "Classified data and national security requirements",
-          url: "/support/manual/government-defense",
+          url: "",
           pageCount: 2,
         },
         {
           id: 62,
           title: "Healthcare Sector",
           description: "HIPAA compliance and patient data protection",
-          url: "/support/manual/healthcare-destruction",
+          url: "",
           pageCount: 2,
         },
         {
           id: 63,
           title: "Banking & Finance",
           description: "PCI-DSS and financial data security",
-          url: "/support/manual/banking-finance",
+          url: "",
           pageCount: 2,
         },
         {
           id: 64,
           title: "ITAD & Data Centers",
           description: "Large-scale asset disposal and decommissioning",
-          url: "/support/manual/itad-datacenters",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -254,7 +254,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
       section.subsections.some(
         (sub) =>
           sub.title.toLowerCase().includes(query) ||
-          sub.description.toLowerCase().includes(query)
+          sub.description.toLowerCase().includes(query),
       )
     );
   });
@@ -270,13 +270,12 @@ const PhysicalDestructionPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-physical-destruction", { 
-          title: "Physical Destruction | D-Secure Manual", 
-          canonicalUrl: "/support/manual/physical-destruction" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("support-manual-physical-destruction", {
+          title: "Physical Destruction | D-Secure Manual",
+          canonicalUrl: "/support/manual/physical-destruction",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -356,7 +355,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.hero}
                     alt="Physical Data Destruction Equipment"
-                    fallback={getFallbackImage('security')}
+                    fallback={getFallbackImage("security")}
                     className="w-full h-full object-cover"
                     width={1600}
                     height={900}
@@ -467,7 +466,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                       <OptimizedImage
                         src={method.image}
                         alt={method.alt}
-                        fallback={getFallbackImage('security')}
+                        fallback={getFallbackImage("security")}
                         className="w-full h-full object-cover rounded-lg border border-slate-200"
                         width={600}
                         height={450}
@@ -537,8 +536,9 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
-                            }`}
+                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
+                            activeSection === section.id ? "rotate-180" : ""
+                          }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -855,28 +855,28 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                   title: "Shredding Guide",
                   description: "Industrial shredding methods",
                   icon: "✂️",
-                  url: "/support/manual/shredding-method",
+                  url: "",
                   color: "bg-red-500",
                 },
                 {
                   title: "Compliance Standards",
                   description: "NIST, DoD, ISO requirements",
                   icon: "📋",
-                  url: "/support/manual/destruction-standards",
+                  url: "",
                   color: "bg-blue-500",
                 },
                 {
                   title: "Service Workflow",
                   description: "Pickup to destruction process",
                   icon: "🚚",
-                  url: "/support/manual/service-workflow",
+                  url: "",
                   color: "bg-green-500",
                 },
                 {
                   title: "Industry Guides",
                   description: "Sector-specific requirements",
                   icon: "🏭",
-                  url: "/support/manual/government-defense",
+                  url: "",
                   color: "bg-purple-500",
                 },
               ].map((item, index) => (
@@ -919,7 +919,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
-                    to="/services/physical-destruction"
+                    to=""
                     className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg"
                   >
                     Schedule Destruction Service

@@ -244,11 +244,11 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
 
   return (
     <>
-      <SEOHead 
-        seo={getSEOForPage("support-manual-performance-optimization", { 
-          title: "Performance Optimization | D-Secure Manual", 
-          canonicalUrl: "/support/manual/performance-optimization" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("support-manual-performance-optimization", {
+          title: "Performance Optimization | D-Secure Manual",
+          canonicalUrl: "/support/manual/performance-optimization",
+        })}
       />
 
       <div className="min-h-screen bg-slate-50">
@@ -279,10 +279,14 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   </Link>
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
                     Performance{" "}
-                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent block sm:inline">Optimization</span>
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent block sm:inline">
+                      Optimization
+                    </span>
                   </h1>
                   <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
-                    Maximize D-Secure erasure speed and system efficiency with expert optimization techniques, hardware acceleration, and advanced configuration strategies.
+                    Maximize D-Secure erasure speed and system efficiency with
+                    expert optimization techniques, hardware acceleration, and
+                    advanced configuration strategies.
                   </p>
 
                   {/* Search Bar */}
@@ -325,7 +329,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.hero}
                     alt="D-Secure Performance Optimization Dashboard"
-                    fallback={getFallbackImage('technology')}
+                    fallback={getFallbackImage("technology")}
                     className="w-full h-full object-cover"
                     width={1600}
                     height={900}
@@ -337,7 +341,8 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                         Maximum Performance
                       </h2>
                       <p className="text-xs sm:text-sm md:text-base lg:text-lg opacity-90 max-w-2xl">
-                        Achieve up to 25GB/s throughput with hardware acceleration and advanced optimization techniques
+                        Achieve up to 25GB/s throughput with hardware
+                        acceleration and advanced optimization techniques
                       </p>
                     </div>
                   </div>
@@ -367,8 +372,12 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-800 mb-2">
                     25GB/s
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">Max Throughput</div>
-                  <div className="text-xs text-slate-500 mt-1">NVMe PCIe 4.0</div>
+                  <div className="text-slate-600 text-sm sm:text-base">
+                    Max Throughput
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    NVMe PCIe 4.0
+                  </div>
                 </div>
               </Reveal>
               <Reveal delayMs={200}>
@@ -376,8 +385,12 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-teal-600 mb-2">
                     95%
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">CPU Efficiency</div>
-                  <div className="text-xs text-slate-500 mt-1">Multi-threaded</div>
+                  <div className="text-slate-600 text-sm sm:text-base">
+                    CPU Efficiency
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    Multi-threaded
+                  </div>
                 </div>
               </Reveal>
               <Reveal delayMs={300}>
@@ -385,8 +398,12 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-600 mb-2">
                     8TB/hr
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">Average Speed</div>
-                  <div className="text-xs text-slate-500 mt-1">Enterprise SSD</div>
+                  <div className="text-slate-600 text-sm sm:text-base">
+                    Average Speed
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    Enterprise SSD
+                  </div>
                 </div>
               </Reveal>
               <Reveal delayMs={400}>
@@ -394,8 +411,12 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-800 mb-2">
                     99.9%
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">Reliability</div>
-                  <div className="text-xs text-slate-500 mt-1">Enterprise grade</div>
+                  <div className="text-slate-600 text-sm sm:text-base">
+                    Reliability
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    Enterprise grade
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -435,10 +456,14 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className={`text-xs px-2 py-1 rounded ${getImpactColor(tip.impact)} text-white font-medium`}>
+                          <span
+                            className={`text-xs px-2 py-1 rounded ${getImpactColor(tip.impact)} text-white font-medium`}
+                          >
                             {tip.impact} Impact
                           </span>
-                          <span className={`text-xs px-2 py-1 rounded ${getDifficultyColor(tip.difficulty)} font-medium`}>
+                          <span
+                            className={`text-xs px-2 py-1 rounded ${getDifficultyColor(tip.difficulty)} font-medium`}
+                          >
                             {tip.difficulty}
                           </span>
                         </div>
@@ -453,8 +478,18 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
 
                     <div className="space-y-3">
                       <h4 className="font-semibold text-slate-900 text-sm sm:text-base flex items-center">
-                        <svg className="w-4 h-4 mr-2 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        <svg
+                          className="w-4 h-4 mr-2 text-emerald-800"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
                         </svg>
                         Implementation Steps:
                       </h4>
@@ -494,7 +529,8 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   Hardware Recommendations
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
-                  Optimal hardware configurations for different performance tiers
+                  Optimal hardware configurations for different performance
+                  tiers
                 </p>
               </div>
             </Reveal>
@@ -504,17 +540,33 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                 <div className="bg-slate-50 rounded-xl p-6 sm:p-8 border border-slate-200">
                   <div className="text-center mb-6">
                     <div className="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      <svg
+                        className="w-8 h-8 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Standard Performance</h3>
-                    <p className="text-slate-600 text-sm">Up to 2GB/s throughput</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                      Standard Performance
+                    </h3>
+                    <p className="text-slate-600 text-sm">
+                      Up to 2GB/s throughput
+                    </p>
                   </div>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-slate-600">CPU:</span>
-                      <span className="font-medium">Intel i5 / AMD Ryzen 5</span>
+                      <span className="font-medium">
+                        Intel i5 / AMD Ryzen 5
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-600">RAM:</span>
@@ -536,12 +588,26 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                 <div className="bg-emerald-50 rounded-xl p-6 sm:p-8 border-2 border-emerald-200">
                   <div className="text-center mb-6">
                     <div className="w-16 h-16 bg-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                      <svg
+                        className="w-8 h-8 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+                        />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">High Performance</h3>
-                    <p className="text-slate-600 text-sm">Up to 10GB/s throughput</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                      High Performance
+                    </h3>
+                    <p className="text-slate-600 text-sm">
+                      Up to 10GB/s throughput
+                    </p>
                     <div className="inline-block bg-emerald-500 text-white text-xs px-2 py-1 rounded mt-2">
                       Recommended
                     </div>
@@ -549,7 +615,9 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-slate-600">CPU:</span>
-                      <span className="font-medium">Intel i7 / AMD Ryzen 7</span>
+                      <span className="font-medium">
+                        Intel i7 / AMD Ryzen 7
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-600">RAM:</span>
@@ -571,17 +639,33 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                 <div className="bg-slate-50 rounded-xl p-6 sm:p-8 border border-slate-200">
                   <div className="text-center mb-6">
                     <div className="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                      <svg
+                        className="w-8 h-8 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                        />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Enterprise Performance</h3>
-                    <p className="text-slate-600 text-sm">Up to 25GB/s throughput</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                      Enterprise Performance
+                    </h3>
+                    <p className="text-slate-600 text-sm">
+                      Up to 25GB/s throughput
+                    </p>
                   </div>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-slate-600">CPU:</span>
-                      <span className="font-medium">Intel i9 / AMD Ryzen 9</span>
+                      <span className="font-medium">
+                        Intel i9 / AMD Ryzen 9
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-600">RAM:</span>
@@ -611,7 +695,8 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   Performance Monitoring Tools
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
-                  Essential tools for monitoring and optimizing D-Secure performance
+                  Essential tools for monitoring and optimizing D-Secure
+                  performance
                 </p>
               </div>
             </Reveal>
@@ -622,26 +707,26 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   name: "Task Manager",
                   description: "Monitor CPU, memory, and disk usage",
                   icon: "📊",
-                  platform: "Windows"
+                  platform: "Windows",
                 },
                 {
                   name: "Resource Monitor",
                   description: "Detailed system resource analysis",
                   icon: "🔍",
-                  platform: "Windows"
+                  platform: "Windows",
                 },
                 {
                   name: "CrystalDiskInfo",
                   description: "Drive health and temperature monitoring",
                   icon: "💾",
-                  platform: "Cross-platform"
+                  platform: "Cross-platform",
                 },
                 {
                   name: "HWiNFO64",
                   description: "Comprehensive hardware monitoring",
                   icon: "🖥️",
-                  platform: "Windows"
-                }
+                  platform: "Windows",
+                },
               ].map((tool, index) => (
                 <Reveal key={tool.name} delayMs={index * 100}>
                   <div className="bg-white rounded-xl p-4 sm:p-6 text-center shadow-sm border border-slate-200">
@@ -671,18 +756,46 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   Need Performance Optimization Help?
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                  Our performance experts can help you achieve maximum throughput and efficiency for your specific hardware configuration and use case.
+                  Our performance experts can help you achieve maximum
+                  throughput and efficiency for your specific hardware
+                  configuration and use case.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/support/contact" className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <Link
+                    to="/contact"
+                    className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
                     </svg>
                     Get Performance Consultation
                   </Link>
-                  <a href="mailto:performance@dsecuretech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <a
+                    href="mailto:performance@dsecuretech.com"
+                    className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
                     </svg>
                     Email Performance Team
                   </a>

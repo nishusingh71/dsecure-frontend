@@ -13,7 +13,13 @@ export interface SitemapConfig {
   routes: SitemapUrl[];
 }
 
-// All routes in the application with SEO metadata
+/**
+ * @deprecated Ye hardcoded array sirf legacy fallback ke liye hai.
+ * Production build mein `scripts/update-sitemap.js` automatically saare routes
+ * source files (PublicRoutes.tsx, SupportRoutes.tsx etc.) se extract karta hai.
+ * Naye pages yahan manually add karne ki zarurat NAHI hai.
+ * Actual sitemap generation: `npm run update-sitemap`
+ */
 export const siteRoutes: SitemapUrl[] = [
   {
     loc: '/',
@@ -40,7 +46,7 @@ export const siteRoutes: SitemapUrl[] = [
     lastmod: new Date().toISOString().split('T')[0]
   },
   {
-    loc: '/pricing',
+    loc: '/pricing-and-plan',
     changefreq: 'weekly',
     priority: 0.8,
     lastmod: new Date().toISOString().split('T')[0]
@@ -74,19 +80,9 @@ export const siteRoutes: SitemapUrl[] = [
     changefreq: 'weekly',
     priority: 0.8,
     lastmod: new Date().toISOString().split('T')[0]
-  },
-  {
-    loc: '/login',
-    changefreq: 'yearly',
-    priority: 0.3,
-    lastmod: new Date().toISOString().split('T')[0]
-  },
-  {
-    loc: '/register',
-    changefreq: 'yearly',
-    priority: 0.3,
-    lastmod: new Date().toISOString().split('T')[0]
   }
+  // /login aur /register hataye — ye robots.txt mein Disallow hain,
+  // sitemap mein rakhne se mixed signals jaate hain Google ko
 ];
 
 // Generate XML sitemap content

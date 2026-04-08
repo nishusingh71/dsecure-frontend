@@ -170,14 +170,14 @@ const InstallationPage: React.FC = memo(() => {
           id: 43,
           title: "Virus Definition Updates",
           description: "Managing threat definitions and automatic updates",
-          url: "/support/manual/virus-definitions",
+          url: "",
           pageCount: 3,
         },
         {
           id: 44,
           title: "System Scanning",
           description: "Comprehensive system scans and threat identification",
-          url: "/support/manual/system-scanning",
+          url: "",
           pageCount: 3,
         },
       ],
@@ -193,7 +193,7 @@ const InstallationPage: React.FC = memo(() => {
       section.subsections.some(
         (sub) =>
           sub.title.toLowerCase().includes(query) ||
-          sub.description.toLowerCase().includes(query)
+          sub.description.toLowerCase().includes(query),
       )
     );
   });
@@ -209,13 +209,12 @@ const InstallationPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("installation", { 
-          title: "Installation | D-Secure Manual", 
-          canonicalUrl: "/support/manual/installation" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("installation", {
+          title: "Installation | D-Secure Manual",
+          canonicalUrl: "/support/manual/installation",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -294,7 +293,7 @@ const InstallationPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.protection}
                     alt="D-Secure Advanced Protection Dashboard"
-                    fallback={getFallbackImage('security')}
+                    fallback={getFallbackImage("security")}
                     className="w-full h-full object-cover"
                     width={1600}
                     height={900}
@@ -418,7 +417,7 @@ const InstallationPage: React.FC = memo(() => {
                         <OptimizedImage
                           src={step.image}
                           alt={`Step ${step.step}: ${step.title}`}
-                          fallback={getFallbackImage('technology')}
+                          fallback={getFallbackImage("technology")}
                           className="w-full h-full object-cover rounded-lg"
                           width={400}
                           height={300}
@@ -614,7 +613,7 @@ const InstallationPage: React.FC = memo(() => {
                       <OptimizedImage
                         src={item.image}
                         alt={item.alt}
-                        fallback={getFallbackImage('security')}
+                        fallback={getFallbackImage("security")}
                         className="w-full h-full object-cover rounded-lg border border-slate-200"
                         width={600}
                         height={450}
@@ -700,8 +699,6 @@ const InstallationPage: React.FC = memo(() => {
           </div>
         </section>
 
-
-
         {/* Contact Support Section */}
         <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -716,7 +713,7 @@ const InstallationPage: React.FC = memo(() => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                   <Link
-                    to="/support/contact"
+                    to="/contact"
                     className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center text-sm sm:text-base"
                   >
                     Contact Installation Support

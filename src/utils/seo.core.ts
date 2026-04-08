@@ -50,6 +50,10 @@ export const formatStructuredData = (data: any): string => {
   return JSON.stringify(data);
 };
 
+/**
+ * Organization schema - Google Knowledge Panel ke liye zaroori fields
+ * sameAs, foundingDate, contactPoint, aur areaServed se brand authority strong hoti hai
+ */
 export const generateOrganizationSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -57,6 +61,24 @@ export const generateOrganizationSchema = () => ({
   url: SEO_CONFIG.baseUrl,
   logo: `${SEO_CONFIG.baseUrl}/logo-white.svg`,
   description: "Leading provider of enterprise data erasure and sanitization solutions.",
+  foundingDate: "2025",
+  // Social profiles - Knowledge Panel aur brand verification ke liye
+  sameAs: [
+    "https://twitter.com/dsecuretech",
+    "https://linkedin.com/company/dsecuretech",
+    "https://github.com/dsecuretech",
+    "https://youtube.com/dsecuretech",
+  ],
+  // Contact information - rich snippet aur trust signal ke liye
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    email: "support@dsecuretech.com",
+    url: `${SEO_CONFIG.baseUrl}/contact`,
+    availableLanguage: ["English", "Hindi"],
+  },
+  // Global coverage signal
+  areaServed: "Worldwide",
 });
 
 export const generateSoftwareProductSchema = (

@@ -177,7 +177,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
           title: "Future of Secure Erasure",
           description:
             "AI verification, blockchain logs, and energy efficiency",
-          url: "/support/manual/future-trends",
+          url: "",
           pageCount: 2,
         },
         {

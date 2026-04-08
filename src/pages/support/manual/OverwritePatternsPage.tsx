@@ -50,7 +50,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
           title: "Introduction to Overwrite & Data Sanitization",
           description:
             "Learn why simple deletion is insufficient for data security",
-          url: "/support/manual/overwrite-introduction",
+          url: "",
           pageCount: 2,
         },
         {
@@ -58,7 +58,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
           title: "Why Why Overwriting Matters: Risks & Threats",
           description:
             "Understand the risks of residual data and forensic recovery",
-          url: "/support/manual/overwrite-risks",
+          url: "",
           pageCount: 2,
         },
         {
@@ -81,21 +81,21 @@ const OverwritePatternsPage: React.FC = memo(() => {
           title: "DoD 5220.22-M Standards Overview",
           description:
             "Historical context and modern relevance of DoD standards",
-          url: "/support/manual/dod-standards",
+          url: "",
           pageCount: 2,
         },
         {
           id: 22,
           title: "DoD 3-Pass Algorithm",
           description: "Binary zeros, ones, and random pattern sequence",
-          url: "/support/manual/dod-3pass",
+          url: "",
           pageCount: 2,
         },
         {
           id: 23,
           title: "DoD 7-Pass Algorithm (ECE Variant)",
           description: "Extended 7-pass sequence with additional randomization",
-          url: "/support/manual/dod-7pass",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -117,14 +117,14 @@ const OverwritePatternsPage: React.FC = memo(() => {
           id: 32,
           title: "NIST Guidelines for Modern Storage",
           description: "HDD, SSD, and flash memory considerations",
-          url: "/support/manual/nist-modern-storage",
+          url: "",
           pageCount: 2,
         },
         {
           id: 33,
           title: "Comparing DoD vs NIST Approaches",
           description: "Strengths and weaknesses of different standards",
-          url: "/support/manual/standards-comparison",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -139,21 +139,21 @@ const OverwritePatternsPage: React.FC = memo(() => {
           id: 41,
           title: "Custom Overwrite Algorithm Design",
           description: "Variable pass counts and mixed pattern strategies",
-          url: "/support/manual/custom-algorithms",
+          url: "",
           pageCount: 3,
         },
         {
           id: 42,
           title: "Pattern Selection & Randomization",
           description: "Choosing effective patterns and random seeds",
-          url: "/support/manual/pattern-selection",
+          url: "",
           pageCount: 2,
         },
         {
           id: 43,
           title: "Implementation Considerations",
           description: "Sector-level writes, bad blocks, and hidden areas",
-          url: "/support/manual/implementation-considerations",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -168,21 +168,21 @@ const OverwritePatternsPage: React.FC = memo(() => {
           id: 51,
           title: "SSD & Flash Memory Challenges",
           description: "Wear-leveling, remapped blocks, and overprovisioning",
-          url: "/support/manual/ssd-challenges",
+          url: "",
           pageCount: 2,
         },
         {
           id: 52,
           title: "Hardware-Level Sanitization",
           description: "ATA Secure Erase, TRIM, and cryptographic erase",
-          url: "/support/manual/hardware-sanitization",
+          url: "",
           pageCount: 2,
         },
         {
           id: 53,
           title: "Performance & Trade-offs",
           description: "Security margin vs performance considerations",
-          url: "/support/manual/performance-tradeoffs",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -197,13 +197,14 @@ const OverwritePatternsPage: React.FC = memo(() => {
           id: 61,
           title: "Verification Techniques",
           description: "Read-back comparison, sampling, and error handling",
-          url: "/support/manual/verification-techniques",
+          url: "",
           pageCount: 2,
         },
         {
           id: 62,
           title: "Security Assurance & Regulation",
-          description: "Audit trails, regulatory documents, and third-party validation",
+          description:
+            "Audit trails, regulatory documents, and third-party validation",
           url: "/support/manual/security-assurance",
           pageCount: 2,
         },
@@ -211,14 +212,14 @@ const OverwritePatternsPage: React.FC = memo(() => {
           id: 63,
           title: "Use Cases & Scenario Examples",
           description: "Enterprise, defense, and data center applications",
-          url: "/support/manual/use-cases",
+          url: "",
           pageCount: 2,
         },
         {
           id: 64,
           title: "Future Trends & Emerging Standards",
           description: "IEEE 2883, cryptographic erase, and automation",
-          url: "/support/manual/future-trends",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -234,7 +235,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
       section.subsections.some(
         (sub) =>
           sub.title.toLowerCase().includes(query) ||
-          sub.description.toLowerCase().includes(query)
+          sub.description.toLowerCase().includes(query),
       )
     );
   });
@@ -250,13 +251,12 @@ const OverwritePatternsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-overwrite-patterns", { 
-          title: "Overwrite Patterns | D-Secure Manual", 
-          canonicalUrl: "/support/manual/overwrite-patterns" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("support-manual-overwrite-patterns", {
+          title: "Overwrite Patterns | D-Secure Manual",
+          canonicalUrl: "/support/manual/overwrite-patterns",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -335,7 +335,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.hero}
                     alt="Data Sanitization and Overwrite Patterns"
-                    fallback={getFallbackImage('security')}
+                    fallback={getFallbackImage("security")}
                     className="w-full h-full object-cover"
                     width={1600}
                     height={900}
@@ -503,8 +503,9 @@ const OverwritePatternsPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
-                            }`}
+                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
+                            activeSection === section.id ? "rotate-180" : ""
+                          }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -843,7 +844,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                   title: "DoD 3-Pass",
                   description: "Classic 3-pass algorithm",
                   icon: "🔢",
-                  url: "/support/manual/dod-3pass",
+                  url: "",
                   color: "bg-blue-500",
                 },
                 {
@@ -857,14 +858,14 @@ const OverwritePatternsPage: React.FC = memo(() => {
                   title: "SSD Challenges",
                   description: "Flash memory considerations",
                   icon: "💾",
-                  url: "/support/manual/ssd-challenges",
+                  url: "",
                   color: "bg-purple-500",
                 },
                 {
                   title: "Custom Algorithms",
                   description: "Tailored solutions",
                   icon: "⚙️",
-                  url: "/support/manual/custom-algorithms",
+                  url: "",
                   color: "bg-orange-500",
                 },
               ].map((item, index) => (
@@ -1010,7 +1011,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                   <Link
-                    to="/support/contact"
+                    to="/contact"
                     className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center text-sm sm:text-base"
                   >
                     Contact Security Team

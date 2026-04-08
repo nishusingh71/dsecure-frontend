@@ -573,7 +573,7 @@ export default function OrderSuccessPage() {
                     <a
                       href={`https://live.dodopayments.com/invoices/payments/${order_details.dodo_payment_id}`}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="nofollow noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full bg-orange-50 hover:bg-orange-100 text-orange-700 font-semibold py-3 px-4 rounded-xl transition-colors border border-orange-200"
                     >
                       <svg

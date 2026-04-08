@@ -38,34 +38,39 @@ const UserInterfacePage: React.FC = memo(() => {
     {
       id: 1,
       title: "Dashboard Overview & Navigation",
-      description: "Master the main interface, navigation elements, and system status monitoring",
+      description:
+        "Master the main interface, navigation elements, and system status monitoring",
       icon: "📊",
       subsections: [
         {
           id: 11,
           title: "Main Dashboard Layout",
-          description: "Comprehensive overview of active operations, system health, and quick access panels",
+          description:
+            "Comprehensive overview of active operations, system health, and quick access panels",
           url: "/support/manual/main-dashboard",
           pageCount: 3,
         },
         {
           id: 12,
           title: "Navigation Menu System",
-          description: "Complete guide to accessing all D-Secure features, tools, and administrative functions",
+          description:
+            "Complete guide to accessing all D-Secure features, tools, and administrative functions",
           url: "/support/manual/navigation",
           pageCount: 2,
         },
         {
           id: 13,
           title: "Device Discovery & Selection",
-          description: "Advanced device detection, filtering, and selection for targeted erasure operations",
-          url: "/support/manual/device-selection",
+          description:
+            "Advanced device detection, filtering, and selection for targeted erasure operations",
+          url: "",
           pageCount: 3,
         },
         {
           id: 14,
           title: "Status Indicators & Alerts",
-          description: "Understanding system alerts, warning indicators, and notification management",
+          description:
+            "Understanding system alerts, warning indicators, and notification management",
           url: "/support/manual/status-indicators",
           pageCount: 2,
         },
@@ -74,34 +79,39 @@ const UserInterfacePage: React.FC = memo(() => {
     {
       id: 2,
       title: "Erasure Operations Management",
-      description: "Complete workflow for managing data erasure tasks with real-time monitoring",
+      description:
+        "Complete workflow for managing data erasure tasks with real-time monitoring",
       icon: "🔄",
       subsections: [
         {
           id: 21,
           title: "Erasure Operation Setup",
-          description: "Configure erasure parameters, select methods, and initiate secure data destruction",
+          description:
+            "Configure erasure parameters, select methods, and initiate secure data destruction",
           url: "/support/manual/start-erasure",
           pageCount: 4,
         },
         {
           id: 22,
           title: "Real-Time Progress Monitoring",
-          description: "Track erasure progress, performance metrics, and estimated completion times",
+          description:
+            "Track erasure progress, performance metrics, and estimated completion times",
           url: "/support/manual/progress-monitoring",
           pageCount: 3,
         },
         {
           id: 23,
           title: "Operation History & Logs",
-          description: "Access detailed logs of completed, failed, and interrupted erasure operations",
+          description:
+            "Access detailed logs of completed, failed, and interrupted erasure operations",
           url: "/support/manual/operation-history",
           pageCount: 2,
         },
         {
           id: 24,
           title: "Batch Operations Interface",
-          description: "Manage multiple simultaneous erasure operations with queue management",
+          description:
+            "Manage multiple simultaneous erasure operations with queue management",
           url: "/support/manual/batch-operations",
           pageCount: 3,
         },
@@ -110,34 +120,39 @@ const UserInterfacePage: React.FC = memo(() => {
     {
       id: 3,
       title: "Reports, Regulatory Documents & Compliance",
-      description: "Generate comprehensive reports and compliance regulatory documents for audit requirements",
+      description:
+        "Generate comprehensive reports and compliance regulatory documents for audit requirements",
       icon: "📋",
       subsections: [
         {
           id: 31,
           title: "Detailed Erasure Reports",
-          description: "Generate comprehensive reports with technical details, timestamps, and verification data",
+          description:
+            "Generate comprehensive reports with technical details, timestamps, and verification data",
           url: "/support/manual/erasure-reports",
           pageCount: 4,
         },
         {
           id: 32,
           title: "Regulatory Document Generation System",
-          description: "Create tamper-proof destruction regulatory documents with digital signatures and compliance data",
+          description:
+            "Create tamper-proof destruction regulatory documents with digital signatures and compliance data",
           url: "/support/manual/certificate-generation",
           pageCount: 3,
         },
         {
           id: 33,
           title: "Compliance Export & Integration",
-          description: "Export reports in multiple formats for regulatory compliance and third-party systems",
+          description:
+            "Export reports in multiple formats for regulatory compliance and third-party systems",
           url: "/support/manual/compliance-export",
           pageCount: 2,
         },
         {
           id: 34,
           title: "Audit Trail Management",
-          description: "Maintain comprehensive audit trails with chain of custody documentation",
+          description:
+            "Maintain comprehensive audit trails with chain of custody documentation",
           url: "/support/manual/audit-trails",
           pageCount: 3,
         },
@@ -146,35 +161,40 @@ const UserInterfacePage: React.FC = memo(() => {
     {
       id: 4,
       title: "Advanced Settings & Configuration",
-      description: "Customize D-Secure preferences, user management, and enterprise configurations",
+      description:
+        "Customize D-Secure preferences, user management, and enterprise configurations",
       icon: "⚙️",
       subsections: [
         {
           id: 41,
           title: "General Application Settings",
-          description: "Configure basic preferences, interface themes, and default operational parameters",
-          url: "/support/manual/general-settings",
+          description:
+            "Configure basic preferences, interface themes, and default operational parameters",
+          url: "",
           pageCount: 2,
         },
         {
           id: 42,
           title: "Erasure Method Preferences",
-          description: "Set default erasure methods, verification options, and compliance standards",
-          url: "/support/manual/erasure-preferences",
+          description:
+            "Set default erasure methods, verification options, and compliance standards",
+          url: "",
           pageCount: 3,
         },
         {
           id: 43,
           title: "User Management & Permissions",
-          description: "Manage user accounts, role-based access control, and administrative privileges",
-          url: "/support/manual/user-management",
+          description:
+            "Manage user accounts, role-based access control, and administrative privileges",
+          url: "",
           pageCount: 3,
         },
         {
           id: 44,
           title: "Enterprise Integration Settings",
-          description: "Configure LDAP, Active Directory, and enterprise system integrations",
-          url: "/support/manual/enterprise-integration",
+          description:
+            "Configure LDAP, Active Directory, and enterprise system integrations",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -182,27 +202,31 @@ const UserInterfacePage: React.FC = memo(() => {
     {
       id: 5,
       title: "Advanced Interface Features",
-      description: "Utilize advanced interface capabilities for power users and administrators",
+      description:
+        "Utilize advanced interface capabilities for power users and administrators",
       icon: "🚀",
       subsections: [
         {
           id: 51,
           title: "Custom Dashboard Layouts",
-          description: "Create personalized dashboard configurations and widget arrangements",
-          url: "/support/manual/custom-dashboards",
+          description:
+            "Create personalized dashboard configurations and widget arrangements",
+          url: "",
           pageCount: 2,
         },
         {
           id: 52,
           title: "Keyboard Shortcuts & Hotkeys",
-          description: "Master keyboard shortcuts for efficient navigation and operation control",
+          description:
+            "Master keyboard shortcuts for efficient navigation and operation control",
           url: "/support/manual/keyboard-shortcuts",
           pageCount: 1,
         },
         {
           id: 53,
           title: "API Integration Interface",
-          description: "Access REST API controls and automation interfaces within the GUI",
+          description:
+            "Access REST API controls and automation interfaces within the GUI",
           url: "/support/manual/api-integration",
           pageCount: 2,
         },
@@ -236,7 +260,7 @@ const UserInterfacePage: React.FC = memo(() => {
       title: "Advanced Configuration",
       description: "Customize settings and preferences",
       icon: "⚙️",
-      url: "/support/manual/general-settings",
+      url: "",
       color: "bg-emerald-600",
     },
     {
@@ -250,7 +274,7 @@ const UserInterfacePage: React.FC = memo(() => {
       title: "User Management",
       description: "Control access and permissions",
       icon: "👥",
-      url: "/support/manual/user-management",
+      url: "",
       color: "bg-cyan-600",
     },
   ];
@@ -279,7 +303,7 @@ const UserInterfacePage: React.FC = memo(() => {
         },
         {
           text: "Download Quick Reference",
-          url: "/support/downloads",
+          url: "",
         },
       ]}
     />

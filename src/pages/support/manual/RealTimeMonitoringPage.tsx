@@ -1,53 +1,83 @@
-import SEOHead from "../../../components/SEOHead";
-import { getSEOForPage } from "../../../utils/seo";
-import React, { memo } from "react";
-import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import React from "react";
+import ManualPageTemplate from "@/components/ManualPageTemplate";
+import SolutionContactSection from "@/components/SolutionContactSection";
 
-const RealTimeMonitoringPage: React.FC = memo(() => {
+const RealTimeMonitoringPage: React.FC = () => {
+  const sections = [
+    {
+      id: 1,
+      title: "Active Job Tracking",
+      description: "Monitor real-time status of local and distributed sanitization jobs.",
+      icon: "📊",
+      subsections: [
+        {
+          id: 11,
+          title: "Dashboard Overview",
+          description: "Understanding percentage progress and estimated completion times.",
+          url: "#dashboard",
+          pageCount: 1
+        },
+        {
+          id: 12,
+          title: "Multi-Node Monitoring",
+          description: "Visualizing erasure tasks across the entire network in a single pane.",
+          url: "#multinode",
+          pageCount: 2
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Alerts & Notifications",
+      description: "Getting notified for critical events and completion.",
+      icon: "🔔",
+      subsections: [
+        {
+          id: 21,
+          title: "Critical Error Alerts",
+          description: "Configuring push and email notifications for drive failures.",
+          url: "#alerts",
+          pageCount: 1
+        },
+        {
+          id: 22,
+          title: "Success Summaries",
+          description: "Automated daily reporting for finished sanitization cycles.",
+          url: "#success",
+          pageCount: 1
+        }
+      ]
+    }
+  ];
+
   return (
     <>
-      {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-real-time-monitoring", { 
-          title: "Real Time Monitoring | D-Secure Manual", 
-          canonicalUrl: "/support/manual/real-time-monitoring" 
-        })} 
+      <ManualPageTemplate
+        title="Real-Time Monitoring"
+        subtitle="Manage large-scale data sanitization from a unified, live-updating command center."
+        description="Comprehensive guide to real-time status monitoring, dashboard navigation, and automated alerting for D-Secure enterprise operations."
+        canonicalUrl="https://dsecuretech.com/support/manual/real-time-monitoring"
+        keywords="real-time monitoring, live status, erasure console, centralized control, D-Secure manual"
+        sections={sections}
       />
-      
-      <div className="min-h-screen bg-slate-50">
-        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <Reveal>
-              <Link to="/support/manual/user-interface" className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </Link>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                Real Time Monitoring
-              </h1>
-            </Reveal>
-          </div>
-        </section>
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <Reveal>
-              <div className="prose prose-lg max-w-none">
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">Overview</h2>
-                <ul className="space-y-3 text-slate-700">
-                  <li className="flex items-start"><span className="text-emerald-800 mr-2">✓</span> Comprehensive Real Time Monitoring guide</li>
-                  <li className="flex items-start"><span className="text-emerald-800 mr-2">✓</span> Step-by-step instructions</li>
-                  <li className="flex items-start"><span className="text-emerald-800 mr-2">✓</span> Best practices and recommendations</li>
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+      <div className="bg-white py-16">
+        <div className="container mx-auto px-4 max-w-4xl text-slate-700 leading-relaxed font-primary">
+           <h2 className="text-3xl font-bold text-slate-900 mb-6 font-primary text-emerald-800">Advanced Status Management</h2>
+           <p className="mb-4">
+             The D-Secure Monitoring Engine provides sub-second updates from all active nodes. 
+             This allows IT managers to optimize workflow and predict hardware turnover with high precision.
+           </p>
+           <p className="mb-4">
+             In complex SAN or NAS environments, the monitor visualizes individual LUNs and drive bays to ensure 
+             complete audit coverage during the sanitization lifecycle.
+           </p>
+        </div>
       </div>
+      <SolutionContactSection 
+        source="real-time-monitoring-manual"
+      />
     </>
   );
-});
+};
 
 export default RealTimeMonitoringPage;

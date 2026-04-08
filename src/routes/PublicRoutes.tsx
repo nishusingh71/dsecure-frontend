@@ -110,6 +110,18 @@ const VsWhiteCanyonPage = lazy(() => import("../pages/solutions/VsWhiteCanyon"))
 const WhatIsITADPage = lazy(() => import("../pages/solutions/WhatIsITAD"));
 const WhatIsNist80088Page = lazy(() => import("../pages/solutions/WhatIsNist80088"));
 
+// Free Tools (Phase 3 SEO Magnets)
+const NIST80088CheckerPage = lazy(() => import("../pages/tools/NIST80088CheckerPage"));
+const DataBreachCalculatorPage = lazy(() => import("../pages/tools/DataBreachCalculatorPage"));
+const SSDPassCalculatorPage = lazy(() => import("@/pages/tools/SSDPassCalculatorPage"));
+const GDPRErasureChecklistPage = lazy(() => import("@/pages/tools/GDPRErasureChecklistPage"));
+const ResearchHubPage = lazy(() => import("../pages/research/ResearchHubPage"));
+const StateOfDataDestruction2026 = lazy(() => import("../pages/research/StateOfDataDestruction2026"));
+const StandardsComparisonInfo = lazy(() => import("../pages/research/StandardsComparisonInfo"));
+const ErasureBenchmarkStudy = lazy(() => import("../pages/research/ErasureBenchmarkStudy"));
+const ZeroTrustSanitization = lazy(() => import("../pages/research/ZeroTrustSanitization"));
+const DigitalPRHub = lazy(() => import("../pages/DigitalPRHub"));
+
 export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
     <Route index element={<HomePage />} />
@@ -190,6 +202,19 @@ export const PublicRoutes = () => (
     <Route path="vs/whitecanyon" element={<VsWhiteCanyonPage />} />
     <Route path="what-is-itad" element={<WhatIsITADPage />} />
     <Route path="what-is-nist-800-88" element={<WhatIsNist80088Page />} />
+
+    <Route path="tools/nist-800-88-compliance-checker" element={<NIST80088CheckerPage />} />
+    <Route path="tools/data-breach-calculator" element={<DataBreachCalculatorPage />} />
+    <Route path="tools/ssd-pass-calculator" element={<SSDPassCalculatorPage />} />
+    <Route path="tools/gdpr-erasure-checklist" element={<GDPRErasureChecklistPage />} />
+    <Route path="resources/research" element={<ResearchHubPage />} />
+    <Route path="research/state-of-data-destruction-2026" element={<StateOfDataDestruction2026 />} />
+    <Route path="research/media-sanitization-comparison-2026" element={<StandardsComparisonInfo />} />
+    <Route path="research/erasure-speed-benchmark-2026" element={<ErasureBenchmarkStudy />} />
+    <Route path="research/zero-trust-sanitization-framework" element={<ZeroTrustSanitization />} />
+    <Route path="press-room" element={<DigitalPRHub />} />
+    <Route path="news" element={<Navigate to="/press-room" replace />} />
+    <Route path="press" element={<Navigate to="/press-room" replace />} />
 
     <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
     <Route
@@ -288,5 +313,9 @@ export const PublicRoutes = () => (
     <Route path="blog" element={<BlogPage />} />
     <Route path="blog/:slug" element={<BlogPostDetail />} />
     <Route path="resources/clone-guide" element={<CloneGuidePage />} />
+    {/* Priority 1 SEO Redirects */}
+    <Route path="itad" element={<Navigate to="/solutions/itad" replace />} />
+    <Route path="erasure" element={<Navigate to="/all-products" replace />} />
+    <Route path="verification" element={<Navigate to="/solutions/itad" replace />} />
   </Route>
 );

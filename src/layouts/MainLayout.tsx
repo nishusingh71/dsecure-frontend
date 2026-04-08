@@ -14,6 +14,13 @@ import {
   Server,
   X,
   CheckCircle2,
+  BarChart3,
+  FileText,
+  ShieldCheck,
+  TrendingUp,
+  ArrowRight,
+  Share2,
+  ExternalLink,
 } from "lucide-react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
@@ -1110,6 +1117,7 @@ export default function MainLayout() {
               >
                 {t("common.resources")}
               </NavLink>
+
               <NavLink
                 to="/partners"
                 className={({ isActive }) =>
@@ -1839,7 +1847,7 @@ export default function MainLayout() {
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="Follow D-Secure on Twitter"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                     >
                       <svg
                         className="w-6 h-6 group-hover:scale-110 transition-transform"
@@ -1854,7 +1862,7 @@ export default function MainLayout() {
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="Connect with D-Secure on LinkedIn"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                     >
                       <svg
                         className="w-6 h-6 group-hover:scale-110 transition-transform"
@@ -1869,7 +1877,7 @@ export default function MainLayout() {
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="View D-Secure projects on GitHub"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                     >
                       <svg
                         className="w-6 h-6 group-hover:scale-110 transition-transform"
@@ -1888,7 +1896,7 @@ export default function MainLayout() {
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="Subscribe to D-Secure YouTube channel"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                     >
                       <svg
                         className="w-6 h-6 group-hover:scale-110 transition-transform"
@@ -2043,14 +2051,7 @@ export default function MainLayout() {
                           Case Studies
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link
-                          to="/resources?type=webinars"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Webinars
-                        </Link>
-                      </li> */}
+
                     </ul>
                   </div>
 
@@ -2092,14 +2093,7 @@ export default function MainLayout() {
                           Partners
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link
-                          to="/press"
-                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                        >
-                          Press
-                        </Link>
-                      </li> */}
+
                     </ul>
                   </div>
                 </div>

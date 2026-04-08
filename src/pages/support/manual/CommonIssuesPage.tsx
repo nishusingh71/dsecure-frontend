@@ -163,13 +163,12 @@ const CommonIssuesPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-common-issues", { 
-          title: "Common Issues | D-Secure Manual", 
-          canonicalUrl: "/support/manual/common-issues" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("support-manual-common-issues", {
+          title: "Common Issues | D-Secure Manual",
+          canonicalUrl: "/support/manual/common-issues",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 sm:py-12 md:py-16 lg:py-24">
@@ -198,10 +197,14 @@ const CommonIssuesPage: React.FC = memo(() => {
                   </Link>
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
                     D-Secure Common{" "}
-                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent block sm:inline">Issues & Solutions</span>
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent block sm:inline">
+                      Issues & Solutions
+                    </span>
                   </h1>
                   <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
-                    Comprehensive troubleshooting guide with step-by-step solutions for D-Secure installation, erasure operations, licensing, and performance optimization issues.
+                    Comprehensive troubleshooting guide with step-by-step
+                    solutions for D-Secure installation, erasure operations,
+                    licensing, and performance optimization issues.
                   </p>
                 </div>
               </div>
@@ -259,10 +262,11 @@ const CommonIssuesPage: React.FC = memo(() => {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${selectedCategory === category
+                    className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
+                      selectedCategory === category
                         ? "bg-emerald-500 text-white"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                      }`}
+                    }`}
                   >
                     {category}
                   </button>
@@ -283,7 +287,9 @@ const CommonIssuesPage: React.FC = memo(() => {
                       className="w-full px-4 sm:px-6 py-4 sm:py-6 text-left hover:bg-slate-50 transition-colors flex items-center justify-between"
                     >
                       <div className="flex items-center gap-3 sm:gap-4 flex-1">
-                        <div className={`w-3 h-3 rounded-full ${getSeverityColor(issue.severity)} flex-shrink-0`}></div>
+                        <div
+                          className={`w-3 h-3 rounded-full ${getSeverityColor(issue.severity)} flex-shrink-0`}
+                        ></div>
                         <div className="flex-1">
                           <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1">
                             {issue.title}
@@ -292,21 +298,31 @@ const CommonIssuesPage: React.FC = memo(() => {
                             {issue.description}
                           </p>
                           <div className="flex items-center gap-2 sm:gap-4 mt-2">
-                            <span className="text-xs text-slate-500">{issue.category}</span>
-                            <span className={`text-xs px-2 py-1 rounded ${getSeverityColor(issue.severity)} text-white`}>
+                            <span className="text-xs text-slate-500">
+                              {issue.category}
+                            </span>
+                            <span
+                              className={`text-xs px-2 py-1 rounded ${getSeverityColor(issue.severity)} text-white`}
+                            >
                               {issue.severity}
                             </span>
                           </div>
                         </div>
                       </div>
                       <svg
-                        className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeIssue === issue.id ? "rotate-180" : ""
-                          }`}
+                        className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
+                          activeIssue === issue.id ? "rotate-180" : ""
+                        }`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </button>
 
@@ -314,26 +330,42 @@ const CommonIssuesPage: React.FC = memo(() => {
                       <div className="px-4 sm:px-6 pb-4 sm:pb-6">
                         <div className="border-t border-slate-200 pt-4">
                           <h4 className="font-semibold text-slate-900 mb-3 text-sm sm:text-base flex items-center">
-                            <svg className="w-4 h-4 mr-2 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <svg
+                              className="w-4 h-4 mr-2 text-emerald-800"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
                             </svg>
                             Step-by-Step Solution:
                           </h4>
                           <div className="text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
-                            {issue.solution.split('Step ').filter(step => step.trim()).map((step, index) => (
-                              <div key={index} className="flex items-start">
-                                <div className="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
-                                  {index + 1}
+                            {issue.solution
+                              .split("Step ")
+                              .filter((step) => step.trim())
+                              .map((step, index) => (
+                                <div key={index} className="flex items-start">
+                                  <div className="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
+                                    {index + 1}
+                                  </div>
+                                  <div className="flex-1">
+                                    {step.replace(/^\d+:\s*/, "")}
+                                  </div>
                                 </div>
-                                <div className="flex-1">
-                                  {step.replace(/^\d+:\s*/, '')}
-                                </div>
-                              </div>
-                            ))}
+                              ))}
                           </div>
                           <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
                             <p className="text-blue-800 text-xs sm:text-sm">
-                              <strong>💡 Pro Tip:</strong> If these steps don't resolve your issue, contact D-Secure support with your error details and system information for personalized assistance.
+                              <strong>💡 Pro Tip:</strong> If these steps don't
+                              resolve your issue, contact D-Secure support with
+                              your error details and system information for
+                              personalized assistance.
                             </p>
                           </div>
                         </div>
@@ -354,18 +386,46 @@ const CommonIssuesPage: React.FC = memo(() => {
                   Still Need Help?
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                  Can't find a solution? Our expert D-Secure support team provides 24/7 assistance with detailed diagnostics and personalized troubleshooting.
+                  Can't find a solution? Our expert D-Secure support team
+                  provides 24/7 assistance with detailed diagnostics and
+                  personalized troubleshooting.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/support/contact" className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  <Link
+                    to="/contact"
+                    className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
                     </svg>
                     Contact D-Secure Support
                   </Link>
-                  <a href="mailto:support@dsecuretech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <a
+                    href="mailto:support@dsecuretech.com"
+                    className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
                     </svg>
                     Email Support Team
                   </a>

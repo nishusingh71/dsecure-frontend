@@ -51,14 +51,14 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 11,
           title: "macOS Data Erasure Introduction",
           description: "Importance of secure erasure on macOS environments",
-          url: "/support/manual/macos-introduction",
+          url: "/",
           pageCount: 2,
         },
         {
           id: 12,
           title: "Intel vs Apple Silicon Differences",
           description: "M1/M2 Macs vs Intel-based Mac architecture differences",
-          url: "/support/manual/macos-architecture",
+          url: "",
           pageCount: 2,
         },
         {
@@ -66,7 +66,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
           title: "Security Risks & Compliance",
           description:
             "Data breach risks and compliance requirements for macOS",
-          url: "/support/manual/macos-risks",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -81,21 +81,21 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 21,
           title: "File Systems Overview",
           description: "APFS vs HFS+ and their erasure implications",
-          url: "/support/manual/macos-filesystems",
+          url: "",
           pageCount: 2,
         },
         {
           id: 22,
           title: "Storage Architectures",
           description: "SSD vs Fusion Drive and hardware considerations",
-          url: "/support/manual/macos-storage",
+          url: "",
           pageCount: 2,
         },
         {
           id: 23,
           title: "Encryption & Secure Enclave",
           description: "FileVault, encryption, and Secure Enclave role",
-          url: "/support/manual/macos-encryption",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -111,21 +111,21 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 31,
           title: "Software-Based Overwrite",
           description: "Multi-pass options and secure erase methods",
-          url: "/support/manual/macos-software-erasure",
+          url: "",
           pageCount: 2,
         },
         {
           id: 32,
           title: "Cryptographic Erasure",
           description: "FileVault key destruction and instant erasure",
-          url: "/support/manual/macos-crypto-erasure",
+          url: "",
           pageCount: 2,
         },
         {
           id: 33,
           title: "Method Comparison",
           description: "Pros and cons of each macOS erasure approach",
-          url: "/support/manual/macos-methods-comparison",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -140,21 +140,21 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 41,
           title: "Pre-Erasure Preparation",
           description: "Backup, iCloud, Find My Mac, and firmware settings",
-          url: "/support/manual/macos-preparation",
+          url: "",
           pageCount: 2,
         },
         {
           id: 42,
           title: "macOS Built-in Erasure Tools",
           description: "Disk Utility and secure erase options",
-          url: "/support/manual/macos-builtin-tools",
+          url: "",
           pageCount: 2,
         },
         {
           id: 43,
           title: "FileVault Procedures",
           description: "Encryption key management and destruction",
-          url: "/support/manual/macos-filevault",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -169,21 +169,21 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 51,
           title: "Intel Mac Erasure",
           description: "Recovery Mode and Disk Utility for Intel-based Macs",
-          url: "/support/manual/macos-intel-procedures",
+          url: "",
           pageCount: 2,
         },
         {
           id: 52,
           title: "Apple Silicon Erasure",
           description: "M1/M2 Recovery Mode and Secure Enclave considerations",
-          url: "/support/manual/macos-apple-silicon",
+          url: "",
           pageCount: 2,
         },
         {
           id: 53,
           title: "SSD-Specific Considerations",
           description: "Modern SSD erasure and cryptographic advantages",
-          url: "/support/manual/macos-ssd-considerations",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -199,21 +199,21 @@ const MacOSSystemsPage: React.FC = memo(() => {
           title: "Third-Party Erasure Software",
           description:
             "D-Secure Mac Eraser, Blancco, Permanent Eraser comparison",
-          url: "/support/manual/macos-third-party",
+          url: "",
           pageCount: 2,
         },
         {
           id: 62,
           title: "External Drives & Removable Media",
           description: "USB drives, external SSD/HDD secure erasure",
-          url: "/support/manual/macos-external-media",
+          url: "",
           pageCount: 2,
         },
         {
           id: 63,
           title: "Tool Selection Guide",
           description: "Choosing the right tool for your macOS environment",
-          url: "/support/manual/macos-tool-selection",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -228,21 +228,21 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 71,
           title: "System & Boot Drive Erasure",
           description: "Safely erasing macOS system partitions",
-          url: "/support/manual/macos-system-drive",
+          url: "",
           pageCount: 2,
         },
         {
           id: 72,
           title: "Enterprise Bulk Erasure",
           description: "Network methods, Jamf, Mosyle for large-scale wipe",
-          url: "/support/manual/macos-enterprise",
+          url: "",
           pageCount: 2,
         },
         {
           id: 73,
           title: "Verification & Compliance",
           description: "Software and cryptographic verification methods",
-          url: "/support/manual/macos-verification",
+          url: "",
           pageCount: 2,
         },
         {
@@ -265,7 +265,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
           title: "Troubleshooting Common Errors",
           description:
             "Drive visibility, erase failures, and encryption issues",
-          url: "/support/manual/macos-troubleshooting",
+          url: "",
           pageCount: 2,
         },
         {
@@ -279,14 +279,14 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 83,
           title: "Frequently Asked Questions",
           description: "Common macOS erasure questions and answers",
-          url: "/support/manual/macos-faq",
+          url: "",
           pageCount: 1,
         },
         {
           id: 84,
           title: "Additional Resources",
           description: "Tools, templates, and Apple documentation",
-          url: "/support/manual/macos-resources",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -302,7 +302,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
       section.subsections.some(
         (sub) =>
           sub.title.toLowerCase().includes(query) ||
-          sub.description.toLowerCase().includes(query)
+          sub.description.toLowerCase().includes(query),
       )
     );
   });
@@ -318,13 +318,12 @@ const MacOSSystemsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("mac-ossystems", { 
-          title: "Mac OSSystems | D-Secure Manual", 
-          canonicalUrl: "/support/manual/mac-ossystems" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("mac-ossystems", {
+          title: "Mac OSSystems | D-Secure Manual",
+          canonicalUrl: "/support/manual/mac-ossystems",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -404,7 +403,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.hero}
                     alt="macOS Systems Data Erasure"
-                    fallback={getFallbackImage('technology')}
+                    fallback={getFallbackImage("technology")}
                     className="w-full h-full object-cover"
                     width={1600}
                     height={900}
@@ -751,28 +750,28 @@ const MacOSSystemsPage: React.FC = memo(() => {
                   title: "Apple Silicon",
                   description: "M1/M2 specific procedures",
                   icon: "🚀",
-                  url: "/support/manual/macos-apple-silicon",
+                  url: "",
                   color: "bg-emerald-600",
                 },
                 {
                   title: "Intel Macs",
                   description: "Traditional Mac procedures",
                   icon: "🔧",
-                  url: "/support/manual/macos-intel-procedures",
+                  url: "",
                   color: "bg-teal-600",
                 },
                 {
                   title: "FileVault Guide",
                   description: "Encryption key management",
                   icon: "🔒",
-                  url: "/support/manual/macos-filevault",
+                  url: "",
                   color: "bg-cyan-600",
                 },
                 {
                   title: "Enterprise",
                   description: "Bulk erasure and management",
                   icon: "🏢",
-                  url: "/support/manual/macos-enterprise",
+                  url: "",
                   color: "bg-emerald-700",
                 },
               ].map((item, index) => (

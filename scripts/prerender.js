@@ -309,28 +309,74 @@ async function prerender() {
         html = html.replace(/<head>/i, `<head>` + String.fromCharCode(10) + `    ${helmetContent}`);
       }
       
-      // JSON-LD scripts ko body se extract karo aur head mein move karo
+      // JSON-LD structured data ko head mein inject karo
+      // Source 1: Body mein render hue <script type="application/ld+json"> tags (Helmet se)
+      // Source 2: data-seo-bridge ke data-seo-schemas aur data-seo-breadcrumbs attributes
+      const uniqueJsonLd = new Set();
+      const jsonLdTags = [];
+
+      // Body se JSON-LD script tags extract karo
       const jsonLdScripts = [...appHtml.matchAll(/<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)];
-      if (jsonLdScripts.length > 0) {
-        // Duplicate JSON-LD hatao (MainLayout + page dono se aa sakte hain) — unique by content
-        const uniqueJsonLd = new Set();
-        const jsonLdTags = [];
-        for (const match of jsonLdScripts) {
-          const content = match[1].trim();
-          if (content && !uniqueJsonLd.has(content)) {
-            uniqueJsonLd.add(content);
-            jsonLdTags.push(`<script type="application/ld+json">${content}</script>`);
+      for (const match of jsonLdScripts) {
+        const content = match[1].trim();
+        if (content && !uniqueJsonLd.has(content)) {
+          uniqueJsonLd.add(content);
+          jsonLdTags.push(`<script type="application/ld+json">${content}</script>`);
+        }
+      }
+
+      // data-seo-bridge se schemas aur breadcrumbs extract karo
+      if (lastBridge) {
+        const extractBridgeAttr = (attr) => {
+          const match = lastBridge.match(new RegExp(`${attr}=(?:(["'])(.*?)\\1|([^\\s>]+))`));
+          const val = match ? (match[2] !== undefined ? match[2] : match[3]) : '';
+          return val.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        };
+
+        // data-seo-schemas — array of schema objects
+        const schemasRaw = extractBridgeAttr('data-seo-schemas');
+        if (schemasRaw) {
+          try {
+            const schemas = JSON.parse(schemasRaw);
+            const schemaArray = Array.isArray(schemas) ? schemas : [schemas];
+            for (const schema of schemaArray) {
+              const content = JSON.stringify(schema);
+              if (!uniqueJsonLd.has(content)) {
+                uniqueJsonLd.add(content);
+                jsonLdTags.push(`<script type="application/ld+json">${content}</script>`);
+              }
+            }
+          } catch (e) {
+            // Schema parse error — skip silently
           }
         }
-        if (jsonLdTags.length > 0) {
-          html = html.replace('</head>', `    ${jsonLdTags.join('\n    ')}\n</head>`);
+
+        // data-seo-breadcrumbs — single BreadcrumbList schema
+        const breadcrumbsRaw = extractBridgeAttr('data-seo-breadcrumbs');
+        if (breadcrumbsRaw) {
+          try {
+            const breadcrumbSchema = JSON.parse(breadcrumbsRaw);
+            const content = JSON.stringify(breadcrumbSchema);
+            if (!uniqueJsonLd.has(content)) {
+              uniqueJsonLd.add(content);
+              jsonLdTags.push(`<script type="application/ld+json">${content}</script>`);
+            }
+          } catch (e) {
+            // Breadcrumb parse error — skip silently
+          }
         }
-        // Body se JSON-LD scripts hatao (ab head mein hain)
-        appHtml = appHtml.replace(/<script\s+type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g, '');
       }
+
+      // Saare unique JSON-LD tags head mein inject karo
+      if (jsonLdTags.length > 0) {
+        html = html.replace('</head>', `    ${jsonLdTags.join('\n    ')}\n</head>`);
+      }
+
+      // Body se JSON-LD scripts hatao (ab head mein hain)
+      appHtml = appHtml.replace(/<script\s+type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g, '');
       
       // data-seo-bridge div ko final HTML se hatao — production mein zaroorat nahi
-      appHtml = appHtml.replace(/<div\s+data-seo-bridge=""[^>]*\/?>/g, '');
+      appHtml = appHtml.replace(/<div\s+data-seo-bridge(?:="")?[^>]*\/?>/g, '');
       
       // Verification log — har 50th route + homepage par dikhao
       if (successCount % 50 === 0 || url === '/') {

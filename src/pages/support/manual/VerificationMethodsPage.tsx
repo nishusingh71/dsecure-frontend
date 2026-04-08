@@ -51,21 +51,21 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 11,
           title: "Verification Overview",
           description: "Ensuring data erasure integrity and completeness",
-          url: "/support/manual/verification-overview",
+          url: "",
           pageCount: 2,
         },
         {
           id: 12,
           title: "Why Verification Matters",
           description: "Compliance, risk mitigation, and audit requirements",
-          url: "/support/manual/verification-importance",
+          url: "",
           pageCount: 2,
         },
         {
           id: 13,
           title: "Risk Management",
           description: "Eliminating uncertainty about residual data",
-          url: "/support/manual/verification-risks",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -80,28 +80,28 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 21,
           title: "Software Verification Process",
           description: "Scanning and confirming complete data overwriting",
-          url: "/support/manual/software-verification",
+          url: "",
           pageCount: 2,
         },
         {
           id: 22,
           title: "Read-Back Verification",
           description: "Comparing written patterns to ensure completeness",
-          url: "/support/manual/readback-verification",
+          url: "",
           pageCount: 2,
         },
         {
           id: 23,
           title: "Log Generation & Analysis",
           description: "Compliance logging and error detection",
-          url: "/support/manual/verification-logs",
+          url: "",
           pageCount: 1,
         },
         {
           id: 24,
           title: "Supported Media Types",
           description: "HDDs, SSDs, flash drives, and removable media",
-          url: "/support/manual/software-supported-media",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -116,28 +116,28 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 31,
           title: "Physical Inspection Standards",
           description: "Compliance with destruction size requirements",
-          url: "/support/manual/physical-inspection",
+          url: "",
           pageCount: 2,
         },
         {
           id: 32,
           title: "Fragment Size Verification",
           description: "Ensuring shredded pieces meet security standards",
-          url: "/support/manual/fragment-verification",
+          url: "",
           pageCount: 2,
         },
         {
           id: 33,
           title: "Visual Confirmation",
           description: "Manual inspection for complete destruction",
-          url: "/support/manual/visual-confirmation",
+          url: "",
           pageCount: 1,
         },
         {
           id: 34,
           title: "Destruction Quality Control",
           description: "Quality assurance for physical destruction processes",
-          url: "/support/manual/destruction-quality",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -152,28 +152,28 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 41,
           title: "Cryptographic Verification Process",
           description: "Validating encryption key deletion and access control",
-          url: "/support/manual/crypto-verification",
+          url: "",
           pageCount: 2,
         },
         {
           id: 42,
           title: "Key Destruction Confirmation",
           description: "Ensuring encryption keys are permanently deleted",
-          url: "/support/manual/key-destruction-verify",
+          url: "",
           pageCount: 2,
         },
         {
           id: 43,
           title: "Access Control Verification",
           description: "Confirming data is cryptographically inaccessible",
-          url: "/support/manual/access-verification",
+          url: "",
           pageCount: 1,
         },
         {
           id: 44,
           title: "Supported Encryption Systems",
           description: "Self-encrypting drives, cloud storage, encrypted media",
-          url: "/support/manual/supported-encryption",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -188,14 +188,14 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 51,
           title: "Sampling Methodology",
           description: "Random sampling techniques and statistical confidence",
-          url: "/support/manual/sampling-methodology",
+          url: "",
           pageCount: 2,
         },
         {
           id: 52,
           title: "Statistical Confidence Levels",
           description: "Calculating verification reliability",
-          url: "/support/manual/statistical-confidence",
+          url: "",
           pageCount: 2,
         },
         {
@@ -218,21 +218,21 @@ const VerificationMethodsPage: React.FC = memo(() => {
           title: "NIST SP 800-88 Guidelines",
           description:
             "Verification requirements for clear, purge, and destroy",
-          url: "/support/manual/nist-guidelines",
+          url: "",
           pageCount: 2,
         },
         {
           id: 62,
           title: "DoD 5220.22-M Standards",
           description: "Defense-level verification procedures",
-          url: "/support/manual/dod-standards",
+          url: "",
           pageCount: 2,
         },
         {
           id: 63,
           title: "GDPR & Data Protection",
           description: "EU data protection verification requirements",
-          url: "/support/manual/gdpr-verification",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -247,21 +247,21 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 71,
           title: "Verification Tools Overview",
           description: "Software and hardware tools for verification",
-          url: "/support/manual/verification-tools",
+          url: "",
           pageCount: 2,
         },
         {
           id: 72,
           title: "Implementation Best Practices",
           description: "Step-by-step verification workflows",
-          url: "/support/manual/implementation-practices",
+          url: "",
           pageCount: 2,
         },
         {
           id: 73,
           title: "Common Challenges & Solutions",
           description: "Addressing verification failures and errors",
-          url: "/support/manual/verification-challenges",
+          url: "",
           pageCount: 1,
         },
       ],
@@ -276,21 +276,21 @@ const VerificationMethodsPage: React.FC = memo(() => {
           id: 81,
           title: "Financial Services",
           description: "PCI-DSS verification requirements",
-          url: "/support/manual/financial-verification",
+          url: "",
           pageCount: 2,
         },
         {
           id: 82,
           title: "Healthcare",
           description: "HIPAA-compliant verification processes",
-          url: "/support/manual/healthcare-verification",
+          url: "",
           pageCount: 2,
         },
         {
           id: 83,
           title: "Government & Defense",
           description: "Classified data verification standards",
-          url: "/support/manual/government-verification",
+          url: "",
           pageCount: 2,
         },
       ],
@@ -306,7 +306,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
       section.subsections.some(
         (sub) =>
           sub.title.toLowerCase().includes(query) ||
-          sub.description.toLowerCase().includes(query)
+          sub.description.toLowerCase().includes(query),
       )
     );
   });
@@ -322,13 +322,12 @@ const VerificationMethodsPage: React.FC = memo(() => {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead 
-        seo={getSEOForPage("support-manual-verification-methods", { 
-          title: "Verification Methods | D-Secure Manual", 
-          canonicalUrl: "/support/manual/verification-methods" 
-        })} 
+      <SEOHead
+        seo={getSEOForPage("support-manual-verification-methods", {
+          title: "Verification Methods | D-Secure Manual",
+          canonicalUrl: "/support/manual/verification-methods",
+        })}
       />
-      
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -408,7 +407,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
                   <OptimizedImage
                     src={CDN_IMAGES.hero}
                     alt="Data Verification and Assurance Dashboard"
-                    fallback={getFallbackImage('security')}
+                    fallback={getFallbackImage("security")}
                     className="w-full h-full object-cover"
                     width={1600}
                     height={900}
@@ -519,7 +518,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
                       <OptimizedImage
                         src={method.image}
                         alt={method.alt}
-                        fallback={getFallbackImage('security')}
+                        fallback={getFallbackImage("security")}
                         className="w-full h-full object-cover rounded-lg border border-slate-200"
                         width={600}
                         height={450}
@@ -733,28 +732,28 @@ const VerificationMethodsPage: React.FC = memo(() => {
                   title: "Software Verification",
                   description: "Digital confirmation methods",
                   icon: "💻",
-                  url: "/support/manual/software-verification",
+                  url: "",
                   color: "bg-blue-500",
                 },
                 {
                   title: "Compliance Standards",
                   description: "NIST, DoD, GDPR requirements",
                   icon: "📋",
-                  url: "/support/manual/verification-standards",
+                  url: "",
                   color: "bg-teal-500",
                 },
                 {
                   title: "Audit Preparation",
                   description: "Audit trail generation",
                   icon: "📊",
-                  url: "/support/manual/audit-preparation",
+                  url: "",
                   color: "bg-green-500",
                 },
                 {
                   title: "Industry Guides",
                   description: "Sector-specific verification",
                   icon: "🏭",
-                  url: "/support/manual/industry-applications",
+                  url: "",
                   color: "bg-purple-500",
                 },
               ].map((item, index) => (
@@ -803,7 +802,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
                     Contact D-Secure for Verification
                   </Link>
                   <Link
-                    to="/services/verification"
+                    to=""
                     className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg"
                   >
                     Learn About Verification Services

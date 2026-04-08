@@ -37,7 +37,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Installation Guide",
           description:
             "Step-by-step installation instructions for all supported platforms",
-          url: "/support/manual/installation",
+          url: "",
           pageCount: 8,
         },
         {
@@ -45,7 +45,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "First Time Setup",
           description:
             "Initial configuration and license activation procedures",
-          url: "/support/manual/first-time-setup",
+          url: "",
           pageCount: 6,
         },
         {
@@ -53,14 +53,14 @@ const HelpManualPage: React.FC = memo(() => {
           title: "User Interface Overview",
           description:
             "Navigate the D-Secure interface and understand key features",
-          url: "/support/manual/user-interface",
+          url: "",
           pageCount: 12,
         },
         {
           id: 14,
           title: "Quick Start Tutorial",
           description: "Your first data erasure operation in 10 minutes",
-          url: "/support/manual/quickstart",
+          url: "",
           pageCount: 4,
         },
       ],
@@ -77,28 +77,28 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Overwrite Patterns",
           description:
             "Understanding DoD, NIST, and custom overwrite algorithms",
-          url: "/support/manual/overwrite-patterns",
+          url: "",
           pageCount: 15,
         },
         {
           id: 22,
           title: "Cryptographic Erasure",
           description: "Key destruction and encryption-based erasure methods",
-          url: "/support/manual/cryptographic-erasure",
+          url: "",
           pageCount: 10,
         },
         {
           id: 23,
           title: "Physical Destruction",
           description: "When and how to use physical destruction methods",
-          url: "support/manual/physical-destruction",
+          url: "",
           pageCount: 8,
         },
         {
           id: 24,
           title: "Verification Methods",
           description: "Ensuring complete and successful data erasure",
-          url: "/support/manual/verification-methods",
+          url: "",
           pageCount: 12,
         },
       ],
@@ -114,14 +114,14 @@ const HelpManualPage: React.FC = memo(() => {
           id: 31,
           title: "Windows Systems",
           description: "Windows 10/11 erasure procedures and troubleshooting",
-          url: "/support/manual/windows",
+          url: "",
           pageCount: 20,
         },
         {
           id: 32,
           title: "macOS Systems",
           description: "Intel and Apple Silicon Mac erasure procedures",
-          url: "/support/manual/macos",
+          url: "",
           pageCount: 18,
         },
         {
@@ -129,21 +129,21 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Linux Systems",
           description:
             "Cross-distribution Linux support and command-line tools",
-          url: "/support/manual/linux",
+          url: "",
           pageCount: 16,
         },
         {
           id: 34,
           title: "Mobile Devices",
           description: "iOS and Android device erasure and management",
-          url: "/support/manual/mobile",
+          url: "",
           pageCount: 14,
         },
         {
           id: 35,
           title: "Enterprise Servers",
           description: "Server hardware and virtualization platform support",
-          url: "/support/manual/servers",
+          url: "",
           pageCount: 25,
         },
       ],
@@ -160,14 +160,14 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Batch Operations",
           description:
             "Automating erasure across multiple devices simultaneously",
-          url: "/support/manual/batch-operations",
+          url: "",
           pageCount: 12,
         },
         {
           id: 42,
           title: "Remote Management",
           description: "Cloud console and remote deployment capabilities",
-          url: "/support/manual/remote-management",
+          url: "",
           pageCount: 18,
         },
         {
@@ -175,7 +175,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Scripting & Automation",
           description:
             "Automation through command-line tools and batch processing",
-          url: "/support/manual/scripting",
+          url: "",
           pageCount: 22,
         },
         {
@@ -183,7 +183,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Custom Configurations",
           description:
             "Creating custom erasure profiles and organization policies",
-          url: "/support/manual/custom-configs",
+          url: "",
           pageCount: 10,
         },
       ],
@@ -200,14 +200,15 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Compliance Standards",
           description:
             "NIST 800-88, DoD 5220.22-M, and international standards",
-          url: "/support/manual/compliance",
+          url: "",
           pageCount: 16,
         },
         {
           id: 52,
           title: "Regulatory Document Generation",
-          description: "Creating tamper-proof regulatory documents of data destruction",
-          url: "/support/manual/certificates",
+          description:
+            "Creating tamper-proof regulatory documents of data destruction",
+          url: "",
           pageCount: 8,
         },
         {
@@ -215,7 +216,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Audit Trails",
           description:
             "Maintaining detailed logs for compliance and forensic purposes",
-          url: "/support/manual/audit-trails",
+          url: "",
           pageCount: 12,
         },
         {
@@ -223,7 +224,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Chain of Custody",
           description:
             "Documenting device handling throughout the erasure process",
-          url: "/support/manual/chain-custody",
+          url: "",
           pageCount: 6,
         },
       ],
@@ -238,21 +239,21 @@ const HelpManualPage: React.FC = memo(() => {
           id: 61,
           title: "Common Issues",
           description: "Frequently encountered problems and quick solutions",
-          url: "/support/manual/common-issues",
+          url: "",
           pageCount: 20,
         },
         {
           id: 62,
           title: "Error Codes",
           description: "Complete reference of error codes and their meanings",
-          url: "/support/manual/error-codes",
+          url: "",
           pageCount: 15,
         },
         {
           id: 63,
           title: "Performance Optimization",
           description: "Optimizing erasure speed and system performance",
-          url: "/support/manual/performance",
+          url: "",
           pageCount: 12,
         },
         {
@@ -260,7 +261,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Recovery Procedures",
           description:
             "What to do when erasure operations fail or are interrupted",
-          url: "/support/manual/recovery",
+          url: "",
           pageCount: 10,
         },
       ],
@@ -276,14 +277,14 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Installation Screenshots Guide",
           description:
             "Visual step-by-step installation process with detailed screenshots",
-          url: "/support/manual/installation-guide",
+          url: "",
           pageCount: 12,
         },
         {
           id: 16,
           title: "System Setup & Configuration",
           description: "Complete system configuration with visual examples",
-          url: "/support/manual/system-setup",
+          url: "",
           pageCount: 10,
         },
         {
@@ -291,7 +292,7 @@ const HelpManualPage: React.FC = memo(() => {
           title: "Working with D-Secure Interface",
           description:
             "Complete guide to using D-Secure with activation and file erasure operations",
-          url: "/support/manual/working-with-dsecure",
+          url: "",
           pageCount: 15,
         },
         {
@@ -314,21 +315,21 @@ const HelpManualPage: React.FC = memo(() => {
           id: 72,
           title: "Working with Reports",
           description: "Report generation, management, and customization guide",
-          url: "/support/help-manual/report-management",
+          url: "",
           pageCount: 8,
         },
         {
           id: 73,
           title: "D-Secure FAQ",
           description: "Frequently asked questions and detailed answers",
-          url: "/support/help-manual/faqs",
+          url: "",
           pageCount: 12,
         },
         {
           id: 74,
           title: "Schedule Settings",
           description: "Automated scheduling and task management configuration",
-          url: "/support/help-manual/schedule-settings",
+          url: "",
           pageCount: 6,
         },
       ],
