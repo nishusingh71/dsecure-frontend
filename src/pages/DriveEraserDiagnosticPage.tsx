@@ -107,88 +107,94 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
   // गैलरी इमेजेज - नए Cloudinary URLs के साथ optimized (f_auto, q_auto)
   const galleryImages = [
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305257/a4sgxgi17mpdrzdfb7ut.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658231/g8lhzmtiwuuwkkms1fhz.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658231/g8lhzmtiwuuwkkms1fhz.png",
       alt: "Welcome Screen - Start Sanitization",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305313/gaa6fv88jzmpgyyq96wg.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658231/aemolngogmqp0f5wkans.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658231/aemolngogmqp0f5wkans.png",
       alt: "Detecting Hardware",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305166/ycdyjanbhcaxulah3unl.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/ujm3oxvonlwmkbaheemn.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/ujm3oxvonlwmkbaheemn.png",
       alt: "WiFi Connection",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305219/zrkffe7ylntxde56budn.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305219/zrkffe7ylntxde56budn.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/ooxq6b7woehu71hast0f.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/ooxq6b7woehu71hast0f.png",
       alt: "LAN Connection",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300694/whegkqyd3tp2cg7neowp.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773300694/whegkqyd3tp2cg7neowp.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/da2yfigk1bdepwegb67r.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/da2yfigk1bdepwegb67r.png",
       alt: "Dashboard Overview",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773300653/vkuknf56igiivxb98byw.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/xc2fecqf08xld4kclgfo.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/xc2fecqf08xld4kclgfo.png",
       alt: "Reports & Certificates",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773300598/lye0zxxqut8o870mh98l.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/gk8eubabvfkaxi5es17r.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/gk8eubabvfkaxi5es17r.png",
       alt: "About Page",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303765/usmphwsihzdg4s5y2637.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303765/usmphwsihzdg4s5y2637.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658233/h7pbl2cyczh87xetadzt.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658233/h7pbl2cyczh87xetadzt.png",
       alt: "Step 1 - Drive Detection",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303839/svli2uykco9hme2sk0oh.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/k22ofw9suamsieuhf45x.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/k22ofw9suamsieuhf45x.png",
       alt: "Step 2 - Wipe Configuration",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303719/vlshsgzlgnsfu1drxhvh.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303719/vlshsgzlgnsfu1drxhvh.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658232/ockbrrxtgntfb53obono.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658232/ockbrrxtgntfb53obono.png",
       alt: "Step 3 - Destructive Confirmation",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773304110/zzakl8rvddzadkkpevga.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658233/vniesulfvm1kjul741sb.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658233/vniesulfvm1kjul741sb.png",
       alt: "General Settings",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304035/ctjtcp2leqj5c2rarmei.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773304035/ctjtcp2leqj5c2rarmei.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658233/hhoo0aod3ec9yze53jkq.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658233/hhoo0aod3ec9yze53jkq.png",
       alt: "Account Settings",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303943/cvfupwsy8iejwrxi5jzj.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303943/cvfupwsy8iejwrxi5jzj.png",
-      alt: "Help Page - Top",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658233/eljtyexpxxpwlqzdoftd.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658233/eljtyexpxxpwlqzdoftd.png",
+      alt: "Help Page - Overview",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303980/gemjfmgk3cw7wnvgh2z6.png",
-      thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303980/gemjfmgk3cw7wnvgh2z6.png",
-      alt: "Help Page - Bottom",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658233/ofzgniavnqekwhy0ej7b.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658233/ofzgniavnqekwhy0ej7b.png",
+      alt: "Advanced Hardware Diagnostics",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658233/ayunxj3ypezzehfj9tlx.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658233/ayunxj3ypezzehfj9tlx.png",
+      alt: "Detailed System Report",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658234/pslimwez6yt64dxdpikz.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658234/pslimwez6yt64dxdpikz.png",
+      alt: "Compliance Audit Trail",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658234/t9h2ttemzyl76hjrbceh.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658234/t9h2ttemzyl76hjrbceh.png",
+      alt: "Network Boot Configuration",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1775658234/m7srpf8ele9ktqruglma.png",
+      thumbnail: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1775658234/m7srpf8ele9ktqruglma.png",
+      alt: "Multiple Device Management",
     },
   ];
 
@@ -318,6 +324,42 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
       desc: "Generate comprehensive health certificates before erasure to document the physical state of the media.",
       icon: <ClipboardCheck className="w-6 h-6" />,
       color: "from-amber-500 to-orange-600",
+    },
+  ];
+
+  const allDiagnosticTests = [
+    {
+      category: "🟢 AUTOMATIC HARDWARE TESTS",
+      desc: "Self-executing backend intelligence",
+      tests: [
+        "CPU (Processor) Health & Stress Check",
+        "Memory (RAM) Module Integrity Test",
+        "Battery Health (Cycle & Capacity - Laptops)",
+        "Storage (HDD/SSD/NVMe) Performance & Life",
+        "Ethernet (LAN) Connection & Speed Check",
+        "GPU (Graphics Card) Engine Diagnosis",
+        "Monitor (Display Output) Signal Quality",
+        "CMOS / Motherboard Battery Health",
+        "System Board (Motherboard) Logic Integrity",
+      ],
+    },
+    {
+      category: "🔵 MANUAL / INTERACTIVE TESTS",
+      desc: "User-verified physical inspections",
+      tests: [
+        "Keyboard (Full Key-press Verification)",
+        "Mouse / TouchPad (Movement & Click)",
+        "Microphone (Voice Recording Quality)",
+        "Audio (Internal/External Speaker Tone)",
+        "Display (Color Uniformity & Dead Pixels)",
+        "Touch Screen (Responsiveness Matrix)",
+        "Webcam (Capture & Frame Quality)",
+        "WiFi (Wireless Range & Connectivity)",
+        "Bluetooth (Discovery & Pairing)",
+        "USB Port (Device Communication)",
+        "Fingerprint (Biometric Accuracy)",
+        "Physical Accessories & Cosmetic Grading",
+      ],
     },
   ];
 
@@ -699,7 +741,8 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
                     The industry's first "Monitor + Erase" suite. Track drive
                     health, predict failures, and securely erase data with
-                    Multiple device Management and Regulatory hardware diagnostics across major mobile ecosystems.
+                    Multiple device Management and Regulatory hardware
+                    diagnostics across major mobile ecosystems.
                   </p>
 
                   {/* Compliance Badges */}
@@ -719,12 +762,12 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <button
-                      onClick={() => scrollToSection("contact")}
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                    <Link
+                      to="/pricing-and-plan?product=drive-eraser&variant=diagnostics"
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                     >
-                      Request Early Access
-                    </button>
+                      Buy Now
+                    </Link>
                     <button
                       onClick={downloadCatalog}
                       className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold bg-white/50 backdrop-blur-sm hover:bg-emerald-50 hover:shadow-lg transition-all duration-300"
@@ -851,16 +894,21 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
                                         className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full"
                                         style={{
                                           width: "98%",
-                                          animation: "progressPulse 2s ease-in-out infinite",
+                                          animation:
+                                            "progressPulse 2s ease-in-out infinite",
                                         }}
                                       ></div>
                                     </div>
-                                    <span className="text-[6px] sm:text-[7px] text-emerald-400/80 font-mono">98%</span>
+                                    <span className="text-[6px] sm:text-[7px] text-emerald-400/80 font-mono">
+                                      98%
+                                    </span>
                                   </div>
                                 </div>
                               </div>
                               <div className="flex flex-col items-end gap-0.5 sm:gap-1">
-                                <span className="text-[6px] sm:text-[8px] text-slate-400 font-mono">32°C</span>
+                                <span className="text-[6px] sm:text-[8px] text-slate-400 font-mono">
+                                  32°C
+                                </span>
                                 <div className="flex gap-0.5">
                                   {[...Array(3)].map((_, i) => (
                                     <div
@@ -1000,7 +1048,10 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
         </section>
 
         {/* ================= INTEGRATED DIAGNOSTICS ================= */}
-        <section id="diagnostics" className="py-20 bg-slate-50 border-y border-slate-200">
+        <section
+          id="diagnostics"
+          className="py-20 bg-slate-50 border-y border-slate-200"
+        >
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-16">
@@ -1014,10 +1065,14 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
               {diagnosticsFeatures.map((feature, i) => (
-                <Reveal key={feature.title} delayMs={i * 100}>
-                  <div className="group bg-white rounded-xl sm:rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 flex flex-col min-h-[220px]">
+                <Reveal
+                  key={feature.title}
+                  delayMs={i * 100}
+                  className="h-full"
+                >
+                  <div className="group h-full bg-white rounded-xl sm:rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 flex flex-col">
                     <div
                       className={`w-12 h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br ${feature.color} text-white flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg flex-shrink-0`}
                     >
@@ -1032,6 +1087,50 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
                   </div>
                 </Reveal>
               ))}
+            </div>
+
+            {/* Comprehensive Test Suite Grid */}
+            <div className="bg-white rounded-3xl border border-emerald-100 shadow-2xl overflow-hidden p-6 md:p-12 relative">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-50 rounded-full blur-3xl -mr-32 -mt-32 opacity-60"></div>
+
+              <Reveal>
+                <div className="mb-12">
+                  <span className="text-emerald-700 font-bold tracking-widest uppercase text-sm mb-2 block">
+                    The Full Suite
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-bold text-slate-900">
+                    Comprehensive Hardware Test Coverage
+                  </h3>
+                </div>
+              </Reveal>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+                {allDiagnosticTests.map((group, groupIdx) => (
+                  <Reveal key={group.category} delayMs={groupIdx * 150}>
+                    <div className="space-y-6">
+                      <div className="flex flex-col gap-1 border-b border-emerald-100 pb-4">
+                        <h4 className="text-lg font-bold text-emerald-900">
+                          {group.category}
+                        </h4>
+                        <p className="text-sm text-slate-500">{group.desc}</p>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                        {group.tests.map((test, testIdx) => (
+                          <div
+                            key={testIdx}
+                            className="flex items-center gap-3 group"
+                          >
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:scale-125 transition-transform" />
+                            <span className="text-sm text-slate-600 font-medium group-hover:text-emerald-900 transition-colors">
+                              {test}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -1185,7 +1284,7 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
                 ) : (
                   /* Iframe Container */
                   <iframe
-                    src="https://dsecure-drive-eraser.vercel.app/"
+                    src="https://d-secure-drive-eraser-diagnostics.vercel.app/#/app/dashboard"
                     className="w-full h-full flex-1 border-0"
                     title="D-Secure Drive Eraser Demo"
                     sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
@@ -1386,7 +1485,8 @@ const DriveEraserDiagnosticPage: React.FC = memo(function DriveEraserDiagnosticP
                   Life Cycle Management
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Drive Lifecycle <span className="text-emerald-800">Workflow</span>
+                  Drive Lifecycle{" "}
+                  <span className="text-emerald-800">Workflow</span>
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                   From health assessment to secure decommissioning

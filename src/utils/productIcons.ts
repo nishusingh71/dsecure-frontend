@@ -20,6 +20,13 @@ export const getProductImageConfig = (category: string) => {
         accentColor: 'text-blue-400',
         iconSize: 64,
       };
+    case 'drive-eraser-diagnostic':
+      return {
+        ...baseConfig,
+        backgroundColor: 'from-emerald-800 to-emerald-900',
+        accentColor: 'text-emerald-400',
+        iconSize: 64,
+      };
     case 'admin-console':
       return {
         ...baseConfig,

@@ -28,12 +28,19 @@ interface Product {
 }
 
 // --- Static Data (Moved outside component to prevent recreation on every render) ---
+// Yahan hum sab products aur unke descriptions define karte hain
 const PRODUCTS: Product[] = [
   {
     id: "drive-eraser",
     name: "Drive Eraser",
     subtitle: "Erase HDDs, SSDs in PCs, Mac & Servers",
     description: "Complete Hard Drive & SSD Erasure with Enterprise-Grade Security Standards",
+  },
+  {
+    id: "drive-eraser-diagnostic",
+    name: "Drive Eraser Diagnostic",
+    subtitle: "Hardware Diagnostic Tool",
+    description: "Enterprise-grade hardware diagnostics for hard drives and SSDs before erasure.",
   },
   {
     id: "file-eraser",
@@ -43,6 +50,7 @@ const PRODUCTS: Product[] = [
   },
 ];
 
+// Yahan har OS ke liye download links define kiye gaye hain
 const DOWNLOAD_LINKS: Record<string, ProductDownloads> = {
   "drive-eraser": {
     windowsAmd: {
@@ -62,6 +70,26 @@ const DOWNLOAD_LINKS: Record<string, ProductDownloads> = {
       filename: "D-Secure-Drive-Eraser-x64.iso",
       size: "450 MB",
       arch: "x64x86 (ISO Image)",
+    },
+  },
+  "drive-eraser-diagnostic": {
+    windowsAmd: {
+      url: ENV.DriveEraserDiagnostic_ISO_Download_Link,
+      filename: "D-SECURE-DRIVE-ERASER-DIAGNOSTICS-x64-v1.0.0.0.iso",
+      size: "Less than 1 GB",
+      arch: "x64 (ISO Image)",
+    },
+    macos: {
+      url: ENV.DriveEraserDiagnostic_ISO_Download_Link,
+      filename: "D-SECURE-DRIVE-ERASER-DIAGNOSTICS-x64-v1.0.0.0.iso",
+      size: "Less than 1 GB",
+      arch: "x64 (ISO Image)",
+    },
+    linux: {
+      url: ENV.DriveEraserDiagnostic_ISO_Download_Link,
+      filename: "D-SECURE-DRIVE-ERASER-DIAGNOSTICS-x64-v1.0.0.0.iso",
+      size: "Less than 1 GB",
+      arch: "x64 (ISO Image)",
     },
   },
   "file-eraser": {
@@ -243,7 +271,7 @@ const DownloadPage: React.FC = memo(() => {
 
           {/* Product Selection Tabs */}
           <div className="flex justify-center mb-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl w-full">
               {PRODUCTS.map((product) => (
                 <button
                   key={product.id}
@@ -291,7 +319,7 @@ const DownloadPage: React.FC = memo(() => {
               <div className="relative">
                 <button
                   onClick={(e) =>
-                    selectedProduct === "drive-eraser"
+                    selectedProduct.includes("drive-eraser")
                       ? toggleDropdown("windows-drive", e)
                       : handleDownload("windows", e)
                   }
@@ -299,22 +327,22 @@ const DownloadPage: React.FC = memo(() => {
                   className="w-full flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg group"
                 >
                   <div className="text-blue-600 mb-3 group-hover:scale-110 transition-transform">
-                    {selectedProduct === "drive-eraser" ? <CpuIcon /> : <WindowsIcon />}
+                    {selectedProduct.includes("drive-eraser") ? <CpuIcon /> : <WindowsIcon />}
                   </div>
                   <h3 className="font-bold text-gray-900 mb-1">
-                    {selectedProduct === "drive-eraser"
+                    {selectedProduct.includes("drive-eraser")
                       ? "x64 Architecture"
                       : "Windows"}
                   </h3>
                   <p className="text-xs text-gray-500 mb-3">
-                    {selectedProduct === "drive-eraser"
+                    {selectedProduct.includes("drive-eraser")
                       ? "AMD/Intel (x64x86)"
                       : "x64 & ARM64"}
                   </p>
                   <div className="flex items-center gap-2 text-blue-600 font-semibold">
                     <DownloadIcon />
                     Download
-                    {selectedProduct === "drive-eraser" && <ChevronIcon />}
+                    {selectedProduct.includes("drive-eraser") && <ChevronIcon />}
                   </div>
                 </button>
 
@@ -326,7 +354,6 @@ const DownloadPage: React.FC = memo(() => {
                       subtitle="For standard PCs"
                       onClick={(e) => handleDownload("windowsAmd", e)}
                     />
-                    {/* Add ARM Item here if needed */}
                   </DropdownMenu>
                 )}
               </div>
@@ -339,15 +366,15 @@ const DownloadPage: React.FC = memo(() => {
                   className="w-full flex flex-col items-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-xl border-2 border-gray-200 hover:border-gray-400 transition-all duration-300 hover:shadow-lg group"
                 >
                   <div className="text-gray-700 mb-3 group-hover:scale-110 transition-transform">
-                    {selectedProduct === "drive-eraser" ? <CpuIcon /> : <MacIcon />}
+                    {selectedProduct.includes("drive-eraser") ? <CpuIcon /> : <MacIcon />}
                   </div>
                   <h3 className="font-bold text-gray-900 mb-1">
-                    {selectedProduct === "drive-eraser"
+                    {selectedProduct.includes("drive-eraser")
                       ? "x86 Architecture"
                       : "macOS"}
                   </h3>
                   <p className="text-xs text-gray-500 mb-3">
-                    {selectedProduct === "drive-eraser"
+                    {selectedProduct.includes("drive-eraser")
                       ? "AMD/Intel (x64x86)"
                       : "Intel & Apple Silicon"}
                   </p>
@@ -362,12 +389,12 @@ const DownloadPage: React.FC = memo(() => {
                   <DropdownMenu>
                     <DropdownItem
                       title={
-                        selectedProduct === "drive-eraser"
+                        selectedProduct.includes("drive-eraser")
                           ? "AMD/Intel (x64x86)"
                           : "Universal Installer"
                       }
                       subtitle={
-                        selectedProduct === "drive-eraser"
+                        selectedProduct.includes("drive-eraser")
                           ? "For standard PCs"
                           : "For Intel & M1/M2/M3"
                       }
@@ -385,15 +412,15 @@ const DownloadPage: React.FC = memo(() => {
                   className="w-full flex flex-col items-center p-6 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl border-2 border-orange-200 hover:border-orange-400 transition-all duration-300 hover:shadow-lg group"
                 >
                   <div className="text-orange-600 mb-3 group-hover:scale-110 transition-transform">
-                    {selectedProduct === "drive-eraser" ? <CpuIcon /> : <LinuxIcon />}
+                    {selectedProduct.includes("drive-eraser") ? <CpuIcon /> : <LinuxIcon />}
                   </div>
                   <h3 className="font-bold text-gray-900 mb-1">
-                    {selectedProduct === "drive-eraser"
+                    {selectedProduct.includes("drive-eraser")
                       ? "ARM Architecture"
                       : "Linux"}
                   </h3>
                   <p className="text-xs text-gray-500 mb-3">
-                    {selectedProduct === "drive-eraser"
+                    {selectedProduct.includes("drive-eraser")
                       ? "AMD/Intel (x64x86)"
                       : "DEB & RPM"}
                   </p>
@@ -408,12 +435,12 @@ const DownloadPage: React.FC = memo(() => {
                   <DropdownMenu>
                     <DropdownItem
                       title={
-                        selectedProduct === "drive-eraser"
+                        selectedProduct.includes("drive-eraser")
                           ? "AMD/Intel (x64x86)"
                           : ".DEB Package"
                       }
                       subtitle={
-                        selectedProduct === "drive-eraser"
+                        selectedProduct.includes("drive-eraser")
                           ? "For standard PCs"
                           : "For Ubuntu, Debian, Mint"
                       }
@@ -424,6 +451,7 @@ const DownloadPage: React.FC = memo(() => {
                 )}
               </div>
             </div>
+            {/* diagnostic ke liye additional notes agar chahiye toh yahan add kar sakte hain */}
           </div>
         </div>
       </div>

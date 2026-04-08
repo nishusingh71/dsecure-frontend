@@ -56,6 +56,7 @@ export const ENV = {
     DRIVE_ERASER: validateStr(import.meta.env.DriveEraser, 'DriveEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity='),
     FileEraser_Windows_Download_Link: validateStr(import.meta.env.FileEraser_windows_download_link, 'FileEraser_windows_download_link', false, 'https://downloads.dsecuretech.com/windows/D-SFE_installer_v1_0_0_0.exe'),
     DriveEraser_ISO_Download_Link: validateStr(import.meta.env.DriveEraser_iso_download_link, 'DriveEraser_iso_download_link', false, 'https://downloads.dsecuretech.com/x64x86/Drive%20Eraser/D-Secure-Drive-Eraser(v1.0.0x64-arch-amd).iso'),
+    DriveEraserDiagnostic_ISO_Download_Link: validateStr(import.meta.env.DriveEraserDiagnostic_iso_download_link, 'DriveEraserDiagnostic_iso_download_link', false, 'https://downloads.dsecuretech.com/drive-eraser-diagnostic-x64-v1/D-SECURE-DRIVE-ERASER-DIAGNOSTICS-x64-v1.0.0.0.iso'),
     POWER_AUTOMATE_HTTP_URL: validateStr(import.meta.env.POWER_AUTOMATE_HTTP_URL, 'POWER_AUTOMATE_HTTP_URL', false, ''),
 };
 

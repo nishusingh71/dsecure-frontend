@@ -51,6 +51,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [fileEraserVariant, setFileEraserVariant] = useState("standard"); // "standard" or "network"
   const [freezeStateVariant, setFreezeStateVariant] = useState("standard"); // "standard", "smart", or "advanced"
   const [forensicImagingVariant, setForensicImagingVariant] = useState("basic"); // "basic", "advanced", or "hardware"
+  const [isTestsExpanded, setIsTestsExpanded] = useState(false); // Hardware diagnostics tests accordion state
 
   // Reset loading state when component mounts (handles back navigation)
   useEffect(() => {
@@ -1007,9 +1008,29 @@ const PricingAndPlanPage: React.FC = memo(() => {
       if (driveEraserVariant === "diagnostics") {
         return [
           ...baseFeatures,
-          "Advanced Hardware Diagnostics",
-          "SMART Health Analysis",
-          "Automated Device Grading",
+          "🟢 AUTOMATIC TESTS (Self-checking results)",
+          "1. CPU (Processor) Health Check",
+          "2. Memory (RAM) Stress Test",
+          "3. Battery Health (Laptops only)",
+          "4. Storage (HDD/SSD) Performance",
+          "5. Ethernet (LAN Cable) Connectivity",
+          "6. GPU (Graphics Card) Diagnosis",
+          "7. Monitor (Display Output) Signal",
+          "8. CMOS / Motherboard Battery",
+          "9. System Board (Motherboard) Logic",
+          "🔵 MANUAL / INTERACTIVE TESTS",
+          "10. Keyboard (Key-press verification)",
+          "11. Mouse / TouchPad (Click & Move)",
+          "12. Microphone (Voice Recording)",
+          "13. Audio (Speaker Beep/Tone Test)",
+          "14. Display (Color & Dead Pixel Check)",
+          "15. Touch Screen (Response Test)",
+          "16. Webcam (Frame Capture Test)",
+          "17. WiFi (Wireless Connectivity)",
+          "18. Bluetooth (Pairing Test)",
+          "19. USB Port (Device Detection)",
+          "20. Fingerprint (Scanner Test)",
+          "21. Accessories & Grading (Physical Inspection)",
         ];
       }
       return baseFeatures;
@@ -1625,28 +1646,66 @@ const PricingAndPlanPage: React.FC = memo(() => {
                           ? "Drive Eraser - Key Features:"
                           : `${getCurrentProduct().title} - Key Features:`}
                       </h4>
-                      {getProductFeatures(selectedCategory, selectedPlan).map(
-                        (feature, index) => (
+                      
+                      {/* Standard Features (always visible) */}
+                      {getProductFeatures(selectedCategory, selectedPlan)
+                        .filter(f => !f.startsWith("🟢") && !f.startsWith("🔵") && !/^\d+\./.test(f))
+                        .map((feature, index) => (
                           <div
                             key={index}
                             className="flex items-center space-x-3 p-2 rounded-lg"
                           >
-                            <svg
-                              className="w-4 h-4 text-green-800 flex-shrink-0"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clipRule="evenodd"
-                              />
+                            <svg className="w-4 h-4 text-green-800 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            <span className="text-sm font-medium text-gray-700">
-                              {feature}
-                            </span>
+                            <span className="text-sm font-medium text-gray-700">{feature}</span>
                           </div>
-                        ),
+                        ))}
+
+                      {/* Advanced Diagnostics Accordion (if applicable) */}
+                      {selectedCategory === "drive-eraser" && driveEraserVariant === "diagnostics" && (
+                        <div className="mt-4 border border-teal-100 rounded-2xl overflow-hidden bg-teal-50/30">
+                          <button
+                            onClick={() => setIsTestsExpanded(!isTestsExpanded)}
+                            className="w-full flex items-center justify-between p-4 bg-teal-50/50 hover:bg-teal-100/50 transition-colors"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg">🛠️</span>
+                              <span className="text-sm font-bold text-teal-900">Advanced Hardware Diagnostics (21 Tests)</span>
+                            </div>
+                            <svg
+                              className={`w-5 h-5 text-teal-600 transition-transform duration-300 ${isTestsExpanded ? "rotate-180" : ""}`}
+                              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          
+                          <div className={`transition-all duration-300 ease-in-out ${isTestsExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}>
+                            <div className="p-4 pt-0 grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                              {getProductFeatures(selectedCategory, selectedPlan)
+                                .filter(f => f.startsWith("🟢") || f.startsWith("🔵") || /^\d+\./.test(f))
+                                .map((feature, index) => {
+                                  const isHeader = feature.startsWith("🟢") || feature.startsWith("🔵");
+                                  return (
+                                    <div
+                                      key={index}
+                                      className={`p-2 rounded-lg ${isHeader ? "col-span-full mt-4 mb-2 bg-white/60 shadow-sm border border-teal-100" : "flex items-center space-x-2"}`}
+                                    >
+                                      {isHeader ? (
+                                        <span className="text-xs font-bold uppercase tracking-wider text-teal-900">{feature}</span>
+                                      ) : (
+                                        <>
+                                          <div className="w-1.5 h-1.5 rounded-full bg-teal-400 flex-shrink-0" />
+                                          <span className="text-xs font-medium text-gray-600">{feature}</span>
+                                        </>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          </div>
+                        </div>
                       )}
                     </div>
 
@@ -1717,7 +1776,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               <span className="text-sm font-bold text-emerald-800">
                                 $30.00
                               </span>
-                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">Upcoming</span>
                             </div>
                             {driveEraserVariant === "diagnostics" && (
                               <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
@@ -2229,7 +2287,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 <button
                   onClick={handleBuyNow}
                   disabled={
-                    (!((selectedCategory === "drive-eraser" && driveEraserVariant === "standard") || 
+                    (!((selectedCategory === "drive-eraser" && (driveEraserVariant === "standard" || driveEraserVariant === "diagnostics")) || 
                        (selectedCategory === "file-eraser" && fileEraserVariant === "standard")) && 
                      selectedLicenses !== "custom" && 
                      selectedPlan !== "custom") ||
@@ -2247,7 +2305,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     }
                   }}
                   className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 ${
-                    !((selectedCategory === "drive-eraser" && driveEraserVariant === "standard") || 
+                    !((selectedCategory === "drive-eraser" && (driveEraserVariant === "standard" || driveEraserVariant === "diagnostics")) || 
                       (selectedCategory === "file-eraser" && fileEraserVariant === "standard")) && 
                     selectedLicenses !== "custom" && 
                     selectedPlan !== "custom"
@@ -2255,7 +2313,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                       : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
                   }`}
                 >
-                  {!((selectedCategory === "drive-eraser" && driveEraserVariant === "standard") || 
+                  {!((selectedCategory === "drive-eraser" && (driveEraserVariant === "standard" || driveEraserVariant === "diagnostics")) || 
                      (selectedCategory === "file-eraser" && fileEraserVariant === "standard")) && 
                    selectedLicenses !== "custom" && 
                    selectedPlan !== "custom"
